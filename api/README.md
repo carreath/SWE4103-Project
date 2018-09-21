@@ -1,15 +1,21 @@
 ### **Python**
 Python is a pretty straight forward language, some people may even call it pseudo code. This comes from it's use of white-space instead of semi-colons and braces as well as it being an interpreted and dynamically typed language. This means that there is no need to compile your .py(Python) files like you would with .java files, instead the intepreter can just run the Python code. Dynamic typing just means you don't have to declare variable types when assigning variables a value, the intpreter 'understands' the typing of your variable.
 
-There are 2 Python versions that are widely used, Python2 and Python3. They are currently both supported, but it is in our best interest to Python3 as it is the future of the language. The release version of Python3 that we'll use for this project is Python3 version 3.6.6
+There are 2 Python versions that are widely used, Python2 and Python3. They are currently both supported, but it is in our best interest to Python3 as it is the main focus of the Python development team and most 3rd party package developers. The release version of Python3 that we'll use for this project is Python3 version 3.6.x, the most recent Python 3.6 version is 3.6.6 which was released in June. 
 
 #### Setting up Python
 If you're on **Linux** it's most likely the case that you already have Python installed. To check the version of your installation type the following command:
 ```bash
 python3 --version
 ```
+If your Python version is not of the 3.6.x variety please use the following commands to install the newest Python 3.6.x:
+```bash
+sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt-get update
+sudo apt-get install python3.6
+```
 
-If you're on **Windows** most recent downloads for version can be found here: https://www.python.org/downloads/windows/
+If you're on **Windows** the most recent downloads for Python3 can be found here: https://www.python.org/downloads/windows/
 
 #### Some IDEs/Text Editors for Python
 Feel free to use whatever you want, but here are some things I've enjoyed using for Python development
@@ -47,9 +53,16 @@ pip --version
 
 ### **Flask**
 
-For this project we are planning on using Flask, more speicifically Flask-RESTful to build out the API. First things first what is an API. An API is an Application Programming Interface, but no really, like what is it. An API is just a way for clients/users to send requests(get, post, put, delete) and for us to serve/process them and send back a response. The way requests are handed to the API and the way responses from the API are handled is the frontends job, as backend devs we are solely concerned on handling the request and sending the expected response back.
+#### What is Flask
+Flask is a mircoframework specifically designed for building web applications with Python from the ground up. It is incredibly lightweight and requires very little code to get it up and running. Sounds pretty good to me.
 
-Now you may be thinking what does it mean for an API to be *restful*, well here are the 6 key principles underlying exactly that:
+Flask-RESTful, the framework we'll be using for this project is an abstraction on top of the Flask microframework specifically built for creating restful APIs.
+
+#### What is an API
+An API is an Application Programming Interface, but no really, like what is it. An API is just a way for clients/users to send requests(get, post, put, delete) and for us to serve/process them and send back a response. The way requests are sent to the API and the way responses from the API are handled is the frontends job, the backend is solely concerned with handling the request and sending the expected response back.
+
+#### What does it mean for an API to be *restful*
+Here are the 6 key principles underlying what it means for an API to be restful:
 - **Client-Server**: There should be a separation between the server that offers a service, and the client that consumes it.
 - **Stateless**: Each request from a client must contain all the information required by the server to carry out the request. In other words, the server cannot store information provided by the client in one request and use it in another request.
 - **Cacheable**: The server must indicate to the client if requests can be cached or not.
@@ -57,12 +70,9 @@ Now you may be thinking what does it mean for an API to be *restful*, well here 
 - **Uniform Interface**: The method of communication between a client and a server must be uniform.
 - **Code on demand**: Servers can provide executable code or scripts for clients to execute in their context. This constraint is the only one that is optional.
 
-#### What is Flask
-Flask is a mircoframework specifically designed for building web applications with Python from the ground up. It is incredibly lightweight and requires very little code to get it up and running. Sounds pretty good to me.
 
-Flask-RESTful, the framework we'll be using for this project is an abstraction on top of the Flask microframework specifically built for creating restful APIs.
-
-Here's a very simple API HelloWorld example built with Flask-RESTful:
+#### Flask-RESTful API example
+Here's a very simple HelloWorld API example built with Flask-RESTful:
 ```python
 from flask import Flask
 from flask_restful import Resource, Api
