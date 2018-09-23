@@ -1,0 +1,8 @@
+# Python ignores
+*.py[cod]
+__pycache__/*
+*$py.class
+
+
+# VS Code Settings
+.vscode
