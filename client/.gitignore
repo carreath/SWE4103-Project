@@ -1,12 +1,3 @@
-# Python ignores
-*.py[cod]
-__pycache__/*
-*$py.class
-
-
-# VS Code Settings
-.vscode
-
 .DS_Store
 node_modules
 /dist
