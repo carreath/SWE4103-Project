@@ -27,6 +27,7 @@ We will use Vue's Single File Component layout, which means that the HTML, CSS a
 - [CSS Tutorials](https://www.w3schools.com/Css/) - W3Schools is always helpful.
 - [Flexbox Froggy](https://flexboxfroggy.com/) - Game for learning CSS Flexbox.
 - [Vue Docs](https://vuejs.org/v2/guide/) - Official Vue Documentation
+- [Dev Tools](https://www.codecademy.com/articles/use-devtools) - An incredibly helpful tool for front end development
 
 ## Code Editors
 I use Atom, others use Sublime, I know of some guy who uses VS Code. Use whatever you want, they can all be configured with different plugins and packages to help with web development. Highly recommend that you set up syntax highlighting for .vue files with whichever editor you choose though.
