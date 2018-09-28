@@ -1,7 +1,17 @@
 <template>
   <div id="main-header">
-    <div id="main-header-title">
-      Fredericton <br>Football Club
+    <div id="main-header-minor">
+      <div id="login">
+        Login
+      </div>
+      <div id="create-account">
+        Create Account
+      </div>
+    </div>
+    <div id="main-header-major">
+      <div id="main-header-title">
+        Fredericton <br>Football Club
+      </div>
     </div>
   </div>
 </template>
@@ -34,19 +44,54 @@ export default{
 
 <style lang='scss' scoped>
 #main-header{
-  height: 180px;
+  height: 212px;
   width: 100%;
-  background: linear-gradient(#0c64f2, #347ed8);
-  padding: 8px 8px;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
 
-  #main-header-title{
-    color: white;
-    text-align: start;
-    align-self: flex-end;
-    font-weight: bold;
-    font-size: 48px;
+  #main-header-minor{
+    height: 32px;
+    background-color: #fcfcfc;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-right: 8px;
+
+    #login{
+      margin: 0px 4px;
+      font-weight: bold;
+
+      &:hover{
+        cursor: pointer;
+        text-decoration: underline;
+      }
+    }
+
+    #create-account{
+      margin: 0px 4px;
+
+      &:hover{
+        cursor: pointer;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  #main-header-major{
+    height: 180px;
+    background: linear-gradient(#0c64f2, #347ed8);
+    padding: 8px 8px;
+    width: calc(100% - 16px);
+    display: flex;
+    justify-content: space-between;
+
+    #main-header-title{
+      color: #fcfcfc;
+      text-align: start;
+      align-self: flex-end;
+      font-weight: bold;
+      font-size: 48px;
+    }
   }
 }
 </style>
