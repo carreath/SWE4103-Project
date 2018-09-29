@@ -107,6 +107,11 @@ export default{
         font-weight: bold;
         font-size: 48px;
         margin: 0px 4px;
+        text-shadow:
+          -1px -1px 0 #000,
+          1px -1px 0 #000,
+          -1px 1px 0 #000,
+          1px 1px 0 #000;
 
         #soccer-ball-img{
           height: 32px;

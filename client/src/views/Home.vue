@@ -1,21 +1,17 @@
 <template>
   <div class="home">
-    <!-- TODO Commented Code -->
-    <!--
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-    -->
+    <!-- TODO router view stuff can go in here
+    Probalby should rename this file -->
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue';
 
 export default {
   name: 'home',
   components: {
-    HelloWorld,
+
   },
 };
 </script>
