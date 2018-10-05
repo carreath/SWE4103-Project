@@ -49,6 +49,8 @@ export default{
 </script>
 
 <style lang='scss' scoped>
+@import '@/style/global.scss';
+
 #main-header{
   height: 212px;
   width: 100%;
@@ -57,7 +59,7 @@ export default{
 
   #main-header-minor{
     height: 32px;
-    background-color: #fcfcfc;
+    background-color: $SECONDARY_COLOR;
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -85,7 +87,7 @@ export default{
 
   #main-header-major{
     height: 180px;
-    background: linear-gradient(#0c64f2, #347ed8);
+    background: linear-gradient($PRIMARY_COLOR, $PRIMARY_TO_FADE);
     padding: 8px 8px;
     width: calc(100% - 16px);
     display: flex;
@@ -98,10 +100,14 @@ export default{
       #soccer-ball-img{
         height: 132px;
         align-self: flex-end;
+
+        @include smallScreenSize{
+          display: none;
+        }
       }
 
       #main-header-title{
-        color: #fcfcfc;
+        color: $SECONDARY_COLOR;
         text-align: start;
         align-self: flex-end;
         font-weight: bold;

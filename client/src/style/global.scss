@@ -1,0 +1,15 @@
+$PRIMARY_COLOR: #003a99; //Dark Blue
+$SECONDARY_COLOR: #fcfcfc; // Off White
+
+$PRIMARY_TO_FADE: #0050b2; //Slightly lighter blue than $PRIMARY_COLOR
+
+
+
+
+
+/* Mixins */
+@mixin smallScreenSize() {
+  @media only screen and (max-width: 500px) {
+    @content;
+  }
+}
