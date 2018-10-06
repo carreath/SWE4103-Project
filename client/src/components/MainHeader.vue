@@ -133,6 +133,16 @@ export default{
       max-height: 100%;
       width: calc(100% - 445px);
       max-width: 316px;
+
+      @include checkMaxScreenSize(780px){
+        max-width: 240px;
+      }
+      @include checkMaxScreenSize(680px){
+        max-width: 120px;
+      }
+      @include checkMaxScreenSize(560px){
+        display: none
+      }
     }
   }
 }
