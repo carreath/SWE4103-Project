@@ -17,12 +17,15 @@
         </div>
       </div>
       <div id="main-header-major-right">
+        <WeatherWidget/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import WeatherWidget from '@/components/WeatherWidget.vue';
+
 export default{
   name: 'MainHeader',
   data() {
@@ -31,7 +34,7 @@ export default{
     };
   },
   components: {
-
+    WeatherWidget,
   },
   props: {
 
@@ -124,6 +127,12 @@ export default{
           width: 32px;
         }
       }
+    }
+
+    #main-header-major-right{
+      max-height: 100%;
+      width: calc(100% - 445px);
+      max-width: 316px;
     }
   }
 }
