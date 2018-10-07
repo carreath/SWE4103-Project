@@ -10,5 +10,9 @@ class GameSchedule(Resource):
         return {"schedule": self.schedule}
 
     def put(self):
-        self.schedule = request.form['data']
+        print("put request hit")
+        print(request.form)
+        x = request.form['data']
+        print(request.form)
+        GameSchedule.schedule = x
         return {"schedule": self.schedule}
