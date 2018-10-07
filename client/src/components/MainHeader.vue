@@ -1,7 +1,9 @@
 <template>
   <div id="main-header">
     <div id="main-header-minor">
-      <div id="login">
+      <div
+        id="login"
+        @click='loginButtonClicked'>
         Login
       </div>
       <div id="create-account">
@@ -24,6 +26,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
 import WeatherWidget from '@/components/WeatherWidget.vue';
 
 export default{
@@ -36,17 +39,18 @@ export default{
   components: {
     WeatherWidget,
   },
-  props: {
-
-  },
   computed: {
-
+    ...mapGetters([
+      'loginModalVisible',
+    ]),
   },
   methods: {
-
-  },
-  mounted() {
-
+    ...mapActions([
+      'setLoginModalVisible',
+    ]),
+    loginButtonClicked() {
+      this.setLoginModalVisible(!this.loginModalVisible);
+    },
   },
 };
 </script>

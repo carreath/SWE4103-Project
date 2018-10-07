@@ -1,17 +1,26 @@
 <template>
   <div id="app">
+    <LoginModal v-if='loginModalVisible'/>
     <MainHeader/>
     <router-view/>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import MainHeader from '@/components/MainHeader.vue';
+import LoginModal from '@/components/LoginModal.vue';
 
 export default{
   name: 'App',
   components: {
     MainHeader,
+    LoginModal,
+  },
+  computed: {
+    ...mapGetters([
+      'loginModalVisible',
+    ]),
   },
 };
 
