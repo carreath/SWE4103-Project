@@ -10,61 +10,64 @@
           <u>Log In</u>
         </span>
       </div>
-      <form>
-        <div id="email-address-container">
+      <el-form
+        :model="createAccountForm"
+        :rules="createAccountFormRules"
+        ref="create-account-form">
+        <el-form-item prop="firstName">
           <el-input
             id="firstname-input"
             type="text"
             placeholder="First Name"
             prefix-icon="el-icon-view"
-            v-model="firstName">
+            v-model="createAccountForm.firstName">
           </el-input>
-        </div>
-        <div id="lastname-container">
+        </el-form-item>
+        <el-form-item prop="lastName">
           <el-input
             id="lastname-input"
             type="text"
             placeholder="Last Name"
             prefix-icon="el-icon-view"
-            v-model="lastName">
+            v-model="createAccountForm.lastName">
           </el-input>
-        </div>
-        <div id="email-address-container">
+        </el-form-item>
+        <el-form-item prop="email">
           <el-input
             id="email-address-input"
             type="email"
             placeholder="Email Address"
             prefix-icon="el-icon-message"
-            v-model="email">
+            v-model="createAccountForm.email">
           </el-input>
-        </div>
-        <div id="password-container">
+        </el-form-item>
+        <el-form-item prop="password">
           <el-input
             id="password-input"
             type="password"
             placeholder="Password"
             prefix-icon="el-icon-tickets"
-            v-model="password">
+            v-model="createAccountForm.password">
           </el-input>
-        </div>
-        <div id="confirm-password-container">
+        </el-form-item>
+        <el-form-item prop="confirmPassword">
           <el-input
             id="confirm-password-input"
             type="password"
             placeholder="Confirm Password"
             prefix-icon="el-icon-tickets"
-            v-model="confirmPassword">
+            v-model="createAccountForm.confirmPassword">
           </el-input>
-        </div>
-        <div id="create-account-button-container">
+        </el-form-item>
+        <el-form-item id="create-account-button-container">
           <el-button
             type="primary"
             :loading="loading"
             @click="createAccountButtonClicked">
             {{ createAccountButtonText }}
           </el-button>
-        </div>
-      </form>
+        </el-form-item>
+      </el-form>
     </div>
   </div>
 </template>
@@ -75,12 +78,96 @@ import { mapActions } from 'vuex';
 export default{
   name: 'ModalCreateAccount',
   data() {
+    const validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('Please input a password'));
+      } else {
+        if (this.createAccountForm.confirmPassword !== '') {
+          this.$refs['create-account-form'].validateField('confirmPassword');
+        }
+        callback();
+      }
+    };
+    const validatePass2 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('Please input a password again'));
+      } else if (value !== this.createAccountForm.password) {
+        callback(new Error('Passwords don\'t match!'));
+      } else {
+        callback();
+      }
+    };
     return {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
+      createAccountForm: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+      },
+      createAccountFormRules: {
+        firstName: [
+          {
+            required: true,
+            message: 'Please input first name',
+            trigger: 'blur',
+          },
+          {
+            min: 1,
+            max: 32,
+            message: 'Input too long',
+            trigger: 'blur',
+          },
+        ],
+        lastName: [
+          {
+            required: true,
+            message: 'Please input last name',
+            trigger: 'blur',
+          },
+          {
+            min: 1,
+            max: 32,
+            message: 'Input too long',
+            trigger: 'blur',
+          },
+        ],
+        email: [
+          {
+            required: true,
+            message: 'Please input email',
+            trigger: 'blur',
+          },
+          {
+            min: 1,
+            max: 64,
+            message: 'Input too long',
+            trigger: 'blur',
+          },
+        ],
+        password: [
+          {
+            required: true,
+            message: 'Please input password',
+            trigger: 'blur',
+          },
+          {
+            validator: validatePass,
+            trigger: 'blur',
+          },
+        ],
+        confirmPassword: [
+          {
+            required: true,
+            message: 'Please confirm password',
+            trigger: 'blur',
+          },
+          {
+            validator: validatePass2,
+            trigger: 'blur',
+          },
+        ],
+      },
       loading: false,
     };
   },
@@ -94,8 +181,12 @@ export default{
       'setLoginModalVisible',
     ]),
     createAccountButtonClicked() {
-      // TODO finish this
-      this.loading = true;
+      this.$refs['create-account-form'].validate((valid) => {
+        if (valid) {
+          // TODO finish this
+          this.loading = true;
+        }
+      });
     },
   },
 };
@@ -123,22 +214,6 @@ export default{
           cursor: pointer;
         }
       }
-    }
-
-    #firstName-container{
-      margin: 8px 0px;
-    }
-
-    #lastName-container{
-      margin: 8px 0px;
-    }
-
-    #email-address-container{
-      margin: 8px 0px;
-    }
-
-    #password-container{
-      margin: 8px 0px;
     }
 
     #create-account-button-container{
