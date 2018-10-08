@@ -11,7 +11,7 @@
       <div id="modal-container-footer">
         Forgot your password?
         <span id="reset-password-link">
-          <u>Get it back!</u>
+          <u>Reset it!</u>
         </span>
       </div>
     </div>
