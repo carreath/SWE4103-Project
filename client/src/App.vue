@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <LoginModal v-if='loginModalVisible'/>
+    <ModalWrapper v-if='modalVisible'/>
     <MainHeader/>
     <router-view/>
   </div>
@@ -9,17 +9,17 @@
 <script>
 import { mapGetters } from 'vuex';
 import MainHeader from '@/components/MainHeader.vue';
-import LoginModal from '@/components/LoginModal.vue';
+import ModalWrapper from '@/components/ModalWrapper.vue';
 
 export default{
   name: 'App',
   components: {
     MainHeader,
-    LoginModal,
+    ModalWrapper,
   },
   computed: {
     ...mapGetters([
-      'loginModalVisible',
+      'modalVisible',
     ]),
   },
 };
