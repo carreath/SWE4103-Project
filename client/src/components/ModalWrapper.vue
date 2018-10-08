@@ -80,6 +80,8 @@ export default{
     background-color: $SECONDARY_COLOR;
     border-radius: 4px;
     animation: createBox .25s;
+    max-height: 100%;
+    overflow-y: auto;
 
     #close-button{
       align-self: flex-end;
