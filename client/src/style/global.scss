@@ -13,3 +13,9 @@ $PRIMARY_TO_FADE: #0050b2; //Slightly lighter blue than $PRIMARY_COLOR
     @content;
   }
 }
+
+@mixin checkMaxScreenSize($size) {
+  @media only screen and (max-width: $size) {
+    @content;
+  }
+}
