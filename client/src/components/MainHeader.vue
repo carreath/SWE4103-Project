@@ -126,6 +126,10 @@ export default{
           -1px 1px 0 #000,
           1px 1px 0 #000;
 
+        @include checkMaxScreenSize(500px){
+          font-size: 36px;
+        }
+
         #soccer-ball-img{
           height: 32px;
           width: 32px;
