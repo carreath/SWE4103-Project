@@ -139,6 +139,11 @@ export default{
             trigger: 'blur',
           },
           {
+            type: 'email',
+            message: 'Please input correct email address',
+            trigger: 'blur',
+          },
+          {
             min: 1,
             max: 64,
             message: 'Input too long',

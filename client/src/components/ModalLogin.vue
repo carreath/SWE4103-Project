@@ -10,34 +10,37 @@
           <u>Create an account</u>
         </span>
       </div>
-      <form>
-        <div id="email-address-container">
+      <el-form
+        :model="loginForm"
+        :rules="loginFormRules"
+        ref="login-form">
+        <el-form-item prop="email">
           <el-input
-            id="email-address-input"
+            id="email-input"
             type="email"
             placeholder="Email Address"
             prefix-icon="el-icon-message"
-            v-model="email">
+            v-model="loginForm.email">
           </el-input>
-        </div>
-        <div id="password-container">
+        </el-form-item>
+        <el-form-item prop="password">
           <el-input
             id="password-input"
             type="password"
             placeholder="Password"
             prefix-icon="el-icon-tickets"
-            v-model="password">
+            v-model="loginForm.password">
           </el-input>
-        </div>
-        <div id="login-button-container">
+        </el-form-item>
+        <el-form-item id="login-button-container">
           <el-button
             type="primary"
             :loading="loading"
             @click="loginButtonClicked">
             {{ loginButtonText }}
           </el-button>
-        </div>
-      </form>
+        </el-form-item>
+      </el-form>
     </div>
   </div>
 </template>
@@ -49,8 +52,37 @@ export default{
   name: 'ModalLogin',
   data() {
     return {
-      email: '',
-      password: '',
+      loginForm: {
+        email: '',
+        password: '',
+      },
+      loginFormRules: {
+        email: [
+          {
+            required: true,
+            message: 'Please input email',
+            trigger: 'blur',
+          },
+          {
+            type: 'email',
+            message: 'Please input correct email address',
+            trigger: 'blur',
+          },
+          {
+            min: 1,
+            max: 64,
+            message: 'Input too long',
+            trigger: 'blur',
+          },
+        ],
+        password: [
+          {
+            required: true,
+            message: 'Please input password',
+            trigger: 'blur',
+          },
+        ],
+      },
       loading: false,
     };
   },
@@ -64,8 +96,12 @@ export default{
       'setCreateAccountModalVisible',
     ]),
     loginButtonClicked() {
-      // TODO finish this
-      this.loading = true;
+      this.$refs['login-form'].validate((valid) => {
+        if (valid) {
+          // TODO finish this
+          this.loading = true;
+        }
+      });
     },
   },
 };
