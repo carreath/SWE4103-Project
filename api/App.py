@@ -1,7 +1,11 @@
 from flask import Flask
 from flask_restful import Api
 from resources import *
-app = Flask(__name__, static_url_path='', static_folder='dist', template_folder='dist')
+# TODO find a way to address the project/client/dist static values
+app = Flask(__name__,
+            static_url_path='',
+            static_folder='dist',
+            template_folder='dist')
 api = Api(app)
 
 api.add_resource(HelloWorld, '/HelloWorld')  # TODO remove eventually (keep for debugging)
