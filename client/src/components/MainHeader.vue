@@ -1,18 +1,23 @@
 <template>
   <div id="main-header">
     <div id="main-header-minor">
-      <div id="login">
+      <div
+        id="login"
+        @click='setLoginModalVisible(true)'>
         Login
       </div>
-      <div id="create-account">
+      <div
+        id="create-account"
+        @click='setCreateAccountModalVisible(true)'>
         Create Account
       </div>
     </div>
     <div id="main-header-major">
       <div id="main-header-major-left">
         <img id="soccer-ball-img" src="@/assets/Soccerball.svg" alt="SoccerBall">
-        <!-- TODO clicking this should take user to home page -->
-        <div id="main-header-title">
+        <div
+          id="main-header-title"
+          @click="mainHeaderClicked">
           Fredericton<br>Football Club
         </div>
       </div>
@@ -24,29 +29,24 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import WeatherWidget from '@/components/WeatherWidget.vue';
 
 export default{
   name: 'MainHeader',
-  data() {
-    return {
-
-    };
-  },
   components: {
     WeatherWidget,
   },
-  props: {
-
-  },
   computed: {
-
   },
   methods: {
-
-  },
-  mounted() {
-
+    ...mapActions([
+      'setLoginModalVisible',
+      'setCreateAccountModalVisible',
+    ]),
+    mainHeaderClicked() {
+      this.$router.push('/');
+    },
   },
 };
 </script>
@@ -100,6 +100,10 @@ export default{
       display: flex;
       flex-direction: row;
 
+      &:hover{
+        cursor: pointer;
+      }
+
       #soccer-ball-img{
         height: 132px;
         align-self: flex-end;
@@ -122,9 +126,8 @@ export default{
           -1px 1px 0 #000,
           1px 1px 0 #000;
 
-        #soccer-ball-img{
-          height: 32px;
-          width: 32px;
+        @include checkMaxScreenSize(500px){
+          font-size: 36px;
         }
       }
     }

@@ -1,17 +1,26 @@
 <template>
   <div id="app">
+    <ModalWrapper v-show='modalVisible'/>
     <MainHeader/>
     <router-view/>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import MainHeader from '@/components/MainHeader.vue';
+import ModalWrapper from '@/components/ModalWrapper.vue';
 
 export default{
   name: 'App',
   components: {
     MainHeader,
+    ModalWrapper,
+  },
+  computed: {
+    ...mapGetters([
+      'modalVisible',
+    ]),
   },
 };
 
