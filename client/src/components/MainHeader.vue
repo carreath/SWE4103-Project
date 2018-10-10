@@ -33,11 +33,6 @@ import WeatherWidget from '@/components/WeatherWidget.vue';
 
 export default{
   name: 'MainHeader',
-  data() {
-    return {
-
-    };
-  },
   components: {
     WeatherWidget,
   },

@@ -10,7 +10,9 @@
       <ModalCreateAccount v-else-if="createAccoundModalVisible"/>
       <div id="modal-container-footer">
         Forgot your password?
-        <span id="reset-password-link">
+        <span
+          id="reset-password-link"
+          @click="resetPasswordClick">
           <u>Reset it!</u>
         </span>
       </div>
@@ -44,6 +46,10 @@ export default{
       if (e.keyCode === 27) {
         this.closeModal();
       }
+    },
+    resetPasswordClick() {
+      this.$router.push('reset');
+      this.closeModal();
     },
   },
   mounted() {

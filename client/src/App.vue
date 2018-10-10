@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <ModalWrapper v-if='modalVisible'/>
+    <ModalWrapper v-show='modalVisible'/>
     <MainHeader/>
     <router-view/>
   </div>
