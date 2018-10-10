@@ -1,6 +1,7 @@
 from flask_restful import Resource
 from flask import request
 
+
 class TournamentSchedule(Resource):
     schedule = "no"
 
@@ -8,4 +9,4 @@ class TournamentSchedule(Resource):
         return self.schedule
 
     def post(self):
-        self.schedule = request.form["data"]
+        TournamentSchedule.schedule = request.form["data"]
