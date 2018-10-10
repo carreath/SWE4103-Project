@@ -9,12 +9,16 @@
       temporary password.
     </div>
     <el-form
+      id="reset-password-form"
       :model="resetPasswordForm"
       :rules="resetPasswordFormRules"
-      ref="reset-password-form">
-      <el-form-item prop="email">
+      ref="reset-password-form"
+      @submit.native.prevent>
+      <el-form-item
+        prop="email"
+        :style="{'is-success': false}">
         <el-input
-          id="email-input"
+          id="reset-password-email-input"
           type="email"
           placeholder="Email Address"
           prefix-icon="el-icon-message"
@@ -83,10 +87,13 @@ export default{
 </script>
 
 <style lang='scss' scoped>
+@import '@/style/global.scss';
+
 #password-reset{
   display: flex;
   flex-direction: column;
   width: 500px;
+  max-width: calc(100% - 80px);
   padding: 16px 40px;
 
   #title{
@@ -98,6 +105,13 @@ export default{
   #explanation{
     text-align: left;
     margin-bottom: 8px;
+  }
+
+  .el-form-item.is-success /deep/ .el-input__inner,
+  .el-form-item.is-success /deep/ .el-input__inner:focus,
+  .el-form-item.is-success /deep/ .el-textarea__inner,
+  .el-form-item.is-success /deep/ .el-textarea__inner:focus {
+    border-color: $ELEMENT_UI_DEFAULT_BORDER;
   }
 
   #reset-password-button-container{

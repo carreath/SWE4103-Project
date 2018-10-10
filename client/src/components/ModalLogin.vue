@@ -132,6 +132,13 @@ export default{
       }
     }
 
+    .el-form-item.is-success /deep/ .el-input__inner,
+    .el-form-item.is-success /deep/ .el-input__inner:focus,
+    .el-form-item.is-success /deep/ .el-textarea__inner,
+    .el-form-item.is-success /deep/ .el-textarea__inner:focus {
+      border-color: $ELEMENT_UI_DEFAULT_BORDER;
+    }
+
     #email-address-container{
       margin: 8px 0px;
     }
