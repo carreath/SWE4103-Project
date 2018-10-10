@@ -15,8 +15,9 @@
     <div id="main-header-major">
       <div id="main-header-major-left">
         <img id="soccer-ball-img" src="@/assets/Soccerball.svg" alt="SoccerBall">
-        <!-- TODO clicking this should take user to home page -->
-        <div id="main-header-title">
+        <div
+          id="main-header-title"
+          @click="mainHeaderClicked">
           Fredericton<br>Football Club
         </div>
       </div>
@@ -43,6 +44,9 @@ export default{
       'setLoginModalVisible',
       'setCreateAccountModalVisible',
     ]),
+    mainHeaderClicked() {
+      this.$router.push('/');
+    },
   },
 };
 </script>
@@ -96,6 +100,10 @@ export default{
       display: flex;
       flex-direction: row;
 
+      &:hover{
+        cursor: pointer;
+      }
+
       #soccer-ball-img{
         height: 132px;
         align-self: flex-end;
@@ -120,11 +128,6 @@ export default{
 
         @include checkMaxScreenSize(500px){
           font-size: 36px;
-        }
-
-        #soccer-ball-img{
-          height: 32px;
-          width: 32px;
         }
       }
     }

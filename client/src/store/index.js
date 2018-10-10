@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import global from './modules/global';
+import user from './modules/user';
 
 Vue.use(Vuex);
 

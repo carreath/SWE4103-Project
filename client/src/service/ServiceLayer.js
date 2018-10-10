@@ -1,13 +1,13 @@
-import axios from 'axios'
+import axios from 'axios';
 
 export default() => {
   // TODO - Will have to update the base baseURL once we get a working backend
   return axios.create({
-    baseURL: ``,
+    baseURL: '',
     withCredentials: false,
     headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-    }
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
   });
-}
+};

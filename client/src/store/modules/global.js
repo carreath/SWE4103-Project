@@ -1,16 +1,12 @@
 
 // state
 const state = {
-  user: null,
   loginModalVisible: false,
   createAccoundModalVisible: false,
 };
 
 // getters
 const getters = {
-  user(state) {
-    return state.user;
-  },
   modalVisible(state) {
     return state.loginModalVisible || state.createAccoundModalVisible;
   },
