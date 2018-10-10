@@ -10,6 +10,7 @@ export default {
       })
       .catch((err) => {
         // Login not successfull
+        // TODO actually handle the error
         err = {
           id: '1',
           firstName: 'Ben',

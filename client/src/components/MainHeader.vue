@@ -2,14 +2,30 @@
   <div id="main-header">
     <div id="main-header-minor">
       <div
-        id="login"
-        @click='setLoginModalVisible(true)'>
-        Login
+        id="invalid-user"
+        v-if="!user">
+        <div
+          id="login"
+          @click='setLoginModalVisible(true)'>
+          Login
+        </div>
+        <div
+          id="create-account"
+          @click='setCreateAccountModalVisible(true)'>
+          Create Account
+        </div>
       </div>
       <div
-        id="create-account"
-        @click='setCreateAccountModalVisible(true)'>
-        Create Account
+        id="valid-user"
+        v-else>
+        <div
+          id=user-name>
+          {{ user.firstName }} {{ user.lastName }}
+        </div>
+        <div
+          id="log-out">
+          Log Out
+        </div>
       </div>
     </div>
     <div id="main-header-major">
@@ -29,7 +45,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import WeatherWidget from '@/components/WeatherWidget.vue';
 
 export default{
@@ -38,6 +54,9 @@ export default{
     WeatherWidget,
   },
   computed: {
+    ...mapGetters([
+      'user',
+    ]),
   },
   methods: {
     ...mapActions([
@@ -68,23 +87,53 @@ export default{
     align-items: center;
     margin-right: 8px;
 
-    #login{
-      margin: 0px 4px;
-      font-weight: bold;
+    #invalid-user{
+      display: flex;
+      flex-direction: row;
 
-      &:hover{
-        cursor: pointer;
-        text-decoration: underline;
+      #login{
+        margin: 0px 4px;
+        font-weight: bold;
+
+        &:hover{
+          cursor: pointer;
+          text-decoration: underline;
+        }
+      }
+
+      #create-account{
+        margin: 0px 4px;
+
+        &:hover{
+          cursor: pointer;
+          text-decoration: underline;
+        }
       }
     }
 
-    #create-account{
-      margin: 0px 4px;
+    #valid-user{
+      display: flex;
+      flex-direction: row;
 
-      &:hover{
-        cursor: pointer;
-        text-decoration: underline;
+      #user-name{
+        margin: 0px 4px;
+        font-weight: bold;
+
+        &:hover{
+          cursor: pointer;
+          text-decoration: underline;
+        }
       }
+
+      #log-out{
+        margin: 0px 4px;
+
+        &:hover{
+          cursor: pointer;
+          text-decoration: underline;
+        }
+      }
+
     }
   }
 
