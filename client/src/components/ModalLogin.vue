@@ -20,7 +20,8 @@
             type="email"
             placeholder="Email Address"
             prefix-icon="el-icon-message"
-            v-model="loginForm.email">
+            v-model="loginForm.email"
+            :disabled="loading">
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
@@ -29,7 +30,8 @@
             type="password"
             placeholder="Password"
             prefix-icon="el-icon-tickets"
-            v-model="loginForm.password">
+            v-model="loginForm.password"
+            :disabled="loading">
           </el-input>
         </el-form-item>
         <el-form-item id="login-button-container">
@@ -84,6 +86,7 @@ export default{
         ],
       },
       loading: false,
+      displayErrMsg: false,
     };
   },
   computed: {
@@ -94,15 +97,42 @@ export default{
   methods: {
     ...mapActions([
       'setCreateAccountModalVisible',
+      'closeModal',
+      'userLogIn',
     ]),
+    handleKeyUp(e) {
+      // Escape ley
+      if (e.keyCode === 27) {
+        this.closeModal();
+      }
+      // Enter key
+      if (e.keyCode === 13) {
+        this.loginButtonClicked();
+      }
+    },
     loginButtonClicked() {
+      this.displayErrMsg = false;
       this.$refs['login-form'].validate((valid) => {
         if (valid) {
-          // TODO finish this
           this.loading = true;
+          // TODO loginForm is an observer, so might need to make a deep copy
+          this.userLogIn(this.loginForm).then((success) => {
+            this.loading = false;
+            if (success) {
+              this.closeModal();
+            } else {
+              this.displayErrMsg = true;
+            }
+          });
         }
       });
     },
+  },
+  mounted() {
+    window.addEventListener('keyup', this.handleKeyUp);
+  },
+  beforeDestroy() {
+    window.removeEventListener('keyup', this.handleKeyUp);
   },
 };
 

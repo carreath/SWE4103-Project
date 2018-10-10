@@ -184,7 +184,18 @@ export default{
   methods: {
     ...mapActions([
       'setLoginModalVisible',
+      'closeModal',
     ]),
+    handleKeyUp(e) {
+      // Escape ley
+      if (e.keyCode === 27) {
+        this.closeModal();
+      }
+      // Enter key
+      if (e.keyCode === 13) {
+        this.createAccountButtonClicked();
+      }
+    },
     createAccountButtonClicked() {
       this.$refs['create-account-form'].validate((valid) => {
         if (valid) {
@@ -193,6 +204,12 @@ export default{
         }
       });
     },
+  },
+  mounted() {
+    window.addEventListener('keyup', this.handleKeyUp);
+  },
+  beforeDestroy() {
+    window.removeEventListener('keyup', this.handleKeyUp);
   },
 };
 </script>

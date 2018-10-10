@@ -12,9 +12,15 @@ const getters = {
 
 const actions = {
   userLogIn({ commit }, payload) {
-    UserService.login(payload).then((response) => {
+    return UserService.login(payload).then((response) => {
+
       console.log('RESPONSE: ', response);
-      commit('mutateUser', response);
+      // TODO will need check here to see if login was successfull
+      if (response) {
+        commit('mutateUser', response);
+        return true;
+      }
+      return false;
     });
   },
   userLogOut({ commit }) {
