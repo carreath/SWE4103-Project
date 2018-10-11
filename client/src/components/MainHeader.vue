@@ -5,9 +5,9 @@
         id="invalid-user"
         v-if="!user">
         <div
-          id="login"
+          id="log-in"
           @click='setLoginModalVisible(true)'>
-          Login
+          Log In
         </div>
         <div
           id="create-account"
@@ -25,6 +25,7 @@
         <div
           id="log-out">
           Log Out
+          <font-awesome-icon icon="sign-out-alt"></font-awesome-icon>
         </div>
       </div>
     </div>
@@ -91,7 +92,7 @@ export default{
       display: flex;
       flex-direction: row;
 
-      #login{
+      #log-in{
         margin: 0px 4px;
         font-weight: bold;
 
