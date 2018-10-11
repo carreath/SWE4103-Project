@@ -30,10 +30,9 @@ CREATE TABLE users (
     firstName           VARCHAR(32)     NOT NULL,
     lastName            VARCHAR(32)     NOT NULL,
     email               VARCHAR(64)     NOT NULL,
-    hash                BINARY(32)      NOT NULL,
-    salt                BINARY(32)      NOT NULL,
-    refreshToken        VARCHAR(64)     DEFAULT NULL,
+    hash                VARCHAR(256)    NOT NULL,
     lastLogin           DATE            DEFAULT NULL,
+    UNIQUE (email),
     FOREIGN KEY (privilegesID) REFERENCES privileges (privilegesID),
     PRIMARY KEY (userID)
 );
