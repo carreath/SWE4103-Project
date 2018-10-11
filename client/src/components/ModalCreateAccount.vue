@@ -185,6 +185,7 @@ export default{
     ...mapActions([
       'setLoginModalVisible',
       'closeModal',
+      'userRegister',
     ]),
     handleKeyUp(e) {
       // Escape ley
@@ -201,6 +202,17 @@ export default{
         if (valid) {
           // TODO finish this
           this.loading = true;
+          // TODO loginForm is an observer, so might need to make a deep copy
+          this.userRegister(this.createAccountForm).then((success) => {
+            this.loading = false;
+            if (success) {
+              // TODO Maybe auto call the login endpoint on success to log
+              // them in automatically
+              this.setLoginModalVisible();
+            } else {
+              this.displayErrMsg = true;
+            }
+          });
         }
       });
     },

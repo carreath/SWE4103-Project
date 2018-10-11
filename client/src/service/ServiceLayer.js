@@ -3,7 +3,7 @@ import axios from 'axios';
 export default() => {
   // TODO - Will have to update the base baseURL once we get a working backend
   return axios.create({
-    baseURL: '',
+    baseURL: 'http://127.0.0.1:5000',
     withCredentials: false,
     headers: {
       Accept: 'application/json',

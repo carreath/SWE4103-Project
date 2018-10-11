@@ -11,6 +11,18 @@ const getters = {
 };
 
 const actions = {
+  userRegister({ commit }, payload) {
+    delete payload.confirmPassword;
+    return UserService.register(payload).then((response) => {
+      console.log('RESPONSE: ', response);
+      // TODO will need check here to see if login was successfull
+      if (response) {
+        commit('mutateUser', response);
+        return true;
+      }
+      return false;
+    });
+  },
   userLogIn({ commit }, payload) {
     return UserService.login(payload).then((response) => {
       console.log('RESPONSE: ', response);
