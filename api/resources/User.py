@@ -1,31 +1,13 @@
 from flask_restful import Resource, abort, reqparse
 from passlib.hash import pbkdf2_sha512
+from datetime import datetime, timedelta
 import json
-from common import DatabaseConnector
-
-parser = reqparse.RequestParser()
+from common import DatabaseConnector, TokenHandler
 
 
-class User(Resource):
-    def get(self):
-        parser.add_argument('data', type=str)
-        args = parser.parse_args()
-        data = json.loads(args.data)
-
-        email = data['username']
-        password = data['password']
-
-        db_connector = DatabaseConnector()
-        if db_connector.cursor.execute('SELECT hash FROM users WHERE email = "{}"'.format(email)) == 0:
-            abort(404, error='email entered has not been registered')
-
-        user_hash = db_connector.cursor.fetchone()[0]
-        if not pbkdf2_sha512.verify(password, user_hash):
-            abort(403, error='the password entered is incorrect')
-
-        return {"userID": "gottem"}, 200
-
+class Register(Resource):
     def post(self):
+        parser = reqparse.RequestParser()
         parser.add_argument('data', type=str)
         args = parser.parse_args()
         data = json.loads(args.data)
@@ -50,3 +32,33 @@ class User(Resource):
         db_connector.conn.close()
 
         return {"userID": user_id}, 201
+
+
+class Login(Resource):
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('data', type=str)
+        args = parser.parse_args()
+        data = json.loads(args.data)
+
+        email = data['email']
+        password = data['password']
+
+        db_connector = DatabaseConnector()
+        if db_connector.cursor.execute('SELECT hash FROM users WHERE email = "{}"'.format(email)) == 0:
+            abort(404, error='email entered has not been registered')
+
+        user_hash = db_connector.cursor.fetchone()[0]
+        if not pbkdf2_sha512.verify(password, user_hash):
+            abort(403, error='the password entered is incorrect')
+
+        # creating validation token
+        token_payload = {
+            'sub': email,
+            'iat': datetime.utcnow(),
+            'exp': datetime.utcnow() + timedelta(minutes=30)
+        }
+        token_handler = TokenHandler()
+        token = token_handler.create_token(token_payload)
+
+        return {'token': token.decode('UTF-8')}, 201

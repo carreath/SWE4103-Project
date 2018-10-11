@@ -15,7 +15,8 @@ api.add_resource(GameStats, "/game-stats/<game_id>")
 api.add_resource(LeagueStanding, "/standings")
 api.add_resource(PlayerStats, "/player-stats/<player_id>")
 api.add_resource(TeamRoster, "/roster/<team_id>")
-api.add_resource(User, "/user")
+api.add_resource(Login, "/user/login")
+api.add_resource(Register, "/user/register")
 api.add_resource(Root, "/")
 
 
