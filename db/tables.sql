@@ -30,7 +30,6 @@ CREATE TABLE users (
     firstName           VARCHAR(32)     NOT NULL,
     lastName            VARCHAR(32)     NOT NULL,
     email               VARCHAR(64)     NOT NULL,
-    username            VARCHAR(16)     NOT NULL,
     hash                BINARY(32)      NOT NULL,
     salt                BINARY(32)      NOT NULL,
     refreshToken        VARCHAR(64)     DEFAULT NULL,
