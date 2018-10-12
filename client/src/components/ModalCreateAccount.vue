@@ -59,6 +59,9 @@
             v-model="createAccountForm.confirmPassword">
           </el-input>
         </el-form-item>
+        <div id="errMsg" v-if="errMsg">
+          {{ errMsg }}
+        </div>
         <el-form-item id="create-account-button-container">
           <el-button
             type="primary"
@@ -174,6 +177,7 @@ export default{
         ],
       },
       loading: false,
+      errMsg: null,
     };
   },
   computed: {
@@ -200,17 +204,17 @@ export default{
     createAccountButtonClicked() {
       this.$refs['create-account-form'].validate((valid) => {
         if (valid) {
-          // TODO finish this
           this.loading = true;
           // TODO loginForm is an observer, so might need to make a deep copy
-          this.userRegister(this.createAccountForm).then((success) => {
+          this.userRegister(this.createAccountForm).then((response) => {
             this.loading = false;
-            if (success) {
+            if (response.retVal) {
               // TODO Maybe auto call the login endpoint on success to log
               // them in automatically
-              this.setLoginModalVisible();
+              this.errMsg = null;
+              // this.setLoginModalVisible();
             } else {
-              this.displayErrMsg = true;
+              this.errMsg = response.retMsg;
             }
           });
         }
