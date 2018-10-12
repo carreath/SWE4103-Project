@@ -118,7 +118,7 @@ export default{
     flex-direction: column;
 
     #title{
-      font-size: 1rem;
+      font-size: 2rem;
       font-weight: bold;
     }
 
