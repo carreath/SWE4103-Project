@@ -7,7 +7,7 @@ export default {
         return response;
       })
       .catch((err) => {
-        return err;
+        return err.response;
       });
   },
   login(params) {
@@ -18,7 +18,7 @@ export default {
       })
       .catch((err) => {
         console.log('Login Err: ', err);
-        return err;
+        return err.response;
       });
   },
 };

@@ -60,7 +60,7 @@
           </el-input>
         </el-form-item>
         <div id="errMsg" v-if="errMsg">
-          {{ errMsg }}
+          Error: {{ errMsg }}
         </div>
         <el-form-item id="create-account-button-container">
           <el-button
@@ -212,7 +212,12 @@ export default{
               // TODO Maybe auto call the login endpoint on success to log
               // them in automatically
               this.errMsg = null;
-              // this.setLoginModalVisible();
+              this.closeModal();
+              this.$message({
+                message: 'Account Created',
+                type: 'success',
+                center: true,
+              });
             } else {
               this.errMsg = response.retMsg;
             }
@@ -259,6 +264,10 @@ export default{
     .el-form-item.is-success /deep/ .el-textarea__inner,
     .el-form-item.is-success /deep/ .el-textarea__inner:focus {
       border-color: $ELEMENT_UI_DEFAULT_BORDER;
+    }
+
+    #errMsg{
+      color: red;
     }
 
     #create-account-button-container{
