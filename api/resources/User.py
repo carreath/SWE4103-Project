@@ -7,23 +7,26 @@ from common import DatabaseConnector, TokenHandler
 
 class Register(Resource):
     def post(self):
+        # curl -i -H "Content-Type: application/json" -X POST -d '{"email": "ntozer@unb.ca", "password": "password", "lastName": "Tozer", "firstName": "Nathan"}' -k http://localhost:5000/api/register
         parser = reqparse.RequestParser()
-        parser.add_argument('data', type=str)
+        parser.add_argument('email', type=str)
+        parser.add_argument('password', type=str)
+        parser.add_argument('firstName', type=str)
+        parser.add_argument('lastName', type=str)
         args = parser.parse_args()
-        data = json.loads(args.data)
 
-        user_type = data['userType']
-        first_name = data['firstName']
-        last_name = data['lastName']
-        email = data['email']
-        hash_pw = pbkdf2_sha512.encrypt(data['password'], rounds=30000, salt_size=32)
+        print(args)
+        first_name = args['firstName']
+        last_name = args['lastName']
+        email = args['email']
+        hash_pw = pbkdf2_sha512.encrypt(args['password'], rounds=30000, salt_size=32)
 
         db_connector = DatabaseConnector()
         if db_connector.cursor.execute('SELECT * FROM users WHERE email = "{}"'.format(email)) != 0:
             abort(409, error='email entered is already registered', email=email)
 
         # using create_user sp to store new user
-        db_connector.cursor.callproc('create_user', [user_type, first_name, last_name, email, hash_pw])
+        db_connector.cursor.callproc('create_user', [first_name, last_name, email, hash_pw])
         db_connector.conn.commit()
 
         # getting user_id to return to the frontend
@@ -37,12 +40,12 @@ class Register(Resource):
 class Login(Resource):
     def post(self):
         parser = reqparse.RequestParser()
-        parser.add_argument('data', type=str)
+        parser.add_argument('email', type=str)
+        parser.add_argument('password', type=str)
         args = parser.parse_args()
-        data = json.loads(args.data)
 
-        email = data['email']
-        password = data['password']
+        email = args['email']
+        password = args['password']
 
         db_connector = DatabaseConnector()
         if db_connector.cursor.execute('SELECT hash FROM users WHERE email = "{}"'.format(email)) == 0:

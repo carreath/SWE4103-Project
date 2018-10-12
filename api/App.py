@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_restful import Api
+from flask_cors import CORS
 from resources import *
 # TODO find a way to address the project/client/dist static values
 app = Flask(__name__,
@@ -7,16 +8,17 @@ app = Flask(__name__,
             static_folder='dist',
             template_folder='dist')
 api = Api(app)
+cors = CORS(app)
 
 api.add_resource(HelloWorld, '/HelloWorld')  # TODO remove eventually (keep for debugging)
-api.add_resource(GameSchedule, '/game-schedule')  # TODO placeholder endpoint name
-api.add_resource(TournamentSchedule, '/tournament-schedule')  # TODO placeholder endpoint name
-api.add_resource(GameStats, "/game-stats/<game_id>")
-api.add_resource(LeagueStanding, "/standings")
-api.add_resource(PlayerStats, "/player-stats/<player_id>")
-api.add_resource(TeamRoster, "/roster/<team_id>")
-api.add_resource(Login, "/user/login")
-api.add_resource(Register, "/user/register")
+api.add_resource(GameSchedule, '/api/game-schedule')  # TODO placeholder endpoint name
+api.add_resource(TournamentSchedule, '/api/tournament-schedule')  # TODO placeholder endpoint name
+api.add_resource(GameStats, "/api/game-stats/<game_id>")
+api.add_resource(LeagueStanding, "/api/standings")
+api.add_resource(PlayerStats, "/api/player-stats/<player_id>")
+api.add_resource(TeamRoster, "/api/roster/<team_id>")
+api.add_resource(Login, "/api/login")
+api.add_resource(Register, "/api/register")
 api.add_resource(Root, "/")
 
 
