@@ -11,14 +11,18 @@ const getters = {
 };
 
 const actions = {
-  userRegister({ commit }, payload) {
+  userRegister({ dispatch }, payload) {
     delete payload.confirmPassword;
     return UserService.register(payload).then((response) => {
       console.log('RESPONSE: ', response);
       switch (response.status) {
         case 201:
-          // TODO this is wrong - will have to log the user in
-          commit('mutateUser', response.data);
+          // TODO handle this better
+          let loginPayload = {
+            email: payload.email,
+            password: payload.password,
+          }
+          dispatch('userLogIn', loginPayload);
           return { retVal: true, retMsg: 'Success' };
         case 409:
           return { retVal: false, retMsg: 'Email Already In Use' };
