@@ -209,8 +209,6 @@ export default{
           this.userRegister(this.createAccountForm).then((response) => {
             this.loading = false;
             if (response.retVal) {
-              // TODO Maybe auto call the login endpoint on success to log
-              // them in automatically
               this.errMsg = null;
               this.closeModal();
               this.$message({

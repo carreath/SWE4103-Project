@@ -71,6 +71,7 @@ const actions = {
   userLogOut({ commit }) {
     commit('mutateUser', null);
     commit('mutateToken', null);
+    localStorage.removeItem('token');
   },
 };
 

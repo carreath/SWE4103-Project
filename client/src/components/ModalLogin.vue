@@ -34,6 +34,9 @@
             :disabled="loading">
           </el-input>
         </el-form-item>
+        <div id="errMsg" v-if="errMsg">
+          Error: {{ errMsg }}
+        </div>
         <el-form-item id="login-button-container">
           <el-button
             type="primary"
@@ -86,7 +89,7 @@ export default{
         ],
       },
       loading: false,
-      displayErrMsg: false,
+      errMsg: null,
     };
   },
   computed: {
@@ -115,13 +118,13 @@ export default{
       this.$refs['login-form'].validate((valid) => {
         if (valid) {
           this.loading = true;
-          // TODO loginForm is an observer, so might need to make a deep copy
-          this.userLogIn(this.loginForm).then((success) => {
+          this.userLogIn(this.loginForm).then((response) => {
             this.loading = false;
-            if (success) {
+            if (response.retVal) {
+              this.errMsg = null;
               this.closeModal();
             } else {
-              this.displayErrMsg = true;
+              this.errMsg = response.retMsg;
             }
           });
         }
@@ -175,6 +178,10 @@ export default{
 
     #password-container{
       margin: 8px 0px;
+    }
+
+    #errMsg{
+      color: red;
     }
 
     #login-button-container{

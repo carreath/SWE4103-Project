@@ -13,11 +13,9 @@ export default {
   login(params) {
     return ServiceLayer().post('/login', params)
       .then((response) => {
-        console.log('Login Success: ', response);
         return response;
       })
       .catch((err) => {
-        console.log('Login Err: ', err);
         return err.response;
       });
   },

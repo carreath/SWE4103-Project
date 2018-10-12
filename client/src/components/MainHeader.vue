@@ -23,7 +23,8 @@
           {{ user.firstName }} {{ user.lastName }}
         </div>
         <div
-          id="log-out">
+          id="log-out"
+          @click='logoutClicked'>
           Log Out
           <font-awesome-icon icon="sign-out-alt"></font-awesome-icon>
         </div>
@@ -63,9 +64,18 @@ export default{
     ...mapActions([
       'setLoginModalVisible',
       'setCreateAccountModalVisible',
+      'userLogOut',
     ]),
     mainHeaderClicked() {
       this.$router.push('/');
+    },
+    logoutClicked() {
+      this.userLogOut().then(() => {
+        this.$message({
+          message: 'Logged Out',
+          center: true,
+        });
+      });
     },
   },
 };
