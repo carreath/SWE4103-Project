@@ -26,7 +26,7 @@ CREATE TABLE privileges (
 CREATE TABLE users (
     userID              INT             NOT NULL AUTO_INCREMENT,
     privilegesID        INT             DEFAULT NULL,
-    userType            VARCHAR(16)     NOT NULL,
+    userType            VARCHAR(16)     DEFAULT NULL,
     firstName           VARCHAR(32)     NOT NULL,
     lastName            VARCHAR(32)     NOT NULL,
     email               VARCHAR(64)     NOT NULL,
