@@ -48,10 +48,10 @@ class Login(Resource):
         password = args['password']
 
         db_connector = DatabaseConnector()
-        if db_connector.cursor.execute('CALL get_user("{}");'.format(email)) != 0:
+        if db_connector.cursor.execute('CALL get_user("{}");'.format(email)) == 0:
             abort(404, error='email entered has not been registered')
 
-        user_hash = db_connector.cursor.fetchone()[0]
+        user_hash = db_connector.cursor.fetchone()[6]
         db_connector.conn.close()
         if not pbkdf2_sha512.verify(password, user_hash):
             abort(403, error='the password entered is incorrect')
