@@ -41,22 +41,10 @@ export default{
     ...mapActions([
       'closeModal',
     ]),
-    handleKeyUp(e) {
-      // Escape ley
-      if (e.keyCode === 27) {
-        this.closeModal();
-      }
-    },
     resetPasswordClick() {
       this.$router.push('reset');
       this.closeModal();
     },
-  },
-  mounted() {
-    window.addEventListener('keyup', this.handleKeyUp);
-  },
-  beforeDestroy() {
-    window.removeEventListener('keyup', this.handleKeyUp);
   },
 };
 

@@ -59,6 +59,9 @@
             v-model="createAccountForm.confirmPassword">
           </el-input>
         </el-form-item>
+        <div id="errMsg" v-if="errMsg">
+          Error: {{ errMsg }}
+        </div>
         <el-form-item id="create-account-button-container">
           <el-button
             type="primary"
@@ -174,6 +177,7 @@ export default{
         ],
       },
       loading: false,
+      errMsg: null,
     };
   },
   computed: {
@@ -184,15 +188,47 @@ export default{
   methods: {
     ...mapActions([
       'setLoginModalVisible',
+      'closeModal',
+      'userRegister',
     ]),
+    handleKeyUp(e) {
+      // Escape ley
+      if (e.keyCode === 27) {
+        this.closeModal();
+      }
+      // Enter key
+      if (e.keyCode === 13) {
+        this.createAccountButtonClicked();
+      }
+    },
     createAccountButtonClicked() {
       this.$refs['create-account-form'].validate((valid) => {
         if (valid) {
-          // TODO finish this
           this.loading = true;
+          // TODO loginForm is an observer, so might need to make a deep copy
+          this.userRegister(this.createAccountForm).then((response) => {
+            this.loading = false;
+            if (response.retVal) {
+              this.errMsg = null;
+              this.closeModal();
+              this.$message({
+                message: 'Account Created',
+                type: 'success',
+                center: true,
+              });
+            } else {
+              this.errMsg = response.retMsg;
+            }
+          });
         }
       });
     },
+  },
+  mounted() {
+    window.addEventListener('keyup', this.handleKeyUp);
+  },
+  beforeDestroy() {
+    window.removeEventListener('keyup', this.handleKeyUp);
   },
 };
 </script>
@@ -226,6 +262,10 @@ export default{
     .el-form-item.is-success /deep/ .el-textarea__inner,
     .el-form-item.is-success /deep/ .el-textarea__inner:focus {
       border-color: $ELEMENT_UI_DEFAULT_BORDER;
+    }
+
+    #errMsg{
+      color: red;
     }
 
     #create-account-button-container{
