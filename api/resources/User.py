@@ -1,7 +1,7 @@
 from flask_restful import Resource, abort, reqparse
 from passlib.hash import pbkdf2_sha512
 from datetime import datetime, timedelta
-import json
+import time
 from common import DatabaseConnector, TokenHandler
 
 
@@ -31,10 +31,20 @@ class Register(Resource):
 
         # getting user_id to return to the frontend
         db_connector.cursor.execute('CALL get_user("{}");'.format(email))
-        user_id = db_connector.cursor.fetchone()[0]
+        db_response = db_connector.cursor.fetchone()
+        user_data = {
+            'user_id': db_response[0],
+            'privileges_id': db_response[1],
+            'user_type': db_response[2],
+            'first_name': db_response[3],
+            'last_name': db_response[4],
+            'email': db_response[5],
+            'hash': db_response[6],
+            'last_login': db_response[7]
+        }
         db_connector.conn.close()
 
-        return {"userID": user_id}, 201
+        return {"user": user_data}, 201
 
 
 class Login(Resource):
@@ -51,10 +61,25 @@ class Login(Resource):
         if db_connector.cursor.execute('CALL get_user("{}");'.format(email)) == 0:
             abort(404, error='email entered has not been registered')
 
-        user_hash = db_connector.cursor.fetchone()[6]
-        db_connector.conn.close()
-        if not pbkdf2_sha512.verify(password, user_hash):
+        db_response = db_connector.cursor.fetchone()
+        user_data = {
+            'user_id': db_response[0],
+            'privileges_id': db_response[1],
+            'user_type': db_response[2],
+            'first_name': db_response[3],
+            'last_name': db_response[4],
+            'email': db_response[5],
+            'hash': db_response[6],
+            'last_login': db_response[7].strftime('%Y-%m-%d %H:%M:%S')
+        }
+        if not pbkdf2_sha512.verify(password, user_data['hash']):
             abort(403, error='the password entered is incorrect')
+
+        # update last login in database
+        update_stmt = 'UPDATE users SET lastLogin = "{}" WHERE email = "{}"'
+        db_connector.cursor.execute(update_stmt.format(time.strftime('%Y-%m-%d %H:%M:%S'), email))
+        db_connector.conn.commit()
+        db_connector.conn.close()
 
         # creating validation token
         token_payload = {
@@ -65,4 +90,4 @@ class Login(Resource):
         token_handler = TokenHandler()
         token = token_handler.create_token(token_payload)
 
-        return {'token': token.decode('UTF-8')}, 201
+        return {'token': token.decode('UTF-8'), 'user': user_data}, 201
