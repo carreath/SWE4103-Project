@@ -94,6 +94,7 @@ class Login(Resource):
 
 
 class TokenValidation(Resource):
+    # If token is valid, return refreshed token and user information. Else, return 403 error.
     def get(self):
         token = request.headers.get('Authorization')
         if not token:
