@@ -6,6 +6,7 @@
 #   app.config['MYSQL_DATABASE_PASSWORD'] = ''
 
 mysql.server start
-mysql -u root < tables.sql
-mysql -u root leagues < sp_User_CreateUser.sql
+mysql -u root < tables-league_user.sql
+mysql -u root leagues < sp-users-create_user.sql
+mysql -u root leagues < sp-users-get_user.sql
 mysql -u root leagues

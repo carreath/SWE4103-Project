@@ -7,10 +7,10 @@ class DatabaseConnector:
         app = Flask(__name__)
         mariadb = MySQL()
 
-        app.config['MYSQL_DATABASE_USER'] = 'admin'
-        app.config['MYSQL_DATABASE_PASSWORD'] = 'password'
-        #app.config['MYSQL_DATABASE_USER'] = 'root'
-        #app.config['MYSQL_DATABASE_PASSWORD'] = ''
+        #app.config['MYSQL_DATABASE_USER'] = 'admin'
+        #app.config['MYSQL_DATABASE_PASSWORD'] = 'password'
+        app.config['MYSQL_DATABASE_USER'] = 'root'
+        app.config['MYSQL_DATABASE_PASSWORD'] = ''
         app.config['MYSQL_DATABASE_DB'] = 'leagues'
         app.config['MYSQL_DATABASE_HOST'] = 'localhost'
         mariadb.init_app(app)
