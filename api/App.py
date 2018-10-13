@@ -19,6 +19,7 @@ api.add_resource(PlayerStats, "/api/player-stats/<player_id>")
 api.add_resource(TeamRoster, "/api/roster/<team_id>")
 api.add_resource(Login, "/api/login")
 api.add_resource(Register, "/api/register")
+api.add_resource(TokenValidation, "/api/token-check")
 api.add_resource(Root, "/")
 
 

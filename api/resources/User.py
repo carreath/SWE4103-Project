@@ -70,7 +70,7 @@ class Login(Resource):
             'last_name': db_response[4],
             'email': db_response[5],
             'hash': db_response[6],
-            'last_login': db_response[7].strftime('%Y-%m-%d %H:%M:%S')
+            'last_login': (db_response[7].strftime('%Y-%m-%d %H:%M:%S') if db_response[7] else "None")  # TODO make sure this solution works
         }
         if not pbkdf2_sha512.verify(password, user_data['hash']):
             abort(403, error='the password entered is incorrect')
@@ -91,3 +91,11 @@ class Login(Resource):
         token = token_handler.create_token(token_payload)
 
         return {'token': token.decode('UTF-8'), 'user': user_data}, 201
+
+
+class TokenValidation(Resource):
+    def post(self):
+        # TODO
+        # input : token (defined above)
+        #
+        return
