@@ -18,6 +18,9 @@ export default new Router({
       path: '/reset',
       name: 'reset',
       component: PasswordReset,
+      beforeEnter: (to, from, next) => {
+        next();
+      },
     },
   ],
 });

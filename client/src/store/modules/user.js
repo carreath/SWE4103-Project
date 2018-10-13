@@ -12,12 +12,14 @@ const getters = {
   token(state) {
     return state.token;
   },
+  loggedIn(state) {
+    return state.token && state.user;
+  },
 };
 
 const actions = {
   userRegister({ dispatch }, payload) {
     return UserService.register(payload).then((response) => {
-      console.log('RESPONSE: ', response);
       switch (response.status) {
         case 201: {
           // TODO handle this better
@@ -40,7 +42,6 @@ const actions = {
   },
   userLogIn({ commit }, payload) {
     return UserService.login(payload).then((response) => {
-      console.log('RESPONSE: ', response);
       switch (response.status) {
         case 201: {
           const mToken = response.data.token;
@@ -72,6 +73,9 @@ const actions = {
     commit('mutateUser', null);
     commit('mutateToken', null);
     localStorage.removeItem('token');
+  },
+  setUser({ commit }, user) {
+    commit('mutateUser', user);
   },
 };
 
