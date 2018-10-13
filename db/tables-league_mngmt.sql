@@ -31,7 +31,7 @@ CREATE TABLE users (
     lastName            VARCHAR(32)     NOT NULL,
     email               VARCHAR(64)     NOT NULL,
     hash                VARCHAR(256)    NOT NULL,
-    lastLogin           DATE            DEFAULT NULL,
+    lastLogin           DATETIME        DEFAULT NULL,
     UNIQUE (email),
     FOREIGN KEY (privilegesID) REFERENCES privileges (privilegesID),
     PRIMARY KEY (userID)
