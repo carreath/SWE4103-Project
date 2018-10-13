@@ -97,5 +97,5 @@ class TokenValidation(Resource):
     def post(self):
         # TODO
         # input : token (defined above)
-        #
+        # decode token, if datetime.now() is less than exp, return user data
         return
