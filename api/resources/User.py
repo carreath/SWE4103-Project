@@ -1,4 +1,4 @@
-from flask_restful import Resource, abort, reqparse
+from flask_restful import Resource, abort, reqparse, request
 from passlib.hash import pbkdf2_sha512
 from datetime import datetime, timedelta
 import time
@@ -94,8 +94,14 @@ class Login(Resource):
 
 
 class TokenValidation(Resource):
-    def post(self):
-        # TODO
-        # input : token (defined above)
-        # decode token, if datetime.now() is less than exp, return user data
-        return
+    def get(self):
+        token = request.headers.get('Authorization')
+        if not token:
+            abort(403, error="Unauthorized Access (no token)")
+        tk_handler = TokenHandler()
+        user = tk_handler.get_token_user(token)
+        new_token = tk_handler.create_token(user)
+        return {'user_data' : user, 'new_token' : new_token}
+
+
+
