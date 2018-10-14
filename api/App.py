@@ -2,7 +2,8 @@ from flask import Flask
 from flask_restful import Api
 from flask_cors import CORS
 from resources import *
-# TODO find a way to address the project/client/dist static values
+
+
 app = Flask(__name__,
             static_url_path='',
             static_folder='dist',
