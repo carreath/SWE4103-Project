@@ -1,11 +1,12 @@
 import jwt
 from flask_restful import abort
+import config
 from common import DatabaseConnector
 
 
 class TokenHandler:
     def __init__(self):
-        self.secret = 'qQXur3dsEmT2GNSyPbNsChcZXTGiT7u5RCZSfyFs2E4tMxC7c0f3VuVgTvLTE87'
+        self.secret = config.jwt_secret
 
     def create_token(self, payload):
         return jwt.encode(payload=payload, key=self.secret, algorithm='RS256')
