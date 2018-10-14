@@ -13,6 +13,7 @@ class DatabaseConnector:
         app.config['MYSQL_DATABASE_DB'] = config.aws_db['database']
         app.config['MYSQL_DATABASE_HOST'] = config.aws_db['host']
         app.config['MYSQL_DATABASE_PORT'] = config.aws_db['port']
+
         mariadb.init_app(app)
 
         self.conn = mariadb.connect()

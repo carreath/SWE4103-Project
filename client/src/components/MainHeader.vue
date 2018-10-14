@@ -2,14 +2,32 @@
   <div id="main-header">
     <div id="main-header-minor">
       <div
-        id="login"
-        @click='setLoginModalVisible(true)'>
-        Login
+        id="invalid-user"
+        v-if="!user">
+        <div
+          id="log-in"
+          @click='setLoginModalVisible(true)'>
+          Log In
+        </div>
+        <div
+          id="create-account"
+          @click='setCreateAccountModalVisible(true)'>
+          Create Account
+        </div>
       </div>
       <div
-        id="create-account"
-        @click='setCreateAccountModalVisible(true)'>
-        Create Account
+        id="valid-user"
+        v-else>
+        <div
+          id=user-name>
+          {{ user.firstName }} {{ user.lastName }}
+        </div>
+        <div
+          id="log-out"
+          @click='logoutClicked'>
+          Log Out
+          <font-awesome-icon icon="sign-out-alt"></font-awesome-icon>
+        </div>
       </div>
     </div>
     <div id="main-header-major">
@@ -29,7 +47,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import WeatherWidget from '@/components/WeatherWidget.vue';
 
 export default{
@@ -38,14 +56,26 @@ export default{
     WeatherWidget,
   },
   computed: {
+    ...mapGetters([
+      'user',
+    ]),
   },
   methods: {
     ...mapActions([
       'setLoginModalVisible',
       'setCreateAccountModalVisible',
+      'userLogOut',
     ]),
     mainHeaderClicked() {
       this.$router.push('/');
+    },
+    logoutClicked() {
+      this.userLogOut().then(() => {
+        this.$message({
+          message: 'Logged Out',
+          center: true,
+        });
+      });
     },
   },
 };
@@ -68,23 +98,53 @@ export default{
     align-items: center;
     margin-right: 8px;
 
-    #login{
-      margin: 0px 4px;
-      font-weight: bold;
+    #invalid-user{
+      display: flex;
+      flex-direction: row;
 
-      &:hover{
-        cursor: pointer;
-        text-decoration: underline;
+      #log-in{
+        margin: 0px 4px;
+        font-weight: bold;
+
+        &:hover{
+          cursor: pointer;
+          text-decoration: underline;
+        }
+      }
+
+      #create-account{
+        margin: 0px 4px;
+
+        &:hover{
+          cursor: pointer;
+          text-decoration: underline;
+        }
       }
     }
 
-    #create-account{
-      margin: 0px 4px;
+    #valid-user{
+      display: flex;
+      flex-direction: row;
 
-      &:hover{
-        cursor: pointer;
-        text-decoration: underline;
+      #user-name{
+        margin: 0px 4px;
+        font-weight: bold;
+
+        &:hover{
+          cursor: pointer;
+          text-decoration: underline;
+        }
       }
+
+      #log-out{
+        margin: 0px 4px;
+
+        &:hover{
+          cursor: pointer;
+          text-decoration: underline;
+        }
+      }
+
     }
   }
 

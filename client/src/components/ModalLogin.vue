@@ -20,7 +20,8 @@
             type="email"
             placeholder="Email Address"
             prefix-icon="el-icon-message"
-            v-model="loginForm.email">
+            v-model="loginForm.email"
+            :disabled="loading">
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
@@ -29,9 +30,13 @@
             type="password"
             placeholder="Password"
             prefix-icon="el-icon-tickets"
-            v-model="loginForm.password">
+            v-model="loginForm.password"
+            :disabled="loading">
           </el-input>
         </el-form-item>
+        <div id="errMsg" v-if="errMsg">
+          Error: {{ errMsg }}
+        </div>
         <el-form-item id="login-button-container">
           <el-button
             type="primary"
@@ -84,6 +89,7 @@ export default{
         ],
       },
       loading: false,
+      errMsg: null,
     };
   },
   computed: {
@@ -94,15 +100,42 @@ export default{
   methods: {
     ...mapActions([
       'setCreateAccountModalVisible',
+      'closeModal',
+      'userLogIn',
     ]),
+    handleKeyUp(e) {
+      // Escape ley
+      if (e.keyCode === 27) {
+        this.closeModal();
+      }
+      // Enter key
+      if (e.keyCode === 13) {
+        this.loginButtonClicked();
+      }
+    },
     loginButtonClicked() {
+      this.displayErrMsg = false;
       this.$refs['login-form'].validate((valid) => {
         if (valid) {
-          // TODO finish this
           this.loading = true;
+          this.userLogIn(this.loginForm).then((response) => {
+            this.loading = false;
+            if (response.retVal) {
+              this.errMsg = null;
+              this.closeModal();
+            } else {
+              this.errMsg = response.retMsg;
+            }
+          });
         }
       });
     },
+  },
+  mounted() {
+    window.addEventListener('keyup', this.handleKeyUp);
+  },
+  beforeDestroy() {
+    window.removeEventListener('keyup', this.handleKeyUp);
   },
 };
 
@@ -145,6 +178,10 @@ export default{
 
     #password-container{
       margin: 8px 0px;
+    }
+
+    #errMsg{
+      color: red;
     }
 
     #login-button-container{

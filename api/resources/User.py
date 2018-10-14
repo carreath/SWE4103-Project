@@ -1,4 +1,4 @@
-from flask_restful import Resource, abort, reqparse
+from flask_restful import Resource, abort, reqparse, request
 from passlib.hash import pbkdf2_sha512
 from datetime import datetime, timedelta
 import time
@@ -68,7 +68,7 @@ class Login(Resource):
             'first_name': db_response[3],
             'last_name': db_response[4],
             'email': db_response[5],
-            'last_login': db_response[7].strftime('%Y-%m-%d %H:%M:%S') if db_response[7] is not None else None
+            'last_login': db_response[7].strftime('%Y-%m-%d %H:%M:%S') if db_response[7] else None
         }
         if not pbkdf2_sha512.verify(password, db_response[6]):
             abort(403, error='the password entered is incorrect')
@@ -89,3 +89,18 @@ class Login(Resource):
         token = token_handler.create_token(token_payload)
 
         return {'token': token.decode('UTF-8'), 'user': user_data}, 201
+
+
+class TokenValidation(Resource):
+    # If token is valid, return refreshed token and user information. Else, return 403 error.
+    def get(self):
+        token = request.headers.get('Authorization')
+        if not token:
+            abort(403, error="Unauthorized Access (no token)")
+        tk_handler = TokenHandler()
+        user = tk_handler.get_token_user(token)
+        new_token = tk_handler.create_token(user)
+        return {'user_data' : user, 'new_token' : new_token}
+
+
+
