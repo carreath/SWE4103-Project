@@ -13,7 +13,7 @@
       <div
         id="prev-day-games-container"
         ref="prev-day-games-container">
-        <div id="date-container">
+        <div class="date-container">
           {{ tempYesterdaysGames.date }}
         </div>
         <PreviousGameCard
@@ -25,7 +25,7 @@
         id="day-game-container"
         v-for="dayGameObj in tempUpcomingGames"
         :key="dayGameObj.date">
-        <div id="date-container">
+        <div class="date-container">
           {{ dayGameObj.date }}
         </div>
         <UpcomingGameCard
@@ -249,34 +249,23 @@ export default {
       display: flex;
       flex-direction: row;
       align-items: center;
+    }
 
-      #date-container{
-        height: calc(100% + 1px);
-        background: #f7f7f7;
-        border-right: 1px solid #d2d2d2;
-        display: flex;
-        align-items: center;
-        font-weight: bold;
-        width: 40px;
-        user-select: none;
-      }
+    .date-container{
+      height: calc(100% + 1px);
+      background: #e8e8e8;
+      border-right: 1px solid #d2d2d2;
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      width: 40px;
+      user-select: none;
     }
 
     #day-game-container{
       display: flex;
       flex-direction: row;
       align-items: center;
-
-      #date-container{
-        height: calc(100% + 1px);
-        background: #f7f7f7;
-        border-right: 1px solid #d2d2d2;
-        display: flex;
-        align-items: center;
-        font-weight: bold;
-        width: 40px;
-        user-select: none;
-      }
     }
   }
 }

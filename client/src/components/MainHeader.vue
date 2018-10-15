@@ -1,5 +1,21 @@
 <template>
   <div id="main-header">
+    <div id="main-header-major">
+      <div id="main-header-major-left">
+        <img id="soccer-ball-img" src="@/assets/Soccerball.svg" alt="SoccerBall">
+        <div
+          id="main-header-title"
+          @click="mainHeaderClicked">
+          Fredericton<br>Football Club
+        </div>
+      </div>
+      <div id="main-header-major-right">
+        <WeatherWidget/>
+      </div>
+    </div>
+    <NavMenu></NavMenu>
+    <!-- TODO Commented code -->
+    <!--
     <div id="main-header-minor">
       <div
         id="valid-user"
@@ -30,30 +46,20 @@
         </div>
       </div>
     </div>
-    <div id="main-header-major">
-      <div id="main-header-major-left">
-        <img id="soccer-ball-img" src="@/assets/Soccerball.svg" alt="SoccerBall">
-        <div
-          id="main-header-title"
-          @click="mainHeaderClicked">
-          Fredericton<br>Football Club
-        </div>
-      </div>
-      <div id="main-header-major-right">
-        <WeatherWidget/>
-      </div>
-    </div>
+    -->
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import WeatherWidget from '@/components/WeatherWidget.vue';
+import NavMenu from '@/components/NavMenu.vue';
 
 export default{
   name: 'MainHeader',
   components: {
     WeatherWidget,
+    NavMenu,
   },
   computed: {
     ...mapGetters([
@@ -149,12 +155,12 @@ export default{
   }
 
   #main-header-major{
-    height: 148px;
     background: linear-gradient($PRIMARY_COLOR, $PRIMARY_TO_FADE);
     padding: 8px 8px;
     width: calc(100% - 16px);
     display: flex;
     justify-content: space-between;
+    align-items: center;
 
     #main-header-major-left{
       display: flex;
@@ -165,7 +171,7 @@ export default{
       }
 
       #soccer-ball-img{
-        height: 132px;
+        height: 108px;
         align-self: flex-end;
 
         @include smallScreenSize{
@@ -178,7 +184,7 @@ export default{
         text-align: start;
         align-self: flex-end;
         font-weight: bold;
-        font-size: 48px;
+        font-size: 2.5rem;
         margin: 0px 4px;
         text-shadow:
           -1px -1px 0 #000,

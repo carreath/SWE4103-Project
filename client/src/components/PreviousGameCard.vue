@@ -36,6 +36,8 @@ export default{
 </script>
 
 <style lang="scss" scoped>
+@import '@/style/global.scss';
+
 #previous-game-card{
   height: calc(100% - 2px);
   display: flex;
@@ -46,7 +48,8 @@ export default{
   &:hover{
     cursor: pointer;
     box-shadow: 0 0 4px 0 rgba(0,0,0,.5);
-    background: #e5eeff;
+    background: #d8eaff;
+    color: $PRIMARY_COLOR;
   }
 
   #game-card-left{

@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <ModalWrapper v-show='modalVisible'/>
-    <MainHeader/>
     <UpcomingGamesHeader/>
+    <MainHeader/>
     <router-view/>
   </div>
 </template>
