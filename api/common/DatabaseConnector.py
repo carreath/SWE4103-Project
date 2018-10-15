@@ -1,5 +1,6 @@
 from flask import Flask
 from flaskext.mysql import MySQL
+import config
 
 
 class DatabaseConnector:
@@ -7,12 +8,12 @@ class DatabaseConnector:
         app = Flask(__name__)
         mariadb = MySQL()
 
-        #app.config['MYSQL_DATABASE_USER'] = 'admin'
-        #app.config['MYSQL_DATABASE_PASSWORD'] = 'password'
-        app.config['MYSQL_DATABASE_USER'] = 'root'
-        app.config['MYSQL_DATABASE_PASSWORD'] = ''
-        app.config['MYSQL_DATABASE_DB'] = 'leagues'
-        app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+        app.config['MYSQL_DATABASE_USER'] = config.aws_db['user']
+        app.config['MYSQL_DATABASE_PASSWORD'] = config.aws_db['password']
+        app.config['MYSQL_DATABASE_DB'] = config.aws_db['database']
+        app.config['MYSQL_DATABASE_HOST'] = config.aws_db['host']
+        app.config['MYSQL_DATABASE_PORT'] = config.aws_db['port']
+
         mariadb.init_app(app)
 
         self.conn = mariadb.connect()
