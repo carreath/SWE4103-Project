@@ -74,6 +74,9 @@ const actions = {
       if (response.status && response.status === 200) {
         commit('mutateUser', response.data.user_data);
         commit('mutateToken', response.data.new_token);
+      } else {
+        commit('mutateUser', null);
+        commit('mutateToken', null);
       }
     });
   },
