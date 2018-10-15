@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import MainHeader from '@/components/MainHeader.vue';
 import ModalWrapper from '@/components/ModalWrapper.vue';
 
@@ -20,7 +20,19 @@ export default{
   computed: {
     ...mapGetters([
       'modalVisible',
+      'token',
     ]),
+  },
+  methods: {
+    ...mapActions([
+      'setUser',
+      'retrieveUserFromToken',
+    ]),
+  },
+  mounted() {
+    if (this.token) {
+      this.retrieveUserFromToken();
+    }
   },
 };
 

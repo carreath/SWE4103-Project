@@ -19,4 +19,13 @@ export default {
         return err.response;
       });
   },
+  getUserFromToken() {
+    return ServiceLayer().get('/token-check')
+      .then((response) => {
+        return response;
+      })
+      .catch((err) => {
+        return err.response;
+      });
+  },
 };

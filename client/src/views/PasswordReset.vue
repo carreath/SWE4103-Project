@@ -38,6 +38,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default{
   name: 'passwordreset',
   data() {
@@ -69,6 +71,9 @@ export default{
     };
   },
   computed: {
+    ...mapGetters([
+      'loggedIn',
+    ]),
     resetPasswordButtonText() {
       return this.loading ? 'Loading' : 'Reset Password';
     },
@@ -82,6 +87,18 @@ export default{
         }
       });
     },
+  },
+  watch: {
+    loggedIn(val) {
+      if (val) {
+        this.$router.push('/');
+      }
+    },
+  },
+  mounted() {
+    if (this.loggedIn) {
+      this.$router.push('/');
+    }
   },
 };
 </script>

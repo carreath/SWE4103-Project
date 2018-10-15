@@ -2,8 +2,22 @@
   <div id="main-header">
     <div id="main-header-minor">
       <div
+        id="valid-user"
+        v-if="loggedIn">
+        <div
+          id=user-name>
+          {{ user.first_name }} {{ user.last_name }}
+        </div>
+        <div
+          id="log-out"
+          @click='logoutClicked'>
+          Log Out
+          <font-awesome-icon icon="sign-out-alt"></font-awesome-icon>
+        </div>
+      </div>
+      <div
         id="invalid-user"
-        v-if="!user">
+        v-else>
         <div
           id="log-in"
           @click='setLoginModalVisible(true)'>
@@ -13,20 +27,6 @@
           id="create-account"
           @click='setCreateAccountModalVisible(true)'>
           Create Account
-        </div>
-      </div>
-      <div
-        id="valid-user"
-        v-else>
-        <div
-          id=user-name>
-          {{ user.firstName }} {{ user.lastName }}
-        </div>
-        <div
-          id="log-out"
-          @click='logoutClicked'>
-          Log Out
-          <font-awesome-icon icon="sign-out-alt"></font-awesome-icon>
         </div>
       </div>
     </div>
@@ -58,6 +58,7 @@ export default{
   computed: {
     ...mapGetters([
       'user',
+      'loggedIn',
     ]),
   },
   methods: {

@@ -9,11 +9,11 @@ class TokenHandler:
         self.secret = config.jwt_secret
 
     def create_token(self, payload):
-        return jwt.encode(payload=payload, key=self.secret, algorithm='RS256')
+        return jwt.encode(payload=payload, key=self.secret, algorithm='HS256')
 
     def decode_token(self, token):
         try:
-            payload = jwt.decode(jwt=token, key=self.secret, algorithm='RS256')
+            payload = jwt.decode(jwt=token, key=self.secret, algorithm='HS256')
             user = payload['sub']
             if not user:
                 raise RuntimeError('User not found')
