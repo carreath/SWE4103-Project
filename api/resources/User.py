@@ -100,7 +100,7 @@ class TokenValidation(Resource):
         tk_handler = TokenHandler()
         user = tk_handler.get_token_user(token)
         new_token = tk_handler.create_token(user)
-        return {'user_data' : user, 'new_token' : new_token}
+        return {'user_data': user, 'new_token': new_token.decode('UTF-8')}, 200
 
 
 

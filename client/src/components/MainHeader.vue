@@ -6,7 +6,7 @@
         v-if="loggedIn">
         <div
           id=user-name>
-          {{ user.firstName }} {{ user.lastName }}
+          {{ user.first_name }} {{ user.last_name }}
         </div>
         <div
           id="log-out"

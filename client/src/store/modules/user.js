@@ -42,18 +42,14 @@ const actions = {
   },
   userLogIn({ commit }, payload) {
     return UserService.login(payload).then((response) => {
+      if (!response.status) {
+        return { retVal: false, retMsg: 'Server Error' };
+      }
       switch (response.status) {
         case 201: {
           const mToken = response.data.token;
           localStorage.setItem('token', mToken);
-          // TODO remeber to actually change this to the response.data.user field
-          // commit('mutateUser', response.data.user);
-          const tempUser = {
-            firstName: payload.email.split('@')[0],
-            lastName: payload.email.split('@')[1],
-            email: payload.email,
-          };
-          commit('mutateUser', tempUser);
+          commit('mutateUser', response.data.user);
           commit('mutateToken', mToken);
           return { retVal: true, retMsg: 'Success' };
         }
@@ -76,6 +72,14 @@ const actions = {
   },
   setUser({ commit }, user) {
     commit('mutateUser', user);
+  },
+  retrieveUserFromToken({ commit }) {
+    UserService.getUserFromToken().then((response) => {
+      if (response.status && response.status === 200) {
+        commit('mutateUser', response.data.user_data);
+        commit('mutateToken', response.data.new_token);
+      }
+    });
   },
 };
 
