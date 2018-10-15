@@ -2,6 +2,7 @@
   <div id="app">
     <ModalWrapper v-show='modalVisible'/>
     <MainHeader/>
+    <UpcomingGamesHeader/>
     <router-view/>
   </div>
 </template>
@@ -10,12 +11,14 @@
 import { mapGetters, mapActions } from 'vuex';
 import MainHeader from '@/components/MainHeader.vue';
 import ModalWrapper from '@/components/ModalWrapper.vue';
+import UpcomingGamesHeader from '@/components/UpcomingGamesHeader.vue';
 
 export default{
   name: 'App',
   components: {
     MainHeader,
     ModalWrapper,
+    UpcomingGamesHeader,
   },
   computed: {
     ...mapGetters([

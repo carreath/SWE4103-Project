@@ -86,7 +86,6 @@ export default{
 @import '@/style/global.scss';
 
 #main-header{
-  height: 212px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -150,7 +149,7 @@ export default{
   }
 
   #main-header-major{
-    height: 180px;
+    height: 148px;
     background: linear-gradient($PRIMARY_COLOR, $PRIMARY_TO_FADE);
     padding: 8px 8px;
     width: calc(100% - 16px);
