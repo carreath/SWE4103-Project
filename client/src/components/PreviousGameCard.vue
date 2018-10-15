@@ -1,16 +1,20 @@
 <template>
-  <div id="upcoming-game-card">
+  <div id="previous-game-card">
     <div id="game-card-left">
-      <div id="away-team">
-        {{ game.awayTeam }}
+      <div
+        id="away-team"
+        :class="{'boldText': game.awayScore > game.homeScore}">
+        {{ game.awayTeam }}&nbsp;&nbsp;{{ game.awayScore }}
       </div>
-      <div id="home-team">
-        {{ game.homeTeam }}
+      <div
+        id="home-team"
+        :class="{'boldText': game.awayScore < game.homeScore}">
+        {{ game.homeTeam }}&nbsp;&nbsp;{{ game.homeScore }}
       </div>
     </div>
     <div id="game-card-right">
-      <div id="game-time">
-        {{ game.time }}
+      <div id="game-result">
+        Final
       </div>
       <div id="game-field">
         {{ game.fieldName }}
@@ -23,8 +27,8 @@
 </template>
 
 <script>
-export default {
-  name: 'UpcomingGameCard',
+export default{
+  name: 'PreviousGameCard',
   props: {
     game: Object,
   },
@@ -32,7 +36,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#upcoming-game-card{
+#previous-game-card{
   height: calc(100% - 2px);
   display: flex;
   flex-direction: row;
@@ -51,6 +55,11 @@ export default {
     align-items: center;
     justify-content: center;
     margin: 0px 8px;
+    white-space: nowrap;
+
+    .boldText{
+      font-weight: bold;
+    }
   }
 
   #game-card-right{
@@ -61,9 +70,10 @@ export default {
     margin-left: 8px;
     margin-right: 4px;
 
-    #game-time{
+    #game-result{
       font-size: 0.7rem;
-      white-space:nowrap;
+      font-weight: bold;
+      white-space: nowrap;
     }
 
     #game-field,

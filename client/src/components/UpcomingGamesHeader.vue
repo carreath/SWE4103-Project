@@ -8,8 +8,19 @@
       <i class="el-icon-arrow-left"></i>
     </div>
     <div
-      id="scroll-container"
-      ref="scroll-container">
+      id="upcoming-games-header-scroll-container"
+      ref="upcoming-games-header-scroll-container">
+      <div
+        id="prev-day-games-container"
+        ref="prev-day-games-container">
+        <div id="date-container">
+          {{ tempYesterdaysGames.date }}
+        </div>
+        <PreviousGameCard
+          v-for="gameObj in tempYesterdaysGames.games"
+          :key="gameObj.id"
+          :game="gameObj"/>
+      </div>
       <div
         id="day-game-container"
         v-for="dayGameObj in tempUpcomingGames"
@@ -35,15 +46,52 @@
 </template>
 
 <script>
+import PreviousGameCard from '@/components/PreviousGameCard.vue';
 import UpcomingGameCard from '@/components/UpcomingGameCard.vue';
 
 export default {
   name: 'UpcomingGamesHeader',
   components: {
+    PreviousGameCard,
     UpcomingGameCard,
   },
   data() {
     return {
+      tempYesterdaysGames: {
+        date: 'Oct 14',
+        games: [
+          {
+            id: '1',
+            homeTeam: 'TeamA',
+            awayTeam: 'TeamB',
+            league: 'League A',
+            fieldName: 'Field A',
+            time: '8:00 PM',
+            homeScore: '3',
+            awayScore: '2',
+          },
+          {
+            id: '2',
+            homeTeam: 'TeamC',
+            awayTeam: 'TeamD',
+            league: 'League A',
+            fieldName: 'Field B',
+            time: '8:00 PM',
+            homeScore: '1',
+            awayScore: '0',
+          },
+          {
+            id: '3',
+            homeTeam: 'TeamX',
+            awayTeam: 'TeamY',
+            league: 'League B',
+            fieldName: 'Field B',
+            time: '9:15 PM',
+            homeScore: '2',
+            awayScore: '5',
+          },
+        ],
+      },
       tempUpcomingGames: [
         {
           date: 'Oct 15',
@@ -138,14 +186,20 @@ export default {
   methods: {
     scrollRight() {
       const upcomingGamesHeader = this.$refs['upcoming-games-header'];
-      const scrollContainer = this.$refs['scroll-container'];
+      const scrollContainer = this.$refs['upcoming-games-header-scroll-container'];
       scrollContainer.scrollLeft += (upcomingGamesHeader.clientWidth - 132);
     },
     scrollLeft() {
       const upcomingGamesHeader = this.$refs['upcoming-games-header'];
-      const scrollContainer = this.$refs['scroll-container'];
+      const scrollContainer = this.$refs['upcoming-games-header-scroll-container'];
       scrollContainer.scrollLeft -= (upcomingGamesHeader.clientWidth - 132);
     },
+  },
+  mounted() {
+    const previousGamesHeader = this.$refs['prev-day-games-container'];
+    const scrollContainer = this.$refs['upcoming-games-header-scroll-container'];
+    scrollContainer.scrollLeft += previousGamesHeader.clientWidth;
+    document.getElementById('upcoming-games-header-scroll-container').classList.add('smoothScroll');
   },
 };
 
@@ -179,14 +233,34 @@ export default {
     }
   }
 
-  #scroll-container{
+  .smoothScroll{
+    scroll-behavior: smooth;
+  }
+
+  #upcoming-games-header-scroll-container{
     overflow-x: auto;
     overflow-y: hidden;
     width: calc(100% - 120px);
     display: flex;
     flex-direction: row;
     border-bottom: 1px solid #d2d2d2;
-    scroll-behavior: smooth;
+
+    #prev-day-games-container{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      #date-container{
+        height: calc(100% + 1px);
+        background: #f7f7f7;
+        border-right: 1px solid #d2d2d2;
+        display: flex;
+        align-items: center;
+        font-weight: bold;
+        width: 40px;
+        user-select: none;
+      }
+    }
 
     #day-game-container{
       display: flex;
