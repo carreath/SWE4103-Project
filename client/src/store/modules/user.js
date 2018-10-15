@@ -22,7 +22,6 @@ const actions = {
     return UserService.register(payload).then((response) => {
       switch (response.status) {
         case 201: {
-          // TODO handle this better
           const loginPayload = {
             email: payload.email,
             password: payload.password,
@@ -47,10 +46,8 @@ const actions = {
       }
       switch (response.status) {
         case 201: {
-          const mToken = response.data.token;
-          localStorage.setItem('token', mToken);
           commit('mutateUser', response.data.user);
-          commit('mutateToken', mToken);
+          commit('mutateToken', response.data.token);
           return { retVal: true, retMsg: 'Success' };
         }
         case 404: {
@@ -68,7 +65,6 @@ const actions = {
   userLogOut({ commit }) {
     commit('mutateUser', null);
     commit('mutateToken', null);
-    localStorage.removeItem('token');
   },
   setUser({ commit }, user) {
     commit('mutateUser', user);
@@ -88,6 +84,7 @@ const mutations = {
     state.user = payload;
   },
   mutateToken(state, token) {
+    token ? localStorage.setItem('token', token) : localStorage.removeItem('token');
     state.token = token;
   },
 };
