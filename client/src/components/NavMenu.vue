@@ -5,7 +5,6 @@
       class="el-menu-demo"
       mode="horizontal"
       menu-trigger="click"
-      :default-active="activeNavIndex"
       @select="handleNavMenuSelect"
       background-color="#fcfcfc"
       text-color="#2577db"
@@ -44,7 +43,9 @@
       <el-menu-item index="3">
         Schedule
       </el-menu-item>
-      <el-menu-item index="4">
+      <el-menu-item
+        index="4"
+        :class="{'is-active': curRoute}">
         Standings
       </el-menu-item>
     </el-menu>
