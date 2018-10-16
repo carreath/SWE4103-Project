@@ -1,54 +1,37 @@
 <template>
   <div id="nav-menu">
-    <el-menu
-      id="menu"
-      class="el-menu-demo"
-      mode="horizontal"
-      menu-trigger="click"
-      @select="handleNavMenuSelect"
-      background-color="#fcfcfc"
-      text-color="#2577db"
-      active-text-color="#4b9dfc">
-      <el-menu-item index="1">
-        News
-      </el-menu-item>
-      <el-submenu index="2">
-        <template slot="title">
-          Teams
-        </template>
-        <el-menu-item index="2-1">
-          item one
-        </el-menu-item>
-        <el-menu-item index="2-2">
-          item two
-        </el-menu-item>
-        <el-menu-item index="2-3">
-          item three
-        </el-menu-item>
-        <el-submenu index="2-4">
-          <template slot="title">
-            item four
-          </template>
-          <el-menu-item index="2-4-1">
-            item one
-          </el-menu-item>
-          <el-menu-item index="2-4-2">
-            item two
-          </el-menu-item>
-          <el-menu-item index="2-4-3">
-            item three
-          </el-menu-item>
-        </el-submenu>
-      </el-submenu>
-      <el-menu-item index="3">
-        Schedule
-      </el-menu-item>
-      <el-menu-item
-        index="4"
-        :class="{'is-active': curRoute}">
-        Standings
-      </el-menu-item>
-    </el-menu>
+    <div id="menu-container">
+      <ul id="menu">
+        <li
+          :class="{'is-active': curRoute === 'home'}"
+          @click="handleNavMenuSelect('news')">
+          <span>
+            News
+          </span>
+        </li>
+        <li
+          :class="{'is-active': curRoute === 'teams'}"
+          @click="handleNavMenuSelect('teams')">
+          <span>
+            Teams
+          </span>
+        </li>
+        <li
+          :class="{'is-active': curRoute === 'schedule'}"
+          @click="handleNavMenuSelect('schedule')">
+          <span>
+            Schedule
+          </span>
+        </li>
+        <li
+          :class="{'is-active': curRoute === 'standings'}"
+          @click="handleNavMenuSelect('standings')">
+          <span>
+            Standings
+          </span>
+        </li>
+      </ul>
+    </div>
 
     <div
       id="user-dropdown-container"
@@ -129,6 +112,9 @@ export default {
       'loggedIn',
       'activeNavIndex',
     ]),
+    curRoute() {
+      return this.$route.name;
+    },
   },
   methods: {
     ...mapActions([
@@ -137,22 +123,21 @@ export default {
       'userLogOut',
       'setActiveNavIndex',
     ]),
-    handleNavMenuSelect(key, keyPath) {
-      this.setActiveNavIndex(key);
-      switch (keyPath[0]) {
-        case ('1'): {
+    handleNavMenuSelect(key) {
+      switch (key) {
+        case ('news'): {
           this.$router.push('/');
           break;
         }
-        case ('2'): {
+        case ('teams'): {
           this.$router.push('/teams');
           break;
         }
-        case ('3'): {
+        case ('schedule'): {
           this.$router.push('/schedule');
           break;
         }
-        case ('4'): {
+        case ('standings'): {
           this.$router.push('/standings');
           break;
         }
@@ -187,7 +172,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/style/global.scss';
 
 #nav-menu{
@@ -200,6 +185,37 @@ export default {
   #menu{
     padding: 0px 20px;
     font-weight: bold;
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    height: 100%;
+
+    li{
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      color: $PRIMARY_TO_FADE;
+      transition: 0.3s;
+
+      &:hover{
+        background-color: $HOVER_GREY;
+        cursor: pointer;
+      }
+
+      span{
+        padding: 0px 20px;
+      }
+    }
+
+    .is-active{
+      transition: 0.3s;
+      border-bottom: 2px solid $PRIMARY_TO_FADE;
+
+      span{
+        margin-bottom: -2px;
+        transition: 0.3s;
+      }
+    }
   }
 
   #user-dropdown-container{
