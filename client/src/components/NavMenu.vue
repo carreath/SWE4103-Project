@@ -204,6 +204,7 @@ export default {
 
       span{
         padding: 0px 20px;
+        user-select: none;
       }
     }
 
@@ -226,6 +227,7 @@ export default {
     color: $PRIMARY_TO_FADE;
     height: 61px;
     transition: 0.3s;
+    user-select: none;
 
     &:hover{
       background-color: $HOVER_GREY;
@@ -246,6 +248,7 @@ export default {
     color: $PRIMARY_TO_FADE;
     height: 61px;
     transition: 0.3s;
+    user-select: none;
 
     &:hover{
       background-color: $HOVER_GREY;

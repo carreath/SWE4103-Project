@@ -65,64 +65,6 @@ export default{
   display: flex;
   flex-direction: column;
 
-  #main-header-minor{
-    height: 32px;
-    background-color: $SECONDARY_COLOR;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-right: 8px;
-
-    #invalid-user{
-      display: flex;
-      flex-direction: row;
-
-      #log-in{
-        margin: 0px 4px;
-        font-weight: bold;
-
-        &:hover{
-          cursor: pointer;
-          text-decoration: underline;
-        }
-      }
-
-      #create-account{
-        margin: 0px 4px;
-
-        &:hover{
-          cursor: pointer;
-          text-decoration: underline;
-        }
-      }
-    }
-
-    #valid-user{
-      display: flex;
-      flex-direction: row;
-
-      #user-name{
-        margin: 0px 4px;
-        font-weight: bold;
-
-        &:hover{
-          cursor: pointer;
-          text-decoration: underline;
-        }
-      }
-
-      #log-out{
-        margin: 0px 4px;
-
-        &:hover{
-          cursor: pointer;
-          text-decoration: underline;
-        }
-      }
-
-    }
-  }
-
   #main-header-major{
     background: linear-gradient($PRIMARY_COLOR, $PRIMARY_TO_FADE);
     padding: 8px 8px;
@@ -134,6 +76,7 @@ export default{
     #main-header-major-left{
       display: flex;
       flex-direction: row;
+      user-select: none;
 
       &:hover{
         cursor: pointer;
