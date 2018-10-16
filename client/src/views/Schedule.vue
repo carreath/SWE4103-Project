@@ -1,18 +1,18 @@
 <template>
-  <div id="home">
-    HOME
+  <div id="schedule">
+    SCHEDULE
   </div>
 </template>
 
 <script>
 
 export default {
-  name: 'Home',
+  name: 'Schedule',
 };
 </script>
 
 <style lang="scss" scoped>
-#home{
+#schedule{
 
 }
 </style>

@@ -5,6 +5,8 @@
       class="el-menu-demo"
       mode="horizontal"
       menu-trigger="click"
+      :default-active="activeNavIndex"
+      @select="handleNavMenuSelect"
       background-color="#fcfcfc"
       text-color="#2577db"
       active-text-color="#4b9dfc">
@@ -124,6 +126,7 @@ export default {
     ...mapGetters([
       'user',
       'loggedIn',
+      'activeNavIndex',
     ]),
   },
   methods: {
@@ -131,8 +134,36 @@ export default {
       'setLoginModalVisible',
       'setCreateAccountModalVisible',
       'userLogOut',
+      'setActiveNavIndex',
     ]),
+    handleNavMenuSelect(key, keyPath) {
+      console.log(key, keyPath);
+      this.setActiveNavIndex(key);
+      switch (keyPath[0]) {
+        case ('1'): {
+          this.$router.push('/');
+          break;
+        }
+        case ('2'): {
+          this.$router.push('/teams');
+          break;
+        }
+        case ('3'): {
+          this.$router.push('/schedule');
+          break;
+        }
+        case ('4'): {
+          this.$router.push('/standings');
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    },
     handleUserDropdownClick(command) {
+      // TODO remember to set the active nav index to null for the appropriate
+      // commands here
       switch (command) {
         case ('logout'): {
           this.logoutDialogVisible = true;
