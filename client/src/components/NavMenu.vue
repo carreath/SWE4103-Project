@@ -181,6 +181,7 @@ export default {
   justify-content: space-between;
   width: 100%;
   border-bottom: 1px solid $HOVER_GREY;
+  background-color: $SECONDARY_COLOR;
 
   #menu{
     padding: 0px 20px;

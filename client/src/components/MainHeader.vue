@@ -13,20 +13,17 @@
         <WeatherWidget/>
       </div>
     </div>
-    <NavMenu/>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import WeatherWidget from '@/components/WeatherWidget.vue';
-import NavMenu from '@/components/NavMenu.vue';
 
 export default{
   name: 'MainHeader',
   components: {
     WeatherWidget,
-    NavMenu,
   },
   computed: {
     ...mapGetters([

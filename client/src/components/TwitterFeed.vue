@@ -2,11 +2,11 @@
   <div id="twitter-feed">
     <a
       class="twitter-timeline"
-      data-height="400"
       data-theme="light"
       href="https://twitter.com/FrederictonFC?ref_src=twsrc%5Etfw">
     </a>
   </div>
+  <!-- data-height="400" -->
 </template>
 
 <script>
