@@ -39,8 +39,10 @@ export default{
       'setLoginModalVisible',
       'setCreateAccountModalVisible',
       'userLogOut',
+      'setActiveNavIndex',
     ]),
     mainHeaderClicked() {
+      this.setActiveNavIndex('1');
       this.$router.push('/');
     },
     logoutClicked() {

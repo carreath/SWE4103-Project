@@ -36,9 +36,11 @@ export default {
 
 #upcoming-game-card{
   height: calc(100% - 2px);
+  width: 184px;
   display: flex;
   flex-direction: row;
-  padding: 4px 12px;
+  justify-content: space-around;
+  padding: 4px 0px;
   border: 1px solid #d2d2d2;
 
   &:hover{

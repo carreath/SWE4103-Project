@@ -137,7 +137,6 @@ export default {
       'setActiveNavIndex',
     ]),
     handleNavMenuSelect(key, keyPath) {
-      console.log(key, keyPath);
       this.setActiveNavIndex(key);
       switch (keyPath[0]) {
         case ('1'): {
