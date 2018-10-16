@@ -52,7 +52,8 @@
       v-if="loggedIn">
       <el-dropdown
         trigger="click"
-        @command="handleUserDropdownClick">
+        @command="handleUserDropdownClick"
+        placement="bottom-end">
         <span
           id="user-dropdown-user-text"
           class="el-dropdown-link">
@@ -60,10 +61,21 @@
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>Action 1</el-dropdown-item>
-          <el-dropdown-item>Action 2</el-dropdown-item>
-          <el-dropdown-item>Action 3</el-dropdown-item>
-          <el-dropdown-item divided @command="logoutClicked">Log Out</el-dropdown-item>
+          <el-dropdown-item>
+            Change Password
+          </el-dropdown-item>
+          <el-dropdown-item>
+            Add Game Scores
+          </el-dropdown-item>
+          <el-dropdown-item>
+            Admin
+          </el-dropdown-item>
+          <el-dropdown-item
+            id="user-dropdown-option-logout"
+            divided
+            command="logout">
+            Log Out
+          </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -76,6 +88,25 @@
         Log In
       </div>
     </div>
+
+    <el-dialog
+      title="Confirm Logout"
+      :visible.sync="logoutDialogVisible"
+      width="30%">
+      <span>Are you sure you want to log out?</span>
+      <span
+        slot="footer"
+        class="dialog-footer">
+        <el-button @click="logoutDialogVisible=false">
+          Cancel
+        </el-button>
+        <el-button
+          type="primary"
+          @click="logoutClicked">
+          Confirm
+        </el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -84,6 +115,11 @@ import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'NavMenu',
+  data() {
+    return {
+      logoutDialogVisible: false,
+    };
+  },
   computed: {
     ...mapGetters([
       'user',
@@ -96,11 +132,19 @@ export default {
       'setCreateAccountModalVisible',
       'userLogOut',
     ]),
-    handleUserDropdownClick(e) {
-      // TODO Fix this
-      console.log(e);
+    handleUserDropdownClick(command) {
+      switch (command) {
+        case ('logout'): {
+          this.logoutDialogVisible = true;
+          break;
+        }
+        default: {
+          break;
+        }
+      }
     },
     logoutClicked() {
+      this.logoutDialogVisible = false;
       this.userLogOut().then(() => {
         this.$message({
           message: 'Logged Out',
@@ -112,7 +156,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '@/style/global.scss';
 
 #nav-menu{
@@ -125,13 +169,6 @@ export default {
   #menu{
     padding: 0px 20px;
     font-weight: bold;
-
-    /* TODO Commented code */
-    /*
-    li:nth-last-child(-n+1) {
-      float: right;
-    }
-    */
   }
 
   #user-dropdown-container{
