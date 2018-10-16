@@ -13,40 +13,7 @@
         <WeatherWidget/>
       </div>
     </div>
-    <NavMenu></NavMenu>
-    <!-- TODO Commented code -->
-    <!--
-    <div id="main-header-minor">
-      <div
-        id="valid-user"
-        v-if="loggedIn">
-        <div
-          id=user-name>
-          {{ user.first_name }} {{ user.last_name }}
-        </div>
-        <div
-          id="log-out"
-          @click='logoutClicked'>
-          Log Out
-          <font-awesome-icon icon="sign-out-alt"></font-awesome-icon>
-        </div>
-      </div>
-      <div
-        id="invalid-user"
-        v-else>
-        <div
-          id="log-in"
-          @click='setLoginModalVisible(true)'>
-          Log In
-        </div>
-        <div
-          id="create-account"
-          @click='setCreateAccountModalVisible(true)'>
-          Create Account
-        </div>
-      </div>
-    </div>
-    -->
+    <NavMenu/>
   </div>
 </template>
 
