@@ -3,7 +3,18 @@
     <ModalWrapper v-show='modalVisible'/>
     <UpcomingGamesHeader/>
     <MainHeader/>
-    <router-view/>
+    <div
+      id="nav-menu-wrapper"
+      :class="{'sticky': nailNavMenu}">
+      <NavMenu/>
+    </div>
+    <div
+      class="router-view-outer-wrapper"
+      :class="{'extraPadding': nailNavMenu}">
+      <div id="router-view-inner-wrapper">
+        <router-view/>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -12,6 +23,7 @@ import { mapGetters, mapActions } from 'vuex';
 import MainHeader from '@/components/MainHeader.vue';
 import ModalWrapper from '@/components/ModalWrapper.vue';
 import UpcomingGamesHeader from '@/components/UpcomingGamesHeader.vue';
+import NavMenu from '@/components/NavMenu.vue';
 
 export default{
   name: 'App',
@@ -19,6 +31,12 @@ export default{
     MainHeader,
     ModalWrapper,
     UpcomingGamesHeader,
+    NavMenu,
+  },
+  data() {
+    return {
+      nailNavMenu: false,
+    };
   },
   computed: {
     ...mapGetters([
@@ -31,23 +49,61 @@ export default{
       'setUser',
       'retrieveUserFromToken',
     ]),
+    handleScroll() {
+      const navbar = document.getElementById('nav-menu-wrapper');
+      const sticky = navbar.offsetTop;
+      if (!this.nailNavMenu && window.pageYOffset >= sticky) {
+        this.nailNavMenu = true;
+      }
+      // NOTE This 194 just works fine. If you change heights of other
+      // headers and stuff, this might have to change
+      if (this.nailNavMenu && window.pageYOffset - 194 <= 0) {
+        this.nailNavMenu = false;
+      }
+    },
   },
   mounted() {
+    window.addEventListener('scroll', this.handleScroll);
     if (this.token) {
       this.retrieveUserFromToken();
     }
+  },
+  destroyed() {
+    window.removeEventListener('scroll', this.handleScroll);
   },
 };
 
 </script>
 
 <style lang="scss">
+@import '@/style/global.scss';
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+
+  .sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+  }
+
+  .router-view-outer-wrapper{
+    padding: 0px 20px;
+    /*background-color: #e8e8e8;*/
+    background-color: $SECONDARY_COLOR;
+
+    #router-view-inner-wrapper{
+      background-color: $SECONDARY_COLOR;
+    }
+  }
+
+  .extraPadding{
+    padding-top: 62px;
+  }
 }
 
 </style>

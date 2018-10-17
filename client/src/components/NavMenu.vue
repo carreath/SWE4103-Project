@@ -1,85 +1,62 @@
 <template>
   <div id="nav-menu">
-    <el-menu
-      id="menu"
-      class="el-menu-demo"
-      mode="horizontal"
-      menu-trigger="click"
-      :default-active="activeNavIndex"
-      @select="handleNavMenuSelect"
-      background-color="#fcfcfc"
-      text-color="#2577db"
-      active-text-color="#4b9dfc">
-      <el-menu-item index="1">
-        News
-      </el-menu-item>
-      <el-submenu index="2">
-        <template slot="title">
-          Teams
-        </template>
-        <el-menu-item index="2-1">
-          item one
-        </el-menu-item>
-        <el-menu-item index="2-2">
-          item two
-        </el-menu-item>
-        <el-menu-item index="2-3">
-          item three
-        </el-menu-item>
-        <el-submenu index="2-4">
-          <template slot="title">
-            item four
-          </template>
-          <el-menu-item index="2-4-1">
-            item one
-          </el-menu-item>
-          <el-menu-item index="2-4-2">
-            item two
-          </el-menu-item>
-          <el-menu-item index="2-4-3">
-            item three
-          </el-menu-item>
-        </el-submenu>
-      </el-submenu>
-      <el-menu-item index="3">
-        Schedule
-      </el-menu-item>
-      <el-menu-item index="4">
-        Standings
-      </el-menu-item>
-    </el-menu>
+    <div id="menu-container">
+      <ul id="menu">
+        <li
+          :class="{'is-active': curRoute === 'home'}"
+          @click="handleNavMenuSelect('news')">
+          <span>
+            News
+          </span>
+        </li>
+        <li
+          :class="{'is-active': curRoute === 'teams'}"
+          @click="handleNavMenuSelect('teams')">
+          <span>
+            Teams
+          </span>
+        </li>
+        <li
+          :class="{'is-active': curRoute === 'schedule'}"
+          @click="handleNavMenuSelect('schedule')">
+          <span>
+            Schedule
+          </span>
+        </li>
+        <li
+          :class="{'is-active': curRoute === 'standings'}"
+          @click="handleNavMenuSelect('standings')">
+          <span>
+            Standings
+          </span>
+        </li>
+      </ul>
+    </div>
 
     <div
       id="user-dropdown-container"
       v-if="loggedIn">
-      <el-dropdown
-        trigger="click"
-        @command="handleUserDropdownClick"
-        placement="bottom-end">
-        <span
-          id="user-dropdown-user-text"
-          class="el-dropdown-link">
+      <div class="user-dropdown">
+        <div
+          class="user-dropdown-button"
+          @mouseover="userDropdownButtonHover=true"
+          @mouseleave="userDropdownButtonHover=false">
           {{ user.first_name }} {{ user.last_name }}
-          <i class="el-icon-arrow-down el-icon--right"></i>
-        </span>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>
+          <font-awesome-icon icon="caret-down" />
+        </div>
+        <div
+          class="user-dropdown-content"
+          :class="{'show-user-dropdown-content': userDropdownVisible}"
+          @mouseover="userDropdownContentHover=true"
+          @mouseleave="userDropdownContentHover=false">
+          <div>
             Change Password
-          </el-dropdown-item>
-          <el-dropdown-item>
-            Add Game Scores
-          </el-dropdown-item>
-          <el-dropdown-item>
-            Admin
-          </el-dropdown-item>
-          <el-dropdown-item
-            id="user-dropdown-option-logout"
-            divided
-            command="logout">
+          </div>
+          <div @click="logoutClicked">
             Log Out
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div
@@ -90,25 +67,6 @@
         Log In
       </div>
     </div>
-
-    <el-dialog
-      title="Confirm Logout"
-      :visible.sync="logoutDialogVisible"
-      width="30%">
-      <span>Are you sure you want to log out?</span>
-      <span
-        slot="footer"
-        class="dialog-footer">
-        <el-button @click="logoutDialogVisible=false">
-          Cancel
-        </el-button>
-        <el-button
-          type="primary"
-          @click="logoutClicked">
-          Confirm
-        </el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
@@ -119,7 +77,8 @@ export default {
   name: 'NavMenu',
   data() {
     return {
-      logoutDialogVisible: false,
+      userDropdownButtonHover: false,
+      userDropdownContentHover: false,
     };
   },
   computed: {
@@ -128,6 +87,12 @@ export default {
       'loggedIn',
       'activeNavIndex',
     ]),
+    curRoute() {
+      return this.$route.name;
+    },
+    userDropdownVisible() {
+      return this.userDropdownButtonHover || this.userDropdownContentHover;
+    },
   },
   methods: {
     ...mapActions([
@@ -136,22 +101,21 @@ export default {
       'userLogOut',
       'setActiveNavIndex',
     ]),
-    handleNavMenuSelect(key, keyPath) {
-      this.setActiveNavIndex(key);
-      switch (keyPath[0]) {
-        case ('1'): {
+    handleNavMenuSelect(key) {
+      switch (key) {
+        case ('news'): {
           this.$router.push('/');
           break;
         }
-        case ('2'): {
+        case ('teams'): {
           this.$router.push('/teams');
           break;
         }
-        case ('3'): {
+        case ('schedule'): {
           this.$router.push('/schedule');
           break;
         }
-        case ('4'): {
+        case ('standings'): {
           this.$router.push('/standings');
           break;
         }
@@ -160,33 +124,26 @@ export default {
         }
       }
     },
-    handleUserDropdownClick(command) {
-      // TODO remember to set the active nav index to null for the appropriate
-      // commands here
-      switch (command) {
-        case ('logout'): {
-          this.logoutDialogVisible = true;
-          break;
-        }
-        default: {
-          break;
-        }
-      }
-    },
     logoutClicked() {
-      this.logoutDialogVisible = false;
-      this.userLogOut().then(() => {
-        this.$message({
-          message: 'Logged Out',
-          center: true,
+      this.$confirm('Are you sure you want to log out?', 'Confirm Log Out', {
+        confirmButtonText: 'Log Out',
+        cancelButtonText: 'Cancel',
+        type: 'warning',
+      }).then(() => {
+        this.userLogOut().then(() => {
+          this.$message({
+            message: 'Logged Out',
+            center: true,
+          });
         });
+      }).catch(() => {
       });
     },
   },
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/style/global.scss';
 
 #nav-menu{
@@ -195,10 +152,43 @@ export default {
   justify-content: space-between;
   width: 100%;
   border-bottom: 1px solid $HOVER_GREY;
+  background-color: $SECONDARY_COLOR;
 
   #menu{
     padding: 0px 20px;
     font-weight: bold;
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    height: 100%;
+
+    li{
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      color: $PRIMARY_TO_FADE;
+      transition: 0.3s;
+
+      &:hover{
+        background-color: $HOVER_GREY;
+        cursor: pointer;
+      }
+
+      span{
+        padding: 0px 20px;
+        user-select: none;
+      }
+    }
+
+    .is-active{
+      transition: 0.3s;
+      border-bottom: 2px solid $PRIMARY_TO_FADE;
+
+      span{
+        margin-bottom: -2px;
+        transition: 0.3s;
+      }
+    }
   }
 
   #user-dropdown-container{
@@ -209,15 +199,60 @@ export default {
     color: $PRIMARY_TO_FADE;
     height: 61px;
     transition: 0.3s;
+    user-select: none;
 
-    &:hover{
-      background-color: $HOVER_GREY;
-      cursor: pointer;
-    }
 
-    #user-dropdown-user-text{
-      color: $PRIMARY_TO_FADE;
-      padding: 20px 20px;
+    .user-dropdown{
+
+      .user-dropdown-button{
+        border: none;
+        outline: none;
+        color: $PRIMARY_TO_FADE;
+        padding: 20px 20px;
+        margin: 0;
+        transition: 0.3s;
+
+        &:hover{
+          background-color: $HOVER_GREY;
+          cursor: pointer;
+        }
+      }
+
+      .user-dropdown-content{
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        width: 156px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 10;
+        right: 20px;
+
+        div{
+          float: none;
+          color: $PRIMARY_TO_FADE;
+          padding: 12px 16px;
+          text-decoration: none;
+          display: block;
+          text-align: left;
+          white-space:nowrap;
+          font-weight: normal;
+          transition: 0.3s;
+
+          &:hover{
+            background-color: $HOVER_GREY;
+            cursor: pointer;
+          }
+        }
+
+        :last-child{
+          border-top: 1px solid $ELEMENT_UI_DEFAULT_BORDER;
+          padding-top: 4px;
+        }
+      }
+
+      .show-user-dropdown-content{
+        display: block;
+      }
     }
   }
 
@@ -229,6 +264,7 @@ export default {
     color: $PRIMARY_TO_FADE;
     height: 61px;
     transition: 0.3s;
+    user-select: none;
 
     &:hover{
       background-color: $HOVER_GREY;
