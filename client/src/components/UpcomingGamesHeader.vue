@@ -239,12 +239,13 @@ export default {
   }
 
   #upcoming-games-header-scroll-container{
-    overflow-x: auto;
+    overflow-x: overlay;
     overflow-y: hidden;
     width: calc(100% - 120px);
     display: flex;
     flex-direction: row;
     border-bottom: 1px solid #d2d2d2;
+    border-top: 1px solid #d2d2d2;
 
     #prev-day-games-container{
       display: flex;
