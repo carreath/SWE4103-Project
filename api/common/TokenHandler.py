@@ -41,7 +41,6 @@ class TokenHandler:
             'email': db_response[5],
             'hash': db_response[6],
             'last_login': (db_response[7].strftime('%Y-%m-%d %H:%M:%S') if db_response[7] else "None")
-        # TODO make sure this solution works properly (fixes 500 NoneType on first login)
         }
         db_connector.conn.close()
         return user_data

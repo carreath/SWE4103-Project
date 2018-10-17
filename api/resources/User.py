@@ -98,8 +98,8 @@ class TokenValidation(Resource):
         if not token:
             abort(403, error="Unauthorized Access (no token)")
         tk_handler = TokenHandler()
-        user = tk_handler.get_token_user(token)
-        new_token = tk_handler.create_token(user)
+        user = tk_handler.get_token_user(token.split(' ')[1])
+        new_token = tk_handler.create_token(user['email'])
         return {'user_data': user, 'new_token': new_token.decode('UTF-8')}, 200
 
 
