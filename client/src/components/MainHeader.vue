@@ -1,35 +1,5 @@
 <template>
   <div id="main-header">
-    <div id="main-header-minor">
-      <div
-        id="valid-user"
-        v-if="loggedIn">
-        <div
-          id=user-name>
-          {{ user.first_name }} {{ user.last_name }}
-        </div>
-        <div
-          id="log-out"
-          @click='logoutClicked'>
-          Log Out
-          <font-awesome-icon icon="sign-out-alt"></font-awesome-icon>
-        </div>
-      </div>
-      <div
-        id="invalid-user"
-        v-else>
-        <div
-          id="log-in"
-          @click='setLoginModalVisible(true)'>
-          Log In
-        </div>
-        <div
-          id="create-account"
-          @click='setCreateAccountModalVisible(true)'>
-          Create Account
-        </div>
-      </div>
-    </div>
     <div id="main-header-major">
       <div id="main-header-major-left">
         <img id="soccer-ball-img" src="@/assets/Soccerball.svg" alt="SoccerBall">
@@ -43,17 +13,20 @@
         <WeatherWidget/>
       </div>
     </div>
+    <NavMenu/>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import WeatherWidget from '@/components/WeatherWidget.vue';
+import NavMenu from '@/components/NavMenu.vue';
 
 export default{
   name: 'MainHeader',
   components: {
     WeatherWidget,
+    NavMenu,
   },
   computed: {
     ...mapGetters([
@@ -66,8 +39,10 @@ export default{
       'setLoginModalVisible',
       'setCreateAccountModalVisible',
       'userLogOut',
+      'setActiveNavIndex',
     ]),
     mainHeaderClicked() {
+      this.setActiveNavIndex('1');
       this.$router.push('/');
     },
     logoutClicked() {
@@ -86,7 +61,6 @@ export default{
 @import '@/style/global.scss';
 
 #main-header{
-  height: 212px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -150,12 +124,12 @@ export default{
   }
 
   #main-header-major{
-    height: 180px;
     background: linear-gradient($PRIMARY_COLOR, $PRIMARY_TO_FADE);
     padding: 8px 8px;
     width: calc(100% - 16px);
     display: flex;
     justify-content: space-between;
+    align-items: center;
 
     #main-header-major-left{
       display: flex;
@@ -166,7 +140,7 @@ export default{
       }
 
       #soccer-ball-img{
-        height: 132px;
+        height: 108px;
         align-self: flex-end;
 
         @include smallScreenSize{
@@ -179,7 +153,7 @@ export default{
         text-align: start;
         align-self: flex-end;
         font-weight: bold;
-        font-size: 48px;
+        font-size: 2.5rem;
         margin: 0px 4px;
         text-shadow:
           -1px -1px 0 #000,
