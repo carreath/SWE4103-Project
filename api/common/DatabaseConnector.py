@@ -8,11 +8,11 @@ class DatabaseConnector:
         app = Flask(__name__)
         mariadb = MySQL()
 
-        app.config['MYSQL_DATABASE_USER'] = config.aws_db['user']
-        app.config['MYSQL_DATABASE_PASSWORD'] = config.aws_db['password']
-        app.config['MYSQL_DATABASE_DB'] = config.aws_db['database']
-        app.config['MYSQL_DATABASE_HOST'] = config.aws_db['host']
-        app.config['MYSQL_DATABASE_PORT'] = config.aws_db['port']
+        app.config['MYSQL_DATABASE_USER'] = config.local_db['user']
+        app.config['MYSQL_DATABASE_PASSWORD'] = config.local_db['password']
+        app.config['MYSQL_DATABASE_DB'] = config.local_db['database']
+        app.config['MYSQL_DATABASE_HOST'] = config.local_db['host']
+        app.config['MYSQL_DATABASE_PORT'] = config.local_db['port']
 
         mariadb.init_app(app)
 
