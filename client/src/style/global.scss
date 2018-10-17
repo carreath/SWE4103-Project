@@ -7,6 +7,13 @@ $ELEMENT_UI_DEFAULT_BORDER: #dcdfe6; // Used to overwrite the green success bord
 
 $HOVER_GREY: #cacaca;
 
+$HOVER_LIGHT_GREY: #e0e0e0;
+
+// Global Classes
+.lightGreyBackground{
+  background: $HOVER_LIGHT_GREY;
+}
+
 
 /* Mixins */
 @mixin smallScreenSize() {

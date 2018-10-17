@@ -40,7 +40,8 @@
         <div
           class="user-dropdown-button"
           @mouseover="userDropdownButtonHover=true"
-          @mouseleave="userDropdownButtonHover=false">
+          @mouseleave="userDropdownButtonHover=false"
+          :class="{'lightGreyBackground': userDropdownContentHover}">
           {{ user.first_name }} {{ user.last_name }}
           <font-awesome-icon icon="caret-down" />
         </div>
