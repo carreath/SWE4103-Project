@@ -34,7 +34,7 @@ const state = {
       draws: 0,
     },
   ],
-  selectedTeamId: 1, // NOTE default to first teams
+  selectedTeamId: 1, // NOTE this should default to first team in selecetd league
 };
 
 // getters
