@@ -41,7 +41,7 @@ const actions = {
   },
   userLogIn({ commit }, payload) {
     return UserService.login(payload).then((response) => {
-      if (!response.status) {
+      if (!response || !response.status) {
         return { retVal: false, retMsg: 'Server Error' };
       }
       switch (response.status) {

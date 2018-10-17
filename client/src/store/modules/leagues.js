@@ -14,7 +14,7 @@ const state = {
       season: '2018',
     },
   ],
-  selectedLeagueId: null,
+  selectedLeagueId: 1, // NOTE Default to first league
 };
 
 // getters
