@@ -25,6 +25,9 @@ const getters = {
   selectedLeagueId(state) {
     return state.selectedLeagueId;
   },
+  selectedLeague(state) {
+    return state.leagues.find(league => league.id === state.selectedLeagueId);
+  },
 };
 
 // actions
@@ -32,7 +35,7 @@ const actions = {
   getLeagues({ commit }) {
     LeaguesService.getLeagues().then((response) => {
       if (response && response.status === 200) {
-        commit('mustateLeagues', response.leagues);
+        commit('mutateLeagues', response.leagues);
       }
     });
   },
@@ -61,7 +64,7 @@ const actions = {
 
 // mutations
 const mutations = {
-  mustateLeagues(state, payload) {
+  mutateLeagues(state, payload) {
     state.leagues = payload;
   },
   mutateSelectedLeagueId(state, id) {
