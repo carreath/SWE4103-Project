@@ -1,7 +1,6 @@
 // state
 const state = {
-  player: [],
-
+  player: [], // NOTE: idk
 };
 
 // getters

@@ -2,7 +2,7 @@ import TeamsService from '@/service/TeamsService';
 
 // state
 const state = {
-  teams: [
+  teams: [ // NOTE this is hardcoded until the backend gets their shit together
     {
       teamId: 1,
       leagueId: 1,
@@ -47,6 +47,9 @@ const getters = {
   },
   selectedTeam(state) {
     return state.teams.find(team => team.id === state.selectedTeamId);
+  },
+  teamById: (state) => (teamId) => {
+    return state.teams.find(team => team.id === teamId);
   },
   teamsByLeagueId: (state) => (leagueId) => {
     return state.teams.filter(team => team.leagueId === leagueId);

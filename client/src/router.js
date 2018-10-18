@@ -5,6 +5,7 @@ import PasswordReset from './views/PasswordReset.vue';
 import Standings from './views/Standings.vue';
 import Schedule from './views/Schedule.vue';
 import Teams from './views/Teams.vue';
+import Admin from './views/Admin.vue';
 
 Vue.use(Router);
 
@@ -36,6 +37,11 @@ const router = new Router({
       path: '/teams',
       name: 'teams',
       component: Teams,
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: Admin,
     },
   ],
 });

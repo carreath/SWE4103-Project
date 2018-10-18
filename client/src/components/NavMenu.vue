@@ -30,6 +30,17 @@
             Standings
           </span>
         </li>
+
+        <li
+          v-if="loggedIn"
+          :class="{'is-active': curRoute === 'admin'}"
+          @click="handleNavMenuSelect('admin')">
+          <span>
+            Admin
+          </span>
+        </li>
+        <!-- TODO Commented code -->
+        <!--
         <li
           v-if="loggedIn"
           :class="{'is-active': false}">
@@ -56,6 +67,7 @@
             </div>
           </div>
         </li>
+        -->
       </ul>
     </div>
 
@@ -114,7 +126,6 @@ export default {
     ...mapGetters([
       'user',
       'loggedIn',
-      'activeNavIndex',
     ]),
     curRoute() {
       return this.$route.name;
@@ -131,7 +142,6 @@ export default {
       'setLoginModalVisible',
       'setCreateAccountModalVisible',
       'userLogOut',
-      'setActiveNavIndex',
     ]),
     handleNavMenuSelect(key) {
       switch (key) {
@@ -149,6 +159,10 @@ export default {
         }
         case ('standings'): {
           this.$router.push('/standings');
+          break;
+        }
+        case ('admin'): {
+          this.$router.push('/admin');
           break;
         }
         default: {
@@ -258,6 +272,7 @@ export default {
       }
     }
 
+
     .is-active{
       transition: 0.3s;
       border-bottom: 2px solid $PRIMARY_TO_FADE;
@@ -267,6 +282,18 @@ export default {
         transition: 0.3s;
       }
     }
+
+    /*
+    .is-active{
+      transition: 0.3s;
+      background-color: $PRIMARY_TO_FADE;
+
+      span{
+        color: $SECONDARY_COLOR;
+        transition: 0.3s;
+      }
+    }
+    */
   }
 
   #user-dropdown-container{
