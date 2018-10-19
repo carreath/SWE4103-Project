@@ -21,11 +21,11 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import MainHeader from '@/components/MainHeader.vue';
-import ModalWrapper from '@/components/ModalWrapper.vue';
-import UpcomingGamesHeader from '@/components/UpcomingGamesHeader.vue';
-import NavMenu from '@/components/NavMenu.vue';
-import AdminSubNavMenu from '@/components/AdminSubNavMenu.vue';
+import MainHeader from './components/MainHeader.vue';
+import ModalWrapper from './components/ModalWrapper.vue';
+import UpcomingGamesHeader from './components/UpcomingGamesHeader.vue';
+import NavMenu from './components/NavMenu.vue';
+import AdminSubNavMenu from './components/AdminSubNavMenu.vue';
 
 export default{
   name: 'App',
