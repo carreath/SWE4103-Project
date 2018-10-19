@@ -112,7 +112,7 @@ class User(Resource):
             'first_name': db_response[3],
             'last_name': db_response[4],
             'email': db_response[5],
-            'last_login': db_response[7]
+            'last_login': db_response[7].strftime('%Y-%m-%d %H:%M:%S') if db_response[7] else None
         }
         db_connector.conn.close()
 
