@@ -1,4 +1,5 @@
 from distutils.core import setup
+from setuptools import find_packages
 
 setup(
     # Application name:
@@ -12,7 +13,7 @@ setup(
     author_email="carreath@icloud.com",
 
     # Packages
-    packages=["common","resources"],
+    packages=find_packages(exclude=['.idea', 'contrib', 'docs', 'tests']),
 
     # Include additional files into the package
     include_package_data=True,
