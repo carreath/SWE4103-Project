@@ -2,7 +2,14 @@ from flask import Flask
 from flask_restful import Api
 from flask_cors import CORS
 from resources import *
+import config
 
+import os
+
+from OpenSSL import SSL
+context = SSL.Context(SSL.SSLv23_METHOD)
+cer = os.path.join(config.ssl_config['cer'])
+key = os.path.join(config.ssl_config['key'])
 
 app = Flask(__name__,
             static_url_path='',
@@ -26,4 +33,14 @@ api.add_resource(Root, "/")
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # Check that the SSL certificate exists if not run http://
+    if os.path.isfile(cer) and os.path.isfile(key):
+        context = (cer, key)
+        app.run(host=config.app_settings['host'],
+                port=config.app_settings['port'],
+                ssl_context=context,
+                debug=config.app_settings['debug'])
+    else:
+        app.run(host=config.app_settings['host'],
+                port=config.app_settings['port'],
+                debug=config.app_settings['debug'])
