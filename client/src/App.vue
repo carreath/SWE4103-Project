@@ -7,6 +7,7 @@
       id="nav-menu-wrapper"
       :class="{'sticky': nailNavMenu}">
       <NavMenu/>
+      <AdminSubNavMenu v-if="curRoute === 'admin'"/>
     </div>
     <div
       class="router-view-outer-wrapper"
@@ -24,6 +25,7 @@ import MainHeader from '@/components/MainHeader.vue';
 import ModalWrapper from '@/components/ModalWrapper.vue';
 import UpcomingGamesHeader from '@/components/UpcomingGamesHeader.vue';
 import NavMenu from '@/components/NavMenu.vue';
+import AdminSubNavMenu from '@/components/AdminSubNavMenu.vue';
 
 export default{
   name: 'App',
@@ -32,6 +34,7 @@ export default{
     ModalWrapper,
     UpcomingGamesHeader,
     NavMenu,
+    AdminSubNavMenu,
   },
   data() {
     return {
@@ -43,6 +46,9 @@ export default{
       'modalVisible',
       'token',
     ]),
+    curRoute() {
+      return this.$route.name;
+    },
   },
   methods: {
     ...mapActions([
@@ -84,6 +90,7 @@ export default{
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  font-size: 16px;
 
   .sticky {
     position: fixed;
