@@ -33,7 +33,7 @@
 
         <li
           v-if="loggedIn"
-          :class="{'is-active': curRoute === 'admin'}"
+          :class="{'is-active': curRoute.includes('admin')}"
           @click="handleNavMenuSelect('admin')">
           <span>
             Admin
@@ -181,7 +181,7 @@ export default {
             message: 'Logged Out',
             center: true,
           });
-          if (this.$route.name === 'admin') {
+          if (this.$route.name.includes('admin')) {
             this.$router.push('/');
           }
         });
