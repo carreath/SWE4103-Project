@@ -55,8 +55,9 @@ export default {
   justify-content: space-between;
   width: 100%;
   border-bottom: 1px solid $HOVER_GREY;
-  background-color: $HOVER_LIGHT_GREY;
+  background-color: $VERY_LIGHT_GREY;
   transition: 0.3s;
+  font-size: 0.9rem;
 
   #admin-sub-menu{
     padding: 0px 20px;
