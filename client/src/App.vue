@@ -7,7 +7,7 @@
       id="nav-menu-wrapper"
       :class="{'sticky': nailNavMenu}">
       <NavMenu/>
-      <AdminSubNavMenu v-if="curRoute === 'admin'"/>
+      <AdminSubNavMenu v-if="curRoute.includes('admin')"/>
     </div>
     <div
       id="router-view-outer-wrapper"

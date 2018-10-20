@@ -2,17 +2,23 @@
   <div id="admin-sub-nav-menu">
     <div id="admin-sub-menu-container">
       <ul id="admin-sub-menu">
-        <li>
+        <li
+          :class="{'is-active': curRoute === 'admin-leagues'}"
+          @click="handleAdminNavMenuSelect('leagues')">
           <span>
             Leagues
           </span>
         </li>
-        <li>
+        <li
+          :class="{'is-active': curRoute === 'admin-teams'}"
+          @click="handleAdminNavMenuSelect('teams')">
           <span>
             Teams
           </span>
         </li>
-        <li>
+        <li
+          :class="{'is-active': curRoute === 'admin-players'}"
+          @click="handleAdminNavMenuSelect('players')">
           <span>
             Players
           </span>
@@ -36,11 +42,33 @@ export default {
     ...mapGetters([
 
     ]),
+    curRoute() {
+      return this.$route.name;
+    },
   },
   methods: {
     ...mapActions([
 
     ]),
+    handleAdminNavMenuSelect(key) {
+      switch (key) {
+        case ('leagues'): {
+          this.$router.push('/admin/leagues');
+          break;
+        }
+        case ('teams'): {
+          this.$router.push('/admin/teams');
+          break;
+        }
+        case ('players'): {
+          this.$router.push('/admin/players');
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    },
   },
 };
 
@@ -84,6 +112,16 @@ export default {
         user-select: none;
       }
 
+    }
+
+    .is-active{
+      transition: 0.3s;
+      border-bottom: 2px solid $PRIMARY_TO_FADE;
+
+      span{
+        margin-bottom: -2px;
+        transition: 0.3s;
+      }
     }
   }
 }

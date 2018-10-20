@@ -162,7 +162,7 @@ export default {
           break;
         }
         case ('admin'): {
-          this.$router.push('/admin');
+          this.$router.push('/admin/leagues');
           break;
         }
         default: {
