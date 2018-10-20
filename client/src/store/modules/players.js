@@ -5,7 +5,7 @@ const state = {
 
 // getters
 const getters = {
-  playersByTeamId: (state, id) => {
+  playersByTeamId: (state) => (id) => {
     return state.players.filter(player => player.teamId === id);
   },
 };
