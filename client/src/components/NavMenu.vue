@@ -181,6 +181,9 @@ export default {
             message: 'Logged Out',
             center: true,
           });
+          if (this.$route.name === 'admin') {
+            this.$router.push('/');
+          }
         });
       }).catch(() => {
       });
