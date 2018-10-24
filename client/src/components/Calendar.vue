@@ -3,7 +3,7 @@
     {{  message }}
     <div class="calendar-parent">
       <calendar-view
-        :events="events"
+        :events="displayedGameObjects"
         :show-date="showDate"
         :time-format-options="{hour: 'numeric', minute:'2-digit'}"
         :enable-drag-drop="false"
@@ -14,8 +14,7 @@
         :display-period-count="displayPeriodCount"
         :starting-day-of-week="startingDayOfWeek"
         :class="themeClasses"
-        :period-changed-callback="periodChanged"
-        @drop-on-date="onDrop"
+        :eventContentHeight="eventContentHeight"
         @click-date="onClickDay"
         @click-event="onClickEvent">
         <calendar-view-header
@@ -29,6 +28,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
 import {
   CalendarView,
   CalendarViewHeader,
@@ -60,39 +60,17 @@ export default {
       newEventEndDate: '',
       useDefaultTheme: false,
       useHolidayTheme: true,
-      events: [
-        {
-          id: 0,
-          startDate: this.thisMonth(15, 18, 30),
-          title: 'Single-day event with a long title',
-        },
-        {
-          id: 1,
-          startDate: this.thisMonth(20),
-          title: 'My Birthday!',
-          classes: 'birthday',
-          url: 'https://en.wikipedia.org/wiki/Birthday',
-        },
-        {
-          id: 2,
-          startDate: this.thisMonth(5),
-          title: 'Color event',
-          classes: 'purple',
-        },
-        {
-          id: 3,
-          startDate: this.thisMonth(29),
-          title: 'Same day 1',
-        },
-        {
-          id: 4,
-          startDate: '2018-10-24T11:00:00',
-          title: 'GAME DAY',
-        },
-      ],
+      eventContentHeight: '2.5em',
+      selectedLeague: 1,
+      displayedGameObjects: [],
     };
   },
   computed: {
+    ...mapGetters([
+      'gamesByLeagueId',
+      'selectedLeagueId',
+      'selectedGameId',
+    ]),
     userLocale() {
       return this.getDefaultBrowserLocale;
     },
@@ -108,36 +86,40 @@ export default {
     },
   },
   methods: {
-    // eslint-disable-next-line
-    periodChanged(range, eventSource) {
-      // Demo does nothing with this information, just including the method to
-      // demonstrate how you can listen for changes to the displayed range and
-      // react to them (by loading events, etc.)
-      // console.log(eventSource);
-      // console.log(range);
+    ...mapActions([
+      'setSelectedGameId',
+    ]),
+    generateGameObjs() {
+      const leagueGames = this.gamesByLeagueId(this.selectedLeagueId);
+      const leagueGamesForCalendar = leagueGames.map((gameObj) => {
+        let gameObjForCalendar = {
+          id: gameObj.id,
+          startDate: `${gameObj.date}T${gameObj.time}`,
+          title: `${gameObj.fieldName} - ${gameObj.awayTeam} vs. ${gameObj.homeTeam}`,
+        };
+        if (this.selectedGameId === gameObj.id) {
+          gameObjForCalendar.classes = 'selected-event';
+        }
+        return gameObjForCalendar;
+      });
+      this.displayedGameObjects = leagueGamesForCalendar;
     },
     thisMonth(d, h, m) {
       const t = new Date();
       return new Date(t.getFullYear(), t.getMonth(), d, h || 0, m || 0);
     },
     onClickDay(d) {
+      // console.log('DATE CLICKED: ', d);
       this.message = `You clicked: ${d.toLocaleDateString()}`;
     },
     onClickEvent(e) {
-      console.log('EVENT: ', e);
-      this.message = `You clicked: ${e.title}`;
+      // console.log('EVENT: ', e.id);
+      // this.message = `You clicked: ${e.title}`;
+      this.setSelectedGameId(e.id);
     },
     setShowDate(d) {
       this.message = `Changing calendar view to ${d.toLocaleDateString()}`;
       this.showDate = d;
-    },
-    onDrop(event, date) {
-      this.message = `You dropped ${event.id} on ${date.toLocaleDateString()}`;
-      // Determine the delta between the old start date and the date chosen,
-      // and apply that delta to both the start and end date to move the event.
-      const eLength = this.dayDiff(event.startDate, date);
-      event.originalEvent.startDate = this.addDays(event.startDate, eLength);
-      event.originalEvent.endDate = this.addDays(event.endDate, eLength);
     },
     clickTestAddEvent() {
       this.events.push({
@@ -148,9 +130,15 @@ export default {
       this.message = 'You added an event!';
     },
   },
+  watch: {
+    selectedGameId() {
+      this.generateGameObjs();
+    },
+  },
   mounted() {
     this.newEventStartDate = this.isoYearMonthDay(this.today());
     this.newEventEndDate = this.isoYearMonthDay(this.today());
+    this.generateGameObjs();
   },
 };
 </script>
@@ -170,7 +158,8 @@ export default {
     overflow-x: hidden;
     overflow-y: hidden;
     background-color: $SECONDARY_COLOR;
-    height: 100vh;
+    height: 80vh;
+    min-height: 600px;
 
     /* Header */
     .cv-header,
@@ -216,18 +205,27 @@ export default {
       border-radius: 0.5em;
       background-color: #2577db;
       color: #fcfcfc;
-      text-overflow: ellipsis;
+      white-space: normal;
       font-size: 0.8rem;
+      text-align: left;
+      line-height: 1em;
+      height: 2.3em;
+      text-overflow: ellipsis;
+
+      &:hover{
+        cursor: pointer;
+      }
     }
 
-    .cv-event.purple {
-      background-color: #f0e0ff;
-      border-color: #e7d7f7;
-    }
+    .cv-event.selected-event{
+      background: #d8eaff;
+      color: $PRIMARY_COLOR;
+      transition: 0.2s;
 
-    .cv-event.orange {
-      background-color: #ffe7d0;
-      border-color: #f7e0c7;
+      span{
+        color: $PRIMARY_COLOR;
+        transition: 0.2s;
+      }
     }
 
     .cv-event.continued::before,
