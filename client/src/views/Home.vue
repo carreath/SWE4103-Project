@@ -1,10 +1,10 @@
 <template>
   <div id="home">
     <div id="home-left">
-      <TwitterFeed/>
+      HOME
     </div>
     <div id="home-right">
-      HOME
+      <TwitterFeed/>
     </div>
   </div>
 </template>
@@ -27,14 +27,15 @@ export default {
   width: 100%;
 
   #home-left{
-    width: 25%;
-    display: flex;
-    justify-content: flex-start;
+    width: calc(75% - 16px);
+
   }
 
   #home-right{
-    width: calc(75% - 16px);
+    width: 25%;
     margin: 0px 8px;
+    display: flex;
+    justify-content: flex-start;
   }
 }
 </style>

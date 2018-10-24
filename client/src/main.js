@@ -1,8 +1,9 @@
 import Vue from 'vue';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import 'element-ui/lib/theme-chalk/reset.css';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 import App from './App.vue';
@@ -12,6 +13,7 @@ import store from './store/index';
 Vue.config.productionTip = false;
 
 library.add(faCaretDown);
+library.add(faSignOutAlt);
 
 Vue.use(ElementUI);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
