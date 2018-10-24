@@ -158,7 +158,7 @@ export default {
     overflow-y: hidden;
     background-color: $SECONDARY_COLOR;
     height: 80vh;
-    min-height: 600px;
+    min-height: 550px;
 
     /* Header */
     .cv-header,

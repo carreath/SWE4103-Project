@@ -39,35 +39,6 @@
             Admin
           </span>
         </li>
-        <!-- TODO Commented code -->
-        <!--
-        <li
-          v-if="loggedIn"
-          :class="{'is-active': false}">
-          <div class="admin-dropdown">
-            <div
-              class="admin-dropdown-button"
-              @mouseover="adminDropdownButtonHover=true"
-              @mouseleave="adminDropdownButtonHover=false"
-              :class="{'lightGreyBackground': adminDropdownContentHover}">
-              Admin
-              <font-awesome-icon icon="caret-down" />
-            </div>
-            <div
-              class="admin-dropdown-content"
-              :class="{'show-admin-dropdown-content': adminDropdownVisible}"
-              @mouseover="adminDropdownContentHover=true"
-              @mouseleave="adminDropdownContentHover=false">
-              <div>
-                Create League
-              </div>
-              <div>
-                Create Team
-              </div>
-            </div>
-          </div>
-        </li>
-        -->
       </ul>
     </div>
 

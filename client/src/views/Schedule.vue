@@ -1,18 +1,11 @@
 <template>
   <div id="schedule">
     <div id="schedule-header">
-
     </div>
     <div id="schedule-body">
       <div id="calendar-view">
         <div id="calendar-view-left">
           <div id="calendar-view-left-header">
-            <div>
-              <el-radio-group v-model="localScheduleSelectedView" size="small">
-                <el-radio-button label="Calendar"></el-radio-button>
-                <el-radio-button label="Table"></el-radio-button>
-              </el-radio-group>
-            </div>
           </div>
 
           <div v-if="!selectedGame">
@@ -44,7 +37,9 @@
           </div>
         </div>
 
-        <div class="calendar-holder">
+        <div
+          v-if="scheduleSelectedView === 'Calendar'"
+          class="calendar-holder">
           <calendar/>
         </div>
 
@@ -71,6 +66,7 @@ export default {
     ...mapGetters([
       'selectedGameId',
       'selectedGame',
+      'scheduleSelectedView',
     ]),
   },
 };
