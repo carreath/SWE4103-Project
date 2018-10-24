@@ -1,8 +1,15 @@
 <template>
   <div id="schedule">
-    SCHEDULE
-    <div class="calendar-holder">
-      <calendar/>
+    <div id="schedule-header">
+
+    </div>
+    <div id="schedule-body">
+      <div class="calendar-holder">
+        <calendar/>
+      </div>
+      <div id="schedule-options-container">
+
+      </div>
     </div>
   </div>
 </template>
@@ -24,6 +31,28 @@ export default {
 
 <style lang="scss" scoped>
 #schedule{
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0px;
 
+  #schedule-header{
+
+  }
+
+  #schedule-body{
+    display: flex;
+    flex-direction: row;
+
+    .calendar-holder{
+      display: flex;
+      width: 75%;
+      min-width: 800px;
+    }
+
+    #schedule-options-container{
+
+
+    }
+  }
 }
 </style>
