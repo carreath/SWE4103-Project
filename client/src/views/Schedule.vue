@@ -5,33 +5,49 @@
     </div>
     <div id="schedule-body">
       <div id="calendar-view">
-        <div class="calendar-holder">
-          <calendar/>
-        </div>
-        <div id="calendar-game-info-container">
+        <div id="calendar-view-left">
+          <div id="calendar-view-left-header">
+            <div>
+              <el-radio-group v-model="localScheduleSelectedView" size="small">
+                <el-radio-button label="Calendar"></el-radio-button>
+                <el-radio-button label="Table"></el-radio-button>
+              </el-radio-group>
+            </div>
+          </div>
+
           <div v-if="!selectedGame">
             No Game Selected
           </div>
           <div
             id="game-info"
             v-else>
-            <div>
-              Home Team - {{ selectedGame.homeTeam }}
-            </div>
-            <div>
-              Away Team - {{ selectedGame.awayTeam }}
-            </div>
-            <div>
-              Field - {{ selectedGame.fieldName }}
-            </div>
-            <div>
-              Date - {{ selectedGame.date }}
-            </div>
-            <div>
-              Time - {{ selectedGame.time }}
-            </div>
+            <h2 class="header">
+              Game Informaion
+            </h2>
+            <ul>
+              <li>
+                Home Team - {{ selectedGame.homeTeam }}
+              </li>
+              <li>
+                Away Team - {{ selectedGame.awayTeam }}
+              </li>
+              <li>
+                Field - {{ selectedGame.fieldName }}
+              </li>
+              <li>
+                Date - {{ selectedGame.date }}
+              </li>
+              <li>
+                Time - {{ selectedGame.time }}
+              </li>
+            </ul>
           </div>
         </div>
+
+        <div class="calendar-holder">
+          <calendar/>
+        </div>
+
       </div>
     </div>
   </div>
@@ -48,6 +64,7 @@ export default {
   },
   data() {
     return {
+      localScheduleSelectedView: 'Calendar',
     };
   },
   computed: {
@@ -63,8 +80,7 @@ export default {
 #schedule{
   display: flex;
   flex-direction: column;
-  padding: 8px 0px;
-
+  margin-bottom: 8px;
   #schedule-header{
 
   }
@@ -76,21 +92,54 @@ export default {
     #calendar-view{
       display: flex;
       flex-direction: row;
+      justify-content: space-between;
+      width: 100%;
 
       .calendar-holder{
         display: flex;
+        justify-content: flex-end;
         width: 75%;
-        min-width: 800px;
       }
 
-      #calendar-game-info-container{
+      #calendar-view-left{
         display: flex;
         flex-direction: column;
+        width: 25%;
+        border-left: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+
+        #calendar-view-left-header{
+          background-color: #f7f7f7;
+          border-color: #ddd;
+          border-style: solid;
+          min-height: 2.5em;
+          border-width: 1px 0px 1px 0px;
+          flex: 0 1 auto;
+          align-items: center;
+          display: flex;
+          height: 53px;
+        }
 
         #game-info{
           display: flex;
           flex-direction: column;
           align-items: flex-start;
+          justify-content: center;
+          height: 100%;
+
+          .header{
+            display: flex;
+            justify-content: center;
+          }
+
+          ul{
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            list-style: none;
+
+
+          }
         }
 
       }

@@ -1,6 +1,5 @@
 <template>
   <div id="calendar">
-    {{  message }}
     <div class="calendar-parent">
       <calendar-view
         :events="displayedGameObjects"
