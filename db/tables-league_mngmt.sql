@@ -51,6 +51,7 @@ CREATE TABLE teams (
     leagueID            INT             NOT NULL,
     managerID           INT             DEFAULT NULL,
     teamName            VARCHAR(32)     NOT NULL,
+    colour              VARCHAR(7)      NOT NULL,
     leaguePoints        INT             NOT NULL DEFAULT 0,
     wins                INT             NOT NULL DEFAULT 0,
     losses              INT             NOT NULL DEFAULT 0,
