@@ -3,7 +3,7 @@
     <div>
       Admin Panel
     </div>
-    <AdminLeaguesContainer/>
+    <AdminLeaguesContainer v-if="curRoute === 'admin-leagues'"/>
   </div>
 </template>
 
@@ -25,6 +25,9 @@ export default {
     ...mapGetters([
 
     ]),
+    curRoute() {
+      return this.$route.name;
+    },
   },
   methods: {
     ...mapActions([

@@ -43,6 +43,21 @@ const router = new Router({
       name: 'admin',
       component: Admin,
     },
+    {
+      path: '/admin/leagues',
+      name: 'admin-leagues',
+      component: Admin,
+    },
+    {
+      path: '/admin/teams',
+      name: 'admin-teams',
+      component: Admin,
+    },
+    {
+      path: '/admin/players',
+      name: 'admin-players',
+      component: Admin,
+    },
   ],
 });
 

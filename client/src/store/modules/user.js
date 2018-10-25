@@ -69,13 +69,22 @@ const actions = {
   setUser({ commit }, user) {
     commit('mutateUser', user);
   },
-  retrieveUserFromToken({ commit }) {
+  retrieveUserFromToken({ commit, dispatch }) {
     UserService.getUserFromToken().then((response) => {
       if (response.status && response.status === 200) {
-        commit('mutateUser', response.data.user_data);
-        commit('mutateToken', response.data.new_token);
+        dispatch('refreshToken');
+        commit('mutateUser', response.data.user);
       } else {
         commit('mutateUser', null);
+        commit('mutateToken', null);
+      }
+    });
+  },
+  refreshToken({ commit }) {
+    UserService.refreshToken().then((response) => {
+      if (response.status && response.status === 200) {
+        commit('mutateToken', response.data.token);
+      } else {
         commit('mutateToken', null);
       }
     });
