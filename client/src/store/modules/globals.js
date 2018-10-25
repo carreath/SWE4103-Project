@@ -3,7 +3,6 @@
 const state = {
   loginModalVisible: false,
   createAccoundModalVisible: false,
-  activeNavIndex: '1',
 };
 
 // getters
@@ -16,9 +15,6 @@ const getters = {
   },
   createAccoundModalVisible(state) {
     return state.createAccoundModalVisible;
-  },
-  activeNavIndex(state) {
-    return state.activeNavIndex;
   },
 };
 
@@ -36,9 +32,6 @@ const actions = {
     dispatch('setLoginModalVisible', false);
     dispatch('setCreateAccountModalVisible', false);
   },
-  setActiveNavIndex({ commit }, index) {
-    commit('mutateActiveNavIndex', index);
-  },
 };
 
 // mutations
@@ -48,9 +41,6 @@ const mutations = {
   },
   mutateCreateAccountModalVisible(state, isVisible) {
     state.createAccoundModalVisible = isVisible;
-  },
-  mutateActiveNavIndex(state, index) {
-    state.activeNavIndex = index;
   },
 };
 

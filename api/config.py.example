@@ -4,10 +4,27 @@ aws_db = {'user': 'aws_user',
           'host': 'aws_host',
           'port': port_num}
 
+remote_db = {'user': 'swe4103',
+          'password': '!$wE4103!',
+          'database': 'leagues',
+          'host': '142.93.244.110',
+          'port': 3306}
+
 local_db = {'user': 'local_user',
             'password': 'local_pw',
-            'database': 'local_db',
+            'database': 'leagues',
             'host': 'localhost',
             'port': 3306}
 
 jwt_secret = '32 bit character sequence'
+
+app_settings = {
+    'host': '127.0.0.1',
+    'port': 5000,
+    'debug': True
+}
+
+ssl_config = {
+    'cer': '/etc/ssl/certs/apache-selfsigned.crt',
+    'key': '/etc/ssl/private/apache-selfsigned.key'
+}
