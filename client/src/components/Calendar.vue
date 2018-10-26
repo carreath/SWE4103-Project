@@ -70,6 +70,8 @@ export default {
       'selectedLeagueId',
       'selectedGameId',
       'teamById',
+      'gamesByTeamId',
+      'selectedTeamId',
     ]),
     userLocale() {
       return this.getDefaultBrowserLocale;
@@ -90,8 +92,10 @@ export default {
       'setSelectedGameId',
     ]),
     generateGameObjs() {
-      const leagueGames = this.gamesByLeagueId(this.selectedLeagueId);
-      const leagueGamesForCalendar = leagueGames.map((gameObj) => {
+      const selectedames = this.selectedTeamId ?
+        this.gamesByTeamId(this.selectedTeamId) :
+        this.gamesByLeagueId(this.selectedLeagueId);
+      const leagueGamesForCalendar = selectedames.map((gameObj) => {
         let gameObjForCalendar = {
           id: gameObj.gameID,
           startDate: `${gameObj.date}T${gameObj.time}`,
@@ -135,6 +139,9 @@ export default {
   },
   watch: {
     selectedGameId() {
+      this.generateGameObjs();
+    },
+    selectedTeamId() {
       this.generateGameObjs();
     },
   },

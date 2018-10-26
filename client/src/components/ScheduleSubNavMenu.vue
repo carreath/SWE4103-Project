@@ -45,7 +45,8 @@
                 @mouseover="scheduleTeamDropdownButtonHover=true"
                 @mouseleave="scheduleTeamDropdownButtonHover=false"
                 :class="{'lightGreyBackground': scheduleTeamDropdownContentHover}">
-                All Teams
+                <span v-if="!selectedTeamId">All Teams</span>
+                <span v-else>{{ selectedTeam.teamName }}</span>
                 <font-awesome-icon icon="caret-down" />
               </div>
               <div
@@ -53,11 +54,12 @@
                 :class="{'show-schedule-view-dropdown-content': scheduleTeamDropdownVisible}"
                 @mouseover="scheduleTeamDropdownContentHover=true"
                 @mouseleave="scheduleTeamDropdownContentHover=false">
-                <div>
-                  Team A
-                </div>
-                <div>
-                  Team B
+                <div @click="setSelectedTeamId(null)">All Teams</div>
+                <div
+                  v-for="team in teamsByLeagueId(selectedLeagueId)"
+                  :key="team.teamID"
+                  @click="setSelectedTeamId(team.teamID)">
+                  {{ team.teamName }}
                 </div>
               </div>
             </div>
@@ -85,6 +87,10 @@ export default {
   computed: {
     ...mapGetters([
       'scheduleSelectedView',
+      'teamsByLeagueId',
+      'selectedLeagueId',
+      'selectedTeam',
+      'selectedTeamId',
     ]),
     curRoute() {
       return this.$route.name;
@@ -99,6 +105,7 @@ export default {
   methods: {
     ...mapActions([
       'setScheduleSelectedView',
+      'setSelectedTeamId',
     ]),
   },
 };
