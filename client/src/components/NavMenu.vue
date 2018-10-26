@@ -281,6 +281,8 @@ export default {
 
 
     .user-dropdown{
+      width: 160px;
+
       .user-dropdown-button{
         border: none;
         outline: none;
@@ -303,6 +305,7 @@ export default {
         z-index: 10;
         right: 20px;
         border-radius: 0px 0px 6px 6px;
+        width: 160px;
 
         div{
           float: none;

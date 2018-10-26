@@ -3,47 +3,49 @@
     <div id="schedule-header">
     </div>
     <div id="schedule-body">
-      <div id="calendar-view">
+      <div
+        id="calendar-view"
+        v-if="scheduleSelectedView === 'Calendar'">
         <div id="calendar-view-left">
           <div id="calendar-view-left-header">
+            <span>Game Information</span>
           </div>
-
           <div v-if="!selectedGame">
             No Game Selected
           </div>
           <div
             id="game-info"
             v-else>
-            <h2 class="header">
-              Game Informaion
-            </h2>
-            <ul>
-              <li>
-                Home Team - {{ selectedGame.homeTeam }}
-              </li>
-              <li>
-                Away Team - {{ selectedGame.awayTeam }}
-              </li>
-              <li>
-                Field - {{ selectedGame.fieldName }}
-              </li>
-              <li>
-                Date - {{ selectedGame.date }}
-              </li>
-              <li>
-                Time - {{ selectedGame.time }}
-              </li>
-            </ul>
+            <table>
+              <tr>
+                <th>Home</th>
+                <td>{{ selectedGame.homeTeam }}</td>
+              </tr>
+              <tr>
+                <th>Away</th>
+                <td>{{ selectedGame.awayTeam }}</td>
+              </tr>
+              <tr>
+                <th>Field</th>
+                <td>{{ selectedGame.fieldName }}</td>
+              </tr>
+              <tr>
+                <th>Date</th>
+                <td>{{ selectedGame.date }}</td>
+              </tr>
+              <tr>
+                <th>Time</th>
+                <td>{{ selectedGame.time }}</td>
+              </tr>
+            </table>
           </div>
         </div>
-
         <div
-          v-if="scheduleSelectedView === 'Calendar'"
           class="calendar-holder">
           <calendar/>
         </div>
-
       </div>
+
     </div>
   </div>
 </template>
@@ -73,6 +75,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/style/global.scss';
+
 #schedule{
   display: flex;
   flex-direction: column;
@@ -108,33 +112,39 @@ export default {
           background-color: #f7f7f7;
           border-color: #ddd;
           border-style: solid;
-          min-height: 2.5em;
+          min-height: 48px;
           border-width: 1px 0px 1px 0px;
-          flex: 0 1 auto;
-          align-items: center;
           display: flex;
-          height: 53px;
+          align-items: center;
+          justify-content: center;
+
+          span{
+            font-size: 1.5rem;
+            font-weight: bold;
+          }
         }
 
         #game-info{
           display: flex;
           flex-direction: column;
           align-items: flex-start;
-          justify-content: center;
-          height: 100%;
+          justify-content: flex-start;
 
-          .header{
-            display: flex;
-            justify-content: center;
-          }
+          table{
+            width: 100%;
 
-          ul{
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            list-style: none;
+            tr{
+              border-bottom: 1px solid #ddd;
 
-
+              th{
+                border-bottom: 1px solid #ddd;
+                border-right: 1px solid #ddd;
+                background-color: $VERY_LIGHT_GREY;
+              }
+              td{
+                border-bottom: 1px solid #ddd;
+              }
+            }
           }
         }
 
