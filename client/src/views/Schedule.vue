@@ -19,11 +19,21 @@
             <table>
               <tr>
                 <th>Away</th>
-                <td>{{ teamById(selectedGame.awayTeamID).teamName }}</td>
+                <td>
+                  {{ teamById(selectedGame.awayTeamID).teamName }}
+                  <span v-if="selectedGame.status === 'Final'">
+                    - {{ selectedGame.awayGoals }}
+                  </span>
+                </td>
               </tr>
               <tr>
                 <th>Home</th>
-                <td>{{ teamById(selectedGame.homeTeamID).teamName }}</td>
+                <td>
+                  {{ teamById(selectedGame.homeTeamID).teamName }}
+                  <span v-if="selectedGame.status === 'Final'">
+                    - {{ selectedGame.homeGoals }}
+                  </span>
+                </td>
               </tr>
               <tr>
                 <th>Field</th>
@@ -31,11 +41,11 @@
               </tr>
               <tr>
                 <th>Date</th>
-                <td>{{ selectedGame.date }}</td>
+                <td>{{ selectedGame.gameTime.split(' ')[0] }}</td>
               </tr>
               <tr>
                 <th>Time</th>
-                <td>{{ selectedGame.time }}</td>
+                <td>{{ selectedGame.gameTime.split(' ')[1] }}</td>
               </tr>
               <tr>
                 <th>Status</th>

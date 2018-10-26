@@ -54,11 +54,16 @@
                 :class="{'show-schedule-view-dropdown-content': scheduleTeamDropdownVisible}"
                 @mouseover="scheduleTeamDropdownContentHover=true"
                 @mouseleave="scheduleTeamDropdownContentHover=false">
-                <div @click="handleTeamClick(null)">All Teams</div>
+                <div
+                  @click="handleTeamClick(null)"
+                  :class="{'boldText': !selectedTeamId}">
+                  All Teams
+                </div>
                 <div
                   v-for="team in teamsByLeagueId(selectedLeagueId)"
                   :key="team.teamID"
-                  @click="handleTeamClick(team.teamID)">
+                  @click="handleTeamClick(team.teamID)"
+                  :class="{'boldText': selectedTeamId === team.teamID}">
                   {{ team.teamName }}
                 </div>
               </div>
@@ -178,7 +183,7 @@ export default {
           box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
           z-index: 10;
           border-radius: 0px 0px 6px 6px;
-          width: 120px;
+          min-width: 120px;
 
           div{
             float: none;
