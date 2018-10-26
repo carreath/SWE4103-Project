@@ -165,6 +165,10 @@ export default {
             background-color: $HOVER_GREY;
             cursor: pointer;
           }
+
+          span{
+            margin-right: 4px;
+          }
         }
 
         .schedule-view-dropdown-content{
