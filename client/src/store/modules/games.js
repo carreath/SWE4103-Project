@@ -206,6 +206,30 @@ const getters = {
   gamesByTeamId: (state) => (teamId) => {
     return state.games.filter(game => game.homeTeamID === teamId || game.awayTeamID === teamId);
   },
+  gamesSortedByDate(state) {
+    const retObj = {};
+    state.games.forEach((game) => {
+      const gameDay = game.gameTime.split(' ')[0];
+      if (retObj[gameDay]) {
+        retObj[gameDay].push(game);
+      } else {
+        retObj[gameDay] = [game];
+      }
+    });
+    return retObj;
+  },
+  gamesByLeagueIdSortedByDate: (state, getters) => (leagueId) => {
+    const retObj = {};
+    getters.gamesByLeagueId(leagueId).forEach((game) => {
+      const gameDay = game.gameTime.split(' ')[0];
+      if (retObj[gameDay]) {
+        retObj[gameDay].push(game);
+      } else {
+        retObj[gameDay] = [game];
+      }
+    });
+    return retObj;
+  },
 };
 
 // actions

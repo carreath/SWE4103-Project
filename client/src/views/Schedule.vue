@@ -66,7 +66,36 @@
       <div
         id="table-view"
         v-if="scheduleSelectedView === 'Table'">
-
+        <div
+          class="date-games-container"
+          v-for="dateGames in formatGamesByLeagueIdSortedByDate"
+          :key="dateGames.date">
+          <div class="date-games-date">
+            {{ formatDate(dateGames.date + "") }}
+          </div>
+          <table>
+            <tr>
+              <th>Away</th>
+              <th>Home</th>
+              <th>Field</th>
+              <th>Time</th>
+              <th>Status</th>
+            </tr>
+            <tr
+              v-for="gameObj in dateGames.games"
+              :key="gameObj.gameID"
+              :class="{
+                'cancelled-event': gameObj.status === 'Cancelled',
+                'open-event': gameObj.status === 'Open',
+              }">
+              <td>{{ teamById(gameObj.awayTeamID).teamName }}</td>
+              <td>{{ teamById(gameObj.homeTeamID).teamName }}</td>
+              <td>{{ gameObj.field }}</td>
+              <td>{{ gameObj.gameTime.split(' ')[1] }}</td>
+              <td>{{ gameObj.status }}</td>
+            </tr>
+          </table>
+        </div>
       </div>
 
     </div>
@@ -93,7 +122,28 @@ export default {
       'selectedGame',
       'scheduleSelectedView',
       'teamById',
+      'gamesByLeagueIdSortedByDate',
+      'selectedLeagueId',
     ]),
+    formatGamesByLeagueIdSortedByDate() {
+      const originalGamesObj = this.gamesByLeagueIdSortedByDate(this.selectedLeagueId);
+      let gamesArr = [];
+      Object.keys(originalGamesObj).forEach((key) => {
+        let gamesObj = {
+          date: `${key}`,
+          games: originalGamesObj[key],
+        };
+        gamesArr.push(gamesObj);
+      });
+      return gamesArr.sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
+    },
+  },
+  methods: {
+    formatDate(mDate) {
+      const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      const tempDate = mDate.split('-');
+      return `${months[Number(tempDate[1]) - 1]} ${tempDate[2]}, ${tempDate[0]}`;
+    },
   },
 };
 </script>
@@ -112,6 +162,7 @@ export default {
   #schedule-body{
     display: flex;
     flex-direction: row;
+    justify-content: center;
 
     #calendar-view{
       display: flex;
@@ -169,16 +220,58 @@ export default {
               td{
                 border-bottom: 1px solid #ddd;
               }
-
-              .cancelled-event{
-                background-color: $LIGHT_CANCELLED_RED;
-                transition: 0.2s;
-              }
             }
           }
         }
 
       }
+    }
+
+    #table-view{
+      display: flex;
+      flex-direction: column;
+      width: 80%;
+      align-self: center;
+
+      .date-games-container{
+        margin: 16px 0px;
+
+        .date-games-date{
+          display: flex;
+          font-size: 1.5rem;
+          font-weight: bold;
+        }
+
+        table{
+          width: 100%;
+          border: 1px solid #ddd;
+          border-collapse:collapse;
+          tr{
+            border-bottom: 1px solid #ddd;
+
+            th{
+              background-color: $HOVER_LIGHT_GREY;
+              width: 18%;
+              padding: 8px 0px;
+            }
+
+            td{
+              width: 18%;
+              padding: 8px 0px;
+            }
+          }
+        }
+      }
+    }
+
+    .cancelled-event{
+      background-color: $LIGHT_CANCELLED_RED;
+      transition: 0.2s;
+    }
+
+    .open-event{
+      background-color: $VERY_LIGHT_GREY;
+      transition: 0.2s;
     }
   }
 }
