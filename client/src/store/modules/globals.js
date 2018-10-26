@@ -3,6 +3,7 @@
 const state = {
   loginModalVisible: false,
   createAccoundModalVisible: false,
+  scheduleSelectedView: 'Calendar',
 };
 
 // getters
@@ -15,6 +16,9 @@ const getters = {
   },
   createAccoundModalVisible(state) {
     return state.createAccoundModalVisible;
+  },
+  scheduleSelectedView(state) {
+    return state.scheduleSelectedView;
   },
 };
 
@@ -32,6 +36,9 @@ const actions = {
     dispatch('setLoginModalVisible', false);
     dispatch('setCreateAccountModalVisible', false);
   },
+  setScheduleSelectedView({ commit }, newView) {
+    commit('mutateLoginScheduleSelectedView', newView);
+  },
 };
 
 // mutations
@@ -41,6 +48,9 @@ const mutations = {
   },
   mutateCreateAccountModalVisible(state, isVisible) {
     state.createAccoundModalVisible = isVisible;
+  },
+  mutateLoginScheduleSelectedView(state, newView) {
+    state.scheduleSelectedView = newView;
   },
 };
 

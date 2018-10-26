@@ -16,6 +16,7 @@ module.exports = {
     'linebreak-style': 'off',
     'no-unused-expressions': 'off',
     'arrow-parens': 'off',
+    'prefer-const': 'off',
   },
   parserOptions: {
     parser: 'babel-eslint',

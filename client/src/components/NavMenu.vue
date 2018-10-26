@@ -39,35 +39,6 @@
             Admin
           </span>
         </li>
-        <!-- TODO Commented code -->
-        <!--
-        <li
-          v-if="loggedIn"
-          :class="{'is-active': false}">
-          <div class="admin-dropdown">
-            <div
-              class="admin-dropdown-button"
-              @mouseover="adminDropdownButtonHover=true"
-              @mouseleave="adminDropdownButtonHover=false"
-              :class="{'lightGreyBackground': adminDropdownContentHover}">
-              Admin
-              <font-awesome-icon icon="caret-down" />
-            </div>
-            <div
-              class="admin-dropdown-content"
-              :class="{'show-admin-dropdown-content': adminDropdownVisible}"
-              @mouseover="adminDropdownContentHover=true"
-              @mouseleave="adminDropdownContentHover=false">
-              <div>
-                Create League
-              </div>
-              <div>
-                Create Team
-              </div>
-            </div>
-          </div>
-        </li>
-        -->
       </ul>
     </div>
 
@@ -310,6 +281,8 @@ export default {
 
 
     .user-dropdown{
+      width: 160px;
+
       .user-dropdown-button{
         border: none;
         outline: none;
@@ -332,6 +305,7 @@ export default {
         z-index: 10;
         right: 20px;
         border-radius: 0px 0px 6px 6px;
+        width: 160px;
 
         div{
           float: none;

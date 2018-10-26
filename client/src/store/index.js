@@ -6,6 +6,7 @@ import user from './modules/user';
 import leagues from './modules/leagues';
 import teams from './modules/teams';
 import players from './modules/players';
+import games from './modules/games';
 
 Vue.use(Vuex);
 
@@ -16,5 +17,6 @@ export default new Vuex.Store({
     leagues,
     teams,
     players,
+    games,
   },
 });

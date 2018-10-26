@@ -8,6 +8,7 @@
       :class="{'sticky': nailNavMenu}">
       <NavMenu/>
       <AdminSubNavMenu v-if="curRoute.includes('admin')"/>
+      <ScheduleSubNavMenu v-if="curRoute === 'schedule'"/>
     </div>
     <div
       id="router-view-outer-wrapper"
@@ -26,6 +27,7 @@ import ModalWrapper from './components/ModalWrapper.vue';
 import UpcomingGamesHeader from './components/UpcomingGamesHeader.vue';
 import NavMenu from './components/NavMenu.vue';
 import AdminSubNavMenu from './components/AdminSubNavMenu.vue';
+import ScheduleSubNavMenu from './components/ScheduleSubNavMenu.vue';
 
 export default{
   name: 'App',
@@ -35,6 +37,7 @@ export default{
     UpcomingGamesHeader,
     NavMenu,
     AdminSubNavMenu,
+    ScheduleSubNavMenu,
   },
   data() {
     return {
