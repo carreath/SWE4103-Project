@@ -51,6 +51,7 @@ CREATE TABLE teams (
     leagueID            INT             NOT NULL,
     managerID           INT             DEFAULT NULL,
     teamName            VARCHAR(32)     NOT NULL,
+    colour              VARCHAR(7)      NOT NULL,
     leaguePoints        INT             NOT NULL DEFAULT 0,
     wins                INT             NOT NULL DEFAULT 0,
     losses              INT             NOT NULL DEFAULT 0,
@@ -66,7 +67,8 @@ CREATE TABLE games (
     homeTeamID          INT             NOT NULl,
     awayTeamID          INT             NOT NULL,
     refereeID           INT             NOT NULL,
-    fieldName           VARCHAR(32)     NOT NULL,
+    gameTime            DATETIME        NOT NULL,
+    field               VARCHAR(32)     NOT NULL,
     canceled            BOOLEAN         NOT NULL DEFAULT 0,
     homeGoals           INT             NOT NULL DEFAULT 0,
     awayGoals           INT             NOT NULL DEFAULT 0,
@@ -79,27 +81,22 @@ CREATE TABLE games (
 
 CREATE TABLE players (
     playerID            INT             NOT NULL AUTO_INCREMENT,
+    teamID              INT             NOT NULL,
     firstName           VARCHAR(32)     NOT NULL,
     lastName            VARCHAR(32)     NOT NULL,
     email               VARCHAR(64)     DEFAULT NULL,
-    PRIMARY KEY (playerID)
-);
-
-CREATE TABLE teamMembers (
-    teamID              INT             NOT NULL,
-    playerID            INT             NOT NULL,
+    number              INT             DEFAULT NULL,
     loanedGames         INT             NOT NULL DEFAULT 0,
     FOREIGN KEY (teamID) REFERENCES teams (teamID),
-    FOREIGN KEY (playerID) REFERENCES players (playerID),
-    PRIMARY KEY (teamID, playerID)
+    PRIMARY KEY (playerID)
 );
 
 CREATE TABLE gameMembers (
     gameID              INT             NOT NULL,
     teamID              INT             NOT NULL,
     playerID            INT             NOT NULL,
+    number              INT             NOT NULL,
     goals               INT             NOT NULL DEFAULT 0,
-    assists             INT             NOT NULL DEFAULT 0,
     cleanSheet          INT             NOT NULL DEFAULT 0,
     yellowCards         INT             NOT NULL DEFAULT 0,
     redCards            INT             NOT NULL DEFAULT 0,
