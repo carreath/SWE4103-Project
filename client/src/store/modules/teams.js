@@ -96,8 +96,13 @@ const actions = {
       }
     });
   },
-  setSelectedTeamId({ commit }, id) {
+  setSelectedTeamId({ getters, dispatch, commit }, id) {
     commit('mutateSelectedTeamId', id);
+    if (getters.selectedGame &&
+      getters.selectedGame.homeTeamID !== id &&
+      getters.selectedGame.awayTeamID !== id) {
+      dispatch('setSelectedGameId', null);
+    }
   },
   createTeam({ commit }, teamObj) {
     TeamsService.createTeam(teamObj).then((response) => {

@@ -21,12 +21,12 @@
                 @mouseover="scheduleViewDropdownContentHover=true"
                 @mouseleave="scheduleViewDropdownContentHover=false">
                 <div
-                  @click="setScheduleSelectedView('Calendar')"
+                  @click="handleScheduleSelectedViewClick('Calendar')"
                   :class="{'boldText': scheduleSelectedView === 'Calendar'}">
                   Calendar
                 </div>
                 <div
-                  @click="setScheduleSelectedView('Table')"
+                  @click="handleScheduleSelectedViewClick('Table')"
                   :class="{'boldText': scheduleSelectedView === 'Table'}">
                   Table
                 </div>
@@ -54,11 +54,11 @@
                 :class="{'show-schedule-view-dropdown-content': scheduleTeamDropdownVisible}"
                 @mouseover="scheduleTeamDropdownContentHover=true"
                 @mouseleave="scheduleTeamDropdownContentHover=false">
-                <div @click="setSelectedTeamId(null)">All Teams</div>
+                <div @click="handleTeamClick(null)">All Teams</div>
                 <div
                   v-for="team in teamsByLeagueId(selectedLeagueId)"
                   :key="team.teamID"
-                  @click="setSelectedTeamId(team.teamID)">
+                  @click="handleTeamClick(team.teamID)">
                   {{ team.teamName }}
                 </div>
               </div>
@@ -107,6 +107,14 @@ export default {
       'setScheduleSelectedView',
       'setSelectedTeamId',
     ]),
+    handleScheduleSelectedViewClick(view) {
+      this.scheduleViewDropdownContentHover = false;
+      this.setScheduleSelectedView(view);
+    },
+    handleTeamClick(teamID) {
+      this.scheduleTeamDropdownContentHover = false;
+      this.setSelectedTeamId(teamID);
+    },
   },
 };
 
