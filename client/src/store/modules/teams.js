@@ -4,30 +4,61 @@ import TeamsService from '@/service/TeamsService';
 const state = {
   teams: [ // NOTE this is hardcoded until the backend gets their shit together
     {
-      teamId: 1,
-      leagueId: 1,
-      managerId: 1,
+      teamID: 1,
+      leagueID: 1,
+      managerID: 1,
       teamName: 'Team1',
-      leaguePoints: 2,
-      wins: 1,
+      colour: '#4b89ed',
+      leaguePoints: 0,
+      wins: 0,
       losses: 0,
       draws: 0,
     },
     {
-      teamId: 2,
-      leagueId: 1,
-      managerId: 2,
+      teamID: 2,
+      leagueID: 1,
+      managerID: 2,
       teamName: 'Team2',
       leaguePoints: 0,
       wins: 0,
-      losses: 1,
+      losses: 0,
       draws: 0,
     },
     {
-      teamId: 3,
-      leagueId: 2,
-      managerId: 3,
+      teamID: 3,
+      leagueID: 1,
+      managerID: 3,
       teamName: 'Team3',
+      leaguePoints: 0,
+      wins: 0,
+      losses: 0,
+      draws: 0,
+    },
+    {
+      teamID: 4,
+      leagueID: 1,
+      managerID: 4,
+      teamName: 'Team4',
+      leaguePoints: 0,
+      wins: 0,
+      losses: 0,
+      draws: 0,
+    },
+    {
+      teamID: 5,
+      leagueID: 1,
+      managerID: 5,
+      teamName: 'Team5',
+      leaguePoints: 0,
+      wins: 0,
+      losses: 0,
+      draws: 0,
+    },
+    {
+      teamID: 6,
+      leagueId: 1,
+      managerId: 6,
+      teamName: 'Team6',
       leaguePoints: 0,
       wins: 0,
       losses: 0,
@@ -46,13 +77,13 @@ const getters = {
     return state.selectedTeamId;
   },
   selectedTeam(state) {
-    return state.teams.find(team => team.id === state.selectedTeamId);
+    return state.teams.find(team => team.teamID === state.selectedTeamId);
   },
   teamById: (state) => (teamId) => {
-    return state.teams.find(team => team.id === teamId);
+    return state.teams.find(team => team.teamID === teamId);
   },
   teamsByLeagueId: (state) => (leagueId) => {
-    return state.teams.filter(team => team.leagueId === leagueId);
+    return state.teams.filter(team => team.leagueID === leagueId);
   },
 };
 

@@ -18,16 +18,16 @@
             v-else>
             <table>
               <tr>
-                <th>Home</th>
-                <td>{{ selectedGame.homeTeam }}</td>
+                <th>Away</th>
+                <td>{{ teamById(selectedGame.awayTeamID).teamName }}</td>
               </tr>
               <tr>
-                <th>Away</th>
-                <td>{{ selectedGame.awayTeam }}</td>
+                <th>Home</th>
+                <td>{{ teamById(selectedGame.homeTeamID).teamName }}</td>
               </tr>
               <tr>
                 <th>Field</th>
-                <td>{{ selectedGame.fieldName }}</td>
+                <td>{{ selectedGame.field }}</td>
               </tr>
               <tr>
                 <th>Date</th>
@@ -37,6 +37,13 @@
                 <th>Time</th>
                 <td>{{ selectedGame.time }}</td>
               </tr>
+              <tr>
+                <th>Status</th>
+                <td
+                  :class="{'cancelled-event': selectedGame.status === 'Cancelled'}">
+                  {{ selectedGame.status }}
+                </td>
+              </tr>
             </table>
           </div>
         </div>
@@ -44,6 +51,12 @@
           class="calendar-holder">
           <calendar/>
         </div>
+      </div>
+
+      <div
+        id="table-view"
+        v-if="scheduleSelectedView === 'Table'">
+
       </div>
 
     </div>
@@ -69,6 +82,7 @@ export default {
       'selectedGameId',
       'selectedGame',
       'scheduleSelectedView',
+      'teamById',
     ]),
   },
 };
@@ -132,6 +146,7 @@ export default {
 
           table{
             width: 100%;
+            transition: 0.2s;
 
             tr{
               border-bottom: 1px solid #ddd;
@@ -143,6 +158,11 @@ export default {
               }
               td{
                 border-bottom: 1px solid #ddd;
+              }
+
+              .cancelled-event{
+                background-color: $LIGHT_CANCELLED_RED;
+                transition: 0.2s;
               }
             }
           }

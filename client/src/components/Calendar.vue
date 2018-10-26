@@ -59,7 +59,7 @@ export default {
       newEventEndDate: '',
       useDefaultTheme: false,
       useHolidayTheme: true,
-      eventContentHeight: '2.5em',
+      eventContentHeight: '2.2em',
       selectedLeague: 1,
       displayedGameObjects: [],
     };
@@ -69,6 +69,7 @@ export default {
       'gamesByLeagueId',
       'selectedLeagueId',
       'selectedGameId',
+      'teamById',
     ]),
     userLocale() {
       return this.getDefaultBrowserLocale;
@@ -92,11 +93,14 @@ export default {
       const leagueGames = this.gamesByLeagueId(this.selectedLeagueId);
       const leagueGamesForCalendar = leagueGames.map((gameObj) => {
         let gameObjForCalendar = {
-          id: gameObj.id,
+          id: gameObj.gameID,
           startDate: `${gameObj.date}T${gameObj.time}`,
-          title: `${gameObj.fieldName} - ${gameObj.awayTeam} vs. ${gameObj.homeTeam}`,
+          title: `${gameObj.field} - ${this.teamById(gameObj.awayTeamID).teamName} vs. ${this.teamById(gameObj.homeTeamID).teamName}`,
         };
-        if (this.selectedGameId === gameObj.id) {
+        if (gameObj.status === 'Cancelled') {
+          gameObjForCalendar.classes = 'cancelled-event';
+        }
+        if (this.selectedGameId === gameObj.gameID) {
           gameObjForCalendar.classes = 'selected-event';
         }
         return gameObjForCalendar;
@@ -213,6 +217,17 @@ export default {
 
       &:hover{
         cursor: pointer;
+      }
+    }
+
+    .cv-event.cancelled-event{
+      background: $CANCELLED_RED;
+      color: $SECONDARY_COLOR;
+      transition: 0.2s;
+
+      span{
+        color: $SECONDARY_COLOR;
+        transition: 0.2s;
       }
     }
 
