@@ -4,12 +4,17 @@
       Admin Panel
     </div>
     <AdminLeaguesContainer v-if="curRoute === 'admin-leagues'"/>
+    <AdminLeaguesCreate v-if="curRoute === 'admin-leagues-create'"/>
+    <AdminTeamsContainer v-if="curRoute === 'admin-teams'"/>
+
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import AdminLeaguesContainer from '@/components/AdminLeaguesContainer.vue';
+import AdminLeaguesCreate from '@/components/AdminLeaguesCreate.vue';
+import AdminTeamsContainer from '@/components/AdminTeamsContainer.vue';
 
 export default {
   name: 'Admin',
@@ -20,6 +25,8 @@ export default {
   },
   components: {
     AdminLeaguesContainer,
+    AdminTeamsContainer,
+    AdminLeaguesCreate,
   },
   computed: {
     ...mapGetters([

@@ -5,6 +5,13 @@
         Leagues
       </div>
     </div>
+    <div
+      id="create-league-button-container"
+      @click="leagueCreateClicked">
+      <div id="create-league-button-text">
+        Create New League
+      </div>
+    </div>
     <div id="leagues-table-container">
       <el-table
         :data="leagues"
@@ -44,18 +51,44 @@ export default {
     ...mapGetters([
       'leagues',
     ]),
+    curRoute() {
+      return this.$route.name;
+    },
   },
   methods: {
     ...mapActions([
 
     ]),
+    leagueCreateClicked() {
+      this.$router.push('/admin/leagues/create');
+    },
   },
 };
 
 </script>
 
 <style lang="scss" scoped>
+@import '@/style/global.scss';
 #admin-leagues-container{
 
+  #create-league-button-container{
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    font-weight: bold;
+    color: $PRIMARY_TO_FADE;
+    height: 61px;
+    transition: 0.3s;
+    user-select: none;
+
+    &:hover{
+      background-color: $HOVER_GREY;
+      cursor: pointer;
+    }
+
+    #create-league-button-text{
+      padding: 0px 20px;
+    }
+  }
 }
 </style>
