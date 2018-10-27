@@ -66,4 +66,4 @@ class Team(Resource):
                 'draws': team[8],
             }
 
-            return teams_data, 200
+        return teams_data, 200
