@@ -41,11 +41,11 @@
               </tr>
               <tr>
                 <th>Date</th>
-                <td>{{ selectedGame.gameTime.split(' ')[0] }}</td>
+                <td>{{ formatDate(selectedGame.gameTime.split(' ')[0]) }}</td>
               </tr>
               <tr>
                 <th>Time</th>
-                <td>{{ selectedGame.gameTime.split(' ')[1] }}</td>
+                <td>{{ formatTime(selectedGame.gameTime.split(' ')[1]) }}</td>
               </tr>
               <tr>
                 <th>Status</th>
@@ -71,7 +71,7 @@
           v-for="dateGames in tableViewGamesList"
           :key="dateGames.date">
           <div class="date-games-date">
-            {{ formatDate(dateGames.date + "") }}
+            {{ formatDate(dateGames.date) }}
           </div>
           <table>
             <tr>
@@ -91,7 +91,7 @@
               <td>{{ teamById(gameObj.awayTeamID).teamName }}</td>
               <td>{{ teamById(gameObj.homeTeamID).teamName }}</td>
               <td>{{ gameObj.field }}</td>
-              <td>{{ gameObj.gameTime.split(' ')[1] }}</td>
+              <td>{{ formatTime(gameObj.gameTime.split(' ')[1]) }}</td>
               <td>{{ gameObj.status }}</td>
             </tr>
           </table>
@@ -135,15 +135,29 @@ export default {
       const tempDate = mDate.split('-');
       return `${months[Number(tempDate[1]) - 1]} ${tempDate[2]}, ${tempDate[0]}`;
     },
+    formatTime(mTime) {
+      // Check correct time format and split into components
+      let time = mTime.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [mTime];
+      time[4] = ' ';// Change seconds to just a space
+      if (time.length > 1) { // If time format correct
+        time = time.slice(1); // Remove full string match value
+        time[5] = +time[0] < 12 ? 'AM' : 'PM'; // Set AM/PM
+        time[0] = +time[0] % 12 || 12; // Adjust hours
+      }
+      return time.join(''); // return adjusted time or original string
+    },
     formatGamesByLeagueIdSortedByDate() {
       const originalGamesObj = this.selectedTeamId ?
         this.gamesByTeamIdSortedByDate(this.selectedTeamId) :
         this.gamesByLeagueIdSortedByDate(this.selectedLeagueId);
       let gamesArr = [];
       Object.keys(originalGamesObj).forEach((key) => {
+        const sortedOriginalGamesObj = originalGamesObj[key].sort((a, b) => {
+          return Date.parse(a.gameTime) - Date.parse(b.gameTime);
+        });
         let gamesObj = {
           date: `${key}`,
-          games: originalGamesObj[key],
+          games: sortedOriginalGamesObj,
         };
         gamesArr.push(gamesObj);
       });
