@@ -57,7 +57,7 @@ const state = {
     {
       teamID: 6,
       leagueID: 1,
-      managerId: 6,
+      managerID: 6,
       teamName: 'Team6',
       leaguePoints: 0,
       wins: 0,

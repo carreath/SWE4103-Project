@@ -154,9 +154,8 @@ export default {
       transition: 0.3s;
       user-select: none;
 
-
       .schedule-view-dropdown{
-        width: 120px;
+        min-width: 120px;
 
         .schedule-view-dropdown-button{
           border: none;
@@ -177,13 +176,16 @@ export default {
         }
 
         .schedule-view-dropdown-content{
-          display: none;
+          /* display: none; */
+          opacity: 0;
+          visibility: hidden;
           position: absolute;
           background-color: #f9f9f9;
           box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
           z-index: 10;
           border-radius: 0px 0px 6px 6px;
           min-width: 120px;
+          transition: visibility 0s, opacity 0.2s linear;
 
           div{
             float: none;
@@ -194,7 +196,6 @@ export default {
             text-align: left;
             white-space:nowrap;
             font-weight: normal;
-            transition: 0.3s;
 
             &:hover{
               background-color: $HOVER_GREY;
@@ -208,7 +209,9 @@ export default {
         }
 
         .show-schedule-view-dropdown-content{
-          display: block;
+          /* display: block;*/
+          opacity: 1;
+          visibility: visible;
         }
       }
     }

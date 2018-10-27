@@ -68,7 +68,7 @@
         v-if="scheduleSelectedView === 'Table'">
         <div
           class="date-games-container"
-          v-for="dateGames in formatGamesByLeagueIdSortedByDate"
+          v-for="dateGames in tableViewGamesList"
           :key="dateGames.date">
           <div class="date-games-date">
             {{ formatDate(dateGames.date + "") }}
@@ -114,6 +114,7 @@ export default {
   data() {
     return {
       localScheduleSelectedView: 'Calendar',
+      tableViewGamesList: [],
     };
   },
   computed: {
@@ -123,10 +124,21 @@ export default {
       'scheduleSelectedView',
       'teamById',
       'gamesByLeagueIdSortedByDate',
+      'gamesByTeamIdSortedByDate',
       'selectedLeagueId',
+      'selectedTeamId',
     ]),
+  },
+  methods: {
+    formatDate(mDate) {
+      const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      const tempDate = mDate.split('-');
+      return `${months[Number(tempDate[1]) - 1]} ${tempDate[2]}, ${tempDate[0]}`;
+    },
     formatGamesByLeagueIdSortedByDate() {
-      const originalGamesObj = this.gamesByLeagueIdSortedByDate(this.selectedLeagueId);
+      const originalGamesObj = this.selectedTeamId ?
+        this.gamesByTeamIdSortedByDate(this.selectedTeamId) :
+        this.gamesByLeagueIdSortedByDate(this.selectedLeagueId);
       let gamesArr = [];
       Object.keys(originalGamesObj).forEach((key) => {
         let gamesObj = {
@@ -135,15 +147,16 @@ export default {
         };
         gamesArr.push(gamesObj);
       });
-      return gamesArr.sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
+      this.tableViewGamesList = gamesArr.sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
     },
   },
-  methods: {
-    formatDate(mDate) {
-      const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-      const tempDate = mDate.split('-');
-      return `${months[Number(tempDate[1]) - 1]} ${tempDate[2]}, ${tempDate[0]}`;
+  watch: {
+    selectedTeamId() {
+      this.formatGamesByLeagueIdSortedByDate();
     },
+  },
+  mounted() {
+    this.formatGamesByLeagueIdSortedByDate();
   },
 };
 </script>
@@ -235,6 +248,7 @@ export default {
 
       .date-games-container{
         margin: 16px 0px;
+        transition: 0.5s;
 
         .date-games-date{
           display: flex;
@@ -246,8 +260,11 @@ export default {
           width: 100%;
           border: 1px solid #ddd;
           border-collapse:collapse;
+          transition: 0.5s;
+
           tr{
             border-bottom: 1px solid #ddd;
+            transition: 0.5s;
 
             th{
               background-color: $HOVER_LIGHT_GREY;

@@ -230,6 +230,18 @@ const getters = {
     });
     return retObj;
   },
+  gamesByTeamIdSortedByDate: (state, getters) => (teamId) => {
+    const retObj = {};
+    getters.gamesByTeamId(teamId).forEach((game) => {
+      const gameDay = game.gameTime.split(' ')[0];
+      if (retObj[gameDay]) {
+        retObj[gameDay].push(game);
+      } else {
+        retObj[gameDay] = [game];
+      }
+    });
+    return retObj;
+  },
 };
 
 // actions
