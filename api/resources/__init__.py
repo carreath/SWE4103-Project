@@ -8,4 +8,5 @@ from resources.TournamentSchedule import TournamentSchedule
 from resources.User import Login, Register, TokenValidation, User
 from resources.Root import Root
 from resources.League import League
+from resources.Team import Team
 #  Use above format to add new resources as needed, to allow easy importing of all resources in application
