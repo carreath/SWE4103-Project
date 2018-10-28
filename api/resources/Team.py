@@ -14,34 +14,25 @@ class Team(Resource):
         parser = reqparse.RequestParser()
 
         parser.add_argument('teamName', type=str)
+        parser.add_argument('leagueID', type=int)
         parser.add_argument('colour', type=str)
-        parser.add_argument('leaguePoints', type=int)
-        parser.add_argument('wins', type=int)
-        parser.add_argument('losses', type=int)
-        parser.add_argument('draws', type=int)
 
         args = parser.parse_args()
 
         team_name = args['teamName']
+        league_id = args['leagueID']
         colour = args['colour']
-        league_points = args['leaguePoints']
-        wins = args['wins']
-        losses = args['losses']
-        draws = args['draws']
 
         # creating new league in the database
         db_connector = DatabaseConnector()
-        db_connector.cursor.callproc('create_team', [team_name, colour, league_points, wins, losses, draws])
+        db_connector.cursor.callproc('create_team', [team_name, league_id, colour])
         db_connector.conn.commit()
         db_connector.cursor.close()
 
         team_data = {
             'team_name': team_name,
-            'colour': colour,
-            'league_points': league_points,
-            'wins': wins,
-            'losses': losses,
-            'draws': draws
+            'league_id': league_id,
+            'colour': colour
         }
 
         return {'team': team_data}, 201
