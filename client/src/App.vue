@@ -1,16 +1,18 @@
 <template>
   <div id="app">
     <ModalWrapper v-show='modalVisible'/>
-    <UpcomingGamesHeader/>
-    <MainHeader/>
+    <UpcomingGamesHeader ref='upcoming-games-header'/>
+    <MainHeader ref="main-header"/>
     <div
       id="nav-menu-wrapper"
       :class="{'sticky': nailNavMenu}">
       <NavMenu/>
+      <AdminSubNavMenu v-if="curRoute.includes('admin')"/>
+      <ScheduleSubNavMenu v-if="curRoute === 'schedule'"/>
     </div>
     <div
-      class="router-view-outer-wrapper"
-      :class="{'extraPadding': nailNavMenu}">
+      id="router-view-outer-wrapper"
+      class="router-view-outer-wrapper">
       <div id="router-view-inner-wrapper">
         <router-view/>
       </div>
@@ -20,10 +22,12 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import MainHeader from '@/components/MainHeader.vue';
-import ModalWrapper from '@/components/ModalWrapper.vue';
-import UpcomingGamesHeader from '@/components/UpcomingGamesHeader.vue';
-import NavMenu from '@/components/NavMenu.vue';
+import MainHeader from './components/MainHeader.vue';
+import ModalWrapper from './components/ModalWrapper.vue';
+import UpcomingGamesHeader from './components/UpcomingGamesHeader.vue';
+import NavMenu from './components/NavMenu.vue';
+import AdminSubNavMenu from './components/AdminSubNavMenu.vue';
+import ScheduleSubNavMenu from './components/ScheduleSubNavMenu.vue';
 
 export default{
   name: 'App',
@@ -32,6 +36,8 @@ export default{
     ModalWrapper,
     UpcomingGamesHeader,
     NavMenu,
+    AdminSubNavMenu,
+    ScheduleSubNavMenu,
   },
   data() {
     return {
@@ -43,6 +49,9 @@ export default{
       'modalVisible',
       'token',
     ]),
+    curRoute() {
+      return this.$route.name;
+    },
   },
   methods: {
     ...mapActions([
@@ -51,14 +60,18 @@ export default{
     ]),
     handleScroll() {
       const navbar = document.getElementById('nav-menu-wrapper');
+      const outerRouterWrapper = document.getElementById('router-view-outer-wrapper');
       const sticky = navbar.offsetTop;
       if (!this.nailNavMenu && window.pageYOffset >= sticky) {
         this.nailNavMenu = true;
+        outerRouterWrapper.style.paddingTop = `${navbar.clientHeight}px`;
       }
-      // NOTE This 194 just works fine. If you change heights of other
-      // headers and stuff, this might have to change
-      if (this.nailNavMenu && window.pageYOffset - 194 <= 0) {
+      const upcomingGamesHeaderHeight = this.$refs['upcoming-games-header'].$el.clientHeight;
+      const mainHeaderHeight = this.$refs['main-header'].$el.clientHeight;
+      const totalHeaderHeight = upcomingGamesHeaderHeight + mainHeaderHeight;
+      if (this.nailNavMenu && (window.pageYOffset - totalHeaderHeight <= 0)) {
         this.nailNavMenu = false;
+        outerRouterWrapper.style.paddingTop = '';
       }
     },
   },
@@ -84,25 +97,22 @@ export default{
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  font-size: 16px;
 
   .sticky {
     position: fixed;
     top: 0;
     width: 100%;
+    z-index: 10;
   }
 
   .router-view-outer-wrapper{
     padding: 0px 20px;
-    /*background-color: #e8e8e8;*/
     background-color: $SECONDARY_COLOR;
 
     #router-view-inner-wrapper{
       background-color: $SECONDARY_COLOR;
     }
-  }
-
-  .extraPadding{
-    padding-top: 62px;
   }
 }
 

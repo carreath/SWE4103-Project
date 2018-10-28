@@ -163,6 +163,11 @@ export default{
             validator: validatePass,
             trigger: 'blur',
           },
+          {
+            min: 8,
+            message: 'Password must be at least 8 characters',
+            trigger: 'blur',
+          },
         ],
         confirmPassword: [
           {

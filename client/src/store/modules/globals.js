@@ -3,7 +3,7 @@
 const state = {
   loginModalVisible: false,
   createAccoundModalVisible: false,
-  activeNavIndex: '1',
+  scheduleSelectedView: 'Calendar',
 };
 
 // getters
@@ -17,8 +17,8 @@ const getters = {
   createAccoundModalVisible(state) {
     return state.createAccoundModalVisible;
   },
-  activeNavIndex(state) {
-    return state.activeNavIndex;
+  scheduleSelectedView(state) {
+    return state.scheduleSelectedView;
   },
 };
 
@@ -36,8 +36,8 @@ const actions = {
     dispatch('setLoginModalVisible', false);
     dispatch('setCreateAccountModalVisible', false);
   },
-  setActiveNavIndex({ commit }, index) {
-    commit('mutateActiveNavIndex', index);
+  setScheduleSelectedView({ commit }, newView) {
+    commit('mutateLoginScheduleSelectedView', newView);
   },
 };
 
@@ -49,8 +49,8 @@ const mutations = {
   mutateCreateAccountModalVisible(state, isVisible) {
     state.createAccoundModalVisible = isVisible;
   },
-  mutateActiveNavIndex(state, index) {
-    state.activeNavIndex = index;
+  mutateLoginScheduleSelectedView(state, newView) {
+    state.scheduleSelectedView = newView;
   },
 };
 

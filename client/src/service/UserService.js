@@ -20,6 +20,15 @@ export default {
       });
   },
   getUserFromToken() {
+    return ServiceLayer().get('/user')
+      .then((response) => {
+        return response;
+      })
+      .catch((err) => {
+        return err.response;
+      });
+  },
+  refreshToken() {
     return ServiceLayer().get('/token-check')
       .then((response) => {
         return response;

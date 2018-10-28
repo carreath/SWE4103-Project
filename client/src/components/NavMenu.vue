@@ -30,6 +30,15 @@
             Standings
           </span>
         </li>
+
+        <li
+          v-if="loggedIn"
+          :class="{'is-active': curRoute.includes('admin')}"
+          @click="handleNavMenuSelect('admin')">
+          <span>
+            Admin
+          </span>
+        </li>
       </ul>
     </div>
 
@@ -40,7 +49,8 @@
         <div
           class="user-dropdown-button"
           @mouseover="userDropdownButtonHover=true"
-          @mouseleave="userDropdownButtonHover=false">
+          @mouseleave="userDropdownButtonHover=false"
+          :class="{'lightGreyBackground': userDropdownContentHover}">
           {{ user.first_name }} {{ user.last_name }}
           <font-awesome-icon icon="caret-down" />
         </div>
@@ -53,7 +63,7 @@
             Change Password
           </div>
           <div @click="logoutClicked">
-            Log Out
+            Log Out <font-awesome-icon icon="sign-out-alt" />
           </div>
         </div>
       </div>
@@ -79,13 +89,14 @@ export default {
     return {
       userDropdownButtonHover: false,
       userDropdownContentHover: false,
+      adminDropdownButtonHover: false,
+      adminDropdownContentHover: false,
     };
   },
   computed: {
     ...mapGetters([
       'user',
       'loggedIn',
-      'activeNavIndex',
     ]),
     curRoute() {
       return this.$route.name;
@@ -93,13 +104,15 @@ export default {
     userDropdownVisible() {
       return this.userDropdownButtonHover || this.userDropdownContentHover;
     },
+    adminDropdownVisible() {
+      return this.adminDropdownButtonHover || this.adminDropdownContentHover;
+    },
   },
   methods: {
     ...mapActions([
       'setLoginModalVisible',
       'setCreateAccountModalVisible',
       'userLogOut',
-      'setActiveNavIndex',
     ]),
     handleNavMenuSelect(key) {
       switch (key) {
@@ -119,6 +132,10 @@ export default {
           this.$router.push('/standings');
           break;
         }
+        case ('admin'): {
+          this.$router.push('/admin/leagues');
+          break;
+        }
         default: {
           break;
         }
@@ -135,6 +152,9 @@ export default {
             message: 'Logged Out',
             center: true,
           });
+          if (this.$route.name.includes('admin')) {
+            this.$router.push('/');
+          }
         });
       }).catch(() => {
       });
@@ -178,7 +198,54 @@ export default {
         padding: 0px 20px;
         user-select: none;
       }
+
+      .admin-dropdown{
+        .admin-dropdown-button{
+          border: none;
+          outline: none;
+          color: $PRIMARY_TO_FADE;
+          padding: 20px 20px;
+          margin: 0;
+          transition: 0.3s;
+
+          &:hover{
+            background-color: $HOVER_GREY;
+            cursor: pointer;
+          }
+        }
+
+        .admin-dropdown-content{
+          display: none;
+          position: absolute;
+          background-color: #f9f9f9;
+          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+          z-index: 10;
+          border-radius: 0px 0px 6px 6px;
+
+          div{
+            float: none;
+            color: $PRIMARY_TO_FADE;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            white-space:nowrap;
+            font-weight: normal;
+            transition: 0.3s;
+
+            &:hover{
+              background-color: $HOVER_GREY;
+              cursor: pointer;
+            }
+          }
+        }
+
+        .show-admin-dropdown-content{
+          display: block;
+        }
+      }
     }
+
 
     .is-active{
       transition: 0.3s;
@@ -189,6 +256,18 @@ export default {
         transition: 0.3s;
       }
     }
+
+    /*
+    .is-active{
+      transition: 0.3s;
+      background-color: $PRIMARY_TO_FADE;
+
+      span{
+        color: $SECONDARY_COLOR;
+        transition: 0.3s;
+      }
+    }
+    */
   }
 
   #user-dropdown-container{
@@ -197,12 +276,12 @@ export default {
     margin-right: 20px;
     font-weight: bold;
     color: $PRIMARY_TO_FADE;
-    height: 61px;
     transition: 0.3s;
     user-select: none;
 
 
     .user-dropdown{
+      width: 160px;
 
       .user-dropdown-button{
         border: none;
@@ -222,10 +301,11 @@ export default {
         display: none;
         position: absolute;
         background-color: #f9f9f9;
-        width: 156px;
         box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
         z-index: 10;
         right: 20px;
+        border-radius: 0px 0px 6px 6px;
+        width: 160px;
 
         div{
           float: none;
