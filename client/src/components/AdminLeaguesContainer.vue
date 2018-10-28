@@ -80,6 +80,8 @@ export default {
     height: 61px;
     transition: 0.3s;
     user-select: none;
+    width: 10vw;
+    background-color: $VERY_LIGHT_GREY;
 
     &:hover{
       background-color: $HOVER_GREY;

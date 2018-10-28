@@ -6,6 +6,7 @@
     <AdminLeaguesContainer v-if="curRoute === 'admin-leagues'"/>
     <AdminLeaguesCreate v-if="curRoute === 'admin-leagues-create'"/>
     <AdminTeamsContainer v-if="curRoute === 'admin-teams'"/>
+    <AdminTeamsCreate v-if="curRoute === 'admin-teams-create'"/>
 
   </div>
 </template>
@@ -15,6 +16,7 @@ import { mapGetters, mapActions } from 'vuex';
 import AdminLeaguesContainer from '@/components/AdminLeaguesContainer.vue';
 import AdminLeaguesCreate from '@/components/AdminLeaguesCreate.vue';
 import AdminTeamsContainer from '@/components/AdminTeamsContainer.vue';
+import AdminTeamsCreate from '@/components/AdminTeamsCreate.vue';
 
 export default {
   name: 'Admin',
@@ -27,6 +29,7 @@ export default {
     AdminLeaguesContainer,
     AdminTeamsContainer,
     AdminLeaguesCreate,
+    AdminTeamsCreate,
   },
   computed: {
     ...mapGetters([
