@@ -1,5 +1,5 @@
 from resources.HelloWorld import HelloWorld
-from resources.GameSchedule import GameSchedule
+from resources.GameSchedule import LeagueSchedule, PlayerSchedule
 from resources.GameStats import GameStats
 from resources.LeagueStanding import LeagueStanding
 from resources.PlayerStats import PlayerStats
