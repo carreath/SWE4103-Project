@@ -24,7 +24,7 @@ api.add_resource(GameSchedule, '/api/game-schedule')  # TODO placeholder endpoin
 api.add_resource(TournamentSchedule, '/api/tournament-schedule')  # TODO placeholder endpoint name
 api.add_resource(GameStats, "/api/game-stats/<game_id>")
 api.add_resource(LeagueStanding, "/api/standings")
-api.add_resource(PlayerStats, "/api/player-stats/<player_id>")
+api.add_resource(Player, "/api/player")
 api.add_resource(TeamRoster, "/api/roster/<team_id>")
 api.add_resource(League, "/api/league")
 api.add_resource(Login, "/api/login")
