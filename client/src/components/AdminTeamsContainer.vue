@@ -1,16 +1,11 @@
 <template>
   <div id="admin-teams-container">
     <div id="title-container">
-      <div id="title">
-        Teams
-      </div>
     </div>
     <div
       id="create-team-button-container"
       @click="teamCreateClicked">
-      <div id="create-team-button-text">
-        Create New Team
-      </div>
+      <el-button type="primary">Create New Team</el-button>
     </div>
     <div id="teams-table-container">
       <el-table
@@ -73,24 +68,11 @@ export default {
 #admin-teams-container{
   #create-team-button-container{
     display: flex;
+    flex-direction: row;
     align-items: center;
-    margin-right: 20px;
-    font-weight: bold;
-    color: $PRIMARY_TO_FADE;
+    justify-content: flex-end;
     height: 61px;
     transition: 0.3s;
-    user-select: none;
-    width: 10vw;
-    background-color: $VERY_LIGHT_GREY;
-
-    &:hover{
-      background-color: $HOVER_GREY;
-      cursor: pointer;
-    }
-
-    #create-team-button-text{
-      padding: 0px 20px;
-    }
   }
 }
 </style>
