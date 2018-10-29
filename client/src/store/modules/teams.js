@@ -56,8 +56,8 @@ const state = {
     },
     {
       teamID: 6,
-      leagueId: 1,
-      managerId: 6,
+      leagueID: 1,
+      managerID: 6,
       teamName: 'Team6',
       leaguePoints: 0,
       wins: 0,
@@ -80,7 +80,7 @@ const getters = {
     return state.teams.find(team => team.teamID === state.selectedTeamId);
   },
   teamById: (state) => (teamId) => {
-    return state.teams.find(team => team.teamID === teamId);
+    return state.teams.find(team => team.teamID === teamId) || {};
   },
   teamsByLeagueId: (state) => (leagueId) => {
     return state.teams.filter(team => team.leagueID === leagueId);
@@ -92,13 +92,14 @@ const actions = {
   getTeams({ commit }) {
     TeamsService.getTeams().then((response) => {
       if (response && response.status === 200) {
-        commit('mutateTeams', response.teams);
+        commit('mutateTeams', response.data.teams);
       }
     });
   },
   setSelectedTeamId({ getters, dispatch, commit }, id) {
     commit('mutateSelectedTeamId', id);
-    if (getters.selectedGame &&
+    if (id &&
+      getters.selectedGame &&
       getters.selectedGame.homeTeamID !== id &&
       getters.selectedGame.awayTeamID !== id) {
       dispatch('setSelectedGameId', null);
