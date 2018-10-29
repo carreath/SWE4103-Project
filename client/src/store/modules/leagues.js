@@ -28,6 +28,9 @@ const getters = {
   selectedLeague(state) {
     return state.leagues.find(league => league.id === state.selectedLeagueId);
   },
+  leagueById: (state) => (id) => {
+    return state.leagues.find(league => league.id === id);
+  },
 };
 
 // actions
