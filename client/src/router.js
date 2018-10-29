@@ -34,6 +34,11 @@ const router = new Router({
       component: Schedule,
     },
     {
+      path: '/schedule/create',
+      name: 'schedule-create',
+      component: Schedule,
+    },
+    {
       path: '/teams',
       name: 'teams',
       component: Teams,

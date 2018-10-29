@@ -14,7 +14,7 @@
             type="field"
             placeholder="Field Name"
             prefix-icon="el-icon-message"
-            v-model="scheduleForm.field"
+            v-model="createScheduleForm.field"
             :disabled="loading">
           </el-input>
         </el-form-item>
@@ -24,7 +24,7 @@
             type="day"
             placeholder="Day Available"
             prefix-icon="el-icon-message"
-            v-model="scheduleForm.day"
+            v-model="createScheduleForm.day"
             :disabled="loading">
           </el-input>
         </el-form-item>
@@ -34,7 +34,7 @@
             type="time"
             placeholder="Time Available"
             prefix-icon="el-icon-message"
-            v-model="shceduleForm.time"
+            v-model="createScheduleForm.time"
             :disabled="loading">
           </el-input>
         </el-form-item>
@@ -74,11 +74,6 @@ export default{
             trigger: 'blur',
           },
           {
-            type: 'field',
-            message: 'Please input correct field name',
-            trigger: 'blur',
-          },
-          {
             min: 1,
             max: 64,
             message: 'Input too long',
@@ -92,11 +87,6 @@ export default{
             trigger: 'blur',
           },
           {
-            type: 'field',
-            message: 'Please input correct day',
-            trigger: 'blur',
-          },
-          {
             min: 1,
             max: 64,
             message: 'Input too long',
@@ -107,11 +97,6 @@ export default{
           {
             required: true,
             message: 'Please input time available',
-            trigger: 'blur',
-          },
-          {
-            type: 'field',
-            message: 'Please input correct time',
             trigger: 'blur',
           },
           {

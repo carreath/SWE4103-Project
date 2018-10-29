@@ -1,8 +1,13 @@
 <template>
   <div id="schedule">
-    <div id="schedule-header">
+    <div
+      id="create-schedule-container"
+      v-if="curRoute === 'schedule-create'">
+      <CreateScheduleForm/>
     </div>
-    <div id="schedule-body">
+    <div
+      id="schedule-body"
+      v-else>
       <div
         id="calendar-view"
         v-if="scheduleSelectedView === 'Calendar'">
@@ -109,12 +114,14 @@
 
 <script>
 import Calendar from '@/components/Calendar.vue';
+import CreateScheduleForm from '@/components/CreateScheduleForm.vue';
 import { mapGetters } from 'vuex';
 
 export default {
   name: 'Schedule',
   components: {
     Calendar,
+    CreateScheduleForm,
   },
   data() {
     return {
@@ -133,6 +140,9 @@ export default {
       'selectedLeagueId',
       'selectedTeamId',
     ]),
+    curRoute() {
+      return this.$route.name;
+    },
   },
   methods: {
     formatDate(mDate) {
