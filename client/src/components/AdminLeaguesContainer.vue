@@ -1,16 +1,11 @@
 <template>
   <div id="admin-leagues-container">
     <div id="title-container">
-      <div id="title">
-        Leagues
-      </div>
     </div>
     <div
       id="create-league-button-container"
       @click="leagueCreateClicked">
-      <div id="create-league-button-text">
-        Create New League
-      </div>
+      <el-button type="success">Create New League</el-button>
     </div>
     <div id="leagues-table-container">
       <el-table
@@ -73,24 +68,11 @@ export default {
 
   #create-league-button-container{
     display: flex;
+    flex-direction: row;
     align-items: center;
-    margin-right: 20px;
-    font-weight: bold;
-    color: $PRIMARY_TO_FADE;
+    justify-content: flex-end;
     height: 61px;
     transition: 0.3s;
-    user-select: none;
-    width: 10vw;
-    background-color: $VERY_LIGHT_GREY;
-
-    &:hover{
-      background-color: $HOVER_GREY;
-      cursor: pointer;
-    }
-
-    #create-league-button-text{
-      padding: 0px 20px;
-    }
   }
 }
 </style>

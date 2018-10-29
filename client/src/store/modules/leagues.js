@@ -43,7 +43,9 @@ const actions = {
     commit('mutateSelectedLeagueId', id);
   },
   createLeague({ commit }, leagueObj) {
-    LeaguesService.createLeague(leagueObj).then((response) => {
+    console.log('League Obj: ', leagueObj);
+    return LeaguesService.createLeague(leagueObj).then((response) => {
+      console.log('response: ', response);
       if (!response || !response.status) {
         return { retVal: false, retMsg: 'Server Error' };
       }
@@ -51,7 +53,7 @@ const actions = {
       switch (response.status) {
         case 201: {
           // TODO this probs wont be right
-          commit('addLeague', response.newLeague);
+          commit('addLeague', response.data.league);
           return { retVal: true, retMsg: 'League Created' };
         }
         default: {

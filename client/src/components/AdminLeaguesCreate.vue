@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'AdminLeaguesCreate',
@@ -51,7 +51,7 @@ export default {
     return {
       leagueCreateForm: {
         leagueName: '',
-        leagueSeason: '',
+        season: '',
       },
       leagueCreateFormRules: {
         leagueName: [
@@ -89,7 +89,7 @@ export default {
   },
   methods: {
     ...mapActions([
-        'createLeague',
+      'createLeague',
     ]),
     leagueCreateButtonClicked() {
       this.displayErrMsg = false;

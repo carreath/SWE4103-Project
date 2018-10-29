@@ -1,8 +1,5 @@
 <template>
   <div id="admin">
-    <div>
-      Admin Panel
-    </div>
     <AdminLeaguesContainer v-if="curRoute === 'admin-leagues'"/>
     <AdminLeaguesCreate v-if="curRoute === 'admin-leagues-create'"/>
     <AdminTeamsContainer v-if="curRoute === 'admin-teams'"/>
