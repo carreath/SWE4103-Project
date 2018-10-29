@@ -75,11 +75,21 @@ export default{
       }
     },
   },
+  watch: {
+    modalVisible(val) {
+      if (val) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = 'auto';
+      }
+    },
+  },
   mounted() {
     window.addEventListener('scroll', this.handleScroll);
     if (this.token) {
       this.retrieveUserFromToken();
     }
+    document.body.style.overflow = 'auto';
   },
   destroyed() {
     window.removeEventListener('scroll', this.handleScroll);
@@ -114,6 +124,10 @@ export default{
       background-color: $SECONDARY_COLOR;
     }
   }
+}
+
+.no-scroll{
+  overflow: hidden;
 }
 
 </style>
