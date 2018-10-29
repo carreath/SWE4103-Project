@@ -6,10 +6,13 @@
       </div>
     </div>
     <el-form
+        :label-position="labelPosition"
         :model="leagueCreateForm"
         :rules="leagueCreateFormRules"
         ref="league-create-form">
-        <el-form-item prop="leagueName">
+        <el-form-item
+          label="League Name"
+          prop="leagueName">
           <el-input
             id="league-name-input"
             type="leagueName"
@@ -18,7 +21,9 @@
             :disabled="loading">
           </el-input>
         </el-form-item>
-        <el-form-item prop="season">
+        <el-form-item
+          label="Season"
+          prop="season">
           <el-input
             id="season-input"
             type="season"
@@ -26,6 +31,14 @@
             v-model="leagueCreateForm.season"
             :disabled="loading">
           </el-input>
+        </el-form-item>
+        <el-form-item
+          label="Point Scheme"
+          prop="pointScheme">
+          <el-select v-model="leagueCreateForm.pointScheme" placeholder="Point Scheme">
+            <el-option label="Standard" value="standard"></el-option>
+            <el-option label="Capital Scoring" value="capitalScoring"></el-option>
+          </el-select>
         </el-form-item>
         <div id="errMsg" v-if="errMsg">
           Error: {{ errMsg }}
@@ -49,9 +62,11 @@ export default {
   name: 'AdminLeaguesCreate',
   data() {
     return {
+      labelPosition: 'left',
       leagueCreateForm: {
         leagueName: '',
         season: '',
+        pointScheme: '',
       },
       leagueCreateFormRules: {
         leagueName: [
@@ -72,6 +87,13 @@ export default {
             required: true,
             message: 'Please input season',
             trigger: 'blur',
+          },
+        ],
+        pointScheme: [
+          {
+            required: true,
+            message: 'Please select Point Scheme',
+            trigger: 'change',
           },
         ],
       },

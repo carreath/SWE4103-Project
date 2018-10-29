@@ -19,6 +19,9 @@
             :disabled="loading">
           </el-input>
         </el-form-item>
+        <el-form-item prop="teamColour">
+          <el-color-picker v-model="teamCreateForm.teamColour"></el-color-picker>
+        </el-form-item>
         <div id="errMsg" v-if="errMsg">
           Error: {{ errMsg }}
         </div>
@@ -44,6 +47,7 @@ export default {
       teamCreateForm: {
         teamName: '',
         leagueSeason: '',
+        teamColour: '#409EFF',
       },
       teamCreateFormRules: {
         teamName: [
