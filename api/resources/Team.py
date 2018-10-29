@@ -42,19 +42,17 @@ class Team(Resource):
         db_connector.cursor.execute('SELECT * FROM teams')
 
         teams = db_connector.cursor.fetchall()
-        teams_data = {}
-
+        teams_data = []
         for team in teams:
-            teams_data[team[0]] = {
-                'team_id': team[0],
-                'league_id': team[1],
-                'manager_id': team[2],
-                'team_name': team[3],
+            teams_data.append({
+                'teamID': team[0],
+                'leagueID': team[1],
+                'managerID': team[2],
+                'teamName': team[3],
                 'colour': team[4],
-                'league_points': team[5],
+                'leaguePoints': team[5],
                 'wins': team[6],
                 'losses': team[7],
                 'draws': team[8],
-            }
-
-        return teams_data, 200
+            })
+        return {'teams': teams_data}, 200

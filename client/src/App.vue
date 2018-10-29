@@ -57,6 +57,7 @@ export default{
     ...mapActions([
       'setUser',
       'retrieveUserFromToken',
+      'getAllData',
     ]),
     handleScroll() {
       const navbar = document.getElementById('nav-menu-wrapper');
@@ -90,6 +91,7 @@ export default{
       this.retrieveUserFromToken();
     }
     document.body.style.overflow = 'auto';
+    this.getAllData();
   },
   destroyed() {
     window.removeEventListener('scroll', this.handleScroll);

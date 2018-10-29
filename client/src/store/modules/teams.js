@@ -92,7 +92,7 @@ const actions = {
   getTeams({ commit }) {
     TeamsService.getTeams().then((response) => {
       if (response && response.status === 200) {
-        commit('mutateTeams', response.teams);
+        commit('mutateTeams', response.data.teams);
       }
     });
   },
