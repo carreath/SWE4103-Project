@@ -24,6 +24,7 @@ class Player(Resource):
                 'redCards': player[10]
             })
 
+        print(players_data)
         return {'data': players_data}, 200
 
     # TODO implement some authentication with tokens here
