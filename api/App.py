@@ -7,6 +7,8 @@ import config
 import os
 
 from OpenSSL import SSL
+from flask import request
+
 context = SSL.Context(SSL.SSLv23_METHOD)
 cer = os.path.join(config.ssl_config['cer'])
 key = os.path.join(config.ssl_config['key'])
@@ -33,17 +35,19 @@ api.add_resource(TokenValidation, "/api/token-check")
 api.add_resource(User, "/api/user")
 api.add_resource(Root, "/")
 
-from flask import request
+
 def shutdown_server():
     func = request.environ.get('werkzeug.server.shutdown')
     if func is None:
         raise RuntimeError('Not running with the Werkzeug Server')
     func()
 
+
 @app.route('/shutdown', methods=['POST'])
 def shutdown():
     shutdown_server()
     return 'Server shutting down...'
+
 
 if __name__ == "__main__":
     # Check that the SSL certificate exists if not run http://

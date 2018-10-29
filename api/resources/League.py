@@ -37,14 +37,14 @@ class League(Resource):
         db_connector.cursor.execute('SELECT * FROM leagues')
 
         leagues = db_connector.cursor.fetchall()
-        leagues_data = {}
+        leagues_data = []
 
         for league in leagues:
-            leagues_data[league[0]] = {
+            leagues_data.append({
                 'league_id': league[0],
                 'manager_id': league[1],
                 'league_name': league[2],
                 'league_season': league[3]
-            }
+            })
 
-        return leagues_data, 200
+        return {'data': leagues_data}, 200
