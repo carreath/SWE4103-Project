@@ -9,7 +9,7 @@
     </div>
     <div id="teams-table-container">
       <el-table
-        :data="teams"
+        :data="formatTeams"
         stripe
         style="width: 100%">
         <el-table-column
@@ -49,7 +49,20 @@ export default {
   computed: {
     ...mapGetters([
       'teams',
+      'leagueById',
     ]),
+    formatTeams() {
+      const formatedTeams = this.teams.map((team) => {
+        return {
+          teamID: team.teamID,
+          teamName: team.teamName,
+          leagueID: this.leagueById(team.leagueID).name,
+          managerID: team.managerID,
+        };
+      });
+      console.log('formatedTeams', formatedTeams);
+      return formatedTeams;
+    },
   },
   methods: {
     ...mapActions([
