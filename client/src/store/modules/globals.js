@@ -3,7 +3,7 @@
 const state = {
   loginModalVisible: false,
   createAccoundModalVisible: false,
-  scheduleSelectedView: 'Calendar',
+  scheduleSelectedView: 'Table',
 };
 
 // getters

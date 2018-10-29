@@ -21,14 +21,14 @@
                 @mouseover="scheduleViewDropdownContentHover=true"
                 @mouseleave="scheduleViewDropdownContentHover=false">
                 <div
-                  @click="handleScheduleSelectedViewClick('Calendar')"
-                  :class="{'boldText': scheduleSelectedView === 'Calendar'}">
-                  Calendar
-                </div>
-                <div
                   @click="handleScheduleSelectedViewClick('Table')"
                   :class="{'boldText': scheduleSelectedView === 'Table'}">
                   Table
+                </div>
+                <div
+                  @click="handleScheduleSelectedViewClick('Calendar')"
+                  :class="{'boldText': scheduleSelectedView === 'Calendar'}">
+                  Calendar
                 </div>
               </div>
             </div>

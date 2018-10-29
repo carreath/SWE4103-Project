@@ -77,6 +77,7 @@
             <tr>
               <th>Away</th>
               <th>Home</th>
+              <th>Result</th>
               <th>Field</th>
               <th>Time</th>
               <th>Status</th>
@@ -90,6 +91,10 @@
               }">
               <td>{{ teamById(gameObj.awayTeamID).teamName }}</td>
               <td>{{ teamById(gameObj.homeTeamID).teamName }}</td>
+              <td v-if="gameObj.status === 'Final'">
+                {{gameObj.awayGoals}} - {{gameObj.homeGoals}}
+              </td>
+              <td v-else>-</td>
               <td>{{ gameObj.field }}</td>
               <td>{{ formatTime(gameObj.gameTime.split(' ')[1]) }}</td>
               <td>{{ gameObj.status }}</td>
