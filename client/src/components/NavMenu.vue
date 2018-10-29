@@ -77,6 +77,7 @@
         Log In
       </div>
     </div>
+
   </div>
 </template>
 
