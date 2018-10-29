@@ -30,6 +30,7 @@ const getters = {
   },
   leagueById: (state) => (id) => {
     // ben
+    // Zach
     return state.leagues.find(league => league.id === id);
   },
 };

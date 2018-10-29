@@ -5,7 +5,7 @@
     <div
       id="create-league-button-container"
       @click="leagueCreateClicked">
-      <el-button type="success">Create New League</el-button>
+      <el-button type="primary">Create New League</el-button>
     </div>
     <div id="leagues-table-container">
       <el-table
@@ -54,9 +54,21 @@ export default {
     ...mapActions([
 
     ]),
+    handleKeyUp(e) {
+      // Enter key
+      if (e.keyCode === 13) {
+        this.leagueCreateClicked();
+      }
+    },
     leagueCreateClicked() {
       this.$router.push('/admin/leagues/create');
     },
+  },
+  mounted() {
+    window.addEventListener('keyup', this.handleKeyUp);
+  },
+  beforeDestroy() {
+    window.removeEventListener('keyup', this.handleKeyUp);
   },
 };
 

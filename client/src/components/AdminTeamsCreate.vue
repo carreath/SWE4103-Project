@@ -9,8 +9,9 @@
         :model="teamCreateForm"
         :rules="teamCreateFormRules"
         ref="team-form">
-        <el-form-item prop="teamName">
-          <label id = "sideLabel">Team Name: </label>
+        <el-form-item
+          label="Team Name"
+          prop="teamName">
           <el-input
             id="team-name-input"
             type="teamName"
@@ -19,7 +20,9 @@
             :disabled="loading">
           </el-input>
         </el-form-item>
-        <el-form-item prop="teamColour">
+        <el-form-item
+          label="Team Colour"
+          prop="teamColour">
           <el-color-picker v-model="teamCreateForm.teamColour"></el-color-picker>
         </el-form-item>
         <div id="errMsg" v-if="errMsg">
