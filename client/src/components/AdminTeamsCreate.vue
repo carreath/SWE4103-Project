@@ -5,6 +5,32 @@
         Create Team
       </div>
     </div>
+    <el-form
+        :model="teamCreateForm"
+        :rules="teamCreateFormRules"
+        ref="team-form">
+        <el-form-item prop="teamName">
+          <label id = "sideLabel">Team Name: </label>
+          <el-input
+            id="team-name-input"
+            type="teamName"
+            placeholder="Team Name"
+            v-model="teamCreateForm.teamName"
+            :disabled="loading">
+          </el-input>
+        </el-form-item>
+        <div id="errMsg" v-if="errMsg">
+          Error: {{ errMsg }}
+        </div>
+        <el-form-item id="team-create-button-container">
+          <el-button
+            type="primary"
+            :loading="loading"
+            @click="teamCreateButtonClicked">
+            {{ teamCreateButtonText }}
+          </el-button>
+        </el-form-item>
+      </el-form>
   </div>
 </template>
 
@@ -15,12 +41,33 @@ export default {
   name: 'AdminTeamsCreate',
   data() {
     return {
+      teamCreateForm: {
+        teamName: '',
+        leagueSeason: '',
+      },
+      teamCreateFormRules: {
+        teamName: [
+          {
+            required: true,
+            message: 'Please input team name',
+            trigger: 'blur',
+          },
+          {
+            min: 1,
+            max: 64,
+            message: 'Input too long',
+            trigger: 'blur',
+          },
+        ],
+      },
+      loading: false,
+      errMsg: null,
     };
   },
   computed: {
-    ...mapGetters([
-      'teams',
-    ]),
+    teamCreateButtonText() {
+      return this.loading ? 'Loading' : 'Create Team';
+    },
     curRoute() {
       return this.$route.name;
     },

@@ -8,7 +8,7 @@
     <el-form
         :model="leagueCreateForm"
         :rules="leagueCreateFormRules"
-        ref="login-form">
+        ref="league-create-form">
         <el-form-item prop="leagueName">
           <el-input
             id="league-name-input"
@@ -18,25 +18,24 @@
             :disabled="loading">
           </el-input>
         </el-form-item>
-        <el-form-item prop="password">
+        <el-form-item prop="season">
           <el-input
-            id="password-input"
-            type="password"
-            placeholder="Password"
-            prefix-icon="el-icon-tickets"
-            v-model="leagueCreateForm.password"
+            id="season-input"
+            type="season"
+            placeholder="Season"
+            v-model="leagueCreateForm.season"
             :disabled="loading">
           </el-input>
         </el-form-item>
         <div id="errMsg" v-if="errMsg">
           Error: {{ errMsg }}
         </div>
-        <el-form-item id="login-button-container">
+        <el-form-item id="league-create-button-container">
           <el-button
             type="primary"
             :loading="loading"
-            @click="loginButtonClicked">
-            {{ loginButtonText }}
+            @click="leagueCreateButtonClicked">
+            {{ leagueCreateButtonText }}
           </el-button>
         </el-form-item>
       </el-form>
@@ -55,10 +54,10 @@ export default {
         leagueSeason: '',
       },
       leagueCreateFormRules: {
-        email: [
+        leagueName: [
           {
             required: true,
-            message: 'Please input email',
+            message: 'Please input league name',
             trigger: 'blur',
           },
           {
@@ -68,10 +67,10 @@ export default {
             trigger: 'blur',
           },
         ],
-        password: [
+        season: [
           {
             required: true,
-            message: 'Please input password',
+            message: 'Please input season',
             trigger: 'blur',
           },
         ],
@@ -81,17 +80,34 @@ export default {
     };
   },
   computed: {
-    ...mapGetters([
-      'leagues',
-    ]),
+    leagueCreateButtonText() {
+      return this.loading ? 'Loading' : 'Create League';
+    },
     curRoute() {
       return this.$route.name;
     },
   },
   methods: {
     ...mapActions([
-
+        'createLeague',
     ]),
+    leagueCreateButtonClicked() {
+      this.displayErrMsg = false;
+      this.$refs['league-create-form'].validate((valid) => {
+        if (valid) {
+          this.loading = true;
+          this.createLeague(this.leagueCreateForm).then((response) => {
+            this.loading = false;
+            if (response.retVal) {
+              this.errMsg = null;
+              this.$router.push('/admin/leagues');
+            } else {
+              this.errMsg = response.retMsg;
+            }
+          });
+        }
+      });
+    },
   },
 };
 
