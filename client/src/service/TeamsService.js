@@ -2,7 +2,7 @@ import ServiceLayer from '@/service/ServiceLayer';
 
 export default {
   getTeams() {
-    return ServiceLayer().get('/teams')
+    return ServiceLayer().get('/team')
       .then((response) => {
         return response;
       })
@@ -11,7 +11,7 @@ export default {
       });
   },
   createTeam(params) {
-    return ServiceLayer().post('/teams', params)
+    return ServiceLayer().post('/team', params)
       .then((response) => {
         return response;
       })
