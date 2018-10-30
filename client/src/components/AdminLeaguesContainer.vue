@@ -2,14 +2,14 @@
   <div id="admin-leagues-container">
     <div id="title-container">
     </div>
-    <div
-      id="create-league-button-container"
-      @click="leagueCreateClicked">
-      <el-button type="primary">Create New League</el-button>
+    <div id="create-league-button-container">
+      <el-button
+      @click="leagueCreateClicked"
+      type="primary">Create New League</el-button>
     </div>
     <div id="leagues-table-container">
       <el-table
-        :data="leagues"
+        :data="formatLeagues"
         stripe
         style="width: 100%">
         <el-table-column
@@ -46,6 +46,17 @@ export default {
     ...mapGetters([
       'leagues',
     ]),
+    formatLeagues() {
+      const formatedLeagues = this.leagues.map((league) => {
+        return {
+          id: league.id,
+          name: league.name,
+          season: league.season,
+        };
+      });
+      console.log('formatedLeagues', formatedLeagues);
+      return formatedLeagues;
+    },
     curRoute() {
       return this.$route.name;
     },

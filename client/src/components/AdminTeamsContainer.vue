@@ -2,10 +2,10 @@
   <div id="admin-teams-container">
     <div id="title-container">
     </div>
-    <div
-      id="create-team-button-container"
-      @click="teamCreateClicked">
-      <el-button type="primary">Create New Team</el-button>
+    <div id="create-team-button-container">
+      <el-button
+      @click="teamCreateClicked"
+      type="primary">Create New Team</el-button>
     </div>
     <div id="teams-table-container">
       <el-table
@@ -22,7 +22,7 @@
         </el-table-column>
         <el-table-column
           prop="leagueID"
-          label="League ID">
+          label="League Name">
         </el-table-column>
         <el-table-column
           prop="managerID"

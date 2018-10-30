@@ -49,8 +49,7 @@ export default {
     return {
       teamCreateForm: {
         teamName: '',
-        leagueSeason: '',
-        teamColour: '#409EFF',
+        teamColour: null,
       },
       teamCreateFormRules: {
         teamName: [
@@ -63,6 +62,13 @@ export default {
             min: 1,
             max: 64,
             message: 'Input too long',
+            trigger: 'blur',
+          },
+        ],
+        teamColour: [
+          {
+            required: true,
+            message: 'Please input team colour',
             trigger: 'blur',
           },
         ],
@@ -81,8 +87,25 @@ export default {
   },
   methods: {
     ...mapActions([
-
+      'createTeam',
     ]),
+    teamCreateButtonClicked() {
+      this.displayErrMsg = false;
+      this.$refs['team-create-form'].validate((valid) => {
+        if (valid) {
+          this.loading = true;
+          this.createTeam(this.teamCreateForm).then((response) => {
+            this.loading = false;
+            if (response.retVal) {
+              this.errMsg = null;
+              this.$router.push('/admin/teams');
+            } else {
+              this.errMsg = response.retMsg;
+            }
+          });
+        }
+      });
+    },
   },
 };
 
