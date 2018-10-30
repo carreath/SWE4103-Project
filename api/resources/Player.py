@@ -23,9 +23,7 @@ class Player(Resource):
                 'yellowCards': player[9],
                 'redCards': player[10]
             })
-
-        print(players_data)
-        return {'data': players_data}, 200
+        return {'players': players_data}, 200
 
     # TODO implement some authentication with tokens here
     def post(self):

@@ -47,4 +47,4 @@ class League(Resource):
                 'league_season': league[3]
             })
 
-        return {'data': leagues_data}, 200
+        return {'leagues': leagues_data}, 200
