@@ -8,9 +8,10 @@ const state = {
       awayTeamID: 2,
       refereeID: 1,
       field: 'Field A',
-      date: '2018-10-23',
-      time: '18:00:00',
+      gameTime: '2018-10-23 18:00:00',
       status: 'Scheduled',
+      homeGoals: 0,
+      awayGoals: 0,
     },
     {
       gameID: 1,
@@ -19,9 +20,10 @@ const state = {
       awayTeamID: 4,
       refereeID: 1,
       field: 'Field B',
-      date: '2018-10-23',
-      time: '18:00:00',
+      gameTime: '2018-10-23 18:00:00',
       status: 'Scheduled',
+      homeGoals: 0,
+      awayGoals: 0,
     },
     {
       gameID: 2,
@@ -30,9 +32,10 @@ const state = {
       awayTeamID: 6,
       refereeID: 1,
       field: 'Field B',
-      date: '2018-10-23',
-      time: '19:30:00',
+      gameTime: '2018-10-23 19:30:00',
       status: 'Scheduled',
+      homeGoals: 0,
+      awayGoals: 0,
     },
     {
       gameID: 3,
@@ -41,9 +44,10 @@ const state = {
       awayTeamID: 4,
       refereeID: 1,
       field: 'Field B',
-      date: '2018-10-25',
-      time: '18:00:00',
+      gameTime: '2018-10-25 18:00:00',
       status: 'Scheduled',
+      homeGoals: 0,
+      awayGoals: 0,
     },
     {
       gameID: 4,
@@ -52,9 +56,10 @@ const state = {
       awayTeamID: 6,
       refereeID: 1,
       field: 'Field B',
-      date: '2018-10-25',
-      time: '19:30:00',
+      gameTime: '2018-10-25 19:30:00',
       status: 'Scheduled',
+      homeGoals: 0,
+      awayGoals: 0,
     },
     {
       gameID: 5,
@@ -63,9 +68,10 @@ const state = {
       awayTeamID: 4,
       refereeID: 1,
       field: 'Field A',
-      date: '2018-10-30',
-      time: '18:00:00',
+      gameTime: '2018-10-30 18:00:00',
       status: 'Cancelled',
+      homeGoals: 0,
+      awayGoals: 0,
     },
     {
       gameID: 6,
@@ -74,9 +80,10 @@ const state = {
       awayTeamID: 6,
       refereeID: 1,
       field: 'Field B',
-      date: '2018-10-30',
-      time: '18:00:00',
+      gameTime: '2018-10-30 18:00:00',
       status: 'Scheduled',
+      homeGoals: 0,
+      awayGoals: 0,
     },
     {
       gameID: 7,
@@ -85,9 +92,10 @@ const state = {
       awayTeamID: 5,
       refereeID: 1,
       field: 'Field B',
-      date: '2018-11-01',
-      time: '18:00:00',
+      gameTime: '2018-11-01 18:00:00',
       status: 'Scheduled',
+      homeGoals: 0,
+      awayGoals: 0,
     },
     {
       gameID: 8,
@@ -96,9 +104,10 @@ const state = {
       awayTeamID: 3,
       refereeID: 1,
       field: 'Field A',
-      date: '2018-11-01',
-      time: '19:30:00',
+      gameTime: '2018-11-01 19:30:00',
       status: 'Scheduled',
+      homeGoals: 0,
+      awayGoals: 0,
     },
     {
       gameID: 9,
@@ -107,9 +116,10 @@ const state = {
       awayTeamID: 1,
       refereeID: 1,
       field: 'Field B',
-      date: '2018-11-01',
-      time: '19:30:00',
+      gameTime: '2018-11-01 19:30:00',
       status: 'Scheduled',
+      homeGoals: 0,
+      awayGoals: 0,
     },
     {
       gameID: 10,
@@ -118,9 +128,10 @@ const state = {
       awayTeamID: 6,
       refereeID: 1,
       field: 'Field B',
-      date: '2018-10-23',
-      time: '19:30:00',
-      status: 'Scheduled',
+      gameTime: '2018-10-18 18:00:00',
+      status: 'Final',
+      homeGoals: 0,
+      awayGoals: 0,
     },
     {
       gameID: 11,
@@ -129,9 +140,11 @@ const state = {
       awayTeamID: 6,
       refereeID: 1,
       field: 'Field B',
-      date: '2018-10-23',
+      gameTime: '2018-10-16 19:30:00',
       time: '19:30:00',
-      status: 'Scheduled',
+      status: 'Final',
+      homeGoals: 0,
+      awayGoals: 0,
     },
     {
       gameID: 12,
@@ -140,9 +153,34 @@ const state = {
       awayTeamID: 6,
       refereeID: 1,
       field: 'Field B',
-      date: '2018-10-23',
-      time: '19:30:00',
-      status: 'Scheduled',
+      gameTime: '2018-10-18 19:30:00',
+      status: 'Final',
+      homeGoals: 0,
+      awayGoals: 0,
+    },
+    {
+      gameID: 13,
+      leagueID: 1,
+      homeTeamID: null,
+      awayTeamID: null,
+      refereeID: null,
+      field: 'Field B',
+      gameTime: '2018-10-16 18:00:00',
+      status: 'Open',
+      homeGoals: 0,
+      awayGoals: 0,
+    },
+    {
+      gameID: 14,
+      leagueID: 1,
+      homeTeamID: null,
+      awayTeamID: null,
+      refereeID: null,
+      field: 'Field A',
+      gameTime: '2018-10-25 18:00:00',
+      status: 'Open',
+      homeGoals: 0,
+      awayGoals: 0,
     },
   ],
   selectedGameId: null,
@@ -167,6 +205,42 @@ const getters = {
   },
   gamesByTeamId: (state) => (teamId) => {
     return state.games.filter(game => game.homeTeamID === teamId || game.awayTeamID === teamId);
+  },
+  gamesSortedByDate(state) {
+    const retObj = {};
+    state.games.forEach((game) => {
+      const gameDay = game.gameTime.split(' ')[0];
+      if (retObj[gameDay]) {
+        retObj[gameDay].push(game);
+      } else {
+        retObj[gameDay] = [game];
+      }
+    });
+    return retObj;
+  },
+  gamesByLeagueIdSortedByDate: (state, getters) => (leagueId) => {
+    const retObj = {};
+    getters.gamesByLeagueId(leagueId).forEach((game) => {
+      const gameDay = game.gameTime.split(' ')[0];
+      if (retObj[gameDay]) {
+        retObj[gameDay].push(game);
+      } else {
+        retObj[gameDay] = [game];
+      }
+    });
+    return retObj;
+  },
+  gamesByTeamIdSortedByDate: (state, getters) => (teamId) => {
+    const retObj = {};
+    getters.gamesByTeamId(teamId).forEach((game) => {
+      const gameDay = game.gameTime.split(' ')[0];
+      if (retObj[gameDay]) {
+        retObj[gameDay].push(game);
+      } else {
+        retObj[gameDay] = [game];
+      }
+    });
+    return retObj;
   },
 };
 

@@ -3,7 +3,7 @@
 const state = {
   loginModalVisible: false,
   createAccoundModalVisible: false,
-  scheduleSelectedView: 'Calendar',
+  scheduleSelectedView: 'Table',
 };
 
 // getters
@@ -24,6 +24,9 @@ const getters = {
 
 // actions
 const actions = {
+  getAllData({ dispatch }) {
+    dispatch('getTeams');
+  },
   setLoginModalVisible({ commit }, isVisible) {
     commit('mutateCreateAccountModalVisible', false);
     commit('mutateLoginModalVisible', isVisible);

@@ -96,13 +96,28 @@ export default {
         this.gamesByTeamId(this.selectedTeamId) :
         this.gamesByLeagueId(this.selectedLeagueId);
       const leagueGamesForCalendar = selectedames.map((gameObj) => {
+        const gameObjForCalendarTitle = gameObj.status === 'Open' ?
+          `${gameObj.field} - Open` :
+          `${gameObj.field} - ${this.teamById(gameObj.awayTeamID).teamName} vs. ${this.teamById(gameObj.homeTeamID).teamName}`;
         let gameObjForCalendar = {
           id: gameObj.gameID,
-          startDate: `${gameObj.date}T${gameObj.time}`,
-          title: `${gameObj.field} - ${this.teamById(gameObj.awayTeamID).teamName} vs. ${this.teamById(gameObj.homeTeamID).teamName}`,
+          startDate: `${gameObj.gameTime}`,
+          title: gameObjForCalendarTitle,
         };
-        if (gameObj.status === 'Cancelled') {
-          gameObjForCalendar.classes = 'cancelled-event';
+        switch (gameObj.status) {
+          case 'Open': {
+            gameObjForCalendar.classes = 'open-event';
+            break;
+          }
+          case 'Final': {
+            gameObjForCalendar.classes = 'final-event';
+            break;
+          }
+          case 'Cancelled': {
+            gameObjForCalendar.classes = 'cancelled-event';
+            break;
+          }
+          default:
         }
         if (this.selectedGameId === gameObj.gameID) {
           gameObjForCalendar.classes = 'selected-event';
@@ -221,6 +236,7 @@ export default {
       line-height: 1em;
       height: 2.3em;
       text-overflow: ellipsis;
+      transition: 0.3s;
 
       &:hover{
         cursor: pointer;
@@ -234,6 +250,28 @@ export default {
 
       span{
         color: $SECONDARY_COLOR;
+        transition: 0.2s;
+      }
+    }
+
+    .cv-event.final-event{
+      background: #2b59a8;
+      color: $SECONDARY_COLOR;
+      transition: 0.2s;
+
+      span{
+        color: $SECONDARY_COLOR;
+        transition: 0.2s;
+      }
+    }
+
+    .cv-event.open-event{
+      background: $HOVER_LIGHT_GREY;
+      color: $DARK_TEXT;
+      transition: 0.2s;
+
+      span{
+        color: $DARK_TEXT;
         transition: 0.2s;
       }
     }

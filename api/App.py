@@ -22,12 +22,14 @@ cors = CORS(app)
 
 # TODO ALL requests need to update the token if it exists. SOME requests need to validate the token permissions.
 api.add_resource(HelloWorld, '/HelloWorld')  # TODO remove eventually (keep for debugging)
-api.add_resource(GameSchedule, '/api/game-schedule')  # TODO placeholder endpoint name
+api.add_resource(LeagueSchedule, '/api/game-schedule')
+api.add_resource(PlayerSchedule, '/api/player-schedule')
 api.add_resource(TournamentSchedule, '/api/tournament-schedule')  # TODO placeholder endpoint name
 api.add_resource(GameStats, "/api/game-stats/<game_id>")
 api.add_resource(Player, "/api/player")
 api.add_resource(TeamRoster, "/api/roster/<team_id>")
 api.add_resource(League, "/api/league")
+api.add_resource(Team, "/api/team")
 api.add_resource(Login, "/api/login")
 api.add_resource(Register, "/api/register")
 api.add_resource(TokenValidation, "/api/token-check")
