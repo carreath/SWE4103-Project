@@ -11,8 +11,9 @@
       <el-table
         :data="formatTeams"
         stripe
-        style="width: 100%">
+        style="">
         <el-table-column
+          width="100px"
           prop="teamID"
           label="Team ID">
         </el-table-column>
@@ -50,13 +51,14 @@ export default {
     ...mapGetters([
       'teams',
       'leagueById',
+      'leagues',
     ]),
     formatTeams() {
       const formatedTeams = this.teams.map((team) => {
         return {
           teamID: team.teamID,
           teamName: team.teamName,
-          leagueID: this.leagueById(team.leagueID).name,
+          leagueID: this.leagueById(team.leagueID).leagueName,
           managerID: team.managerID,
         };
       });

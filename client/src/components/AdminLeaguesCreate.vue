@@ -4,7 +4,6 @@
       <h1 id="title">
         Create A New League
       </h1>
-
     </div>
     <div id="form-container">
       <el-form
@@ -154,7 +153,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-top: 16PX;
+  margin-top: 16px;
   #title-container{
     display: flex;
   }

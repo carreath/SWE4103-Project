@@ -1,16 +1,18 @@
 <template>
   <div id="admin-teams-create">
     <div id="title-container">
-      <div id="title">
-        Create Team
-      </div>
+      <h1 id="title">
+        Create A New Team
+      </h1>
     </div>
-    <el-form
+    <div id="form-container">
+      <el-form
+        :label-position="labelPosition"
         :model="teamCreateForm"
         :rules="teamCreateFormRules"
+        label-width="120px"
         ref="team-create-form">
-        <div>
-          <el-form-item
+        <el-form-item
           label="Team Name"
           id="team-name-label"
           prop="teamName">
@@ -21,18 +23,23 @@
             v-model="teamCreateForm.teamName"
             :disabled="loading">
           </el-input>
-          </el-form-item>
-        </div>
+        </el-form-item>
         <el-form-item
           label="Team Colour"
           id="team-colour-label"
-          prop="teamColour">
-          <el-color-picker v-model="teamCreateForm.teamColour"></el-color-picker>
+          prop="colour">
+          <el-color-picker v-model="teamCreateForm.colour"></el-color-picker>
         </el-form-item>
         <div id="errMsg" v-if="errMsg">
           Error: {{ errMsg }}
         </div>
         <el-form-item id="team-create-button-container">
+          <el-button
+            icon="el-icon-arrow-left"
+            @click="$router.push('/admin/leagues')">
+            Cancel
+          </el-button>
+          <div></div>
           <el-button
             type="primary"
             :loading="loading"
@@ -41,6 +48,7 @@
           </el-button>
         </el-form-item>
       </el-form>
+    </div>
   </div>
 </template>
 
@@ -51,9 +59,10 @@ export default {
   name: 'AdminTeamsCreate',
   data() {
     return {
+      labelPosition: 'left',
       teamCreateForm: {
         teamName: '',
-        teamColour: null,
+        colour: null,
       },
       teamCreateFormRules: {
         teamName: [
@@ -69,7 +78,7 @@ export default {
             trigger: 'blur',
           },
         ],
-        teamColour: [
+        colour: [
           {
             required: true,
             message: 'Please input team colour',
@@ -118,6 +127,27 @@ export default {
 <style lang="scss" scoped>
 @import '@/style/global.scss';
 #admin-teams-create{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 16px;
+
+  #form-container{
+    max-width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    #team-create-button-container{
+      margin-top: 16px;
+      /deep/ .el-form-item__content{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+  }
+
   #team-name-label{
     padding: 10px;
     margin: 0px;
@@ -127,11 +157,22 @@ export default {
     margin: 0px;
   }
   .el-input {
-    width: 300px;
+    width: 350px;
     float:left;
   }
-  .el-color-picker{
+  .el-select{
     float:left;
+  }
+  .label{
+    padding: 10px;
+    margin: 0px;
+  }
+
+  .el-form-item.is-success /deep/ .el-input__inner,
+  .el-form-item.is-success /deep/ .el-input__inner:focus,
+  .el-form-item.is-success /deep/ .el-textarea__inner,
+  .el-form-item.is-success /deep/ .el-textarea__inner:focus {
+    border-color: $ELEMENT_UI_DEFAULT_BORDER;
   }
 }
 </style>

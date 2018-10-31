@@ -15,10 +15,10 @@ const getters = {
     return state.selectedLeagueId;
   },
   selectedLeague(state) {
-    return state.leagues.find(league => league.id === state.selectedLeagueId);
+    return state.leagues.find(league => league.leagueID === state.selectedLeagueId);
   },
   leagueById: (state) => (id) => {
-    return state.leagues.find(league => league.id === id);
+    return state.leagues.find(league => league.leagueID === id) || {};
   },
 };
 
