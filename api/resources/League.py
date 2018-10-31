@@ -42,7 +42,7 @@ class League(Resource):
         for league in leagues:
             leagues_data.append({
                 'leagueID': league[0],
-                'coordinatorID': league[1],
+                'managerID': league[1],
                 'leagueName': league[2],
                 'season': league[3]
             })
