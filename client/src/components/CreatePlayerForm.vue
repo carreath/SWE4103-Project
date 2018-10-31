@@ -2,7 +2,7 @@
   <div id="create-player-form">
     <div id="create-player-form-container-main">
       <div id="title">
-        Create Schedule
+        Create Player
       </div>
       <el-form
         :model="createPlayerForm"
@@ -56,7 +56,7 @@ export default{
         lastName: '',
       },
       createPlayerFormRules: {
-        field: [
+        firstName: [
           {
             required: true,
             message: 'Please input First Name',
@@ -69,7 +69,7 @@ export default{
             trigger: 'blur',
           },
         ],
-        day: [
+        lastName: [
           {
             required: true,
             message: 'Please input Last Name',
@@ -94,7 +94,7 @@ export default{
   },
   methods: {
     ...mapActions([
-      'submitCreatePlayerForm',
+      'submitPlayerForm',
     ]),
     handleKeyUp(e) {
       // Enter key
@@ -104,14 +104,13 @@ export default{
     },
     submitButtonClicked() {
       this.displayErrMsg = false;
-      this.$refs['create-player-form'].validate((valid) => {
+      this.$refs['player-form'].validate((valid) => {
         if (valid) {
           this.loading = true;
-          this.submitCreatePlayerForm(this.createPlayerForm).then((response) => {
+          this.submitPlayerForm(this.createPlayerForm).then((response) => {
             this.loading = false;
             if (response.retVal) {
               this.errMsg = null;
-              this.closeModal();
             } else {
               this.errMsg = response.retMsg;
             }

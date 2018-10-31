@@ -118,7 +118,7 @@ export default{
   },
   methods: {
     ...mapActions([
-      'submitCreateScheduleForm',
+      'submitScheduleForm',
     ]),
     handleKeyUp(e) {
       // Enter key
@@ -128,10 +128,10 @@ export default{
     },
     submitButtonClicked() {
       this.displayErrMsg = false;
-      this.$refs['create-schedule-form'].validate((valid) => {
+      this.$refs['schedule-form'].validate((valid) => {
         if (valid) {
           this.loading = true;
-          this.submitCreateScheduleForm(this.createScheduleForm).then((response) => {
+          this.submitScheduleForm(this.createScheduleForm).then((response) => {
             this.loading = false;
             if (response.retVal) {
               this.errMsg = null;

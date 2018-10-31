@@ -63,6 +63,11 @@ const router = new Router({
       name: 'admin-players',
       component: Admin,
     },
+    {
+      path: '/admin/players/create',
+      name: 'create-player-form',
+      component: Admin,
+    },
   ],
 });
 
