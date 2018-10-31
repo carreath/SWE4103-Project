@@ -1,40 +1,30 @@
 <template>
-  <div id="create-schedule-form">
-    <div id="create-schedule-form-container-main">
+  <div id="create-player-form">
+    <div id="create-player-form-container-main">
       <div id="title">
         Create Schedule
       </div>
       <el-form
-        :model="createScheduleForm"
-        :rules="createScheduleFormRules"
-        ref="schedule-form">
-        <el-form-item prop="field">
+        :model="createPlayerForm"
+        :rules="createPlayerFormRules"
+        ref="player-form">
+        <el-form-item prop="firstName">
           <el-input
-            id="field-input"
-            type="field"
-            placeholder="Field Name"
+            id="firstName-input"
+            type="firstName"
+            placeholder="First Name"
             prefix-icon="el-icon-message"
-            v-model="createScheduleForm.field"
+            v-model="createPlayerForm.firstName"
             :disabled="loading">
           </el-input>
         </el-form-item>
-        <el-form-item prop="day">
+        <el-form-item prop="lastName">
           <el-input
-            id="day-input"
-            type="day"
-            placeholder="Day Available"
+            id="lastName-input"
+            type="lastName"
+            placeholder="Last Name"
             prefix-icon="el-icon-message"
-            v-model="createScheduleForm.day"
-            :disabled="loading">
-          </el-input>
-        </el-form-item>
-        <el-form-item prop="time">
-          <el-input
-            id="time-input"
-            type="time"
-            placeholder="Time Available"
-            prefix-icon="el-icon-message"
-            v-model="createScheduleForm.time"
+            v-model="createPlayerForm.lastName"
             :disabled="loading">
           </el-input>
         </el-form-item>
@@ -58,19 +48,18 @@
 import { mapActions } from 'vuex';
 
 export default{
-  name: 'CreateScheduleForm',
+  name: 'CreatePlayerForm',
   data() {
     return {
-      createScheduleForm: {
-        field: '',
-        day: '',
-        time: '',
+      createPlayerForm: {
+        firstName: '',
+        lastName: '',
       },
-      createScheduleFormRules: {
+      createPlayerFormRules: {
         field: [
           {
             required: true,
-            message: 'Please input field',
+            message: 'Please input First Name',
             trigger: 'blur',
           },
           {
@@ -83,20 +72,7 @@ export default{
         day: [
           {
             required: true,
-            message: 'Please input day available',
-            trigger: 'blur',
-          },
-          {
-            min: 1,
-            max: 64,
-            message: 'Input too long',
-            trigger: 'blur',
-          },
-        ],
-        time: [
-          {
-            required: true,
-            message: 'Please input time available',
+            message: 'Please input Last Name',
             trigger: 'blur',
           },
           {
@@ -118,7 +94,7 @@ export default{
   },
   methods: {
     ...mapActions([
-      'submitCreateScheduleForm',
+      'submitCreatePlayerForm',
     ]),
     handleKeyUp(e) {
       // Enter key
@@ -128,13 +104,14 @@ export default{
     },
     submitButtonClicked() {
       this.displayErrMsg = false;
-      this.$refs['create-schedule-form'].validate((valid) => {
+      this.$refs['create-player-form'].validate((valid) => {
         if (valid) {
           this.loading = true;
-          this.submitCreateScheduleForm(this.createScheduleForm).then((response) => {
+          this.submitCreatePlayerForm(this.createPlayerForm).then((response) => {
             this.loading = false;
             if (response.retVal) {
               this.errMsg = null;
+              this.closeModal();
             } else {
               this.errMsg = response.retMsg;
             }
@@ -156,8 +133,8 @@ export default{
 <style lang='scss' scoped>
 @import '@/style/global.scss';
 
-#create-schedule-from{
-  #create-schedule-form-container-main{
+#create-player-from{
+  #create-player-form-container-main{
     padding: 0px 40px;
     display: flex;
     flex-direction: column;
@@ -178,15 +155,11 @@ export default{
       border-color: $ELEMENT_UI_DEFAULT_BORDER;
     }
 
-    #field-container{
+    #firstName-container{
       margin: 8px 0px;
     }
 
-    #day-container{
-      margin: 8px 0px;
-    }
-
-    #time-container{
+    #lastName-container{
       margin: 8px 0px;
     }
 
