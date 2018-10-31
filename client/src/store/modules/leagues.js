@@ -2,18 +2,7 @@ import LeaguesService from '@/service/LeaguesService';
 
 // state
 const state = {
-  leagues: [
-    {
-      id: 1,
-      name: 'League1',
-      season: '2018',
-    },
-    {
-      id: 2,
-      name: 'League2',
-      season: '2018',
-    },
-  ],
+  leagues: [],
   selectedLeagueId: 1, // NOTE Default to first league
 };
 
@@ -38,15 +27,14 @@ const actions = {
   getLeagues({ commit }) {
     LeaguesService.getLeagues().then((response) => {
       if (response && response.status === 200) {
-        commit('mutateLeagues', response.leagues);
+        commit('mutateLeagues', response.data.leagues);
       }
     });
   },
   setSelectedLeague({ commit }, id) {
     commit('mutateSelectedLeagueId', id);
   },
-  createLeague({ commit }, leagueObj) {
-    console.log('League Obj: ', leagueObj);
+  createLeague({ dispatch }, leagueObj) {
     return LeaguesService.createLeague(leagueObj).then((response) => {
       if (!response || !response.status) {
         return { retVal: false, retMsg: 'Server Error' };
@@ -55,7 +43,8 @@ const actions = {
       switch (response.status) {
         case 201: {
           // TODO this probs wont be right
-          commit('addLeague', response.data.league);
+          // commit('addLeague', response.data.league);
+          dispatch('getLeagues');
           return { retVal: true, retMsg: 'League Created' };
         }
         default: {

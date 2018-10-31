@@ -49,12 +49,11 @@ export default {
     formatLeagues() {
       const formatedLeagues = this.leagues.map((league) => {
         return {
-          id: league.id,
-          name: league.name,
+          id: league.leagueID,
+          name: league.leagueName,
           season: league.season,
         };
       });
-      console.log('formatedLeagues', formatedLeagues);
       return formatedLeagues;
     },
     curRoute() {
