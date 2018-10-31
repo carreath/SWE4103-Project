@@ -1,3 +1,5 @@
+import GamesService from '@/service/GamesService';
+
 // state
 const state = {
   games: [
@@ -246,6 +248,13 @@ const getters = {
 
 // actions
 const actions = {
+  getGames({ commit }) {
+    GamesService.getGames().then((response) => {
+      if (response && response.status === 200) {
+        commit('mutateGames', response.data.games);
+      }
+    });
+  },
   setSelectedGameId({ commit }, newId) {
     commit('mutateSelectedGameId', newId);
   },
@@ -253,6 +262,9 @@ const actions = {
 
 // mutations
 const mutations = {
+  mutateGames(state, payload) {
+    state.games = payload;
+  },
   mutateSelectedGameId(state, id) {
     state.selectedGameId = id;
   },
