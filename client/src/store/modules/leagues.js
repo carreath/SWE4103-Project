@@ -48,7 +48,6 @@ const actions = {
   createLeague({ commit }, leagueObj) {
     console.log('League Obj: ', leagueObj);
     return LeaguesService.createLeague(leagueObj).then((response) => {
-      console.log('response: ', response);
       if (!response || !response.status) {
         return { retVal: false, retMsg: 'Server Error' };
       }

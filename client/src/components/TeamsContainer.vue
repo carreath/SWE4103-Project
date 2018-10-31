@@ -47,7 +47,6 @@ export default {
           managerID: team.managerID,
         };
       });
-      console.log('formatedTeams', formatedTeams);
       return formatedTeams;
     },
   },
