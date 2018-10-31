@@ -106,7 +106,7 @@ const actions = {
     }
   },
   createTeam({ commit }, teamObj) {
-    TeamsService.createTeam(teamObj).then((response) => {
+    return TeamsService.createTeam(teamObj).then((response) => {
       if (!response || !response.status) {
         return { retVal: false, retMsg: 'Server Error' };
       }
@@ -114,7 +114,7 @@ const actions = {
       switch (response.status) {
         case 201: {
           // TODO this probs wont be right
-          commit('addTeam', response.newTeam);
+          commit('addTeam', response.data.team);
           return { retVal: true, retMsg: 'Team Created' };
         }
         default: {

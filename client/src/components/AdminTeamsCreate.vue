@@ -8,9 +8,11 @@
     <el-form
         :model="teamCreateForm"
         :rules="teamCreateFormRules"
-        ref="team-form">
-        <el-form-item
+        ref="team-create-form">
+        <div>
+          <el-form-item
           label="Team Name"
+          id="team-name-label"
           prop="teamName">
           <el-input
             id="team-name-input"
@@ -19,9 +21,11 @@
             v-model="teamCreateForm.teamName"
             :disabled="loading">
           </el-input>
-        </el-form-item>
+          </el-form-item>
+        </div>
         <el-form-item
           label="Team Colour"
+          id="team-colour-label"
           prop="teamColour">
           <el-color-picker v-model="teamCreateForm.teamColour"></el-color-picker>
         </el-form-item>
@@ -114,6 +118,20 @@ export default {
 <style lang="scss" scoped>
 @import '@/style/global.scss';
 #admin-teams-create{
-
+  #team-name-label{
+    padding: 10px;
+    margin: 0px;
+  }
+  #team-colour-label{
+    padding: 10px;
+    margin: 0px;
+  }
+  .el-input {
+    width: 300px;
+    float:left;
+  }
+  .el-color-picker{
+    float:left;
+  }
 }
 </style>

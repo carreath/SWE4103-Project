@@ -12,6 +12,7 @@
         ref="league-create-form">
         <el-form-item
           label="League Name"
+          class = "label"
           prop="leagueName">
           <el-input
             id="league-name-input"
@@ -23,6 +24,7 @@
         </el-form-item>
         <el-form-item
           label="Season"
+          class = "label"
           prop="season">
           <el-input
             id="season-input"
@@ -34,6 +36,7 @@
         </el-form-item>
         <el-form-item
           label="Point Scheme"
+          class = "label"
           prop="pointScheme">
           <el-select v-model="leagueCreateForm.pointScheme" placeholder="Point Scheme">
             <el-option label="Standard" value="standard"></el-option>
@@ -138,6 +141,16 @@ export default {
 <style lang="scss" scoped>
 @import '@/style/global.scss';
 #admin-leagues-create{
-
+  .el-input {
+    width: 300px;
+    float:left;
+  }
+  .el-select{
+    float:left;
+  }
+  .label{
+    padding: 10px;
+    margin: 0px;
+  }
 }
 </style>
