@@ -66,7 +66,7 @@ CREATE TABLE games (
     leagueID            INT             NOT NULL,
     homeTeamID          INT             NOT NULl,
     awayTeamID          INT             NOT NULL,
-    refereeID           INT             NOT NULL,
+    refereeID           INT             DEFAULT NULL,
     gameTime            DATETIME        NOT NULL,
     field               VARCHAR(32)     NOT NULL,
     canceled            BOOLEAN         NOT NULL DEFAULT 0,
