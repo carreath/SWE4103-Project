@@ -32,7 +32,7 @@
         </li>
 
         <li
-          v-if="loggedIn || true"
+          v-if="loggedIn"
           :class="{'is-active': curRoute.includes('admin')}"
           @click="handleNavMenuSelect('admin')">
           <span>
