@@ -30,8 +30,8 @@ class Team(Resource):
         db_connector.cursor.close()
 
         team_data = {
-            'team_name': team_name,
-            'league_id': league_id,
+            'teamName': team_name,
+            'leagueID': league_id,
             'colour': colour
         }
 

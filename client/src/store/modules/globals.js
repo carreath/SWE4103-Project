@@ -25,7 +25,8 @@ const getters = {
 // actions
 const actions = {
   getAllData({ dispatch }) {
-    dispatch('getTeams');
+    dispatch('getLeagues')
+      .then(dispatch('getTeams'));
   },
   setLoginModalVisible({ commit }, isVisible) {
     commit('mutateCreateAccountModalVisible', false);
