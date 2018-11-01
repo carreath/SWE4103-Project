@@ -1,4 +1,4 @@
-from flask_restful import Resource
+from flask_restful import Resource, reqparse
 from flask import request
 from common import DatabaseConnector
 from common import newScheduler
@@ -9,7 +9,11 @@ class LeagueSchedule(Resource):
     def get(self):
         db_connector = DatabaseConnector()
 
-        league_id = "1"  # TODO test value, replace with endpoint argument
+        parser = reqparse.RequestParser()
+        parser.add_argument('leagueID', type=int)
+        args = parser.parse_args()
+
+        league_id = args['leagueID']
         db_connector.cursor.execute('SELECT * FROM games WHERE leagueID = '+str(league_id))  # TODO filter out games from the past
         games = db_connector.cursor.fetchall()
 
@@ -78,9 +82,13 @@ class LeagueSchedule(Resource):
 class PlayerSchedule(Resource):
     def get(self):
         db_connector = DatabaseConnector()
+        parser = reqparse.RequestParser()
+        parser.add_argument('leagueID', type=int)
+        parser.add_argument('playerID', type=int)
+        args = parser.parse_args()
 
-        league_id = "1"  # TODO test value, replace with endpoint argument
-        player_id = "1"  # TODO ^
+        league_id = args['leagueID']
+        player_id = args['playerID']
         db_connector.cursor.execute(
             'select * from games where leagueID = '+str(league_id)+' and (homeTeamID in (select teamID from players where playerID = '+str(player_id)+') or awayTeamID in (select teamID from players where playerID = '+str(player_id)+'));')  # TODO filter out games from the past
         games = db_connector.cursor.fetchall()
