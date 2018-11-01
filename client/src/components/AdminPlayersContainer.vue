@@ -43,5 +43,12 @@ export default {
 <style lang="scss" scoped>
 #admin-players-container{
 
+  #create-player-button-container{
+    padding: 0px 20px;
+    font-weight: bold;
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    height: 100%;
 }
 </style>
