@@ -2,8 +2,10 @@ import axios from 'axios';
 import store from '@/store/index';
 
 export default() => {
+  let host = process.env.VUE_APP_HOST;
+
   return axios.create({
-    baseURL: 'http://127.0.0.1:5000/api',
+    baseURL: `${host}/api`,
     withCredentials: false,
     headers: {
       Accept: 'application/json',
