@@ -58,6 +58,16 @@ const router = new Router({
       name: 'admin-players',
       component: Admin,
     },
+    {
+      path: '/admin/leagues/create',
+      name: 'admin-leagues-create',
+      component: Admin,
+    },
+    {
+      path: '/admin/teams/create',
+      name: 'admin-teams-create',
+      component: Admin,
+    },
   ],
 });
 

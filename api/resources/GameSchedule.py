@@ -17,19 +17,21 @@ class LeagueSchedule(Resource):
         db_connector.cursor.execute('SELECT * FROM games WHERE leagueID = '+str(league_id))  # TODO filter out games from the past
         games = db_connector.cursor.fetchall()
 
-        schedule_data = {}
+        schedule_data = []
 
         for game in games:
-            schedule_data[game[0]] = {
-                "game_id" : game[0],
-                "home_team_id" : game[2],
-                "away_team_id" : game[3],
-                "gametime" : str(game[5]),
-                "field" : game[6],
-                "iscancelled" : game[7]
-            }
+            schedule_data.append({
+                "gameID": game[0],
+                "leagueID": game[1],
+                "homeTeamID": game[2],
+                "awayTeamID": game[3],
+                "refereeID": game[4],
+                "gameTime": str(game[5]),
+                "fieldName": game[6],
+                "status": game[7]
+            })
 
-        return schedule_data, 200
+        return {'games': schedule_data}, 200
 
     def post(self):
         db = DatabaseConnector()
