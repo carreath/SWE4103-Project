@@ -14,7 +14,8 @@ def findNextValid(matchList, dateList):
         yield matchList.pop(0), dateList.pop(0)  # init state
     while matchList:
         for idx, i in enumerate(matchList):
-            if day == dateList[idx][0]:
+            if day == dateList[idx][0] and (team1 in matchList[idx] or team2 in matchList[0]):
+                # prevent teams from playing multiple games in one day
                 pass
             else:
                 team1 = i[0]
@@ -22,6 +23,7 @@ def findNextValid(matchList, dateList):
                 day = dateList[idx][0]
                 matchList.pop(idx)
                 yield i, dateList.pop(idx)
+        # no optimal date/match pair, use first available match/first available datetime
         team1 = matchList[0][0]
         team2 = matchList[0][1]
         yield matchList.pop(0), dateList.pop(0)
