@@ -12,7 +12,7 @@ class PrivilegeHandler:
         privilege_id = db_response[1]
         if privilege_id is None:
             self.privileges = None
-            db_connector.conn.close()
+
         else:
             db_connector.cursor.execute('CALL get_privileges({});'.format(privilege_id))
             db_response = db_connector.cursor.fetchone()
@@ -30,4 +30,37 @@ class PrivilegeHandler:
                 'assign_coordinator': db_response[11],
                 'assign_privileges': db_response[12]
             }
-            db_connector.conn.close()
+        db_connector.conn.close()
+
+    def game_privileges(self):
+        return self.privileges['create_game'] == 1
+
+    def schedule_privileges(self):
+        return self.game_privileges()
+
+    def player_privileges(self):
+        return self.privileges['create_player'] == 1
+
+    def team_privileges(self):
+        return self.privileges['create_team'] == 1
+
+    def user_privileges(self):
+        return self.privileges['create_user'] == 1
+
+    def cancel_game(self):
+        return self.privileges['cancel_game'] == 1
+
+    def update_score(self):
+        return self.privileges['update_score'] == 1
+
+    def assign_player(self):
+        return self.privileges['assign_player'] == 1
+
+    def assign_manager(self):
+        return self.privileges['assign_manager'] == 1
+
+    def assign_coordinator(self):
+        return self.privileges['assign_coordinator'] == 1
+
+    def assign_privileges(self):
+        return self.privileges['assign_privileges'] == 1
