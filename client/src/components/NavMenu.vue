@@ -39,35 +39,6 @@
             Admin
           </span>
         </li>
-        <!-- TODO Commented code -->
-        <!--
-        <li
-          v-if="loggedIn"
-          :class="{'is-active': false}">
-          <div class="admin-dropdown">
-            <div
-              class="admin-dropdown-button"
-              @mouseover="adminDropdownButtonHover=true"
-              @mouseleave="adminDropdownButtonHover=false"
-              :class="{'lightGreyBackground': adminDropdownContentHover}">
-              Admin
-              <font-awesome-icon icon="caret-down" />
-            </div>
-            <div
-              class="admin-dropdown-content"
-              :class="{'show-admin-dropdown-content': adminDropdownVisible}"
-              @mouseover="adminDropdownContentHover=true"
-              @mouseleave="adminDropdownContentHover=false">
-              <div>
-                Create League
-              </div>
-              <div>
-                Create Team
-              </div>
-            </div>
-          </div>
-        </li>
-        -->
       </ul>
     </div>
 
@@ -244,12 +215,15 @@ export default {
         }
 
         .admin-dropdown-content{
-          display: none;
+          /*display: none;*/
+          opacity: 0;
+          visibility: hidden;
           position: absolute;
           background-color: #f9f9f9;
           box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
           z-index: 10;
           border-radius: 0px 0px 6px 6px;
+          transition: visibility 0s, opacity 0.2s linear;
 
           div{
             float: none;
@@ -285,18 +259,6 @@ export default {
         transition: 0.3s;
       }
     }
-
-    /*
-    .is-active{
-      transition: 0.3s;
-      background-color: $PRIMARY_TO_FADE;
-
-      span{
-        color: $SECONDARY_COLOR;
-        transition: 0.3s;
-      }
-    }
-    */
   }
 
   #user-dropdown-container{
@@ -310,6 +272,8 @@ export default {
 
 
     .user-dropdown{
+      width: 160px;
+
       .user-dropdown-button{
         border: none;
         outline: none;
@@ -325,13 +289,17 @@ export default {
       }
 
       .user-dropdown-content{
-        display: none;
+        /*display: none;*/
         position: absolute;
         background-color: #f9f9f9;
         box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
         z-index: 10;
         right: 20px;
         border-radius: 0px 0px 6px 6px;
+        width: 160px;
+        opacity: 0;
+        visibility: hidden;
+        transition: visibility 0s, opacity 0.2s linear;
 
         div{
           float: none;
@@ -357,7 +325,9 @@ export default {
       }
 
       .show-user-dropdown-content{
-        display: block;
+        /*display: block;*/
+        opacity: 1;
+        visibility: visible;
       }
     }
   }
