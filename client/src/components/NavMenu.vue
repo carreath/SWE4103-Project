@@ -350,7 +350,6 @@ export default {
     margin-right: 20px;
     font-weight: bold;
     color: $PRIMARY_TO_FADE;
-    /*height: 61px;*/
     transition: 0.3s;
     user-select: none;
 
