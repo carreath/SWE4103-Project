@@ -132,6 +132,7 @@ export default {
       'gamesByTeamIdSortedByDate',
       'selectedLeagueId',
       'selectedTeamId',
+      'games',
     ]),
   },
   methods: {
@@ -171,6 +172,9 @@ export default {
   },
   watch: {
     selectedTeamId() {
+      this.formatGamesByLeagueIdSortedByDate();
+    },
+    games() {
       this.formatGamesByLeagueIdSortedByDate();
     },
   },
