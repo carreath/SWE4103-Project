@@ -3,13 +3,55 @@ from common import DatabaseConnector, TokenHandler
 
 
 class Team(Resource):
+    """
+    This endpoint allows access to the teams table records.
+
+    .. Note:: This is a note (wow!)
+
+    .. warning:: This is a warning (oh no!)
+
+    .. todo::
+        Privileges associated with token
+
+        .. code-block:: python
+
+            token = request.headers.get('Authorization')
+            if not token:
+                abort(403, error="Unauthorized Access (no token)")
+
+
+    """
     def post(self):
         """
-        token = request.headers.get('Authorization')
-        if not token:
-            abort(403, error="Unauthorized Access (no token)")
+        Adds a new team to the database.
+
+        :Input:  JSON object representing the team
+
+            .. code-block:: javascript
+
+                {
+                    'teamName': String,
+                    'leagueID': Integer,
+                    'colour': String (Hex Colour Code)
+                }
+
+
+
+        :return: The team object that was created
+
+            .. code-block:: javascript
+
+                {
+                    'teamName': String,
+                    'leagueID': Integer,
+                    'colour': String (Hex Colour Code)
+                }
+
+
+        Success gives status code 201
+
         """
-        # TODO privileges associated with token
+
 
         parser = reqparse.RequestParser()
 
@@ -38,6 +80,39 @@ class Team(Resource):
         return {'team': team_data}, 201
 
     def get(self):
+        """
+        Gets all team records from the database.
+
+        :return: The list of all teams
+
+            .. code-block:: javascript
+
+                {
+                    'teams': List (of Team JSON objects)
+                }
+
+
+            Team JSON object:
+
+            .. code-block:: javascript
+
+                {
+                    'teamID': Integer,
+                    'leagueID': Integer,
+                    'managerID': Integer,
+                    'teamName': String,
+                    'colour': String (Hex Colour Code),
+                    'leaguePoints': Integer,
+                    'wins': Integer,
+                    'losses': Integer,
+                    'draws': Integer
+                }
+
+
+        Success gives status code 200
+
+        """
+
         db_connector = DatabaseConnector()
         db_connector.cursor.execute('SELECT * FROM teams')
 

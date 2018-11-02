@@ -8,7 +8,40 @@ from common import DatabaseConnector, TokenHandler
 # Example POST request to register endpoint:
 # curl -i -H "Content-Type: application/json" -X POST -d '{"email": "ntozer@unb.ca", "password": "password", "lastName": "Tozer", "firstName": "Nathan"}' -k http://localhost:5000/api/register
 class Register(Resource):
+    """
+        Endpoint for registering a new user account.
+    """
     def post(self):
+        """
+        Adds a new user to the database with default permissions.
+
+        :Input:  JSON object representing the new user account
+
+            .. code-block:: javascript
+
+                {
+                    'email': String,
+                    'password': String,
+                    'firstName': String,
+                    'lastName': String
+                }
+
+
+
+        :return: The user object that was created
+
+            .. code-block:: javascript
+
+                {
+                    'teamName': String,
+                    'leagueID': Integer,
+                    'colour': String (Hex Colour Code)
+                }
+
+
+        Success gives status code 201
+
+        """
         parser = reqparse.RequestParser()
         parser.add_argument('email', type=str)
         parser.add_argument('password', type=str)
@@ -46,7 +79,45 @@ class Register(Resource):
 
 
 class Login(Resource):
+    """
+        Endpoint for logging in.
+    """
     def post(self):
+        """
+        Attempts to log in with the given account.
+
+        :Input:  JSON object with the user email and password.
+
+            .. code-block:: javascript
+
+                {
+                    'email': String,
+                    'password': String
+                }
+
+
+
+        :return: The JSON Web Token and the user's data.
+
+            .. code-block:: javascript
+
+                {
+                    'token': String (JSON Web Token),
+                    'user_data':
+                        {
+                            'userID': Integer,
+                            'userType': String,
+                            'firstName': String,
+                            'lastName': String,
+                            'email': String,
+                            'lastLogin': String
+                        }
+                }
+
+
+        Success gives status code 201
+
+        """
         parser = reqparse.RequestParser()
         parser.add_argument('email', type=str)
         parser.add_argument('password', type=str)
@@ -85,8 +156,36 @@ class Login(Resource):
 
 
 class TokenValidation(Resource):
+    """
+    Endpoint for validating web tokens
+    """
     # If token is valid, return refreshed token and user information. Else, return 403 error.
     def get(self):
+        """
+        Checks if the current web token is valid, then refreshes the token and user data.
+
+        :Input:
+
+            .. code-block:: javascript
+
+                Header:
+                'Authorization': String (JSON Web Token)
+
+
+
+        :return: The refreshed JSON Web Token
+
+            .. code-block:: javascript
+
+                {
+                    'token': String (JSON Web Token)
+                }
+
+
+        Success gives status code 200
+        Failiure gives status code 403
+
+        """
         token = request.headers.get('Authorization')
         if not token:
             abort(403, error="Unauthorized Access (no token)")
@@ -96,7 +195,37 @@ class TokenValidation(Resource):
 
 
 class User(Resource):
+    """
+    This endpoint allows access to the users table records.
+    """
     def get(self):
+        """
+        Gets user data from the database.
+
+        :Input:
+
+            .. code-block:: javascript
+
+                Header:
+                'Authorization': String (JSON Web Token)
+
+
+        :return: A JSON object containing the user data.
+
+            .. code-block:: javascript
+
+                {
+                    'userID': Integer,
+                    'userType': String,
+                    'firstName': String,
+                    'lastName': String,
+                    'email': String,
+                    'lastLogin': String
+                }
+
+        Success gives status code 200
+
+        """
         token = request.headers.get('Authorization')
         if not token:
             abort(403, error="Unauthorized Access (no token)")
