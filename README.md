@@ -1,11 +1,10 @@
 # SWE4103-Project
 Soccer League Management web app for SWE4103 Team 2
 
-## Build Status
-#### Front-end: 
-[![Build Status](https://dev.azure.com/creath/creath/_apis/build/status/creath-Node.js%20With%20gulp-CI)](https://dev.azure.com/creath/creath/_build/latest?definitionId=2)
+|Build     |Master|Test-Primary|Dev-Primary|
+|----------|------|------------|-----------|
+|Deployment|[![Build Status](https://dev.azure.com/creath/creath/_apis/build/status/Master%20Deployment)](https://dev.azure.com/creath/creath/_build/latest?definitionId=6)|[![Build Status](https://dev.azure.com/creath/creath/_apis/build/status/Test-Primary%20Deployment)](https://dev.azure.com/creath/creath/_build/latest?definitionId=5)|[![Build Status](https://dev.azure.com/creath/creath/_apis/build/status/Dev-Primary%20Deployment)](https://dev.azure.com/creath/creath/_build/latest?definitionId=4)|
+|Backend  |[![Build Status](https://dev.azure.com/creath/creath/_apis/build/status/Master%20Backend%20Build%20Status)](https://dev.azure.com/creath/creath/_build/latest?definitionId=10)|[![Build Status](https://dev.azure.com/creath/creath/_apis/build/status/Test-Primary%20Backend%20Build%20Status)](https://dev.azure.com/creath/creath/_build/latest?definitionId=8)|[![Build Status](https://dev.azure.com/creath/creath/_apis/build/status/Dev-Primary%20Backend%20Build%20Status)](https://dev.azure.com/creath/creath/_build/latest?definitionId=3)|
+|Frontend   |[![Build Status](https://dev.azure.com/creath/creath/_apis/build/status/Master%20Frontend%20Build%20Status)](https://dev.azure.com/creath/creath/_build/latest?definitionId=9)|[![Build Status](https://dev.azure.com/creath/creath/_apis/build/status/Test-Primary%20Frontend%20Build%20Status)](https://dev.azure.com/creath/creath/_build/latest?definitionId=7)|[![Build Status](https://dev.azure.com/creath/creath/_apis/build/status/Dev-Primary%20Frontend%20Build%20Status)](https://dev.azure.com/creath/creath/_build/latest?definitionId=2)|
 
-#### Back-end:
-[![Build Status](https://dev.azure.com/creath/creath/_apis/build/status/creath-Python%20package-CI)](https://dev.azure.com/creath/creath/_build/latest?definitionId=3)
-
-test edit
+test

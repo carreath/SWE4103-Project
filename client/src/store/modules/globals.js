@@ -3,6 +3,7 @@
 const state = {
   loginModalVisible: false,
   createAccoundModalVisible: false,
+  scheduleSelectedView: 'Table',
 };
 
 // getters
@@ -16,10 +17,18 @@ const getters = {
   createAccoundModalVisible(state) {
     return state.createAccoundModalVisible;
   },
+  scheduleSelectedView(state) {
+    return state.scheduleSelectedView;
+  },
 };
 
 // actions
 const actions = {
+  getAllData({ dispatch }) {
+    dispatch('getLeagues');
+    dispatch('getTeams');
+    dispatch('getGames');
+  },
   setLoginModalVisible({ commit }, isVisible) {
     commit('mutateCreateAccountModalVisible', false);
     commit('mutateLoginModalVisible', isVisible);
@@ -32,6 +41,9 @@ const actions = {
     dispatch('setLoginModalVisible', false);
     dispatch('setCreateAccountModalVisible', false);
   },
+  setScheduleSelectedView({ commit }, newView) {
+    commit('mutateLoginScheduleSelectedView', newView);
+  },
 };
 
 // mutations
@@ -41,6 +53,9 @@ const mutations = {
   },
   mutateCreateAccountModalVisible(state, isVisible) {
     state.createAccoundModalVisible = isVisible;
+  },
+  mutateLoginScheduleSelectedView(state, newView) {
+    state.scheduleSelectedView = newView;
   },
 };
 

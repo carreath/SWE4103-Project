@@ -8,6 +8,7 @@
       :class="{'sticky': nailNavMenu}">
       <NavMenu/>
       <AdminSubNavMenu v-if="curRoute.includes('admin')"/>
+      <ScheduleSubNavMenu v-if="curRoute === 'schedule'"/>
     </div>
     <div
       id="router-view-outer-wrapper"
@@ -26,6 +27,7 @@ import ModalWrapper from './components/ModalWrapper.vue';
 import UpcomingGamesHeader from './components/UpcomingGamesHeader.vue';
 import NavMenu from './components/NavMenu.vue';
 import AdminSubNavMenu from './components/AdminSubNavMenu.vue';
+import ScheduleSubNavMenu from './components/ScheduleSubNavMenu.vue';
 
 export default{
   name: 'App',
@@ -35,6 +37,7 @@ export default{
     UpcomingGamesHeader,
     NavMenu,
     AdminSubNavMenu,
+    ScheduleSubNavMenu,
   },
   data() {
     return {
@@ -54,6 +57,7 @@ export default{
     ...mapActions([
       'setUser',
       'retrieveUserFromToken',
+      'getAllData',
     ]),
     handleScroll() {
       const navbar = document.getElementById('nav-menu-wrapper');
@@ -72,11 +76,22 @@ export default{
       }
     },
   },
+  watch: {
+    modalVisible(val) {
+      if (val) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = 'auto';
+      }
+    },
+  },
   mounted() {
     window.addEventListener('scroll', this.handleScroll);
     if (this.token) {
       this.retrieveUserFromToken();
     }
+    document.body.style.overflow = 'auto';
+    this.getAllData();
   },
   destroyed() {
     window.removeEventListener('scroll', this.handleScroll);
@@ -111,6 +126,10 @@ export default{
       background-color: $SECONDARY_COLOR;
     }
   }
+}
+
+.no-scroll{
+  overflow: hidden;
 }
 
 </style>

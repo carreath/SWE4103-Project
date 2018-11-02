@@ -2,39 +2,8 @@ import TeamsService from '@/service/TeamsService';
 
 // state
 const state = {
-  teams: [ // NOTE this is hardcoded until the backend gets their shit together
-    {
-      teamId: 1,
-      leagueId: 1,
-      managerId: 1,
-      teamName: 'Team1',
-      leaguePoints: 2,
-      wins: 1,
-      losses: 0,
-      draws: 0,
-    },
-    {
-      teamId: 2,
-      leagueId: 1,
-      managerId: 2,
-      teamName: 'Team2',
-      leaguePoints: 0,
-      wins: 0,
-      losses: 1,
-      draws: 0,
-    },
-    {
-      teamId: 3,
-      leagueId: 2,
-      managerId: 3,
-      teamName: 'Team3',
-      leaguePoints: 0,
-      wins: 0,
-      losses: 0,
-      draws: 0,
-    },
-  ],
-  selectedTeamId: 1, // NOTE this should default to first team in selecetd league
+  teams: [],
+  selectedTeamId: null, // NOTE this should default to first team in selecetd league
 };
 
 // getters
@@ -46,13 +15,13 @@ const getters = {
     return state.selectedTeamId;
   },
   selectedTeam(state) {
-    return state.teams.find(team => team.id === state.selectedTeamId);
+    return state.teams.find(team => team.teamID === state.selectedTeamId);
   },
   teamById: (state) => (teamId) => {
-    return state.teams.find(team => team.id === teamId);
+    return state.teams.find(team => team.teamID === teamId) || {};
   },
   teamsByLeagueId: (state) => (leagueId) => {
-    return state.teams.filter(team => team.leagueId === leagueId);
+    return state.teams.filter(team => team.leagueID === leagueId);
   },
 };
 
@@ -61,15 +30,22 @@ const actions = {
   getTeams({ commit }) {
     TeamsService.getTeams().then((response) => {
       if (response && response.status === 200) {
-        commit('mutateTeams', response.teams);
+        commit('mutateTeams', response.data.teams);
       }
     });
   },
-  setSelectedTeamId({ commit }, id) {
+  setSelectedTeamId({ getters, dispatch, commit }, id) {
     commit('mutateSelectedTeamId', id);
+    if (id &&
+      getters.selectedGame &&
+      getters.selectedGame.homeTeamID !== id &&
+      getters.selectedGame.awayTeamID !== id) {
+      dispatch('setSelectedGameId', null);
+    }
   },
-  createTeam({ commit }, teamObj) {
-    TeamsService.createTeam(teamObj).then((response) => {
+  createTeam({ getters, dispatch }, teamObj) {
+    teamObj.leagueID = getters.selectedLeagueId;
+    return TeamsService.createTeam(teamObj).then((response) => {
       if (!response || !response.status) {
         return { retVal: false, retMsg: 'Server Error' };
       }
@@ -77,7 +53,8 @@ const actions = {
       switch (response.status) {
         case 201: {
           // TODO this probs wont be right
-          commit('addTeam', response.newTeam);
+          // commit('addTeam', response.data.team);
+          dispatch('getTeams');
           return { retVal: true, retMsg: 'Team Created' };
         }
         default: {
