@@ -342,6 +342,61 @@
 </div>
 <div class="section" id="module-common.TokenHandler">
 <span id="token-handler"></span><h2>Token Handler<a class="headerlink" href="#module-common.TokenHandler" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="common.TokenHandler.TokenHandler">
+<em class="property">class </em><code class="descclassname">common.TokenHandler.</code><code class="descname">TokenHandler</code><a class="headerlink" href="#common.TokenHandler.TokenHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>TokenHandler is for handling tokens</p>
+<dl class="method">
+<dt id="common.TokenHandler.TokenHandler.create_token">
+<code class="descname">create_token</code><span class="sig-paren">(</span><em>email</em><span class="sig-paren">)</span><a class="headerlink" href="#common.TokenHandler.TokenHandler.create_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a token from a user email</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>email</strong> – User email (String)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">JSON Web Token (String) with the user email encoded inside</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="common.TokenHandler.TokenHandler.decode_token">
+<code class="descname">decode_token</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="headerlink" href="#common.TokenHandler.TokenHandler.decode_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes from a token to a user email</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>token</strong> – JSON Web Token (String)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">User email (String)</td>
+</tr>
+</tbody>
+</table>
+<p>Aborts with a 401 if no token is passed in or the token is expired</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="common.TokenHandler.TokenHandler.refresh_token">
+<code class="descname">refresh_token</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="headerlink" href="#common.TokenHandler.TokenHandler.refresh_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new refreshed token</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>token</strong> – JSON Web Token (String)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">JSON Web Token (String) with a refreshed expiration date</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-resources.User">
 <span id="user-module"></span><h2>User Module<a class="headerlink" href="#module-resources.User" title="Permalink to this headline">¶</a></h2>
