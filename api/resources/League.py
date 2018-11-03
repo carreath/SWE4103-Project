@@ -1,15 +1,15 @@
 from flask_restful import Resource, abort, reqparse, request
-from common import DatabaseConnector, TokenHandler
+from common import DatabaseConnector, TokenHandler, PrivilegeHandler
 
 
 class League(Resource):
     def post(self):
-        """
         token = request.headers.get('Authorization')
         if not token:
             abort(403, error="Unauthorized Access (no token)")
-        """
-        # TODO privileges associated with token
+        privilege_handler = PrivilegeHandler(token)
+        if not privilege_handler.league_privileges():
+            abort(403, error="Unauthorized Access (invalid permissions)")
 
         parser = reqparse.RequestParser()
         parser.add_argument('leagueName', type=str)

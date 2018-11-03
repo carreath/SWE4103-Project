@@ -47,6 +47,9 @@ class PrivilegeHandler:
     def user_privileges(self):
         return self.privileges['create_user'] == 1
 
+    def league_privileges(self):
+        return self.privileges['create_league'] == 1
+
     def cancel_game(self):
         return self.privileges['cancel_game'] == 1
 
