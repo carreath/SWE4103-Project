@@ -33,37 +33,37 @@ class PrivilegeHandler:
         db_connector.conn.close()
 
     def game_privileges(self):
-        return self.privileges['create_game'] == 1
+        return self.privileges['create_game'] == 1 if self.privileges else False
 
     def schedule_privileges(self):
         return self.game_privileges()
 
     def player_privileges(self):
-        return self.privileges['create_player'] == 1
+        return self.privileges['create_player'] == 1 if self.privileges else False
 
     def team_privileges(self):
-        return self.privileges['create_team'] == 1
+        return self.privileges['create_team'] == 1 if self.privileges else False
 
     def user_privileges(self):
-        return self.privileges['create_user'] == 1
+        return self.privileges['create_user'] == 1 if self.privileges else False
 
     def league_privileges(self):
-        return self.privileges['create_league'] == 1
+        return self.privileges['create_league'] == 1 if self.privileges else False
 
     def cancel_game(self):
-        return self.privileges['cancel_game'] == 1
+        return self.privileges['cancel_game'] == 1 if self.privileges else False
 
     def update_score(self):
-        return self.privileges['update_score'] == 1
+        return self.privileges['update_score'] == 1 if self.privileges else False
 
     def assign_player(self):
-        return self.privileges['assign_player'] == 1
+        return self.privileges['assign_player'] == 1 if self.privileges else False
 
     def assign_manager(self):
-        return self.privileges['assign_manager'] == 1
+        return self.privileges['assign_manager'] == 1 if self.privileges else False
 
     def assign_coordinator(self):
-        return self.privileges['assign_coordinator'] == 1
+        return self.privileges['assign_coordinator'] == 1 if self.privileges else False
 
     def assign_privileges(self):
-        return self.privileges['assign_privileges'] == 1
+        return self.privileges['assign_privileges'] == 1 if self.privileges else False
