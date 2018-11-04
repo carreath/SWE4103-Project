@@ -62,7 +62,7 @@ export default{
 
   #main-header-major{
     background: linear-gradient($PRIMARY_COLOR, $PRIMARY_TO_FADE);
-    padding: 8px 8px;
+    padding: 0px 8px;
     width: calc(100% - 16px);
     display: flex;
     justify-content: space-between;
@@ -78,8 +78,8 @@ export default{
       }
 
       #soccer-ball-img{
-        height: 108px;
-        align-self: flex-end;
+        height: 100px;
+        align-self: center;
 
         @include smallScreenSize{
           display: none;
