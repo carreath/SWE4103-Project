@@ -10,19 +10,23 @@
     <div id="teams-table-container">
       <el-table
         :data="formatTeams"
+        :default-sort = "{prop: 'teamID', order: 'ascending'}"
         stripe
         style="">
         <el-table-column
           width="100px"
           prop="teamID"
+          sortable
           label="Team ID">
         </el-table-column>
         <el-table-column
           prop="teamName"
+          sortable
           label="Team Name">
         </el-table-column>
         <el-table-column
           prop="leagueID"
+          sortable
           label="League Name">
         </el-table-column>
         <el-table-column
