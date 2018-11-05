@@ -202,7 +202,7 @@ export default {
       margin: 0px 4px;
       border-radius: 8px;
       -webkit-transition-duration: 0.4s; /* Safari */
-      transition-duration: 0.4s;
+      transition-duration: 0.3s;
 
       &:hover{
         cursor: pointer;
