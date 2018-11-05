@@ -137,7 +137,8 @@ export default {
   background-color: $VERY_LIGHT_GREY;
   transition: 0.3s;
   font-size: 0.9rem;
-  height: 36px;
+  height: 5.5vh;
+  min-height: 36px;
 
   #schedule-sub-menu{
     padding: 0px 20px;
