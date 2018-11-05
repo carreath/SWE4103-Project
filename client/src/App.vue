@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <ModalWrapper v-show='modalVisible'/>
-    <ModalEditLeague v-show='editLeagueModalVisible'/>
+    <ModalEditWrapper v-show='editModalVisible'/>
     <UpcomingGamesHeader ref='upcoming-games-header'/>
     <MainHeader ref="main-header"/>
     <div
@@ -29,7 +29,7 @@ import UpcomingGamesHeader from './components/UpcomingGamesHeader.vue';
 import NavMenu from './components/NavMenu.vue';
 import AdminSubNavMenu from './components/AdminSubNavMenu.vue';
 import ScheduleSubNavMenu from './components/ScheduleSubNavMenu.vue';
-import ModalEditLeague from './components/ModalEditLeague.vue';
+import ModalEditWrapper from './components/ModalEditWrapper.vue';
 
 export default{
   name: 'App',
@@ -40,7 +40,7 @@ export default{
     NavMenu,
     AdminSubNavMenu,
     ScheduleSubNavMenu,
-    ModalEditLeague,
+    ModalEditWrapper,
   },
   data() {
     return {
@@ -50,7 +50,7 @@ export default{
   computed: {
     ...mapGetters([
       'modalVisible',
-      'editLeagueModalVisible',
+      'editModalVisible',
       'token',
     ]),
     curRoute() {
@@ -82,6 +82,13 @@ export default{
   },
   watch: {
     modalVisible(val) {
+      if (val) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = 'auto';
+      }
+    },
+    editModalVisible(val) {
       if (val) {
         document.body.style.overflow = 'hidden';
       } else {

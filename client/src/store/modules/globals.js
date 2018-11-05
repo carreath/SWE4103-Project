@@ -12,6 +12,9 @@ const getters = {
   modalVisible(state) {
     return state.loginModalVisible || state.createAccoundModalVisible;
   },
+  editModalVisible(state) {
+    return state.editLeagueModalVisible;
+  },
   loginModalVisible(state) {
     return state.loginModalVisible;
   },

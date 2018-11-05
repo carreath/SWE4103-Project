@@ -1,11 +1,6 @@
 <template>
-  <div id="modal-wrapper">
-    <div id="modal-container">
-      <i
-        id="close-button"
-        class="el-icon-circle-close"
-        @click="closeModal">
-      </i>
+  <div id="modal-edit-league">
+    <div id="edit-league-modal-container">
       <div id="title">
         Edit League
       </div>
@@ -44,7 +39,8 @@
             label="Point Scheme"
             class = "label"
             prop="pointScheme">
-            <el-select v-model="leagueEditForm.pointScheme" placeholder="Point Scheme">
+            <el-select v-model="leagueEditForm.pointScheme" id="point-scheme-input"
+            placeholder="Point Scheme">
               <el-option label="Standard" value="standard"></el-option>
               <el-option label="Capital Scoring" value="capitalScoring"></el-option>
             </el-select>
@@ -75,9 +71,9 @@ export default{
     return {
       labelPosition: 'left',
       leagueEditForm: {
-        leagueName: 'bleh',
-        season: 'hi',
-        pointScheme: 'Standard',
+        leagueName: '',
+        season: '',
+        pointScheme: '',
       },
       leagueEditFormRules: {
         leagueName: [
@@ -156,6 +152,7 @@ export default{
     },
   },
   mounted() {
+    this.leagueEditForm = this.editedLeague;
     window.addEventListener('keyup', this.handleKeyUp);
   },
   beforeDestroy() {
@@ -167,50 +164,47 @@ export default{
 
 <style lang='scss' scoped>
 @import '@/style/global.scss';
-
-#modal-wrapper{
-  position: fixed;
-  z-index: 99;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  #modal-container{
-    width: 350px;
+#modal-edit-league{
+  #edit-league-modal-container{
+    padding: 0px 40px;
     display: flex;
     flex-direction: column;
-    background-color: $SECONDARY_COLOR;
-    border-radius: 4px;
-    animation: createBox .25s;
-    max-height: 100%;
-    overflow-y: auto;
 
-    #close-button{
-      align-self: flex-end;
-      margin-right: 4px;
-      margin-top: 4px;
-      font-size: 1.2rem;
+    #title{
+      font-size: 2rem;
+      font-weight: bold;
+    }
 
-      &:hover{
-        cursor: pointer;
-        color: #636363;
+    .el-form-item.is-success /deep/ .el-input__inner,
+    .el-form-item.is-success /deep/ .el-input__inner:focus,
+    .el-form-item.is-success /deep/ .el-textarea__inner,
+    .el-form-item.is-success /deep/ .el-textarea__inner:focus {
+      border-color: $ELEMENT_UI_DEFAULT_BORDER;
+    }
+
+    #league-name-input{
+      margin: 8px 0px;
+    }
+
+    #season-input{
+      margin: 8px 0px;
+    }
+
+    #point-scheme-input{
+      margin: 8px 0px;
+    }
+
+    #errMsg{
+      color: red;
+    }
+
+    #league-edit-button-container{
+      width: 100%;
+      margin: 8px 0px;
+
+      button{
+        width: 50%;
       }
-    }
-  }
-
-  @keyframes createBox {
-    from {
-      transform: scale(0);
-    }
-    to {
-      transform: scale(1);
     }
   }
 }
