@@ -19,8 +19,6 @@
           label="League Id">
           <template slot-scope="scope">
             <input type="text" class="asd" v-model="scope.row.id" disabled/>
-            <!--<el-input v-model="scope.row.id"
-            size="small" controls-position="right" visibility="hidden"/> -->
          </template>
         </el-table-column>
         <el-table-column
@@ -37,7 +35,7 @@
           label="Action">
           <template slot-scope="scope">
             <el-button
-            @click="leagueEditClicked(scope.$index)">
+            @click='leagueEditClicked(scope.row.id)'>
               Edit
             </el-button>
             <el-button
@@ -84,12 +82,15 @@ export default {
     ...mapActions([
       'deleteLeague',
       'leagueById',
+      'setEditedLeague',
+      'setEditLeagueModalVisible',
     ]),
     leagueCreateClicked() {
       this.$router.push('/admin/leagues/create');
     },
     leagueEditClicked(index) {
-      return index;
+      this.setEditedLeague(index);
+      this.setEditLeagueModalVisible(true);
     },
     leagueDeleteClicked(id, name) {
       this.$confirm(`Are you sure you want to delete ${name}?`, 'Confirm League Deletion', {

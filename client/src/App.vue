@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <ModalWrapper v-show='modalVisible'/>
+    <ModalEditLeague v-show='editLeagueModalVisible'/>
     <UpcomingGamesHeader ref='upcoming-games-header'/>
     <MainHeader ref="main-header"/>
     <div
@@ -28,6 +29,7 @@ import UpcomingGamesHeader from './components/UpcomingGamesHeader.vue';
 import NavMenu from './components/NavMenu.vue';
 import AdminSubNavMenu from './components/AdminSubNavMenu.vue';
 import ScheduleSubNavMenu from './components/ScheduleSubNavMenu.vue';
+import ModalEditLeague from './components/ModalEditLeague.vue';
 
 export default{
   name: 'App',
@@ -38,6 +40,7 @@ export default{
     NavMenu,
     AdminSubNavMenu,
     ScheduleSubNavMenu,
+    ModalEditLeague,
   },
   data() {
     return {
@@ -47,6 +50,7 @@ export default{
   computed: {
     ...mapGetters([
       'modalVisible',
+      'editLeagueModalVisible',
       'token',
     ]),
     curRoute() {
