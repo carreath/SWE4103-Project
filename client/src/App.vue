@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <ModalWrapper v-show='modalVisible'/>
-    <UpcomingGamesHeader ref='upcoming-games-header'/>
+    <UpcomingGamesHeader ref='upcoming-games-header' v-if="false"/>
     <MainHeader ref="main-header"/>
     <div
       id="nav-menu-wrapper"
@@ -67,8 +67,13 @@ export default{
         this.nailNavMenu = true;
         outerRouterWrapper.style.paddingTop = `${navbar.clientHeight}px`;
       }
-      const upcomingGamesHeaderHeight = this.$refs['upcoming-games-header'].$el.clientHeight;
-      const mainHeaderHeight = this.$refs['main-header'].$el.clientHeight;
+
+      const upcomingGamesHeaderHeight = this.$refs['upcoming-games-header'] ?
+        this.$refs['upcoming-games-header'].$el.clientHeight :
+        0;
+      const mainHeaderHeight = this.$refs['main-header'] ?
+        this.$refs['main-header'].$el.clientHeight :
+        0;
       const totalHeaderHeight = upcomingGamesHeaderHeight + mainHeaderHeight;
       if (this.nailNavMenu && (window.pageYOffset - totalHeaderHeight <= 0)) {
         this.nailNavMenu = false;
