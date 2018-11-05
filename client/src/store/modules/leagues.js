@@ -56,6 +56,25 @@ const actions = {
       }
     });
   },
+  deleteLeague({ dispatch }, leagueObj) {
+    return LeaguesService.deleteLeague(leagueObj).then((response) => {
+      if (!response || !response.status) {
+        return { retVal: false, retMsg: 'Server Error' };
+      }
+
+      switch (response.status) {
+        case 200: {
+          // TODO this probs wont be right
+          // commit('addLeague', response.data.league);
+          dispatch('getLeagues');
+          return { retVal: true, retMsg: 'League Deleted' };
+        }
+        default: {
+          return { retVal: false, retMsg: 'Server Error' };
+        }
+      }
+    });
+  },
 };
 
 // mutations

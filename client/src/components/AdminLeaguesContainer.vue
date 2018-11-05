@@ -17,6 +17,11 @@
           prop="id"
           sortable
           label="League Id">
+          <template slot-scope="scope">
+            <input type="text" class="asd" v-model="scope.row.id" disabled/>
+            <!--<el-input v-model="scope.row.id"
+            size="small" controls-position="right" visibility="hidden"/> -->
+         </template>
         </el-table-column>
         <el-table-column
           prop="name"
@@ -36,7 +41,7 @@
               Edit
             </el-button>
             <el-button
-            @click="leagueDeleteClicked(scope.$index)">
+            @click="leagueDeleteClicked(scope.row.id, scope.row.name)">
               Delete
             </el-button>
           </template>
@@ -77,7 +82,8 @@ export default {
   },
   methods: {
     ...mapActions([
-
+      'deleteLeague',
+      'leagueById',
     ]),
     leagueCreateClicked() {
       this.$router.push('/admin/leagues/create');
@@ -85,20 +91,18 @@ export default {
     leagueEditClicked(index) {
       return index;
     },
-    leagueDeleteClicked(index) {
-      this.$confirm(index, 'Confirm Log Out', {
-        confirmButtonText: 'Log Out',
+    leagueDeleteClicked(id, name) {
+      this.$confirm(`Are you sure you want to delete ${name}?`, 'Confirm League Deletion', {
+        confirmButtonText: 'Delete League',
         cancelButtonText: 'Cancel',
         type: 'warning',
       }).then(() => {
-        this.userLogOut().then(() => {
+        this.deleteLeague(this.leagueById(id)).then(() => {
           this.$message({
-            message: 'Logged Out',
+            message: `Deleted ${name}`,
             center: true,
           });
-          if (this.$route.name.includes('admin')) {
-            this.$router.push('/');
-          }
+          this.$router.push('/admin/leagues');
         });
       }).catch(() => {
       });
@@ -119,6 +123,11 @@ export default {
     justify-content: flex-end;
     height: 61px;
     transition: 0.3s;
+  }
+  .asd {
+    background:rgba(0,0,0,0);
+    border: 1px solid rgba(0,0,0,0);
+    width: 20%;
   }
 }
 </style>
