@@ -7,6 +7,7 @@
         @click="closeModal">
       </i>
       <ModalEditLeague v-if="editLeagueModalVisible"/>
+      <ModalEditTeam v-else-if="editTeamModalVisible"/>
     </div>
   </div>
 </template>
@@ -14,15 +15,18 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import ModalEditLeague from '@/components/ModalEditLeague.vue';
+import ModalEditTeam from '@/components/ModalEditTeam.vue';
 
 export default{
   name: 'ModalEditWrapper',
   components: {
     ModalEditLeague,
+    ModalEditTeam,
   },
   computed: {
     ...mapGetters([
       'editLeagueModalVisible',
+      'editTeamModalVisible',
     ]),
   },
   methods: {

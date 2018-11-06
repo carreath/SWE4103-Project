@@ -19,4 +19,22 @@ export default {
         return err.response;
       });
   },
+  deleteTeam(params) {
+    return ServiceLayer().delete('/team', params)
+      .then((response) => {
+        return response;
+      })
+      .catch((err) => {
+        return err.response;
+      });
+  },
+  editTeam(params) {
+    return ServiceLayer().put('/team', params)
+      .then((response) => {
+        return response;
+      })
+      .catch((err) => {
+        return err.response;
+      });
+  },
 };

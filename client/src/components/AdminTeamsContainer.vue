@@ -35,6 +35,16 @@
         </el-table-column>
         <el-table-column
           label="Action">
+          <template slot-scope="scope">
+            <el-button
+            @click='teamEditClicked(scope.row.teamID)'>
+              Edit
+            </el-button>
+            <el-button
+            @click="teamDeleteClicked(scope.row.teamID, scope.row.teamName)">
+              Delete
+            </el-button>
+          </template>
         </el-table-column>
       </el-table>
     </div>
@@ -71,10 +81,33 @@ export default {
   },
   methods: {
     ...mapActions([
-
+      'deleteLeague',
+      'teamById',
+      'setEditedTeam',
+      'setEditTeamModalVisible',
     ]),
     teamCreateClicked() {
       this.$router.push('/admin/teams/create');
+    },
+    teamEditClicked(index) {
+      this.setEditedTeam(index);
+      this.setEditTeamModalVisible(true);
+    },
+    teamDeleteClicked(id, name) {
+      this.$confirm(`Are you sure you want to delete ${name}?`, 'Confirm Team Deletion', {
+        confirmButtonText: 'Delete Team',
+        cancelButtonText: 'Cancel',
+        type: 'warning',
+      }).then(() => {
+        this.deleteTeam(this.teamById(id)).then(() => {
+          this.$message({
+            message: `Deleted ${name}`,
+            center: true,
+          });
+          this.$router.push('/admin/teams');
+        });
+      }).catch(() => {
+      });
     },
   },
 };

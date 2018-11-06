@@ -36,7 +36,7 @@
         <el-form-item id="team-create-button-container">
           <el-button
             icon="el-icon-arrow-left"
-            @click="$router.push('/admin/leagues')">
+            @click="$router.push('/admin/teams')">
             Cancel
           </el-button>
           <div></div>
