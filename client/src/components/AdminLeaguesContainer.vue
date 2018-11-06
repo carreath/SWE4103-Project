@@ -17,9 +17,6 @@
           prop="id"
           sortable
           label="League Id">
-          <template slot-scope="scope">
-            <input type="text" class="asd" v-model="scope.row.id" disabled/>
-         </template>
         </el-table-column>
         <el-table-column
           prop="name"
@@ -93,7 +90,7 @@ export default {
       this.setEditLeagueModalVisible(true);
     },
     leagueDeleteClicked(id, name) {
-      this.$confirm(`Are you sure you want to delete ${name}?`, 'Confirm League Deletion', {
+      this.$confirm(`Are you sure you want to delete ${name}? (This will also delete all associated teams and players)`, 'Confirm League Deletion', {
         confirmButtonText: 'Delete League',
         cancelButtonText: 'Cancel',
         type: 'warning',

@@ -4,7 +4,7 @@
       <i
         id="close-button"
         class="el-icon-circle-close"
-        @click="closeModal">
+        @click="closeModalButtonClicked">
       </i>
       <ModalEditLeague v-if="editLeagueModalVisible"/>
       <ModalEditTeam v-else-if="editTeamModalVisible"/>
@@ -32,7 +32,14 @@ export default{
   methods: {
     ...mapActions([
       'closeModal',
+      'getLeagues',
+      'getTeams',
     ]),
+    closeModalButtonClicked() {
+      this.getLeagues();
+      this.getTeams();
+      this.closeModal();
+    },
   },
 };
 
