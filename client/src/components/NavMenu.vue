@@ -47,7 +47,7 @@
       v-if="loggedIn">
 
       <div id="league-dropdown-container"
-      v-if="atLeastTwoLeagues">
+      v-if="showLeagueSelection()">
         <div class="league-dropdown">
           <div
             class="league-dropdown-button"
@@ -131,7 +131,6 @@ export default {
       adminDropdownContentHover: false,
       leagueDropdownButtonHover: false,
       leagueDropdownContentHover: false,
-      atLeastTwoLeagues: true,
     };
   },
   computed: {
@@ -211,6 +210,12 @@ export default {
     handleLeagueClick(leagueID) {
       this.leagueDropdownContentHover = false;
       this.setSelectedLeague(leagueID);
+    },
+    showLeagueSelection(){
+      if(this.leagues.length >= 2) {
+        return true;
+      }
+      return false;
     },
   },
 };
