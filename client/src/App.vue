@@ -124,7 +124,7 @@ export default{
   }
 
   .router-view-outer-wrapper{
-    padding: 0px 20px;
+    padding: 0px 0px;
     background-color: $SECONDARY_COLOR;
 
     #router-view-inner-wrapper{

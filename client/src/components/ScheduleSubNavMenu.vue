@@ -127,6 +127,7 @@ export default {
     },
     handleResize() {
       if (window.innerWidth < 700) {
+        // TODO Test this on an actual tablet
         this.setScheduleSelectedView('Table');
       }
     },
