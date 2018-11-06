@@ -26,6 +26,7 @@
                   Table
                 </div>
                 <div
+                  id="calendar-view-button"
                   @click="handleScheduleSelectedViewClick('Calendar')"
                   :class="{'boldText': scheduleSelectedView === 'Calendar'}">
                   Calendar
@@ -106,6 +107,9 @@ export default {
     scheduleTeamDropdownVisible() {
       return this.scheduleTeamDropdownButtonHover || this.scheduleTeamDropdownContentHover;
     },
+    smallScreenSize() {
+      return window.innerWidth < 700;
+    },
   },
   methods: {
     ...mapActions([
@@ -113,6 +117,7 @@ export default {
       'setSelectedTeamId',
     ]),
     handleScheduleSelectedViewClick(view) {
+      if (view === 'Calendar' && window.innerWidth < 700) return;
       this.scheduleViewDropdownContentHover = false;
       this.setScheduleSelectedView(view);
     },
@@ -120,6 +125,17 @@ export default {
       this.scheduleTeamDropdownContentHover = false;
       this.setSelectedTeamId(teamID);
     },
+    handleResize() {
+      if (window.innerWidth < 700) {
+        this.setScheduleSelectedView('Table');
+      }
+    },
+  },
+  mounted() {
+    window.addEventListener('resize', this.handleResize);
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize);
   },
 };
 
@@ -224,6 +240,18 @@ export default {
           /* display: block;*/
           opacity: 1;
           visibility: visible;
+        }
+      }
+    }
+
+    @include checkMaxScreenSize(700px) {
+      #schedule-view-dropdown-container{
+        #calendar-view-button{
+          color: $HOVER_GREY;
+          cursor: not-allowed;
+          &:hover{
+            background-color: $VERY_LIGHT_GREY;
+          }
         }
       }
     }
