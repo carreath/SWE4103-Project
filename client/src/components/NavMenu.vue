@@ -45,6 +45,42 @@
     <div
       id="user-dropdown-container"
       v-if="loggedIn">
+
+      <div id="league-dropdown-container"
+      v-if="atLeastTwoLeagues">
+        <div class="league-dropdown">
+          <div
+            class="league-dropdown-button"
+            @mouseover="leagueDropdownButtonHover=true"
+            @mouseleave="leagueDropdownButtonHover=false"
+            :class="{'lightGreyBackground': leagueDropdownContentHover}">
+            <span v-if="!selectedLeagueId">All Leagues</span>
+            <span v-else>{{ selectedLeague.leagueName }}</span>
+            <font-awesome-icon
+              id="caret-down"
+              icon="caret-down"/>
+          </div>
+          <div
+            class="league-dropdown-content"
+            :class="{'show-league-dropdown-content': leagueDropdownVisible}"
+            @mouseover="leagueDropdownContentHover=true"
+            @mouseleave="leagueDropdownContentHover=false">
+            <div
+              @click="handleLeagueClick(null)"
+              :class="{'boldText': !selectedLeagueId}">
+              All Leagues
+            </div>
+            <div
+              v-for="league in leagues"
+              :key="league.leagueID"
+              @click="handleLeagueClick(league.leagueID)"
+              :class="{'boldText': selectedLeagueId === league.leagueID}">
+                {{league.leagueName}}
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="user-dropdown">
         <div
           class="user-dropdown-button"
@@ -93,18 +129,28 @@ export default {
       userDropdownContentHover: false,
       adminDropdownButtonHover: false,
       adminDropdownContentHover: false,
+      leagueDropdownButtonHover: false,
+      leagueDropdownContentHover: false,
+      atLeastTwoLeagues: true,
     };
   },
   computed: {
     ...mapGetters([
       'user',
       'loggedIn',
+      'selectedLeagueId',
+      'leagueById',
+      'leagues',
+      'selectedLeague',
     ]),
     curRoute() {
       return this.$route.name;
     },
     userDropdownVisible() {
       return this.userDropdownButtonHover || this.userDropdownContentHover;
+    },
+    leagueDropdownVisible() {
+      return this.leagueDropdownButtonHover || this.leagueDropdownContentHover;
     },
     adminDropdownVisible() {
       return this.adminDropdownButtonHover || this.adminDropdownContentHover;
@@ -115,6 +161,7 @@ export default {
       'setLoginModalVisible',
       'setCreateAccountModalVisible',
       'userLogOut',
+      'setSelectedLeague',
     ]),
     handleNavMenuSelect(key) {
       switch (key) {
@@ -160,6 +207,10 @@ export default {
         });
       }).catch(() => {
       });
+    },
+    handleLeagueClick(leagueID) {
+      this.leagueDropdownContentHover = false;
+      this.setSelectedLeague(leagueID);
     },
   },
 };
@@ -337,6 +388,87 @@ export default {
       }
 
       .show-user-dropdown-content{
+        /*display: block;*/
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+  }
+
+  #league-dropdown-container{
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+    font-weight: bold;
+    color: $PRIMARY_TO_FADE;
+    transition: 0.3s;
+    user-select: none;
+    height: 100%;
+    float: right;
+
+    .league-dropdown{
+      min-width: 160px;
+      height: 100%;
+
+      .league-dropdown-button{
+        border: none;
+        outline: none;
+        color: $PRIMARY_TO_FADE;
+        padding: 0px 20px;
+        margin: 0;
+        transition: 0.3s;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        #caret-down{
+          margin-left: 4px;
+        }
+
+        &:hover{
+          background-color: $HOVER_GREY;
+          cursor: pointer;
+        }
+      }
+
+      .league-dropdown-content{
+        /*display: none;*/
+        position: relative;
+        background-color: #f9f9f9;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 10;
+        right: 20px;
+        border-radius: 0px 0px 6px 6px;
+        width: auto;
+        opacity: 0;
+        visibility: hidden;
+        transition: visibility 0s, opacity 0.2s linear;
+
+        div{
+          float: none;
+          color: $PRIMARY_TO_FADE;
+          padding: 12px 16px;
+          text-decoration: none;
+          display: block;
+          text-align: left;
+          white-space:nowrap;
+          font-weight: normal;
+          transition: 0.3s;
+
+          &:hover{
+            background-color: $HOVER_GREY;
+            cursor: pointer;
+          }
+        }
+
+        :last-child{
+          border-top: 1px solid $ELEMENT_UI_DEFAULT_BORDER;
+          padding-top: 4px;
+        }
+      }
+
+      .show-league-dropdown-content{
         /*display: block;*/
         opacity: 1;
         visibility: visible;
