@@ -52,7 +52,9 @@
           @mouseleave="userDropdownButtonHover=false"
           :class="{'lightGreyBackground': userDropdownContentHover}">
           {{ user.first_name }} {{ user.last_name }}
-          <font-awesome-icon icon="caret-down" />
+          <font-awesome-icon
+            id="caret-down"
+            icon="caret-down"/>
         </div>
         <div
           class="user-dropdown-content"
@@ -174,6 +176,7 @@ export default {
   width: 100%;
   border-bottom: 1px solid $HOVER_GREY;
   background-color: $SECONDARY_COLOR;
+  height: 44px;
 
   #menu{
     padding: 0px 20px;
@@ -270,18 +273,27 @@ export default {
     color: $PRIMARY_TO_FADE;
     transition: 0.3s;
     user-select: none;
+    height: 100%;
 
 
     .user-dropdown{
-      width: 160px;
+      min-width: 160px;
+      height: 100%;
 
       .user-dropdown-button{
         border: none;
         outline: none;
         color: $PRIMARY_TO_FADE;
-        padding: 20px 20px;
+        padding: 0px 20px;
         margin: 0;
         transition: 0.3s;
+        height: 100%;
+        display: flex;
+        align-items: center;
+
+        #caret-down{
+          margin-left: 4px;
+        }
 
         &:hover{
           background-color: $HOVER_GREY;
@@ -339,7 +351,6 @@ export default {
     margin-right: 20px;
     font-weight: bold;
     color: $PRIMARY_TO_FADE;
-    height: 61px;
     transition: 0.3s;
     user-select: none;
 

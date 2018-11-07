@@ -139,6 +139,7 @@ export default {
       'gamesByTeamIdSortedByDate',
       'selectedLeagueId',
       'selectedTeamId',
+      'games',
     ]),
     curRoute() {
       return this.$route.name;
@@ -181,6 +182,9 @@ export default {
   },
   watch: {
     selectedTeamId() {
+      this.formatGamesByLeagueIdSortedByDate();
+    },
+    games() {
       this.formatGamesByLeagueIdSortedByDate();
     },
   },

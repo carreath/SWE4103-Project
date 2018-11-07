@@ -2,18 +2,7 @@ import LeaguesService from '@/service/LeaguesService';
 
 // state
 const state = {
-  leagues: [
-    {
-      id: 1,
-      name: 'League1',
-      season: '2018',
-    },
-    {
-      id: 2,
-      name: 'League2',
-      season: '2018',
-    },
-  ],
+  leagues: [],
   selectedLeagueId: 1, // NOTE Default to first league
 };
 
@@ -26,24 +15,30 @@ const getters = {
     return state.selectedLeagueId;
   },
   selectedLeague(state) {
-    return state.leagues.find(league => league.id === state.selectedLeagueId);
+    return state.leagues.find(league => league.leagueID === state.selectedLeagueId);
+  },
+  leagueById: (state) => (id) => {
+    return state.leagues.find(league => league.leagueID === id) || {};
   },
 };
 
 // actions
 const actions = {
-  getLeagues({ commit }) {
+  getLeagues({ commit, dispatch }) {
     LeaguesService.getLeagues().then((response) => {
       if (response && response.status === 200) {
-        commit('mutateLeagues', response.leagues);
+        commit('mutateLeagues', response.data.leagues);
+        response.data.leagues.forEach((league) => {
+          dispatch('getLeagueGames', league.leagueID);
+        });
       }
     });
   },
   setSelectedLeague({ commit }, id) {
     commit('mutateSelectedLeagueId', id);
   },
-  createLeague({ commit }, leagueObj) {
-    LeaguesService.createLeague(leagueObj).then((response) => {
+  createLeague({ dispatch }, leagueObj) {
+    return LeaguesService.createLeague(leagueObj).then((response) => {
       if (!response || !response.status) {
         return { retVal: false, retMsg: 'Server Error' };
       }
@@ -51,7 +46,8 @@ const actions = {
       switch (response.status) {
         case 201: {
           // TODO this probs wont be right
-          commit('addLeague', response.newLeague);
+          // commit('addLeague', response.data.league);
+          dispatch('getLeagues');
           return { retVal: true, retMsg: 'League Created' };
         }
         default: {

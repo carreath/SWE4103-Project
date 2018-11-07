@@ -3,14 +3,14 @@
     <div id="admin-sub-menu-container">
       <ul id="admin-sub-menu">
         <li
-          :class="{'is-active': curRoute === 'admin-leagues'}"
+          :class="{'is-active': curRoute.includes('admin-leagues')}"
           @click="handleAdminNavMenuSelect('leagues')">
           <span>
             Leagues
           </span>
         </li>
         <li
-          :class="{'is-active': curRoute === 'admin-teams'}"
+          :class="{'is-active': curRoute.includes('admin-teams')}"
           @click="handleAdminNavMenuSelect('teams')">
           <span>
             Teams
@@ -108,7 +108,7 @@ export default {
       }
 
       span{
-        padding: 10px 20px;
+        padding: 0px 20px;
         user-select: none;
       }
 

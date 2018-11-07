@@ -25,6 +25,7 @@ const getters = {
 // actions
 const actions = {
   getAllData({ dispatch }) {
+    dispatch('getLeagues');
     dispatch('getTeams');
   },
   setLoginModalVisible({ commit }, isVisible) {

@@ -97,8 +97,8 @@ export default {
         this.gamesByLeagueId(this.selectedLeagueId);
       const leagueGamesForCalendar = selectedames.map((gameObj) => {
         const gameObjForCalendarTitle = gameObj.status === 'Open' ?
-          `${gameObj.field} - Open` :
-          `${gameObj.field} - ${this.teamById(gameObj.awayTeamID).teamName} vs. ${this.teamById(gameObj.homeTeamID).teamName}`;
+          `${gameObj.fieldName} - Open` :
+          `${gameObj.fieldName} - ${this.teamById(gameObj.awayTeamID).teamName} vs. ${this.teamById(gameObj.homeTeamID).teamName}`;
         let gameObjForCalendar = {
           id: gameObj.gameID,
           startDate: `${gameObj.gameTime}`,

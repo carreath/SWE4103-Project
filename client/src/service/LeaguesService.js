@@ -2,7 +2,7 @@ import ServiceLayer from '@/service/ServiceLayer';
 
 export default {
   getLeagues() {
-    return ServiceLayer().get('/leagues')
+    return ServiceLayer().get('/league')
       .then((response) => {
         return response;
       })
@@ -11,7 +11,7 @@ export default {
       });
   },
   createLeague(params) {
-    return ServiceLayer().post('/leagues', params)
+    return ServiceLayer().post('/league', params)
       .then((response) => {
         return response;
       })
