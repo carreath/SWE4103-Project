@@ -50,5 +50,6 @@ export default {
     list-style-type: none;
     margin: 0;
     height: 100%;
+  }
 }
 </style>
