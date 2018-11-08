@@ -62,11 +62,6 @@
             @mouseover="leagueDropdownContentHover=true"
             @mouseleave="leagueDropdownContentHover=false">
             <div
-              @click="handleLeagueClick(null)"
-              :class="{'boldText': !selectedLeagueId}">
-              Select a League
-            </div>
-            <div
               v-for="league in leagues"
               :key="league.leagueID"
               @click="handleLeagueClick(league.leagueID)"
