@@ -64,10 +64,11 @@ const router = new Router({
       component: Admin,
     },
     {
-
       path: '/admin/players/create',
       name: 'create-player-form',
-
+      component: Admin,
+    },
+    {
       path: '/admin/leagues/create',
       name: 'admin-leagues-create',
       component: Admin,
@@ -75,7 +76,6 @@ const router = new Router({
     {
       path: '/admin/teams/create',
       name: 'admin-teams-create',
-
       component: Admin,
     },
   ],
