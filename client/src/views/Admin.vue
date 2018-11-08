@@ -46,6 +46,6 @@ export default {
 
 <style lang="scss" scoped>
 #admin{
-
+  padding: 0px 24px;
 }
 </style>
