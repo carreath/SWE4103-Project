@@ -42,8 +42,11 @@
       </ul>
     </div>
 
-      <div id="league-dropdown-container"
-      v-if="showLeagueSelection()">
+    <div id="right-menu-container">
+
+      <div
+        id="league-dropdown-container"
+        v-if="showLeagueSelection">
         <div class="league-dropdown">
           <div
             class="league-dropdown-button"
@@ -109,6 +112,10 @@
           Log In
         </div>
       </div>
+
+    </div>
+
+
   </div>
 </template>
 
@@ -147,6 +154,9 @@ export default {
     },
     adminDropdownVisible() {
       return this.adminDropdownButtonHover || this.adminDropdownContentHover;
+    },
+    showLeagueSelection() {
+      return this.leagues.length > 1;
     },
   },
   methods: {
@@ -205,12 +215,6 @@ export default {
       this.leagueDropdownContentHover = false;
       this.setSelectedLeague(leagueID);
     },
-    showLeagueSelection(){
-      if(this.leagues.length >= 2) {
-        return true;
-      }
-      return false;
-    },
   },
 };
 </script>
@@ -251,15 +255,52 @@ export default {
         padding: 0px 20px;
         user-select: none;
       }
+    }
 
-      .admin-dropdown{
-        .admin-dropdown-button{
+    .is-active{
+      transition: 0.3s;
+      border-bottom: 2px solid $PRIMARY_TO_FADE;
+
+      span{
+        margin-bottom: -2px;
+        transition: 0.3s;
+      }
+    }
+  }
+
+
+  #right-menu-container{
+    display: flex;
+    flex-direction: row;
+
+    #league-dropdown-container{
+      display: flex;
+      align-items: center;
+      margin-right: 0px;
+      font-weight: bold;
+      color: $PRIMARY_TO_FADE;
+      transition: 0.3s;
+      user-select: none;
+      height: 100%;
+
+      .league-dropdown{
+        min-width: 160px;
+        height: 100%;
+
+        .league-dropdown-button{
           border: none;
           outline: none;
           color: $PRIMARY_TO_FADE;
-          padding: 20px 20px;
+          padding: 0px 20px;
           margin: 0;
           transition: 0.3s;
+          height: 100%;
+          display: flex;
+          align-items: center;
+
+          #caret-down{
+            margin-left: 4px;
+          }
 
           &:hover{
             background-color: $HOVER_GREY;
@@ -267,15 +308,16 @@ export default {
           }
         }
 
-        .admin-dropdown-content{
+        .league-dropdown-content{
           /*display: none;*/
-          opacity: 0;
-          visibility: hidden;
-          position: absolute;
+          position: relative;
           background-color: #f9f9f9;
           box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
           z-index: 10;
           border-radius: 0px 0px 6px 6px;
+          width: auto;
+          opacity: 0;
+          visibility: hidden;
           transition: visibility 0s, opacity 0.2s linear;
 
           div{
@@ -294,85 +336,49 @@ export default {
               cursor: pointer;
             }
           }
+
+          .boldText{
+            font-weight: bold;
+          }
         }
 
-        .show-admin-dropdown-content{
-          display: block;
+        .show-league-dropdown-content{
+          /*display: block;*/
+          opacity: 1;
+          visibility: visible;
         }
       }
     }
 
-
-    .is-active{
+    #user-dropdown-container{
+      display: flex;
+      align-items: center;
+      margin-right: 20px;
+      font-weight: bold;
+      color: $PRIMARY_TO_FADE;
       transition: 0.3s;
-      border-bottom: 2px solid $PRIMARY_TO_FADE;
-
-      span{
-        margin-bottom: -2px;
-        transition: 0.3s;
-      }
-    }
-  }
-
-  #user-dropdown-container{
-    display: flex;
-    align-items: center;
-    margin-right: 20px;
-    font-weight: bold;
-    color: $PRIMARY_TO_FADE;
-    transition: 0.3s;
-    user-select: none;
-    height: 100%;
-
-
-    .user-dropdown{
-      min-width: 160px;
+      user-select: none;
       height: 100%;
 
-      .user-dropdown-button{
-        border: none;
-        outline: none;
-        color: $PRIMARY_TO_FADE;
-        padding: 0px 20px;
-        margin: 0;
-        transition: 0.3s;
+
+      .user-dropdown{
+        min-width: 160px;
         height: 100%;
-        display: flex;
-        align-items: center;
 
-        #caret-down{
-          margin-left: 4px;
-        }
-
-        &:hover{
-          background-color: $HOVER_GREY;
-          cursor: pointer;
-        }
-      }
-
-      .user-dropdown-content{
-        /*display: none;*/
-        position: absolute;
-        background-color: #f9f9f9;
-        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-        z-index: 10;
-        right: 20px;
-        border-radius: 0px 0px 6px 6px;
-        width: 160px;
-        opacity: 0;
-        visibility: hidden;
-        transition: visibility 0s, opacity 0.2s linear;
-
-        div{
-          float: none;
+        .user-dropdown-button{
+          border: none;
+          outline: none;
           color: $PRIMARY_TO_FADE;
-          padding: 12px 16px;
-          text-decoration: none;
-          display: block;
-          text-align: left;
-          white-space:nowrap;
-          font-weight: normal;
+          padding: 0px 20px;
+          margin: 0;
           transition: 0.3s;
+          height: 100%;
+          display: flex;
+          align-items: center;
+
+          #caret-down{
+            margin-left: 4px;
+          }
 
           &:hover{
             background-color: $HOVER_GREY;
@@ -380,116 +386,67 @@ export default {
           }
         }
 
-        :last-child{
-          border-top: 1px solid $ELEMENT_UI_DEFAULT_BORDER;
-          padding-top: 4px;
-        }
-      }
+        .user-dropdown-content{
+          /*display: none;*/
+          position: absolute;
+          background-color: #f9f9f9;
+          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+          z-index: 10;
+          right: 20px;
+          border-radius: 0px 0px 6px 6px;
+          width: 160px;
+          opacity: 0;
+          visibility: hidden;
+          transition: visibility 0s, opacity 0.2s linear;
 
-      .show-user-dropdown-content{
-        /*display: block;*/
-        opacity: 1;
-        visibility: visible;
-      }
-    }
-  }
+          div{
+            float: none;
+            color: $PRIMARY_TO_FADE;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            white-space:nowrap;
+            font-weight: normal;
+            transition: 0.3s;
 
-  #league-dropdown-container{
-    display: flex;
-    align-items: center;
-    margin-right: 10px;
-    font-weight: bold;
-    color: $PRIMARY_TO_FADE;
-    transition: 0.3s;
-    user-select: none;
-    height: 100%;
-    float: right;
+            &:hover{
+              background-color: $HOVER_GREY;
+              cursor: pointer;
+            }
+          }
 
-    .league-dropdown{
-      min-width: 160px;
-      height: 100%;
-
-      .league-dropdown-button{
-        border: none;
-        outline: none;
-        color: $PRIMARY_TO_FADE;
-        padding: 0px 20px;
-        margin: 0;
-        transition: 0.3s;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-
-        #caret-down{
-          margin-left: 4px;
-        }
-
-        &:hover{
-          background-color: $HOVER_GREY;
-          cursor: pointer;
-        }
-      }
-
-      .league-dropdown-content{
-        /*display: none;*/
-        position: relative;
-        background-color: #f9f9f9;
-        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-        z-index: 10;
-        border-radius: 0px 0px 6px 6px;
-        width: auto;
-        opacity: 0;
-        visibility: hidden;
-        transition: visibility 0s, opacity 0.2s linear;
-
-        div{
-          float: none;
-          color: $PRIMARY_TO_FADE;
-          padding: 12px 16px;
-          text-decoration: none;
-          display: block;
-          text-align: left;
-          white-space:nowrap;
-          font-weight: normal;
-          transition: 0.3s;
-
-          &:hover{
-            background-color: $HOVER_GREY;
-            cursor: pointer;
+          :last-child{
+            border-top: 1px solid $ELEMENT_UI_DEFAULT_BORDER;
+            padding-top: 4px;
           }
         }
 
-        :last-child{
-          border-top: 1px solid $ELEMENT_UI_DEFAULT_BORDER;
-          padding-top: 4px;
+        .show-user-dropdown-content{
+          /*display: block;*/
+          opacity: 1;
+          visibility: visible;
         }
       }
+    }
 
-      .show-league-dropdown-content{
-        /*display: block;*/
-        opacity: 1;
-        visibility: visible;
+    #login-button-container{
+      display: flex;
+      align-items: center;
+      margin-right: 20px;
+      font-weight: bold;
+      color: $PRIMARY_TO_FADE;
+      transition: 0.3s;
+      user-select: none;
+
+      &:hover{
+        background-color: $HOVER_GREY;
+        cursor: pointer;
       }
-    }
-  }
 
-  #login-button-container{
-    display: flex;
-    align-items: center;
-    margin-right: 20px;
-    font-weight: bold;
-    color: $PRIMARY_TO_FADE;
-    transition: 0.3s;
-    user-select: none;
-
-    &:hover{
-      background-color: $HOVER_GREY;
-      cursor: pointer;
-    }
-
-    #login-button-text{
-      padding: 0px 20px;
+      #login-button-text{
+        padding: 0px 20px;
+      }
     }
   }
 }
