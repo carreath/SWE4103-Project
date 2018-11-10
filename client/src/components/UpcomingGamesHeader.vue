@@ -210,8 +210,8 @@ export default {
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 12vh;
-  min-height: 68px;
+  height: 9vh;
+  min-height: 58px;
 
   #left-arrow-icon-container,
   #right-arrow-icon-container,
