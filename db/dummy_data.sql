@@ -1,6 +1,6 @@
 SELECT 'INSERTING DUMMY DATA' as 'INFO';
 
-INSERT INTO leagues (leagueName, season) VALUES ('Fredericton Soccer League', 'Fall 2018');
+INSERT INTO leagues (leagueName, season) VALUES ('Fredericton Soccer League', 'Fall 2018', '3-1-0');
 
 INSERT INTO teams (leagueID, teamName, colour) VALUES (1, 'Blue Birds', '#4b89ed'), (1, 'Tigers', '#d68126'), (1, 'Eagles', '#c1bab2'), (1, 'Goon Squad', '#cad804');
 
