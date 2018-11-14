@@ -197,8 +197,21 @@ export default {
     }
 
     .cv-header button {
-      color: #7f7f7f;
+      color: $PRIMARY_TO_FADE;
+      background-color: $SECONDARY_COLOR;
       margin: 0px 4px;
+      border-radius: 8px;
+      -webkit-transition-duration: 0.4s; /* Safari */
+      transition-duration: 0.3s;
+
+      &:hover{
+        cursor: pointer;
+        background-color: $HOVER_LIGHT_GREY;
+      }
+
+      &:focus{
+        outline: 0;
+      }
     }
 
     .cv-header button:disabled {

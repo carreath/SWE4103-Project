@@ -1,7 +1,10 @@
 <template>
   <div id="nav-menu">
     <div id="menu-container">
-      <ul id="menu">
+      <ul
+        id="menu"
+        v-if="showTabMenu"
+        ref="tab-menu">
         <li
           :class="{'is-active': curRoute === 'home'}"
           @click="handleNavMenuSelect('news')">
@@ -40,6 +43,53 @@
           </span>
         </li>
       </ul>
+
+      <div
+        v-else
+        id="nav-menu-dropdown-container">
+        <div class="nav-menu-dropdown">
+          <div
+            class="nav-menu-dropdown-button"
+            @mouseover="navMenuDropdownButtonHover=true"
+            @mouseleave="navMenuDropdownButtonHover=false"
+            :class="{'lightGreyBackground': navMenuDropdownContentHover}">
+            <span>{{ navMenuDropDownSelect }}</span>
+            <font-awesome-icon class="caret-down" icon="caret-down" />
+          </div>
+          <div
+            class="nav-menu-dropdown-content"
+            :class="{'nav-menu-view-dropdown-content': navMenuDropdownVisible}"
+            @mouseover="navMenuDropdownContentHover=true"
+            @mouseleave="navMenuDropdownContentHover=false">
+            <div
+              @click="handleNavMenuSelect('news')"
+              :class="{'boldText': curRoute === 'home'}">
+              News
+            </div>
+            <div
+              @click="handleNavMenuSelect('teams')"
+              :class="{'boldText': curRoute === 'teams'}">
+              Teams
+            </div>
+            <div
+              @click="handleNavMenuSelect('standings')"
+              :class="{'boldText': curRoute === 'standings'}">
+              Standings
+            </div>
+            <div
+              @click="handleNavMenuSelect('schedule')"
+              :class="{'boldText': curRoute === 'schedule'}">
+              Schedule
+            </div>
+            <div
+              @click="handleNavMenuSelect('admin')"
+              :class="{'boldText': curRoute.includes('admin')}">
+              Admin
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <div
@@ -93,6 +143,10 @@ export default {
       userDropdownContentHover: false,
       adminDropdownButtonHover: false,
       adminDropdownContentHover: false,
+      navMenuDropdownButtonHover: false,
+      navMenuDropdownContentHover: false,
+      navMenuDropDownSelect: 'News',
+      showTabMenu: window.innerWidth > 650,
     };
   },
   computed: {
@@ -103,11 +157,19 @@ export default {
     curRoute() {
       return this.$route.name;
     },
+    curRouteNameCap() {
+      const name = this.curRoute;
+      if (name === 'home') return 'News';
+      return name.charAt(0).toUpperCase() + name.slice(1);
+    },
     userDropdownVisible() {
       return this.userDropdownButtonHover || this.userDropdownContentHover;
     },
     adminDropdownVisible() {
       return this.adminDropdownButtonHover || this.adminDropdownContentHover;
+    },
+    navMenuDropdownVisible() {
+      return this.navMenuDropdownButtonHover || this.navMenuDropdownContentHover;
     },
   },
   methods: {
@@ -116,25 +178,34 @@ export default {
       'setCreateAccountModalVisible',
       'userLogOut',
     ]),
+    handleResize() {
+      this.showTabMenu = window.innerWidth > 650;
+    },
     handleNavMenuSelect(key) {
+      this.navMenuDropdownContentHover = false;
       switch (key) {
         case ('news'): {
+          this.navMenuDropDownSelect = 'News';
           this.$router.push('/');
           break;
         }
         case ('teams'): {
+          this.navMenuDropDownSelect = 'Teams';
           this.$router.push('/teams');
           break;
         }
         case ('schedule'): {
+          this.navMenuDropDownSelect = 'Schedule';
           this.$router.push('/schedule');
           break;
         }
         case ('standings'): {
+          this.navMenuDropDownSelect = 'Standings';
           this.$router.push('/standings');
           break;
         }
         case ('admin'): {
+          this.navMenuDropDownSelect = 'Admin';
           this.$router.push('/admin/leagues');
           break;
         }
@@ -161,6 +232,12 @@ export default {
       }).catch(() => {
       });
     },
+  },
+  mounted() {
+    window.addEventListener('resize', this.handleResize);
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize);
   },
 };
 </script>
@@ -264,6 +341,86 @@ export default {
     }
   }
 
+  #nav-menu-dropdown-container{
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+    font-weight: bold;
+    color: $PRIMARY_TO_FADE;
+    transition: 0.3s;
+    user-select: none;
+    height: 100%;
+
+
+    .nav-menu-dropdown{
+      min-width: 128px;
+      height: 100%;
+
+      .nav-menu-dropdown-button{
+        border: none;
+        outline: none;
+        color: $PRIMARY_TO_FADE;
+        padding: 0px 20px;
+        margin: 0;
+        transition: 0.3s;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+
+        .caret-down{
+          margin-left: 4px;
+        }
+
+        &:hover{
+          background-color: $HOVER_GREY;
+          cursor: pointer;
+        }
+      }
+
+      .nav-menu-dropdown-content{
+        /*display: none;*/
+        position: absolute;
+        background-color: #f9f9f9;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 10;
+        border-radius: 0px 0px 6px 6px;
+        width: 128px;
+        opacity: 0;
+        visibility: hidden;
+        transition: visibility 0s, opacity 0.2s linear;
+
+        div{
+          float: none;
+          color: $PRIMARY_TO_FADE;
+          padding: 12px 16px;
+          text-decoration: none;
+          display: block;
+          text-align: left;
+          white-space:nowrap;
+          font-weight: normal;
+          transition: 0.3s;
+
+          &:hover{
+            background-color: $HOVER_GREY;
+            cursor: pointer;
+          }
+        }
+
+        .boldText{
+          font-weight: bold;
+        }
+      }
+
+      .nav-menu-view-dropdown-content{
+        /*display: block;*/
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+  }
+
+
   #user-dropdown-container{
     display: flex;
     align-items: center;
@@ -289,6 +446,7 @@ export default {
         height: 100%;
         display: flex;
         align-items: center;
+        white-space: nowrap;
 
         #caret-down{
           margin-left: 4px;
@@ -352,6 +510,7 @@ export default {
     color: $PRIMARY_TO_FADE;
     transition: 0.3s;
     user-select: none;
+    white-space: nowrap;
 
     &:hover{
       background-color: $HOVER_GREY;
@@ -360,6 +519,7 @@ export default {
 
     #login-button-text{
       padding: 0px 20px;
+      white-space: nowrap;
     }
   }
 }

@@ -42,6 +42,7 @@ CREATE TABLE leagues (
     coordinatorID       INT             DEFAULT NULL,
     leagueName          VARCHAR(64)     NOT NULL,
     season              VARCHAR(16)     NOT NULL,
+    pointScheme         VARCHAR(32)     NOT NULL,
     FOREIGN KEY (coordinatorID) REFERENCES users (userID),
     PRIMARY KEY (leagueID)
 );

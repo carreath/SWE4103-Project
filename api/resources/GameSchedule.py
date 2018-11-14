@@ -1,8 +1,9 @@
-from flask_restful import Resource, reqparse
+from flask_restful import Resource, reqparse, request, abort
 from flask import request
 from common import DatabaseConnector
 from common import newScheduler
 from common import Scheduler
+from common import PrivilegeHandler
 
 
 class LeagueSchedule(Resource):
@@ -34,6 +35,13 @@ class LeagueSchedule(Resource):
         return {'games': schedule_data}, 200
 
     def post(self):
+        token = request.headers.get('Authorization')
+        if not token:
+            abort(403, error="Unauthorized Access (no token)")
+        privilege_handler = PrivilegeHandler(token)
+        if not privilege_handler.game_privileges():
+            abort(403, error="Unauthorized Access (invalid permissions)")
+
         db = DatabaseConnector()
         # 1. generate play order for teams in league
         # 2. match play order with field/time pairs given by client
