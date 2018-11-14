@@ -1,6 +1,6 @@
 SELECT 'INSERTING DUMMY DATA' as 'INFO';
 
-INSERT INTO leagues (leagueName, season) VALUES ('Fredericton Soccer League', 'Fall 2018');
+INSERT INTO leagues (leagueName, season, pointScheme) VALUES ('Fredericton Soccer League', 'Fall 2018', '3-1-0');
 
 INSERT INTO teams (leagueID, teamName, colour) VALUES (1, 'Blue Birds', '#4b89ed'), (1, 'Tigers', '#d68126'), (1, 'Eagles', '#c1bab2'), (1, 'Goon Squad', '#cad804');
 
@@ -23,6 +23,13 @@ INSERT INTO gameMembers (gameID,teamID,playerID,number,goals) VALUES (2,4,1,10,0
 
 /* Privileges */
 INSERT INTO privileges (privilegesType, cancelGame, updateScore, createPlayer, createGame, createUser, createTeam, createLeague, assignPlayer, assignManager, assignCoordinator, assignprivileges) VALUES ('Admin',1,1,1,1,1,1,1,1,1,1,1);
-INSERT INTO privileges (privilegesType, cancelGame, updateScore, createPlayer, createGame, createUser, createTeam, createLeague, assignPlayer, assignManager, assignCoordinator, assignprivileges) VALUES ('Manager',0,0,1,0,0,0,0,1,0,0,0);
 INSERT INTO privileges (privilegesType, cancelGame, updateScore, createPlayer, createGame, createUser, createTeam, createLeague, assignPlayer, assignManager, assignCoordinator, assignprivileges) VALUES ('Coordinator',1,1,1,1,0,1,0,1,1,0,0);
+INSERT INTO privileges (privilegesType, cancelGame, updateScore, createPlayer, createGame, createUser, createTeam, createLeague, assignPlayer, assignManager, assignCoordinator, assignprivileges) VALUES ('Manager',0,0,1,0,0,0,0,1,0,0,0);
 INSERT INTO privileges (privilegesType, cancelGame, updateScore, createPlayer, createGame, createUser, createTeam, createLeague, assignPlayer, assignManager, assignCoordinator, assignprivileges) VALUES ('Referee',0,1,0,0,0,0,0,0,0,0,0);
+
+/* Default Users */
+INSERT INTO users (privilegesID, userType, firstName, lastName, email, hash) VALUES (1, 'Admin', 'Site', 'Admin', 'admin@league.ca', '$pbkdf2-sha512$30000$.P.fszZmrBWCkFIqxZhzjrEWAoDQunfu3bt3bs25dw4$NGSfngQSKYV4wlIOmIfijmvXSWb0jsJLWI12XGRVTejxDk2UxV2EsEVs1p.K2QUEhth9A9Cy2b8jjyvDcJRsEA');
+INSERT INTO users (privilegesID, userType, firstName, lastName, email, hash) VALUES (2, 'Coordinator', 'League', 'Coordinator', 'coordinator@league.ca', '$pbkdf2-sha512$30000$.P.fszZmrBWCkFIqxZhzjrEWAoDQunfu3bt3bs25dw4$NGSfngQSKYV4wlIOmIfijmvXSWb0jsJLWI12XGRVTejxDk2UxV2EsEVs1p.K2QUEhth9A9Cy2b8jjyvDcJRsEA');
+INSERT INTO users (privilegesID, userType, firstName, lastName, email, hash) VALUES (3, 'Manager', 'Team', 'Manager', 'manager@league.ca', '$pbkdf2-sha512$30000$.P.fszZmrBWCkFIqxZhzjrEWAoDQunfu3bt3bs25dw4$NGSfngQSKYV4wlIOmIfijmvXSWb0jsJLWI12XGRVTejxDk2UxV2EsEVs1p.K2QUEhth9A9Cy2b8jjyvDcJRsEA');
+INSERT INTO users (privilegesID, userType, firstName, lastName, email, hash) VALUES (4, 'Referee', 'Referee', '', 'referee@league.ca', '$pbkdf2-sha512$30000$.P.fszZmrBWCkFIqxZhzjrEWAoDQunfu3bt3bs25dw4$NGSfngQSKYV4wlIOmIfijmvXSWb0jsJLWI12XGRVTejxDk2UxV2EsEVs1p.K2QUEhth9A9Cy2b8jjyvDcJRsEA');
+INSERT INTO users (firstName, lastName, email, hash) VALUES ('Default', 'User', 'user@league.ca', '$pbkdf2-sha512$30000$.P.fszZmrBWCkFIqxZhzjrEWAoDQunfu3bt3bs25dw4$NGSfngQSKYV4wlIOmIfijmvXSWb0jsJLWI12XGRVTejxDk2UxV2EsEVs1p.K2QUEhth9A9Cy2b8jjyvDcJRsEA');
