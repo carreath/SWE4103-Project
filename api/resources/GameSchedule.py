@@ -76,9 +76,24 @@ class LeagueSchedule(Resource):
 
         return schedule, 200
 
-    def update(self):
-        # TODO update schedule information for a game
-        return
+    def put(self):
+        # TODO permissions
+        parser = reqparse.RequestParser()
+        parser.add_argument('gameID', type=int, required=True)
+        parser.add_argument('leagueID', type=int, required=True)
+        parser.add_argument('homeTeamID', type=int, required=True)
+        parser.add_argument('awayTeamID', type=int, required=True)
+        parser.add_argument('refereeID', type=int)
+        parser.add_argument('gameTime', type=str)
+        parser.add_argument('fieldName', type=str)
+
+        args = parser.parse_args()
+        query = "UPDATE games SET homeTeamID = %d, awayTeamID = %d, refereeID = %d, gameTime = '%s', fieldName = '%s' WHERE gameID = %d AND leagueID = %d" \
+                % (args['homeTeamID'], args['awayTeamID'], args['refereeID'], args['gameTime'], args['fieldName'], args['gameID'], args['leagueID'])
+        db = DatabaseConnector()
+        db.cursor.execute(query)
+        db.conn.commit()
+        return 200
 
 
 class PlayerSchedule(Resource):
