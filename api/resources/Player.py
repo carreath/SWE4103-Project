@@ -1,5 +1,5 @@
-from flask_restful import Resource, reqparse
-from common import DatabaseConnector
+from flask_restful import Resource, reqparse, request, abort
+from common import DatabaseConnector, PrivilegeHandler
 
 
 class Player(Resource):
@@ -25,8 +25,14 @@ class Player(Resource):
             })
         return {'players': players_data}, 200
 
-    # TODO implement some authentication with tokens here
     def post(self):
+        token = request.headers.get('Authorization')
+        if not token:
+            abort(403, error="Unauthorized Access (no token)")
+        privilege_handler = PrivilegeHandler(token)
+        if not privilege_handler.player_privileges():
+            abort(403, error="Unauthorized Access (invalid permissions)")
+
         parser = reqparse.RequestParser()
         parser.add_argument('teamID', type=int)
         parser.add_argument('firstName', type=str)
