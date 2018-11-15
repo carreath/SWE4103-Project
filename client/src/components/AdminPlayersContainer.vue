@@ -44,12 +44,12 @@ export default {
 #admin-players-container{
 
   #create-player-button-container{
-    padding: 0px 20px;
-    font-weight: bold;
     display: flex;
-    list-style-type: none;
-    margin: 0;
-    height: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    height: 61px;
+    transition: 0.3s;
   }
 }
 </style>

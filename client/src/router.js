@@ -65,7 +65,7 @@ const router = new Router({
     },
     {
       path: '/admin/players/create',
-      name: 'create-player-form',
+      name: 'admin-players-create',
       component: Admin,
     },
     {

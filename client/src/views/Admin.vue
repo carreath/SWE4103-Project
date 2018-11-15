@@ -2,7 +2,7 @@
   <div id="admin">
     <AdminLeaguesContainer v-if="curRoute === 'admin-leagues'"/>
     <AdminPlayersContainer v-if="curRoute === 'admin-players'"/>
-    <CreatePlayerForm v-if="curRoute === 'create-player-form'"/>
+    <AdminPlayersCreate v-if="curRoute === 'admin-players-create'"/>
     <AdminLeaguesCreate v-if="curRoute === 'admin-leagues-create'"/>
     <AdminTeamsContainer v-if="curRoute === 'admin-teams'"/>
     <AdminTeamsCreate v-if="curRoute === 'admin-teams-create'"/>
@@ -13,7 +13,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import AdminLeaguesContainer from '@/components/AdminLeaguesContainer.vue';
 import AdminPlayersContainer from '@/components/AdminPlayersContainer.vue';
-import CreatePlayerForm from '@/components/CreatePlayerForm.vue';
+import AdminPlayersCreate from '@/components/AdminPlayersCreate.vue';
 import AdminLeaguesCreate from '@/components/AdminLeaguesCreate.vue';
 import AdminTeamsContainer from '@/components/AdminTeamsContainer.vue';
 import AdminTeamsCreate from '@/components/AdminTeamsCreate.vue';
@@ -28,7 +28,7 @@ export default {
   components: {
     AdminLeaguesContainer,
     AdminPlayersContainer,
-    CreatePlayerForm,
+    AdminPlayersCreate,
     AdminTeamsContainer,
     AdminLeaguesCreate,
     AdminTeamsCreate,
