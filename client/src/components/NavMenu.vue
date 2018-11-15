@@ -35,7 +35,7 @@
         </li>
 
           <li
-            v-if="loggedIn"
+            v-if="loggedIn && user.userType"
             :class="{'is-active': curRoute.includes('admin')}"
             @click="handleNavMenuSelect('admin')">
             <span>
@@ -82,6 +82,7 @@
               Schedule
             </div>
             <div
+              v-if="loggedIn && user.userType"
               @click="handleNavMenuSelect('admin')"
               :class="{'boldText': curRoute.includes('admin')}">
               Admin
@@ -134,7 +135,7 @@
               @mouseover="userDropdownButtonHover=true"
               @mouseleave="userDropdownButtonHover=false"
               :class="{'lightGreyBackground': userDropdownContentHover}">
-              {{ user.first_name }} {{ user.last_name }}
+              {{ user.firstName }} {{ user.lastName }}
               <font-awesome-icon
                 id="caret-down"
                 icon="caret-down"/>
@@ -169,6 +170,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+
 export default {
   name: 'NavMenu',
   data() {
