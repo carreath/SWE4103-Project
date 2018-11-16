@@ -40,10 +40,22 @@ export default {
   },
   computed: {
     ...mapGetters([
-
+      'user',
     ]),
     curRoute() {
       return this.$route.name;
+    },
+    showLeaguesTab() {
+      return this.user.userType === 'Admin';
+    },
+    showTeamsTab() {
+      return this.user.userType === 'Admin'
+        || this.user.userType === 'Coordinator';
+    },
+    showPlayersTab() {
+      return this.user.userType === 'Admin'
+        || this.user.userType === 'Coordinator'
+        || this.user.userType === 'Manager';
     },
   },
   methods: {
