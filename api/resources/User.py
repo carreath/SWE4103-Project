@@ -161,3 +161,26 @@ class User(Resource):
         db_connector.conn.close()
 
         return {'user': user_data}, 200
+
+    def delete(self):
+        token = request.headers.get('Authorization')
+        if not token:
+            abort(403, error="Unauthorized Access (no token")
+        privilege_handler = PrivilegeHandler(token)
+        if not privilege_handler.user_privileges():
+            abort(403, error="Unauthorized Access (invalid permissions)")
+
+        parser = reqparse.RequestParser()
+        parser.add_argument('userID')
+        args = parser.parse_args()
+        parser.add_argument('userID')
+
+        user_id = args['userID']
+
+        # deleting user object
+        db_connector = DatabaseConnector()
+        db_connector.cursor.execute('DELETE FROM users WHERE userID = {}'.format(user_id))
+        db_connector.conn.commit()
+        db_connector.conn.close()
+
+        return
