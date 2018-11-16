@@ -80,7 +80,7 @@ const actions = {
       }
 
       switch (response.status) {
-        case 200 || 201: {
+        case 200: {
           dispatch('getTeams');
           return { retVal: true, retMsg: 'Team Deleted' };
         }
@@ -97,7 +97,7 @@ const actions = {
       }
 
       switch (response.status) {
-        case 200 || 201: {
+        case 200: {
           dispatch('getTeams');
           return { retVal: true, retMsg: 'Team Edited' };
         }
