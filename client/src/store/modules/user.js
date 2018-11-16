@@ -3,6 +3,7 @@ import UserService from '@/service/UserService';
 const state = {
   user: null,
   token: localStorage.getItem('token') || null,
+  users: [],
 };
 
 const getters = {
@@ -14,6 +15,9 @@ const getters = {
   },
   loggedIn(state) {
     return state.token && state.user;
+  },
+  users(state) {
+    return state.users;
   },
 };
 
@@ -97,6 +101,9 @@ const actions = {
       return null;
     });
   },
+  getAllUsers() {
+
+  },
 };
 
 const mutations = {
@@ -106,6 +113,9 @@ const mutations = {
   mutateToken(state, token) {
     token ? localStorage.setItem('token', token) : localStorage.removeItem('token');
     state.token = token;
+  },
+  mutateUsers(state, payload) {
+    state.users = payload;
   },
 };
 
