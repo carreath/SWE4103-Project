@@ -2,11 +2,9 @@ from flask_restful import Resource, abort, reqparse, request
 from passlib.hash import pbkdf2_sha512
 from datetime import datetime, timedelta
 import time
-from common import DatabaseConnector, TokenHandler
+from common import DatabaseConnector, TokenHandler, PrivilegeHandler
 
 
-# Example POST request to register endpoint:
-# curl -i -H "Content-Type: application/json" -X POST -d '{"email": "ntozer@unb.ca", "password": "password", "lastName": "Tozer", "firstName": "Nathan"}' -k http://localhost:5000/api/register
 class Register(Resource):
     def post(self):
         parser = reqparse.RequestParser()
@@ -33,12 +31,12 @@ class Register(Resource):
         db_connector.cursor.execute('CALL get_user("{}");'.format(email))
         db_response = db_connector.cursor.fetchone()
         user_data = {
-            'user_id': db_response[0],
-            'user_type': db_response[2],
-            'first_name': db_response[3],
-            'last_name': db_response[4],
+            'userID': db_response[0],
+            'userType': db_response[2],
+            'firstName': db_response[3],
+            'lastName': db_response[4],
             'email': db_response[5],
-            'last_login': db_response[7]
+            'lastLogin': db_response[7]
         }
         db_connector.conn.close()
 
@@ -61,12 +59,12 @@ class Login(Resource):
 
         db_response = db_connector.cursor.fetchone()
         user_data = {
-            'user_id': db_response[0],
-            'user_type': db_response[2],
-            'first_name': db_response[3],
-            'last_name': db_response[4],
+            'userID': db_response[0],
+            'userType': db_response[2],
+            'firstName': db_response[3],
+            'lastName': db_response[4],
             'email': db_response[5],
-            'last_login': db_response[7].strftime('%Y-%m-%d %H:%M:%S') if db_response[7] else None
+            'lastLogin': db_response[7].strftime('%Y-%m-%d %H:%M:%S') if db_response[7] else None
         }
         if not pbkdf2_sha512.verify(password, db_response[6]):
             abort(403, error='the password entered is incorrect')
@@ -107,6 +105,69 @@ class User(Resource):
         db_connector.cursor.execute('CALL get_user("{}");'.format(user_email))
         db_response = db_connector.cursor.fetchone()
         user_data = {
+            'userID': db_response[0],
+            'userType': db_response[2],
+            'firstName': db_response[3],
+            'lastName': db_response[4],
+            'email': db_response[5],
+            'lastLogin': db_response[7].strftime('%Y-%m-%d %H:%M:%S') if db_response[7] else None
+        }
+
+        # returning data for all users if the user has user modification privileges
+        privilege_handler = PrivilegeHandler(token)
+        payload = {'user': user_data}
+        if privilege_handler.user_privileges():
+            db_connector.cursor.execute('SELECT * FROM users')
+            users = db_connector.cursor.fetchall()
+            users_data = []
+            for user in users:
+                users_data.append({
+                    'userID': user[0],
+                    'privilegeID': user[1],
+                    'userType': user[2],
+                    'firstName': user[3],
+                    'lastName': user[4],
+                    'email': user[5],
+                    'lastLogin': user[7].strftime('%Y-%m-%d %H:%M:%S') if user[7] else None
+                })
+            payload['users'] = users_data
+
+        db_connector.conn.close()
+        return payload, 200
+
+    def put(self):
+        token = request.headers.get('Authorization')
+        if not token:
+            abort(403, error="Unauthorized Access (no token")
+        privilege_handler = PrivilegeHandler(token)
+        if not privilege_handler.user_privileges():
+            abort(403, error="Unauthorized Access (invalid permissions)")
+
+        parser = reqparse.RequestParser()
+        parser.add_argument('userID')
+        parser.add_argument('privilegeID')
+        parser.add_argument('userType')
+        parser.add_argument('firstName')
+        parser.add_argument('lastName')
+        parser.add_argument('email')
+        args = parser.parse_args()
+
+        user_id = args['userID']
+        privilege_id = args['privilegeID']
+        user_type = args['userType']
+        first_name = args['firstName']
+        last_name = args['lastName']
+        email = args['email']
+
+        # using update_user stored procedure to update user
+        db_connector = DatabaseConnector()
+        db_connector.cursor.callproc('update_user', [user_id, privilege_id, user_type, first_name, last_name, email])
+        db_connector.conn.commit()
+
+        # getting user_id to return to the frontend
+        db_connector.cursor.execute('CALL get_user("{}");'.format(email))
+        db_response = db_connector.cursor.fetchone()
+        user_data = {
             'user_id': db_response[0],
             'user_type': db_response[2],
             'first_name': db_response[3],
@@ -117,3 +178,25 @@ class User(Resource):
         db_connector.conn.close()
 
         return {'user': user_data}, 200
+
+    def delete(self):
+        token = request.headers.get('Authorization')
+        if not token:
+            abort(403, error="Unauthorized Access (no token")
+        privilege_handler = PrivilegeHandler(token)
+        if not privilege_handler.user_privileges():
+            abort(403, error="Unauthorized Access (invalid permissions)")
+
+        parser = reqparse.RequestParser()
+        parser.add_argument('userID')
+        args = parser.parse_args()
+
+        user_id = args['userID']
+
+        # deleting user object
+        db_connector = DatabaseConnector()
+        db_connector.cursor.execute('DELETE FROM users WHERE userID = {}'.format(user_id))
+        db_connector.conn.commit()
+        db_connector.conn.close()
+
+        return

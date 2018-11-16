@@ -54,7 +54,7 @@ export default{
       'token',
     ]),
     curRoute() {
-      return this.$route.name;
+      return this.$route.name || '';
     },
   },
   methods: {
