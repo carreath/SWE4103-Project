@@ -46,14 +46,12 @@ const router = new Router({
       component: Admin,
       beforeEnter: (to, from, next) => {
         const user = store.getters.user;
-        console.log('user: ', user);
         if (user) {
           switch (user.userType) {
             case ('Admin'):
               next('/admin/leagues');
               break;
             case ('Coordinator'):
-              console.log('Coordinator');
               next('/admin/teams');
               break;
             case ('Manager'):

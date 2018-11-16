@@ -3,6 +3,7 @@
     <div id="admin-sub-menu-container">
       <ul id="admin-sub-menu">
         <li
+          v-if="showLeaguesTab"
           :class="{'is-active': curRoute.includes('admin-leagues')}"
           @click="handleAdminNavMenuSelect('leagues')">
           <span>
@@ -10,6 +11,7 @@
           </span>
         </li>
         <li
+          v-if="showTeamsTab"
           :class="{'is-active': curRoute.includes('admin-teams')}"
           @click="handleAdminNavMenuSelect('teams')">
           <span>
@@ -17,6 +19,7 @@
           </span>
         </li>
         <li
+          v-if="showPlayersTab"
           :class="{'is-active': curRoute === 'admin-players'}"
           @click="handleAdminNavMenuSelect('players')">
           <span>
@@ -43,16 +46,25 @@ export default {
       'user',
     ]),
     curRoute() {
-      return this.$route.name;
+      return this.$route.name || '';
     },
     showLeaguesTab() {
+      if (!this.user) {
+        return false;
+      }
       return this.user.userType === 'Admin';
     },
     showTeamsTab() {
+      if (!this.user) {
+        return false;
+      }
       return this.user.userType === 'Admin'
         || this.user.userType === 'Coordinator';
     },
     showPlayersTab() {
+      if (!this.user) {
+        return false;
+      }
       return this.user.userType === 'Admin'
         || this.user.userType === 'Coordinator'
         || this.user.userType === 'Manager';
