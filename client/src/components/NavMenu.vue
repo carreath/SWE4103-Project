@@ -135,7 +135,7 @@
               @mouseover="userDropdownButtonHover=true"
               @mouseleave="userDropdownButtonHover=false"
               :class="{'lightGreyBackground': userDropdownContentHover}">
-              {{ user.firstName }} {{ user.lastName }}
+              <span>{{ user.firstName }} {{ user.lastName }}</span>
               <font-awesome-icon
                 id="caret-down"
                 icon="caret-down"/>
@@ -459,6 +459,10 @@ export default {
             background-color: $HOVER_GREY;
             cursor: pointer;
           }
+
+          span{
+            white-space: nowrap;
+          }
         }
 
         .league-dropdown-content{
@@ -536,17 +540,19 @@ export default {
             background-color: $HOVER_GREY;
             cursor: pointer;
           }
+
+          span{
+            white-space: nowrap;
+          }
         }
 
         .user-dropdown-content{
-          /*display: none;*/
-          position: absolute;
+          position: relative;
           background-color: #f9f9f9;
           box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
           z-index: 10;
-          right: 20px;
+          /*right: 20px;*/
           border-radius: 0px 0px 6px 6px;
-          width: 160px;
           opacity: 0;
           visibility: hidden;
           transition: visibility 0s, opacity 0.2s linear;
