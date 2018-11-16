@@ -255,7 +255,7 @@ export default {
         }
         case ('admin'): {
           this.navMenuDropDownSelect = 'Admin';
-          this.$router.push('/admin/leagues');
+          this.$router.push('/admin');
           break;
         }
         default: {

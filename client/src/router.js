@@ -45,8 +45,24 @@ const router = new Router({
       name: 'admin',
       component: Admin,
       beforeEnter: (to, from, next) => {
-        if (store.getters.user) {
-          next('/admin/leagues');
+        const user = store.getters.user;
+        console.log('user: ', user);
+        if (user) {
+          switch (user.userType) {
+            case ('Admin'):
+              next('/admin/leagues');
+              break;
+            case ('Coordinator'):
+              console.log('Coordinator');
+              next('/admin/teams');
+              break;
+            case ('Manager'):
+              next('/admin/players');
+              break;
+            default:
+              next('/');
+          }
+          return;
         }
         if (store.getters.token) {
           store.dispatch('validateToken').then((user) => {
