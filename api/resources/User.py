@@ -5,8 +5,6 @@ import time
 from common import DatabaseConnector, TokenHandler, PrivilegeHandler
 
 
-# Example POST request to register endpoint:
-# curl -i -H "Content-Type: application/json" -X POST -d '{"email": "ntozer@unb.ca", "password": "password", "lastName": "Tozer", "firstName": "Nathan"}' -k http://localhost:5000/api/register
 class Register(Resource):
     def post(self):
         parser = reqparse.RequestParser()
@@ -114,9 +112,28 @@ class User(Resource):
             'email': db_response[5],
             'last_login': db_response[7].strftime('%Y-%m-%d %H:%M:%S') if db_response[7] else None
         }
-        db_connector.conn.close()
 
-        return {'user': user_data}, 200
+        # returning data for all users if the user has user modification privileges
+        privilege_handler = PrivilegeHandler(token)
+        payload = {'user': user_data}
+        if privilege_handler.user_privileges():
+            db_connector.cursor.execute('SELECT * FROM users')
+            users = db_connector.cursor.fetchall()
+            users_data = []
+            for user in users:
+                users_data.append({
+                    'user_id': user[0],
+                    'privilege_id': user[1],
+                    'user_type': user[2],
+                    'first_name': user[3],
+                    'last_name': user[4],
+                    'email': user[5],
+                    'last_login': user[7].strftime('%Y-%m-%d %H:%M:%S') if user[7] else None
+                })
+            payload['users'] = users_data
+
+        db_connector.conn.close()
+        return payload, 200
 
     def put(self):
         token = request.headers.get('Authorization')
@@ -173,7 +190,6 @@ class User(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument('userID')
         args = parser.parse_args()
-        parser.add_argument('userID')
 
         user_id = args['userID']
 
