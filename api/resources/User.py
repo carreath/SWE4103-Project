@@ -122,13 +122,13 @@ class User(Resource):
             users_data = []
             for user in users:
                 users_data.append({
-                    'user_id': user[0],
-                    'privilege_id': user[1],
-                    'user_type': user[2],
-                    'first_name': user[3],
-                    'last_name': user[4],
+                    'userID': user[0],
+                    'privilegeID': user[1],
+                    'userType': user[2],
+                    'firstName': user[3],
+                    'lastName': user[4],
                     'email': user[5],
-                    'last_login': user[7].strftime('%Y-%m-%d %H:%M:%S') if user[7] else None
+                    'lastLogin': user[7].strftime('%Y-%m-%d %H:%M:%S') if user[7] else None
                 })
             payload['users'] = users_data
 
