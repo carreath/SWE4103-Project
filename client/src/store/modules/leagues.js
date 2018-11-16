@@ -34,7 +34,8 @@ const actions = {
       }
     });
   },
-  setSelectedLeague({ commit }, id) {
+  setSelectedLeague({ commit, dispatch }, id) {
+    dispatch('setSelectedTeamId', null);
     commit('mutateSelectedLeagueId', id);
   },
   createLeague({ dispatch }, leagueObj) {

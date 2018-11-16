@@ -31,12 +31,12 @@ class Register(Resource):
         db_connector.cursor.execute('CALL get_user("{}");'.format(email))
         db_response = db_connector.cursor.fetchone()
         user_data = {
-            'user_id': db_response[0],
-            'user_type': db_response[2],
-            'first_name': db_response[3],
-            'last_name': db_response[4],
+            'userID': db_response[0],
+            'userType': db_response[2],
+            'firstName': db_response[3],
+            'lastName': db_response[4],
             'email': db_response[5],
-            'last_login': db_response[7]
+            'lastLogin': db_response[7]
         }
         db_connector.conn.close()
 
@@ -59,12 +59,12 @@ class Login(Resource):
 
         db_response = db_connector.cursor.fetchone()
         user_data = {
-            'user_id': db_response[0],
-            'user_type': db_response[2],
-            'first_name': db_response[3],
-            'last_name': db_response[4],
+            'userID': db_response[0],
+            'userType': db_response[2],
+            'firstName': db_response[3],
+            'lastName': db_response[4],
             'email': db_response[5],
-            'last_login': db_response[7].strftime('%Y-%m-%d %H:%M:%S') if db_response[7] else None
+            'lastLogin': db_response[7].strftime('%Y-%m-%d %H:%M:%S') if db_response[7] else None
         }
         if not pbkdf2_sha512.verify(password, db_response[6]):
             abort(403, error='the password entered is incorrect')
@@ -105,12 +105,12 @@ class User(Resource):
         db_connector.cursor.execute('CALL get_user("{}");'.format(user_email))
         db_response = db_connector.cursor.fetchone()
         user_data = {
-            'user_id': db_response[0],
-            'user_type': db_response[2],
-            'first_name': db_response[3],
-            'last_name': db_response[4],
+            'userID': db_response[0],
+            'userType': db_response[2],
+            'firstName': db_response[3],
+            'lastName': db_response[4],
             'email': db_response[5],
-            'last_login': db_response[7].strftime('%Y-%m-%d %H:%M:%S') if db_response[7] else None
+            'lastLogin': db_response[7].strftime('%Y-%m-%d %H:%M:%S') if db_response[7] else None
         }
 
         # returning data for all users if the user has user modification privileges

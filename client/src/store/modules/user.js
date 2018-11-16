@@ -89,6 +89,14 @@ const actions = {
       }
     });
   },
+  validateToken() {
+    return UserService.getUserFromToken().then((response) => {
+      if (response.status && response.status === 200) {
+        return response.data.user;
+      }
+      return null;
+    });
+  },
 };
 
 const mutations = {
