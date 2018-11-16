@@ -52,6 +52,8 @@ const router = new Router({
           store.dispatch('validateToken').then((user) => {
             if (user) {
               next('/admin/leagues');
+            } else {
+              next('/');
             }
           });
         }
@@ -63,14 +65,22 @@ const router = new Router({
       name: 'admin-leagues',
       component: Admin,
       beforeEnter: (to, from, next) => {
+        const user = store.getters.user;
+        if (user && (user.userType === 'Admin')) {
+          next();
+          return;
+        }
         if (store.getters.token) {
           store.dispatch('validateToken').then((user) => {
             if (user && user.userType === 'Admin') {
               next();
+            } else {
+              next('/');
             }
           });
+        } else {
+          next('/');
         }
-        next('/');
       },
     },
     {
@@ -78,14 +88,22 @@ const router = new Router({
       name: 'admin-teams',
       component: Admin,
       beforeEnter: (to, from, next) => {
+        const user = store.getters.user;
+        if (user && (user.userType === 'Admin' || user.userType === 'Coordinator')) {
+          next();
+          return;
+        }
         if (store.getters.token) {
           store.dispatch('validateToken').then((user) => {
             if (user && (user.userType === 'Admin' || user.userType === 'Coordinator')) {
               next();
+            } else {
+              next('/');
             }
           });
+        } else {
+          next('/');
         }
-        next('/');
       },
     },
     {
@@ -93,17 +111,22 @@ const router = new Router({
       name: 'admin-players',
       component: Admin,
       beforeEnter: (to, from, next) => {
+        const user = store.getters.user;
+        if (user && (user.userType === 'Admin' || user.userType === 'Coordinator' || user.userType === 'Manager')) {
+          next();
+          return;
+        }
         if (store.getters.token) {
           store.dispatch('validateToken').then((user) => {
-            if (user &&
-              (user.userType === 'Admin'
-              || user.userType === 'Coordinator'
-              || user.userType === 'Manager')) {
+            if (user && (user.userType === 'Admin' || user.userType === 'Coordinator' || user.userType === 'Manager')) {
               next();
+            } else {
+              next('/');
             }
           });
+        } else {
+          next('/');
         }
-        next('/');
       },
     },
     {
@@ -111,14 +134,21 @@ const router = new Router({
       name: 'admin-leagues-create',
       component: Admin,
       beforeEnter: (to, from, next) => {
+        const user = store.getters.user;
+        if (user && (user.userType === 'Admin')) {
+          next();
+        }
         if (store.getters.token) {
           store.dispatch('validateToken').then((user) => {
             if (user && user.userType === 'Admin') {
               next();
+            } else {
+              next('/');
             }
           });
+        } else {
+          next('/');
         }
-        next('/');
       },
     },
     {
@@ -126,14 +156,22 @@ const router = new Router({
       name: 'admin-teams-create',
       component: Admin,
       beforeEnter: (to, from, next) => {
+        const user = store.getters.user;
+        if (user && (user.userType === 'Admin' || user.userType === 'Coordinator')) {
+          next();
+          return;
+        }
         if (store.getters.token) {
           store.dispatch('validateToken').then((user) => {
             if (user && (user.userType === 'Admin' || user.userType === 'Coordinator')) {
               next();
+            } else {
+              next('/');
             }
           });
+        } else {
+          next('/');
         }
-        next('/');
       },
     },
   ],
