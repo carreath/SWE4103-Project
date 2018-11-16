@@ -13,7 +13,7 @@
                 @mouseleave="scheduleViewDropdownButtonHover=false"
                 :class="{'lightGreyBackground': scheduleViewDropdownContentHover}">
                 {{ scheduleSelectedView }}
-                <font-awesome-icon icon="caret-down" />
+                <font-awesome-icon class="caret-down" icon="caret-down" />
               </div>
               <div
                 class="schedule-view-dropdown-content"
@@ -26,6 +26,7 @@
                   Table
                 </div>
                 <div
+                  id="calendar-view-button"
                   @click="handleScheduleSelectedViewClick('Calendar')"
                   :class="{'boldText': scheduleSelectedView === 'Calendar'}">
                   Calendar
@@ -47,7 +48,7 @@
                 :class="{'lightGreyBackground': scheduleTeamDropdownContentHover}">
                 <span v-if="!selectedTeamId">All Teams</span>
                 <span v-else>{{ selectedTeam.teamName }}</span>
-                <font-awesome-icon icon="caret-down" />
+                <font-awesome-icon class="caret-down" icon="caret-down" />
               </div>
               <div
                 class="schedule-view-dropdown-content"
@@ -106,6 +107,9 @@ export default {
     scheduleTeamDropdownVisible() {
       return this.scheduleTeamDropdownButtonHover || this.scheduleTeamDropdownContentHover;
     },
+    smallScreenSize() {
+      return window.innerWidth < 700;
+    },
   },
   methods: {
     ...mapActions([
@@ -113,6 +117,7 @@ export default {
       'setSelectedTeamId',
     ]),
     handleScheduleSelectedViewClick(view) {
+      if (view === 'Calendar' && window.innerWidth < 700) return;
       this.scheduleViewDropdownContentHover = false;
       this.setScheduleSelectedView(view);
     },
@@ -120,6 +125,18 @@ export default {
       this.scheduleTeamDropdownContentHover = false;
       this.setSelectedTeamId(teamID);
     },
+    handleResize() {
+      if (window.innerWidth < 700) {
+        // TODO Test this on an actual tablet
+        this.setScheduleSelectedView('Table');
+      }
+    },
+  },
+  mounted() {
+    window.addEventListener('resize', this.handleResize);
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize);
   },
 };
 
@@ -137,6 +154,7 @@ export default {
   background-color: $VERY_LIGHT_GREY;
   transition: 0.3s;
   font-size: 0.9rem;
+  min-height: 36px;
 
   #schedule-sub-menu{
     padding: 0px 20px;
@@ -153,17 +171,27 @@ export default {
       color: $PRIMARY_TO_FADE;
       transition: 0.3s;
       user-select: none;
+      height: 100%;
 
       .schedule-view-dropdown{
         min-width: 120px;
+        height: 100%;
+
 
         .schedule-view-dropdown-button{
           border: none;
           outline: none;
           color: $PRIMARY_TO_FADE;
-          padding: 10px 20px;
+          padding: 0px 20px;
           margin: 0;
           transition: 0.3s;
+          height: 100%;
+          display: flex;
+          align-items: center;
+
+          .caret-down{
+            margin-left: 4px;
+          }
 
           &:hover{
             background-color: $HOVER_GREY;
@@ -212,6 +240,18 @@ export default {
           /* display: block;*/
           opacity: 1;
           visibility: visible;
+        }
+      }
+    }
+
+    @include checkMaxScreenSize(700px) {
+      #schedule-view-dropdown-container{
+        #calendar-view-button{
+          color: $HOVER_GREY;
+          cursor: not-allowed;
+          &:hover{
+            background-color: $VERY_LIGHT_GREY;
+          }
         }
       }
     }

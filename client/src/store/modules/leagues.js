@@ -24,14 +24,18 @@ const getters = {
 
 // actions
 const actions = {
-  getLeagues({ commit }) {
+  getLeagues({ commit, dispatch }) {
     LeaguesService.getLeagues().then((response) => {
       if (response && response.status === 200) {
         commit('mutateLeagues', response.data.leagues);
+        response.data.leagues.forEach((league) => {
+          dispatch('getLeagueGames', league.leagueID);
+        });
       }
     });
   },
-  setSelectedLeague({ commit }, id) {
+  setSelectedLeague({ commit, dispatch }, id) {
+    dispatch('setSelectedTeamId', null);
     commit('mutateSelectedLeagueId', id);
   },
   createLeague({ dispatch }, leagueObj) {

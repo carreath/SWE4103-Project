@@ -38,6 +38,6 @@ export default {
 
 <style lang="scss" scoped>
 #teams{
-
+  padding: 0px 16px;
 }
 </style>

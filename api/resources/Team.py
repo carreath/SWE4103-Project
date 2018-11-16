@@ -1,5 +1,5 @@
 from flask_restful import Resource, abort, reqparse, request
-from common import DatabaseConnector, TokenHandler
+from common import DatabaseConnector, TokenHandler, PrivilegeHandler
 
 
 class Team(Resource):
@@ -50,8 +50,13 @@ class Team(Resource):
 
         Success gives status code 201
 
-        """
-
+        """        
+        token = request.headers.get('Authorization')
+        if not token:
+            abort(403, error="Unauthorized Access (no token)")
+        privilege_handler = PrivilegeHandler(token)
+        if not privilege_handler.team_privileges():
+            abort(403, error="Unauthorized Access (invalid permissions)")
 
         parser = reqparse.RequestParser()
 
