@@ -3,7 +3,7 @@ import UserService from '@/service/UserService';
 const state = {
   user: null,
   token: localStorage.getItem('token') || null,
-  users: [],
+  users: null,
 };
 
 const getters = {
@@ -43,7 +43,7 @@ const actions = {
       }
     });
   },
-  userLogIn({ commit }, payload) {
+  userLogIn({ commit, dispatch }, payload) {
     return UserService.login(payload).then((response) => {
       if (!response || !response.status) {
         return { retVal: false, retMsg: 'Server Error' };
@@ -52,6 +52,9 @@ const actions = {
         case 201: {
           commit('mutateUser', response.data.user);
           commit('mutateToken', response.data.token);
+          if (response.data.user.userType === 'Admin') {
+            dispatch('getAllUsers');
+          }
           return { retVal: true, retMsg: 'Success' };
         }
         case 404: {
@@ -69,6 +72,7 @@ const actions = {
   userLogOut({ commit }) {
     commit('mutateUser', null);
     commit('mutateToken', null);
+    commit('mutateUsers', null);
   },
   setUser({ commit }, user) {
     commit('mutateUser', user);
@@ -78,6 +82,9 @@ const actions = {
       if (response.status && response.status === 200) {
         dispatch('refreshToken');
         commit('mutateUser', response.data.user);
+        if (response.data.user.userType === 'Admin') {
+          commit('mutateUsers', response.data.users);
+        }
       } else {
         commit('mutateUser', null);
         commit('mutateToken', null);
@@ -101,8 +108,14 @@ const actions = {
       return null;
     });
   },
-  getAllUsers() {
-
+  getAllUsers({ commit }) {
+    UserService.getUserFromToken().then((response) => {
+      if (response.status && response.status === 200 && response.data.user.userType === 'Admin') {
+        commit('mutateUsers', response.data.users);
+      } else {
+        commit('mutateUsers', null);
+      }
+    });
   },
 };
 
