@@ -177,6 +177,9 @@ export default {
     games() {
       this.formatGamesByLeagueIdSortedByDate();
     },
+    selectedLeagueId() {
+      this.formatGamesByLeagueIdSortedByDate();
+    },
   },
   mounted() {
     this.formatGamesByLeagueIdSortedByDate();
