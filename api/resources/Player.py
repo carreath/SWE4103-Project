@@ -62,3 +62,67 @@ class Player(Resource):
         }
 
         return {'player': player}, 201
+
+    def put(self):
+        token = request.headers.get('Authorization')
+        if not token:
+            abort(403, error="Unauthorized Access (no token)")
+        privilege_handler = PrivilegeHandler(token)
+        if not privilege_handler.player_privileges():
+            abort(403, error="Unauthorized Access (invalid permissions)")
+
+        parser = reqparse.RequestParser()
+        parser.add_argument('playerID', type=int)
+        parser.add_argument('teamID', type=int)
+        parser.add_argument('firstName', type=str)
+        parser.add_argument('lastName', type=str)
+        parser.add_argument('email', type=str)
+        parser.add_argument('number', type=int)
+
+        args = parser.parse_args()
+        player_id = args['playerID']
+        team_id = args['teamID']
+        first_name = args['firstName']
+        last_name = args['lastName']
+        email = args['email'] if args['email'] else None
+        number = args['number']
+
+        db_connector = DatabaseConnector()
+        db_connector.cursor.callproc('update_player', [player_id, team_id, first_name, last_name, email, number])
+        db_connector.conn.commit()
+        db_connector.conn.close()
+
+        player = {
+            'playerID': player_id,
+            'teamID': team_id,
+            'firstName': first_name,
+            'lastName': last_name,
+            'email': email,
+            'number': number
+        }
+
+        return {'player': player}, 200
+
+    def delete(self):
+        token = request.headers.get('Authorization')
+        if not token:
+            abort(403, error="Unauthorized Access (no token)")
+        privilege_handler = PrivilegeHandler(token)
+        if not privilege_handler.player_privileges():
+            abort(403, error="Unauthorized Access (invalid permissions)")
+
+        parser = reqparse.RequestParser()
+        parser.add_argument('playerID')
+        args = parser.parse_args()
+
+        player_id = args['playerID']
+
+        db_connector = DatabaseConnector()
+        try:
+            db_connector.cursor.execute('DELETE FROM players WHERE playerID = {}'.format(player_id))
+            db_connector.conn.commit()
+            db_connector.conn.close()
+        except Exception as e:
+            db_connector.conn.close()
+            abort(400, error='Invalid delete {}'.format(e))
+        return
