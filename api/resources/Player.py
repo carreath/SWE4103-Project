@@ -3,7 +3,45 @@ from common import DatabaseConnector, PrivilegeHandler
 
 
 class Player(Resource):
+    """
+    This endpoint allows access to the players table records.
+
+    """
     def get(self):
+        """
+        Gets all player records from the database.
+
+        :return: The list of all teams
+
+            .. code-block:: javascript
+
+                {
+                    'players': List (of  Player JSON objects)
+                }
+
+
+            Player JSON object:
+
+            .. code-block:: javascript
+
+                {
+                    'playerID': Integer,
+                    'teamID': Integer,
+                    'firstName': String,
+                    'lastName': String,
+                    'email': String,
+                    'number': Integer,
+                    'loanedGames': Integer,
+                    'goals': Integer,
+                    'cleanSheets': Integer,
+                    'yellowCards': Integer,
+                    'redCards': Integer
+                }
+
+
+        Success gives status code 200
+
+        """
         db_connector = DatabaseConnector()
         db_connector.cursor.callproc('get_players', [])
         players = db_connector.cursor.fetchall()
@@ -26,6 +64,39 @@ class Player(Resource):
         return {'players': players_data}, 200
 
     def post(self):
+        """
+        Adds a new player to the database.
+
+        :Input:  JSON object representing the player
+
+            .. code-block:: javascript
+
+                {
+                    'teamID': Integer,
+                    'firstName': String,
+                    'lastName': String,
+                    'email': String (optional),
+                    'number': Integer (optional)
+                }
+
+
+
+        :return: The player object that was created
+
+            .. code-block:: javascript
+
+                {
+                    'teamID': Integer,
+                    'firstName': String,
+                    'lastName': String,
+                    'email': String,
+                    'number': Integer
+                }
+
+
+        Success gives status code 201
+
+        """
         token = request.headers.get('Authorization')
         if not token:
             abort(403, error="Unauthorized Access (no token)")
