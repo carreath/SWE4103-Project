@@ -214,14 +214,14 @@ class Team(Resource):
         db_response = db_connector.cursor.fetchone()
         team_data = {
             'teamID': db_response[0],
-            'leagueID': db_response[2],
-            'managerID': db_response[3],
-            'teamName': db_response[4],
-            'colour': db_response[5],
-            'leaguePoints': db_response[6],
-            'wins': db_response[7],
-            'losses': db_response[8],
-            'draws': db_response[9]
+            'leagueID': db_response[1],
+            'managerID': db_response[2],
+            'teamName': db_response[3],
+            'colour': db_response[4],
+            'leaguePoints': db_response[5],
+            'wins': db_response[6],
+            'losses': db_response[7],
+            'draws': db_response[8]
         }
         db_connector.conn.close()
 
@@ -257,8 +257,12 @@ class Team(Resource):
 
         # deleting team object
         db_connector = DatabaseConnector()
-        db_connector.cursor.execute('DELETE FROM teams WHERE teamID = {}'.format(team_id))
-        db_connector.conn.commit()
-        db_connector.conn.close()
+        try:
+            db_connector.cursor.execute('DELETE FROM teams WHERE teamID = {}'.format(team_id))
+            db_connector.conn.commit()
+        except Exception as e:
+            abort(401, error='Invalid delete: {}'.format(e))
+        finally:
+            db_connector.conn.close()
 
         return 200
