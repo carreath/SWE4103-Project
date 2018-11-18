@@ -74,7 +74,10 @@ const actions = {
     });
   },
   deleteTeam({ dispatch }, teamObj) {
-    return TeamsService.deleteTeam(teamObj).then((response) => {
+    const params = {
+      id: teamObj.teamID,
+    };
+    return TeamsService.deleteTeam(params).then((response) => {
       if (!response || !response.status) {
         return { retVal: false, retMsg: 'Server Error' };
       }
