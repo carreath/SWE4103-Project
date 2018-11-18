@@ -103,6 +103,23 @@ class LeagueSchedule(Resource):
         db.conn.commit()
         return 200
 
+    def delete(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('leagueID', type=int, required=True)
+        args = parser.parse_args()
+
+        query = "SELECT gameID from gameMembers WHERE gameID in (SELECT gameID from games where leagueID = %s)" % args['leagueID']
+        db = DatabaseConnector()
+        db.cursor.execute(query)
+        res = db.cursor.fetchall()
+        if res:
+            return 400, "Cannot delete schedule were games have been recorded"
+        else:
+            query = "DELETE FROM games WHERE leagueID = %s" % args['leagueID']
+            db.cursor.execute(query)
+            db.conn.commit()
+            return 200
+
 
 class PlayerSchedule(Resource):
     def get(self):
