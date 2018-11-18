@@ -6,7 +6,6 @@
       </div>
       <div id="form-container">
         <el-form
-          :label-position="labelPosition"
           :model="adminPlayersCreate"
           :rules="adminPlayersCreateRules"
           label-width="120px"
@@ -48,6 +47,18 @@
               </el-option>
             </el-select>
           </el-form-item>
+          <el-form-item
+            label="Player Number"
+            id="player-number-label"
+            prop="number">
+            <el-input
+              id="player-number-input"
+              type="number"
+              placeholder="Player Number"
+              v-model="adminPlayersCreate.number"
+              :disabled="loading">
+            </el-input>
+          </el-form-item>
           <div id="errMsg" v-if="errMsg">
             Error: {{ errMsg }}
           </div>
@@ -81,7 +92,8 @@ export default{
       adminPlayersCreate: {
         firstName: '',
         lastName: '',
-        team: '',
+        teamID: '',
+        number: '',
       },
       adminPlayersCreateRules: {
         firstName: [
@@ -114,6 +126,19 @@ export default{
           {
             required: true,
             message: 'Please select Team',
+            trigger: 'blur',
+          },
+        ],
+        number: [
+          {
+            required: true,
+            message: 'Please input Player Number',
+            trigger: 'blur',
+          },
+          {
+            min: 1,
+            max: 4,
+            message: 'Input too long',
             trigger: 'blur',
           },
         ],
