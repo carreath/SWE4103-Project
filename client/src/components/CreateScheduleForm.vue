@@ -6,48 +6,52 @@
       </div>
       <el-form
         :model="createScheduleForm"
-        :rules="createScheduleFormRules"
-        ref="schedule-form">
-        <el-form-item prop="field">
-          <el-input
-            id="field-input"
-            type="field"
-            placeholder="Field Name"
-            prefix-icon="el-icon-message"
-            v-model="createScheduleForm.field"
-            :disabled="loading">
-          </el-input>
+        :ref="schedule-form"
+        :class="demo-dynamic">
+        <el-form-item
+          v-for="(field, index) in createScheduleForm.fields"
+          :label="'Field'"
+          :key="field.key"
+          :prop="'fields.' + index + '.value'"
+          :rules="{
+            required: true, message: 'Please input field name', trigger: 'blur'
+          }">
+          <el-input v-model="field.value"></el-input>
         </el-form-item>
-        <el-form-item prop="day">
-          <el-input
-            id="day-input"
-            type="day"
-            placeholder="Day Available"
-            prefix-icon="el-icon-message"
-            v-model="createScheduleForm.day"
-            :disabled="loading">
-          </el-input>
+        <el-form-item
+          v-for="(day, index) in createScheduleForm.days"
+          :label="'Day'"
+          :key="day.key"
+          :prop="'days.' + index + '.value'"
+          :rules="{
+            required: true, message: 'Please input day available', trigger: 'blur'
+          }">
+          <el-select v-model="day.value" placeholder="Select Day">
+            <el-option
+              v-for="item in options"
+              :key="item.value.key"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item prop="time">
-          <el-input
-            id="time-input"
-            type="time"
-            placeholder="Time Available"
-            prefix-icon="el-icon-message"
-            v-model="createScheduleForm.time"
-            :disabled="loading">
-          </el-input>
+        <el-form-item
+          v-for="(time, index) in createScheduleForm.times"
+          :label="'Time'"
+          :key="time.key"
+          :prop="'times.' + index + '.value'"
+          :rules="{
+            required: true, message: 'Please input time available', trigger: 'blur'
+          }">
+          <el-input v-model="time.value" type="time"></el-input>
+          <el-button @click="removeInput(time)">Delete Entry</el-button>
         </el-form-item>
-        <div id="errMsg" v-if="errMsg">
-          Error: {{ errMsg }}
-        </div>
-        <el-form-item id="submit-button-container">
+        <el-form-item>
           <el-button
-            type="primary"
-            :loading="loading"
-            @click="submitButtonClicked">
-            {{ submitButtonText }}
+          :type="primary"
+          @click="submitScheduleForm('createScheduleForm')">Submit
           </el-button>
+          <el-button @click="addField">New Entry</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -57,75 +61,60 @@
 <script>
 import { mapActions } from 'vuex';
 
-export default{
+export default {
   name: 'CreateScheduleForm',
   data() {
     return {
       createScheduleForm: {
-        field: '',
-        day: '',
-        time: '',
+        fields: [{
+          key: 1,
+          value: '',
+        }],
+        days: [{
+          key: 1,
+          value: '',
+        }],
+        times: [{
+          key: 1,
+          value: '',
+        }],
       },
-      createScheduleFormRules: {
-        field: [
-          {
-            required: true,
-            message: 'Please input field',
-            trigger: 'blur',
-          },
-          {
-            min: 1,
-            max: 64,
-            message: 'Input too long',
-            trigger: 'blur',
-          },
-        ],
-        day: [
-          {
-            required: true,
-            message: 'Please input day available',
-            trigger: 'blur',
-          },
-          {
-            min: 1,
-            max: 64,
-            message: 'Input too long',
-            trigger: 'blur',
-          },
-        ],
-        time: [
-          {
-            required: true,
-            message: 'Please input time available',
-            trigger: 'blur',
-          },
-          {
-            min: 1,
-            max: 64,
-            message: 'Input too long',
-            trigger: 'blur',
-          },
-        ],
-      },
-      loading: false,
-      errMsg: null,
+      options: [
+        {
+          value: 'Sunday',
+          label: 'Sunday',
+        },
+        {
+          value: 'Monday',
+          label: 'Monday',
+        },
+        {
+          value: 'Tuesdau',
+          label: 'Tuesday',
+        },
+        {
+          value: 'Wednesday',
+          label: 'Wednesday',
+        },
+        {
+          value: 'Thursday',
+          label: 'Thursday',
+        },
+        {
+          value: 'Friday',
+          label: 'Friday',
+        },
+        {
+          value: 'Saturday',
+          label: 'Saturday',
+        },
+      ],
     };
-  },
-  computed: {
-    submitButtonText() {
-      return this.loading ? 'Loading' : 'Submit';
-    },
   },
   methods: {
     ...mapActions([
       'submitScheduleForm',
     ]),
-    handleKeyUp(e) {
-      // Enter key
-      if (e.keyCode === 13) {
-        this.submitButtonClicked();
-      }
-    },
     submitButtonClicked() {
       this.displayErrMsg = false;
       this.$refs['schedule-form'].validate((valid) => {
@@ -142,66 +131,55 @@ export default{
         }
       });
     },
-  },
-  mounted() {
-    window.addEventListener('keyup', this.handleKeyUp);
-  },
-  beforeDestroy() {
-    window.removeEventListener('keyup', this.handleKeyUp);
+    addField() {
+      this.createScheduleForm.fields.push({
+        key: Date.now(),
+        value: '',
+      });
+      this.addDay();
+    },
+    removeField(index) {
+      if (index !== -1) {
+        this.createScheduleForm.fields.splice(index, 1);
+      }
+    },
+    addDay() {
+      this.createScheduleForm.days.push({
+        key: Date.now(),
+        value: '',
+      });
+      this.addTime();
+    },
+    removeDay(index) {
+      this.removeField(index);
+      if (index !== -1) {
+        this.createScheduleForm.days.splice(index, 1);
+      }
+    },
+    addTime() {
+      this.createScheduleForm.times.push({
+        key: Date.now(),
+        value: '',
+      });
+    },
+    removeTime(index) {
+      this.removeDay(index);
+      if (index !== -1) {
+        this.createScheduleForm.times.splice(index, 1);
+      }
+    },
+    removeInput(index) {
+      this.removeTime(index);
+    },
   },
 };
-
 </script>
 
 <style lang='scss' scoped>
 @import '@/style/global.scss';
 
-#create-schedule-from{
-  #create-schedule-form-container-main{
-    padding: 0px 40px;
-    display: flex;
-    flex-direction: column;
-
-    #title{
-      font-size: 2rem;
-      font-weight: bold;
-    }
-
-    #sub-message-container{
-      margin-bottom: 16px;
-    }
-
-    .el-form-item.is-success /deep/ .el-input__inner,
-    .el-form-item.is-success /deep/ .el-input__inner:focus,
-    .el-form-item.is-success /deep/ .el-textarea__inner,
-    .el-form-item.is-success /deep/ .el-textarea__inner:focus {
-      border-color: $ELEMENT_UI_DEFAULT_BORDER;
-    }
-
-    #field-container{
-      margin: 8px 0px;
-    }
-
-    #day-container{
-      margin: 8px 0px;
-    }
-
-    #time-container{
-      margin: 8px 0px;
-    }
-
-    #errMsg{
-      color: red;
-    }
-
-    #submit-button-container{
-      width: 100%;
-      margin: 8px 0px;
-
-      button{
-        width: 100%;
-      }
-    }
-  }
+.el-input {
+  width: 40%;
 }
+
 </style>

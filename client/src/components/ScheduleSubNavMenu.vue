@@ -26,6 +26,7 @@
                   Table
                 </div>
                 <div
+                  id="calendar-view-button"
                   @click="handleScheduleSelectedViewClick('Calendar')"
                   :class="{'boldText': scheduleSelectedView === 'Calendar'}">
                   Calendar
@@ -111,6 +112,9 @@ export default {
     scheduleTeamDropdownVisible() {
       return this.scheduleTeamDropdownButtonHover || this.scheduleTeamDropdownContentHover;
     },
+    smallScreenSize() {
+      return window.innerWidth < 700;
+    },
   },
   methods: {
     ...mapActions([
@@ -118,6 +122,7 @@ export default {
       'setSelectedTeamId',
     ]),
     handleScheduleSelectedViewClick(view) {
+      if (view === 'Calendar' && window.innerWidth < 700) return;
       this.scheduleViewDropdownContentHover = false;
       this.setScheduleSelectedView(view);
     },
@@ -128,6 +133,18 @@ export default {
     handleCreateScheduleButtonClick() {
       this.$router.push('/schedule/create');
     },
+    handleResize() {
+      if (window.innerWidth < 700) {
+        // TODO Test this on an actual tablet
+        this.setScheduleSelectedView('Table');
+      }
+    },
+  },
+  mounted() {
+    window.addEventListener('resize', this.handleResize);
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize);
   },
 };
 
@@ -145,7 +162,7 @@ export default {
   background-color: $VERY_LIGHT_GREY;
   transition: 0.3s;
   font-size: 0.9rem;
-  height: 36px;
+  min-height: 36px;
 
   #schedule-sub-menu{
     padding: 0px 20px;
@@ -240,6 +257,18 @@ export default {
       margin-right: 20px;
       font-size: .8rem;
     }
+    @include checkMaxScreenSize(700px) {
+      #schedule-view-dropdown-container{
+        #calendar-view-button{
+          color: $HOVER_GREY;
+          cursor: not-allowed;
+          &:hover{
+            background-color: $VERY_LIGHT_GREY;
+          }
+        }
+      }
+    }
+
   }
 }
 </style>
