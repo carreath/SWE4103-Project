@@ -1,13 +1,7 @@
 <template>
   <div id="schedule">
     <div
-      id="create-schedule-container"
-      v-if="curRoute === 'schedule-create'">
-      <CreateScheduleForm/>
-    </div>
-    <div
-      id="schedule-body"
-      v-else>
+      id="schedule-body">
       <div
         id="calendar-view"
         v-if="scheduleSelectedView === 'Calendar'">
@@ -114,14 +108,12 @@
 
 <script>
 import Calendar from '@/components/Calendar.vue';
-import CreateScheduleForm from '@/components/CreateScheduleForm.vue';
 import { mapGetters } from 'vuex';
 
 export default {
   name: 'Schedule',
   components: {
     Calendar,
-    CreateScheduleForm,
   },
   data() {
     return {
