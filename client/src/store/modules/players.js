@@ -24,7 +24,23 @@ const actions = {
       }
     });
   },
+  createPlayer({ dispatch }, playerObj) {
+    return PlayersService.createPlayer(playerObj).then((response) => {
+      if (!response || !response.status) {
+        return { retVal: false, retMsg: 'Server Error' };
+      }
 
+      switch (response.status) {
+        case 201: {
+          dispatch('getPlayers');
+          return { retVal: true, retMsg: 'Player Created' };
+        }
+        default: {
+          return { retVal: false, retMsg: 'Server Error' };
+        }
+      }
+    });
+  },
 };
 
 // mutations
