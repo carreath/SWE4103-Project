@@ -159,6 +159,10 @@ export default {
     selectedTeamId() {
       this.generateGameObjs();
     },
+    selectedLeagueId() {
+      this.setSelectedGameId(null);
+      this.generateGameObjs();
+    },
   },
   mounted() {
     this.newEventStartDate = this.isoYearMonthDay(this.today());
