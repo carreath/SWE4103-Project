@@ -26,10 +26,10 @@
           :rules="{
             required: true, message: 'Please input day available', trigger: 'blur'
           }">
-          <el-select v-model="createScheduleForm.day" placeholder="Select Day">
+          <el-select v-model="day.value" placeholder="Select Day">
             <el-option
               v-for="item in options"
-              :key="item.value"
+              :key="item.value.key"
               :label="item.label"
               :value="item.value">
             </el-option>
@@ -44,7 +44,7 @@
             required: true, message: 'Please input time available', trigger: 'blur'
           }">
           <el-input v-model="time.value" type="time"></el-input>
-          <el-button @click="removeInput(time)">Delete</el-button>
+          <el-button @click="removeInput(time)">Delete Entry</el-button>
         </el-form-item>
         <el-form-item>
           <el-button
@@ -52,7 +52,6 @@
           @click="submitScheduleForm('createScheduleForm')">Submit
           </el-button>
           <el-button @click="addField">New Entry</el-button>
-          <el-button @click="resetForm('createScheduleForm')">Reset</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -132,9 +131,6 @@ export default {
         }
       });
     },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-    },
     addField() {
       this.createScheduleForm.fields.push({
         key: Date.now(),
@@ -172,9 +168,9 @@ export default {
         this.createScheduleForm.times.splice(index, 1);
       }
     },
-    removeInput(index){
+    removeInput(index) {
       this.removeTime(index);
-    }
+    },
   },
 };
 </script>
