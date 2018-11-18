@@ -132,6 +132,7 @@ export default {
       'gamesByTeamIdSortedByDate',
       'selectedLeagueId',
       'selectedTeamId',
+      'games',
     ]),
   },
   methods: {
@@ -173,6 +174,12 @@ export default {
     selectedTeamId() {
       this.formatGamesByLeagueIdSortedByDate();
     },
+    games() {
+      this.formatGamesByLeagueIdSortedByDate();
+    },
+    selectedLeagueId() {
+      this.formatGamesByLeagueIdSortedByDate();
+    },
   },
   mounted() {
     this.formatGamesByLeagueIdSortedByDate();
@@ -187,6 +194,7 @@ export default {
   display: flex;
   flex-direction: column;
   margin-bottom: 8px;
+
   #schedule-header{
 
   }
@@ -265,25 +273,35 @@ export default {
       width: 80%;
       align-self: center;
 
+      @include checkMaxScreenSize(750px){
+        width: 90%;
+      }
+
+      @include checkMaxScreenSize(650px){
+        width: 98%;
+        font-size: 0.8rem;
+      }
+
       .date-games-container{
         margin: 16px 0px;
-        transition: 0.5s;
 
         .date-games-date{
           display: flex;
           font-size: 1.5rem;
           font-weight: bold;
+
+          @include checkMaxScreenSize(650px){
+            font-size: 1.3rem;
+          }
         }
 
         table{
           width: 100%;
           border: 1px solid #ddd;
           border-collapse:collapse;
-          transition: 0.5s;
 
           tr{
             border-bottom: 1px solid #ddd;
-            transition: 0.5s;
 
             th{
               background-color: $HOVER_LIGHT_GREY;
