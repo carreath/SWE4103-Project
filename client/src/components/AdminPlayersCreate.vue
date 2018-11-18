@@ -144,7 +144,7 @@ export default{
   },
   methods: {
     ...mapActions([
-      'submitPlayerForm',
+      'createPlayer',
     ]),
     handleKeyUp(e) {
       // Enter key
@@ -157,7 +157,7 @@ export default{
       this.$refs['player-form'].validate((valid) => {
         if (valid) {
           this.loading = true;
-          this.submitPlayerForm(this.createPlayerForm).then((response) => {
+          this.createPlayer(this.adminPlayersCreate).then((response) => {
             this.loading = false;
             if (response.retVal) {
               this.errMsg = null;
