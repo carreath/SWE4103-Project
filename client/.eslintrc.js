@@ -17,6 +17,7 @@ module.exports = {
     'no-unused-expressions': 'off',
     'arrow-parens': 'off',
     'prefer-const': 'off',
+    'prefer-destructuring': 'off',
   },
   parserOptions: {
     parser: 'babel-eslint',
