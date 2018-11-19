@@ -101,7 +101,10 @@
           </table>
         </div>
       </div>
-
+    </div>
+    <div id="new-game-button">
+      <el-button>
+      </el-button>
     </div>
   </div>
 </template>

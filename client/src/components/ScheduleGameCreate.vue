@@ -13,15 +13,34 @@
           <el-form-item
             label="Field"
             id="field-name-label"
-            prop="field">
+            prop="fieldName">
             <el-input
               id="field-name-input"
-              type="field"
+              type="fieldName"
               placeholder="Field Name"
-              v-model="scheduleGameCreate.field"
+              v-model="scheduleGameCreate.fieldName"
               :disabled="loading">
             </el-input>
           </el-form-item>
+          <el-form-item
+            label="Day"
+            id="day-label"
+            prop="day">
+            <el-select v-model="day" placeholder="Select Day">
+              <el-option
+                v-for="item in options"
+                :key="item.value.key"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item
+              label="Time"
+              id="time-label"
+              :prop="time">
+              <el-input v-model="time" type="time" id="time-input"></el-input>
+            </el-form-item>
           <el-form-item
             label="Home Team Name"
             id="home-team-name-label"
@@ -79,12 +98,14 @@ export default{
   data() {
     return {
       scheduleGameCreate: {
-        field: '',
+        fieldName: '',
+        day: '',
+        time: '',
         homeTeamID: '',
         awayTeamID: '',
       },
       scheduleGameCreateRules: {
-        field: [
+        fieldName: [
           {
             required: true,
             message: 'Please input Field Name',
