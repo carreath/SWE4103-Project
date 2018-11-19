@@ -125,6 +125,7 @@ export default {
             this.loading = false;
             if (response.retVal) {
               this.errMsg = null;
+              this.$router.push('/schedule');
             } else {
               this.errMsg = response.retMsg;
             }
@@ -159,16 +160,18 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-top: 16px;
-  justify-content: center;
+  padding-top: 16px;
 
   #line-of-input {
-    margin-top: 16px;
-    margin-left: 16px;
+    padding-top: 16px;
+    padding-left: 16px;
     display: flex;
     flex-direction: row;
-    .el-form-item{
+    #time-container {
       display: inline-block;
+      width: 215px;
+      text-align: right;
+      padding-right: 50px;
     }
     .el-input {
       width: 60%;
@@ -181,10 +184,7 @@ export default {
     }
   }
 }
-
-#time-input {
+.el-form-item__content {
   display: inline-block;
-  float: left;
 }
-
 </style>
