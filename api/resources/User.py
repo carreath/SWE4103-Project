@@ -274,7 +274,6 @@ class User(Resource):
 
         parser = reqparse.RequestParser()
         parser.add_argument('userID')
-        parser.add_argument('privilegeID')
         parser.add_argument('userType')
         parser.add_argument('firstName')
         parser.add_argument('lastName')
@@ -282,11 +281,20 @@ class User(Resource):
         args = parser.parse_args()
 
         user_id = args['userID']
-        privilege_id = args['privilegeID']
         user_type = args['userType']
         first_name = args['firstName']
         last_name = args['lastName']
         email = args['email']
+
+        privilege_id = None;
+        if user_type == 'Admin':
+            privilege_id = 1
+        elif user_type == 'Coordinator':
+            privilege_id = 2
+        elif user_type == 'Manager':
+            privilege_id = 3
+        elif user_type == 'Referee':
+            privilege_id = 4
 
         # using update_user stored procedure to update user
         db_connector = DatabaseConnector()

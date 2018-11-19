@@ -1,24 +1,10 @@
 from flask_restful import Resource, abort, reqparse, request
-from common import DatabaseConnector, TokenHandler, PrivilegeHandler
+from common import DatabaseConnector, PrivilegeHandler
 
 
 class Team(Resource):
     """
     This endpoint allows access to the teams table records.
-
-    .. Note:: This is a note (wow!)
-
-    .. warning:: This is a warning (oh no!)
-
-    .. todo::
-        Privileges associated with token
-
-        .. code-block:: python
-
-            token = request.headers.get('Authorization')
-            if not token:
-                abort(403, error="Unauthorized Access (no token)")
-
 
     """
     def post(self):
@@ -48,7 +34,8 @@ class Team(Resource):
                 }
 
 
-        Success gives status code 201
+        Possible status codes: 403 = No permissions, 201 = Successfully added.
+
 
         """        
         token = request.headers.get('Authorization')
@@ -114,7 +101,7 @@ class Team(Resource):
                 }
 
 
-        Success gives status code 200
+        Possible status codes: 200 = Success.
 
         """
 
@@ -136,3 +123,146 @@ class Team(Resource):
                 'draws': team[8],
             })
         return {'teams': teams_data}, 200
+
+    def put(self):
+        """
+        Updates a team object in the database.
+
+        :Input:  Team JSON object with new data.
+
+            .. code-block:: javascript
+
+                {
+                    'teamID': Integer,
+                    'leagueID': Integer,
+                    'managerID': Integer,
+                    'teamName': String,
+                    'colour': String (Hex Colour Code),
+                    'leaguePoints': Integer,
+                    'wins': Integer,
+                    'losses': Integer,
+                    'draws': Integer
+                }
+
+
+        :return: The updated team JSON object
+
+            .. code-block:: javascript
+
+                {
+                    'teamID': Integer,
+                    'leagueID': Integer,
+                    'managerID': Integer,
+                    'teamName': String,
+                    'colour': String (Hex Colour Code),
+                    'leaguePoints': Integer,
+                    'wins': Integer,
+                    'losses': Integer,
+                    'draws': Integer
+                }
+
+
+        Possible status codes: 403 = No permissions, 200 = Successfully updated.
+
+        """
+
+        token = request.headers.get('Authorization')
+        if not token:
+            abort(403, error="Unauthorized Access (no token)")
+        privilege_handler = PrivilegeHandler(token)
+        if not privilege_handler.team_privileges():
+            abort(403, error="Unauthorized Access (invalid permissions)")
+
+        parser = reqparse.RequestParser()
+        parser.add_argument('teamID', type=int)
+        parser.add_argument('leagueID', type=int)
+        parser.add_argument('managerID', type=int)
+        parser.add_argument('teamName', type=str)
+        parser.add_argument('colour', type=str)
+        parser.add_argument('leaguePoints', type=str)
+        parser.add_argument('wins', type=str)
+        parser.add_argument('losses', type=str)
+        parser.add_argument('draws', type=str)
+        args = parser.parse_args()
+
+        team_id = args['teamID']
+        league_id = args['leagueID']
+        manager_id = args['managerID']
+        team_name = args['teamName']
+        colour = args['colour']
+        league_points = args['leaguePoints']
+        wins = args['wins']
+        losses = args['losses']
+        draws = args['draws']
+
+        # using update_team stored procedure to update team
+        db_connector = DatabaseConnector()
+        db_connector.cursor.callproc('update_team',
+                                     [team_id,
+                                      league_id,
+                                      manager_id,
+                                      team_name,
+                                      colour,
+                                      league_points,
+                                      wins,
+                                      losses,
+                                      draws])
+        db_connector.conn.commit()
+
+        # getting team_id to return to the frontend
+        db_connector.cursor.callproc('get_team', [team_id])
+        db_response = db_connector.cursor.fetchone()
+        team_data = {
+            'teamID': db_response[0],
+            'leagueID': db_response[1],
+            'managerID': db_response[2],
+            'teamName': db_response[3],
+            'colour': db_response[4],
+            'leaguePoints': db_response[5],
+            'wins': db_response[6],
+            'losses': db_response[7],
+            'draws': db_response[8]
+        }
+        db_connector.conn.close()
+
+        return team_data, 200
+
+    def delete(self):
+        """
+        Deletes a team from the database.
+
+        :Input:  ID of the team to delete.
+
+            .. code-block:: javascript
+
+                {
+                    'teamID': Integer
+                }
+
+        Possible status codes: 403 = No permissions, 200 = Successfully deleted.
+
+        """
+        token = request.headers.get('Authorization')
+        if not token:
+            abort(403, error="Unauthorized Access (no token)")
+        privilege_handler = PrivilegeHandler(token)
+        if not privilege_handler.team_privileges():
+            abort(403, error="Unauthorized Access (invalid permissions)")
+
+        parser = reqparse.RequestParser()
+        parser.add_argument('teamID')
+        args = parser.parse_args()
+
+        team_id = args['teamID']
+
+        # deleting team object
+        db_connector = DatabaseConnector()
+        try:
+            db_connector.cursor.execute('DELETE FROM teams WHERE teamID = {}'.format(team_id))
+            db_connector.conn.commit()
+        except Exception as e:
+            abort(401, error='Invalid delete: {}'.format(e))
+        finally:
+            db_connector.conn.close()
+
+        return 200
