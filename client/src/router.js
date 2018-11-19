@@ -216,6 +216,13 @@ const router = new Router({
         }
       },
     },
+    {
+      path: '*',
+      name: 'default',
+      beforeEnter: (to, from, next) => {
+        next('/');
+      },
+    },
   ],
 });
 
