@@ -152,7 +152,7 @@ export default{
     },
   },
   mounted() {
-    this.leagueEditForm = this.editedLeague;
+    this.leagueEditForm = { ...this.editedLeague };
     window.addEventListener('keyup', this.handleKeyUp);
   },
   beforeDestroy() {

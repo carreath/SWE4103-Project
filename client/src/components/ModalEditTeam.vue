@@ -128,7 +128,7 @@ export default{
     },
   },
   mounted() {
-    this.teamEditForm = this.editedTeam;
+    this.teamEditForm = { ...this.editedTeam };
     window.addEventListener('keyup', this.handleKeyUp);
   },
   beforeDestroy() {

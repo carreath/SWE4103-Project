@@ -108,11 +108,15 @@ export default {
         cancelButtonText: 'Cancel',
         type: 'warning',
       }).then(() => {
-        this.deletePlayer(this.playerById(id)).then(() => {
-          this.$message({
-            message: `Deleted ${firstName} ${lastName}`,
-            center: true,
-          });
+        this.deletePlayer(this.playerById(id)).then((response) => {
+          if (response.val) {
+            this.$message({
+              message: `Deleted ${firstName} ${lastName}`,
+              center: true,
+            });
+          } else {
+            this.$message.error('Error deleting');
+          }
           this.$router.push('/admin/players');
         });
       }).catch(() => {
