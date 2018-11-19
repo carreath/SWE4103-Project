@@ -97,11 +97,15 @@ export default {
         cancelButtonText: 'Cancel',
         type: 'warning',
       }).then(() => {
-        this.deleteLeague(this.leagueById(id)).then(() => {
-          this.$message({
-            message: `Deleted ${name}`,
-            center: true,
-          });
+        this.deleteLeague(this.leagueById(id)).then((response) => {
+          if (response.retVal) {
+            this.$message({
+              message: `Deleted ${name}`,
+              center: true,
+            });
+          } else {
+            this.$message.error('Error deleting');
+          }
           this.$router.push('/admin/leagues');
         });
       }).catch(() => {

@@ -148,7 +148,7 @@ export default{
     },
   },
   mounted() {
-    this.playerEditForm = this.editedPlayer;
+    this.playerEditForm = { ...this.editedPlayer };
     window.addEventListener('keyup', this.handleKeyUp);
   },
   beforeDestroy() {

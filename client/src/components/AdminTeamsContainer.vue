@@ -101,11 +101,15 @@ export default {
         cancelButtonText: 'Cancel',
         type: 'warning',
       }).then(() => {
-        this.deleteTeam(this.teamById(id)).then(() => {
-          this.$message({
-            message: `Deleted ${name}`,
-            center: true,
-          });
+        this.deleteTeam(this.teamById(id)).then((response) => {
+          if (response.retVal) {
+            this.$message({
+              message: `Deleted ${name}`,
+              center: true,
+            });
+          } else {
+            this.$message.error('Error deleting');
+          }
           this.$router.push('/admin/teams');
         });
       }).catch(() => {
