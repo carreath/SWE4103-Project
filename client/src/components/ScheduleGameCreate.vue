@@ -26,7 +26,7 @@
             label="Day"
             id="day-label"
             prop="day">
-            <el-select v-model="day" placeholder="Select Day">
+            <el-select v-model="scheduleGameCreate.day" placeholder="Select Day">
               <el-option
                 v-for="item in options"
                 :key="item.value.key"
@@ -38,35 +38,37 @@
           <el-form-item
               label="Time"
               id="time-label"
-              :prop="time">
-              <el-input v-model="time" type="time" id="time-input"></el-input>
+              prop="time">
+              <el-input v-model="scheduleGameCreate.time" type="time" id="time-input"></el-input>
+          </el-form-item>
+          <div id="teams-container">
+            <el-form-item
+              label="Home Team Name"
+              id="home-team-name-label"
+              prop="homeTeamID">
+              <el-select v-model="scheduleGameCreate.homeTeamID" placeholder="Home Team">
+                <el-option
+                  v-for="item in formatTeams"
+                  :key="item.teamID"
+                  :label="item.teamName"
+                  :value="item.teamID">
+                </el-option>
+              </el-select>
             </el-form-item>
-          <el-form-item
-            label="Home Team Name"
-            id="home-team-name-label"
-            prop="homeTeamID">
-            <el-select v-model="scheduleGameCreate.homeTeamID" placeholder="Home Team">
-              <el-option
-                v-for="item in formatTeams"
-                :key="item.teamID"
-                :label="item.teamName"
-                :value="item.teamID">
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item
-            label="Away Team Name"
-            id="away-team-name-label"
-            prop="awayTeamID">
-            <el-select v-model="scheduleGameCreate.awayTeamID" placeholder="Away Team">
-              <el-option
-                v-for="item in formatTeams"
-                :key="item.teamID"
-                :label="item.teamName"
-                :value="item.teamID">
-              </el-option>
-            </el-select>
-          </el-form-item>
+            <el-form-item
+              label="Away Team Name"
+              id="away-team-name-label"
+              prop="awayTeamID">
+              <el-select v-model="scheduleGameCreate.awayTeamID" placeholder="Away Team">
+                <el-option
+                  v-for="item in formatTeams"
+                  :key="item.teamID"
+                  :label="item.teamName"
+                  :value="item.teamID">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </div>
           <div id="errMsg" v-if="errMsg">
             Error: {{ errMsg }}
           </div>
@@ -115,6 +117,20 @@ export default{
             min: 1,
             max: 64,
             message: 'Input too long',
+            trigger: 'blur',
+          },
+        ],
+        day: [
+          {
+            required: true,
+            message: 'Please input day',
+            trigger: 'blur',
+          },
+        ],
+        time: [
+          {
+            required: true,
+            message: 'Please input time',
             trigger: 'blur',
           },
         ],
@@ -204,6 +220,11 @@ export default{
 
   #field-name-label{
     margin-top: 16px;
+  }
+
+  #teams-container {
+    display: flex;
+    flex-direction: row;
   }
 
   #submit-button-container{
