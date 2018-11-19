@@ -93,78 +93,79 @@
     </div>
 
 
-      <div id="right-menu-container">
+    <div id="right-menu-container">
 
-        <div
-          id="league-dropdown-container"
-          v-if="showLeagueSelection">
-          <div class="league-dropdown">
+      <div
+        id="league-dropdown-container"
+        v-if="showLeagueSelection">
+        <div class="league-dropdown">
+          <div
+            class="league-dropdown-button"
+            @mouseover="leagueDropdownButtonHover=true"
+            @mouseleave="leagueDropdownButtonHover=false"
+            :class="{'lightGreyBackground': leagueDropdownContentHover}">
+            <span v-if="!selectedLeagueId">Select a League</span>
+            <span v-else>{{ selectedLeague.leagueName }}</span>
+            <font-awesome-icon
+              id="caret-down"
+              icon="caret-down"/>
+          </div>
+          <div
+            class="league-dropdown-content"
+            :class="{'show-league-dropdown-content': leagueDropdownVisible}"
+            @mouseover="leagueDropdownContentHover=true"
+            @mouseleave="leagueDropdownContentHover=false">
             <div
-              class="league-dropdown-button"
-              @mouseover="leagueDropdownButtonHover=true"
-              @mouseleave="leagueDropdownButtonHover=false"
-              :class="{'lightGreyBackground': leagueDropdownContentHover}">
-              <span v-if="!selectedLeagueId">Select a League</span>
-              <span v-else>{{ selectedLeague.leagueName }}</span>
-              <font-awesome-icon
-                id="caret-down"
-                icon="caret-down"/>
-            </div>
-            <div
-              class="league-dropdown-content"
-              :class="{'show-league-dropdown-content': leagueDropdownVisible}"
-              @mouseover="leagueDropdownContentHover=true"
-              @mouseleave="leagueDropdownContentHover=false">
-              <div
-                v-for="league in leagues"
-                :key="league.leagueID"
-                @click="handleLeagueClick(league.leagueID)"
-                :class="{'boldText': selectedLeagueId === league.leagueID}">
-                  {{league.leagueName}}
-              </div>
+              v-for="league in leagues"
+              :key="league.leagueID"
+              @click="handleLeagueClick(league.leagueID)"
+              :class="{'boldText': selectedLeagueId === league.leagueID}">
+                {{league.leagueName}}
             </div>
           </div>
         </div>
-
-        <div
-          id="user-dropdown-container"
-          v-if="loggedIn">
-          <div class="user-dropdown">
-            <div
-              class="user-dropdown-button"
-              @mouseover="userDropdownButtonHover=true"
-              @mouseleave="userDropdownButtonHover=false"
-              :class="{'lightGreyBackground': userDropdownContentHover}">
-              <span>{{ user.firstName }} {{ user.lastName }}</span>
-              <font-awesome-icon
-                id="caret-down"
-                icon="caret-down"/>
-            </div>
-            <div
-              class="user-dropdown-content"
-              :class="{'show-user-dropdown-content': userDropdownVisible}"
-              @mouseover="userDropdownContentHover=true"
-              @mouseleave="userDropdownContentHover=false">
-              <div>
-                Change Password
-              </div>
-              <div @click="logoutClicked">
-                Log Out <font-awesome-icon icon="sign-out-alt" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div
-          id="login-button-container"
-          @click='setLoginModalVisible(true)'
-          v-else>
-          <div id="login-button-text">
-            Log In
-          </div>
-        </div>
-
       </div>
+
+      <div
+        id="user-dropdown-container"
+        v-if="loggedIn">
+        <div class="user-dropdown">
+          <div
+            class="user-dropdown-button"
+            @mouseover="userDropdownButtonHover=true"
+            @mouseleave="userDropdownButtonHover=false"
+            :class="{'lightGreyBackground': userDropdownContentHover}">
+            {{ user.firstName }} {{ user.lastName }}
+            <font-awesome-icon
+              id="caret-down"
+              icon="caret-down"/>
+          </div>
+          <div
+            class="user-dropdown-content"
+            :class="{'show-user-dropdown-content': userDropdownVisible}"
+            @mouseover="userDropdownContentHover=true"
+            @mouseleave="userDropdownContentHover=false">
+            <div>
+              Change Password
+            </div>
+            <div @click="logoutClicked">
+              Log Out <font-awesome-icon icon="sign-out-alt" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="login-button-container"
+        @click='setLoginModalVisible(true)'
+        v-else>
+        <div id="login-button-text">
+          Log In
+        </div>
+      </div>
+
+    </div>
+
   </div>
 </template>
 

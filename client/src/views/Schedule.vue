@@ -1,8 +1,7 @@
 <template>
   <div id="schedule">
-    <div id="schedule-header">
-    </div>
-    <div id="schedule-body">
+    <div
+      id="schedule-body">
       <div
         id="calendar-view"
         v-if="scheduleSelectedView === 'Calendar'">
@@ -134,6 +133,9 @@ export default {
       'selectedTeamId',
       'games',
     ]),
+    curRoute() {
+      return this.$route.name;
+    },
   },
   methods: {
     formatDate(mDate) {
