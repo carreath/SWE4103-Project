@@ -76,7 +76,6 @@ export default {
       'playerById',
     ]),
     formatPlayers() {
-      console.log(this.players);
       const formatedPlayers = this.players.map((player) => {
         return {
           playerID: player.playerID,
