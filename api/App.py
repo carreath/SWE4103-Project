@@ -54,7 +54,7 @@ def shutdown():
 
 if __name__ == "__main__":
     # Check that the SSL certificate exists if not run http://
-    if os.path.isfile(cer) and os.path.isfile(key) and sys.argv[1] == 'true':
+    if os.path.isfile(cer) and os.path.isfile(key):
         context = (cer, key)
         app.run(host=config.app_settings['host'],
                 port=config.app_settings['port'],
