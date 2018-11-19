@@ -73,14 +73,14 @@
       <div class="footer">
         <el-button
           :loading="loading"
-          @click="userEditButtonClicked">
+          @click="closeModal">
           Cancel
         </el-button>
         <div></div>
         <el-button
           type="primary"
           :loading="loading"
-          @click="closeModal">
+          @click="userEditButtonClicked">
           {{ userEditButtonText }}
         </el-button>
       </div>
@@ -186,9 +186,15 @@ export default {
     },
     userEditButtonClicked() {
       this.displayErrMsg = false;
+      if (!this.userEditForm.userType) {
+        this.userEditForm.userType = 'None';
+      }
       this.$refs['user-edit-form'].validate((valid) => {
         if (valid) {
           this.loading = true;
+          if (this.userEditForm.userType === 'None') {
+            this.userEditForm.userType = null;
+          }
           this.editUser(this.userEditForm).then((response) => {
             this.loading = false;
             if (response.retVal) {

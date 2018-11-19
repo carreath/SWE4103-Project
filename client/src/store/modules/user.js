@@ -145,7 +145,10 @@ const actions = {
     });
   },
   deleteUser({ dispatch }, userObj) {
-    return UserService.deleteUser(userObj).then((response) => {
+    const params = {
+      userID: userObj.userID,
+    };
+    return UserService.deleteUser(params).then((response) => {
       if (!response || !response.status) {
         return { retVal: false, retMsg: 'Server Error' };
       }
