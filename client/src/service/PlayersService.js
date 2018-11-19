@@ -19,4 +19,22 @@ export default {
         return err.response;
       });
   },
+  deletePlayer(params) {
+    return ServiceLayer().delete('/player', params)
+      .then((response) => {
+        return response;
+      })
+      .catch((err) => {
+        return err.response;
+      });
+  },
+  editPlayer(params) {
+    return ServiceLayer().put('/player', params)
+      .then((response) => {
+        return response;
+      })
+      .catch((err) => {
+        return err.response;
+      });
+  },
 };

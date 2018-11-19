@@ -21,15 +21,15 @@
           sortable
           label="Player ID">
         </el-table-column>
-         <el-table-column
-          prop="lastName"
-          sortable
-          label="Last Name">
-        </el-table-column>
         <el-table-column
           prop="firstName"
           sortable
           label="First Name">
+        </el-table-column>
+        <el-table-column
+          prop="lastName"
+          sortable
+          label="Last Name">
         </el-table-column>
         <el-table-column
           prop="teamName"
@@ -38,6 +38,17 @@
         </el-table-column>
         <el-table-column
           label="Action">
+          <template slot-scope="scope">
+            <el-button
+            @click='playerEditClicked(scope.row.playerID)'>
+              Edit
+            </el-button>
+            <el-button
+            @click="playerDeleteClicked(scope.row.playerID,
+            scope.row.firstName, scope.row.lastName)">
+              Delete
+            </el-button>
+          </template>
         </el-table-column>
       </el-table>
     </div>
@@ -57,12 +68,13 @@ export default {
   computed: {
     ...mapGetters([
       'players',
-      'leagueById',
+      'teamById',
+      'playerById',
     ]),
     formatPlayers() {
       const formatedPlayers = this.players.map((player) => {
         return {
-          PlayerID: player.playerID,
+          playerID: player.playerID,
           lastName: player.lastName,
           firstName: player.firstName,
           teamName: this.teamById(player.teamID).teamName,
@@ -73,10 +85,32 @@ export default {
   },
   methods: {
     ...mapActions([
-
+      'deletePlayer',
+      'setEditedPlayer',
+      'setEditPlayerModalVisible',
     ]),
     handleCreatePlayerButtonClick() {
       this.$router.push('/admin/players/create');
+    },
+    playerEditClicked(index) {
+      this.setEditedPlayer(index);
+      this.setEditPlayerModalVisible(true);
+    },
+    playerDeleteClicked(id, firstName, lastName) {
+      this.$confirm(`Are you sure you want to delete ${firstName} ${lastName}?`, 'Confirm Player Deletion', {
+        confirmButtonText: 'Delete Player',
+        cancelButtonText: 'Cancel',
+        type: 'warning',
+      }).then(() => {
+        this.deletePlayer(this.playerById(id)).then(() => {
+          this.$message({
+            message: `Deleted ${firstName} ${lastName}`,
+            center: true,
+          });
+          this.$router.push('/admin/players');
+        });
+      }).catch(() => {
+      });
     },
   },
 };

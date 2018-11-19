@@ -60,6 +60,7 @@ export default {
   computed: {
     ...mapGetters([
       'leagues',
+      'leagueById',
     ]),
     formatLeagues() {
       const formatedLeagues = this.leagues.map((league) => {
@@ -78,7 +79,6 @@ export default {
   methods: {
     ...mapActions([
       'deleteLeague',
-      'leagueById',
       'setEditedLeague',
       'setEditLeagueModalVisible',
     ]),

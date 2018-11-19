@@ -66,6 +66,7 @@ export default {
       'teams',
       'leagueById',
       'leagues',
+      'teamById'
     ]),
     formatTeams() {
       const formatedTeams = this.teams.map((team) => {
@@ -82,7 +83,6 @@ export default {
   methods: {
     ...mapActions([
       'deleteLeague',
-      'teamById',
       'setEditedTeam',
       'setEditTeamModalVisible',
     ]),

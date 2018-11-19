@@ -70,7 +70,7 @@ const actions = {
   },
   deleteLeague({ dispatch }, leagueObj) {
     const params = {
-      id: leagueObj.leagueID,
+      leagueID: leagueObj.leagueID,
     };
     return LeaguesService.deleteLeague(params).then((response) => {
       if (!response || !response.status) {

@@ -111,7 +111,7 @@ export default{
       'editedPlayerId',
     ]),
     playerEditButtonText() {
-      return this.loading ? 'Loading' : 'Edit Team';
+      return this.loading ? 'Loading' : 'Edit Player';
     },
   },
   methods: {
@@ -126,7 +126,7 @@ export default{
       }
       // Enter key
       if (e.keyCode === 13) {
-        this.teamEditButtonClicked();
+        this.playerEditButtonClicked();
       }
     },
     playerEditButtonClicked() {
@@ -176,10 +176,6 @@ export default{
     .el-form-item.is-success /deep/ .el-textarea__inner,
     .el-form-item.is-success /deep/ .el-textarea__inner:focus {
       border-color: $ELEMENT_UI_DEFAULT_BORDER;
-    }
-
-    #player-name-input{
-      margin: 8px 0px;
     }
 
     #errMsg{

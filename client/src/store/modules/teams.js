@@ -75,7 +75,7 @@ const actions = {
   },
   deleteTeam({ dispatch }, teamObj) {
     const params = {
-      id: teamObj.teamID,
+      teamID: teamObj.teamID,
     };
     return TeamsService.deleteTeam(params).then((response) => {
       if (!response || !response.status) {
