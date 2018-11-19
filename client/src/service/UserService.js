@@ -46,4 +46,13 @@ export default {
         return err.response;
       });
   },
+  deleteUser(paramsIn) {
+    return ServiceLayer().delete('/user', { params: paramsIn })
+      .then((response) => {
+        return response;
+      })
+      .catch((err) => {
+        return err.response;
+      });
+  },
 };

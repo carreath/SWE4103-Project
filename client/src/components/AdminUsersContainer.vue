@@ -50,7 +50,8 @@
             <el-button
             icon="el-icon-delete"
             size="mini"
-            @click="userDeleteClicked(scope.row.id, scope.row.name)">
+            :disabled="scope.row.userID === (user || {}).userID"
+            @click="userDeleteClicked(scope.row)">
             </el-button>
           </template>
         </el-table-column>
@@ -72,6 +73,7 @@ export default {
   computed: {
     ...mapGetters([
       'users',
+      'user',
     ]),
     formatUsers() {
       return (this.users || []).filter(userObj => {
@@ -87,10 +89,28 @@ export default {
     ...mapActions([
       'setEditedUser',
       'setEditUserModalVisible',
+      'deleteUser',
     ]),
     userEditClicked(userObj) {
       this.setEditedUser(userObj.userID);
       this.setEditUserModalVisible(true);
+    },
+    userDeleteClicked(userObj) {
+      const name = `${userObj.firstName} ${userObj.lastName}`;
+      this.$confirm(`Are you sure you want to delete ${name}?`, 'Confirm User Deletion', {
+        confirmButtonText: 'Delete User',
+        cancelButtonText: 'Cancel',
+        type: 'warning',
+      }).then(() => {
+        this.deleteUser(userObj).then(() => {
+          this.$message({
+            message: `Deleted ${name}`,
+            center: true,
+          });
+          this.$router.push('/admin/users');
+        });
+      }).catch(() => {
+      });
     },
   },
 };

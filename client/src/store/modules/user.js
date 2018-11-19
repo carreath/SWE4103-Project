@@ -128,7 +128,6 @@ const actions = {
     });
   },
   editUser({ getters, dispatch }, userObj) {
-    console.log('EDITUSER: ', userObj);
     return UserService.editUser(userObj).then((response) => {
       if (!response || !response.status) {
         return { retVal: false, retMsg: 'Server Error' };
@@ -138,6 +137,23 @@ const actions = {
         case 200 || 201: {
           getters.user.userID === userObj.userID ? dispatch('retrieveUserFromToken') : dispatch('getAllUsers');
           return { retVal: true, retMsg: 'User Edited' };
+        }
+        default: {
+          return { retVal: false, retMsg: 'Server Error' };
+        }
+      }
+    });
+  },
+  deleteUser({ dispatch }, userObj) {
+    return UserService.deleteUser(userObj).then((response) => {
+      if (!response || !response.status) {
+        return { retVal: false, retMsg: 'Server Error' };
+      }
+
+      switch (response.status) {
+        case 200 || 201: {
+          dispatch('getAllUsers');
+          return { retVal: true, retMsg: 'User Deleted' };
         }
         default: {
           return { retVal: false, retMsg: 'Server Error' };
