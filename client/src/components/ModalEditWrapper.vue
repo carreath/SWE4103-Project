@@ -8,6 +8,7 @@
       </i>
       <ModalEditLeague v-if="editLeagueModalVisible"/>
       <ModalEditTeam v-else-if="editTeamModalVisible"/>
+      <ModalEditUser v-else-if="editUserModalVisible"/>
     </div>
   </div>
 </template>
@@ -16,17 +17,20 @@
 import { mapGetters, mapActions } from 'vuex';
 import ModalEditLeague from '@/components/ModalEditLeague.vue';
 import ModalEditTeam from '@/components/ModalEditTeam.vue';
+import ModalEditUser from '@/components/ModalEditUser.vue';
 
 export default{
   name: 'ModalEditWrapper',
   components: {
     ModalEditLeague,
     ModalEditTeam,
+    ModalEditUser,
   },
   computed: {
     ...mapGetters([
       'editLeagueModalVisible',
       'editTeamModalVisible',
+      'editUserModalVisible',
     ]),
   },
   methods: {
@@ -38,6 +42,7 @@ export default{
     closeModalButtonClicked() {
       this.getLeagues();
       this.getTeams();
+      // TODO get users if admin
       this.closeModal();
     },
   },

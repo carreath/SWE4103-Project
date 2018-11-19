@@ -6,7 +6,7 @@
           v-model="searchName"
           size="small"
           placeholder="Filter Name"/>
-        </span>
+      </span>
     </div>
     <div id="users-table-container">
       <el-table
@@ -39,6 +39,21 @@
           label="User Type"
           sortable>
         </el-table-column>
+        <el-table-column
+          label="Action">
+          <template slot-scope="scope">
+            <el-button
+            icon="el-icon-edit"
+            size="mini"
+            @click='userEditClicked(scope.row)'>
+            </el-button>
+            <el-button
+            icon="el-icon-delete"
+            size="mini"
+            @click="userDeleteClicked(scope.row.id, scope.row.name)">
+            </el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
   </div>
@@ -59,7 +74,7 @@ export default {
       'users',
     ]),
     formatUsers() {
-      return this.users.filter(userObj => {
+      return (this.users || []).filter(userObj => {
         if (!this.searchName) {
           return true;
         }
@@ -70,8 +85,13 @@ export default {
   },
   methods: {
     ...mapActions([
-
+      'setEditedUser',
+      'setEditUserModalVisible',
     ]),
+    userEditClicked(userObj) {
+      this.setEditedUser(userObj.userID);
+      this.setEditUserModalVisible(true);
+    },
   },
 };
 

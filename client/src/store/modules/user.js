@@ -4,6 +4,7 @@ const state = {
   user: null,
   token: localStorage.getItem('token') || null,
   users: null,
+  editedUserId: null,
 };
 
 const getters = {
@@ -18,6 +19,12 @@ const getters = {
   },
   users(state) {
     return state.users;
+  },
+  editedUserId(state) {
+    return state.editedUserId;
+  },
+  editedUser(state) {
+    return state.users.find(user => user.userID === state.editedUserId);
   },
 };
 
@@ -77,6 +84,9 @@ const actions = {
   setUser({ commit }, user) {
     commit('mutateUser', user);
   },
+  setEditedUser({ commit }, id) {
+    commit('mutateEditedUserId', id);
+  },
   retrieveUserFromToken({ commit, dispatch }) {
     UserService.getUserFromToken().then((response) => {
       if (response.status && response.status === 200) {
@@ -117,6 +127,24 @@ const actions = {
       }
     });
   },
+  editUser({ getters, dispatch }, userObj) {
+    console.log('EDITUSER: ', userObj);
+    return UserService.editUser(userObj).then((response) => {
+      if (!response || !response.status) {
+        return { retVal: false, retMsg: 'Server Error' };
+      }
+
+      switch (response.status) {
+        case 200 || 201: {
+          getters.user.userID === userObj.userID ? dispatch('retrieveUserFromToken') : dispatch('getAllUsers');
+          return { retVal: true, retMsg: 'User Edited' };
+        }
+        default: {
+          return { retVal: false, retMsg: 'Server Error' };
+        }
+      }
+    });
+  },
 };
 
 const mutations = {
@@ -129,6 +157,9 @@ const mutations = {
   },
   mutateUsers(state, payload) {
     state.users = payload;
+  },
+  mutateEditedUserId(state, id) {
+    state.editedUserId = id;
   },
 };
 

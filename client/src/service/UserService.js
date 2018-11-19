@@ -37,4 +37,13 @@ export default {
         return err.response;
       });
   },
+  editUser(params) {
+    return ServiceLayer().put('/user', params)
+      .then((response) => {
+        return response;
+      })
+      .catch((err) => {
+        return err.response;
+      });
+  },
 };

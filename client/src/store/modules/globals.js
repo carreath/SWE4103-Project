@@ -5,6 +5,7 @@ const state = {
   createAccoundModalVisible: false,
   editLeagueModalVisible: false,
   editTeamModalVisible: false,
+  editUserModalVisible: false,
   scheduleSelectedView: 'Table',
 };
 
@@ -14,7 +15,9 @@ const getters = {
     return state.loginModalVisible || state.createAccoundModalVisible;
   },
   editModalVisible(state) {
-    return state.editLeagueModalVisible || state.editTeamModalVisible;
+    return state.editLeagueModalVisible
+      || state.editTeamModalVisible
+      || state.editUserModalVisible;
   },
   loginModalVisible(state) {
     return state.loginModalVisible;
@@ -27,6 +30,9 @@ const getters = {
   },
   editTeamModalVisible(state) {
     return state.editTeamModalVisible;
+  },
+  editUserModalVisible(state) {
+    return state.editUserModalVisible;
   },
   scheduleSelectedView(state) {
     return state.scheduleSelectedView;
@@ -50,16 +56,24 @@ const actions = {
   setEditLeagueModalVisible({ commit }, isVisible) {
     commit('mutateEditLeagueModalVisible', isVisible);
     commit('mutateEditTeamModalVisible', false);
+    commit('mutateEditUserModalVisible', false);
   },
   setEditTeamModalVisible({ commit }, isVisible) {
     commit('mutateEditTeamModalVisible', isVisible);
     commit('mutateEditLeagueModalVisible', false);
+    commit('mutateEditUserModalVisible', false);
+  },
+  setEditUserModalVisible({ commit }, isVisible) {
+    commit('mutateEditTeamModalVisible', false);
+    commit('mutateEditLeagueModalVisible', false);
+    commit('mutateEditUserModalVisible', isVisible);
   },
   closeModal({ dispatch }) {
     dispatch('setLoginModalVisible', false);
     dispatch('setCreateAccountModalVisible', false);
     dispatch('setEditLeagueModalVisible', false);
     dispatch('setEditTeamModalVisible', false);
+    dispatch('setEditUserModalVisible', false);
   },
   setScheduleSelectedView({ commit }, newView) {
     commit('mutateLoginScheduleSelectedView', newView);
@@ -79,6 +93,9 @@ const mutations = {
   },
   mutateEditTeamModalVisible(state, isVisible) {
     state.editTeamModalVisible = isVisible;
+  },
+  mutateEditUserModalVisible(state, isVisible) {
+    state.editUserModalVisible = isVisible;
   },
   mutateLoginScheduleSelectedView(state, newView) {
     state.scheduleSelectedView = newView;

@@ -1,59 +1,79 @@
 <template>
-  <div id="modal-edit-league">
-    <div id="edit-league-modal-container">
+  <div id="modal-edit-user">
+    <div id="edit-user-modal-container">
       <div id="title">
-        Edit League
+        Edit user
       </div>
       <div id="form-container">
         <el-form
           :label-position="labelPosition"
-          :model="leagueEditForm"
-          :rules="leagueEditFormRules"
+          :model="userEditForm"
+          :rules="userEditFormRules"
           label-width="120px"
-          ref="league-edit-form">
+          ref="user-edit-form">
           <el-form-item
-            label="League Name"
+            label="First Name"
             class = "label"
-            prop="leagueName">
+            prop="firstName">
             <el-input
-              id="league-name-input"
-              type="leagueName"
-              placeholder="League Name"
-              v-model="leagueEditForm.leagueName"
+              id="first-name-input"
+              placeholder="First Name"
+              v-model="userEditForm.firstName"
               :disabled="loading">
             </el-input>
           </el-form-item>
+
           <el-form-item
-            label="Season"
+            label="Last Name"
             class = "label"
-            prop="season">
+            prop="lastName">
             <el-input
-              id="season-input"
-              type="season"
-              placeholder="Season"
-              v-model="leagueEditForm.season"
+              id="last-name-input"
+              placeholder="Last Name"
+              v-model="userEditForm.lastName"
               :disabled="loading">
             </el-input>
           </el-form-item>
+
           <el-form-item
-            label="Point Scheme"
+            label="Email"
             class = "label"
-            prop="pointScheme">
-            <el-select v-model="leagueEditForm.pointScheme" id="point-scheme-input"
-            placeholder="Point Scheme">
-              <el-option label="Standard" value="standard"></el-option>
-              <el-option label="Capital Scoring" value="capitalScoring"></el-option>
+            prop="email">
+            <el-input
+              id="email-input"
+              type="email"
+              placeholder="Email"
+              v-model="userEditForm.email"
+              :disabled="loading">
+            </el-input>
+          </el-form-item>
+
+          <el-form-item
+            label="User Type"
+            class = "label"
+            prop="userType">
+            <el-select
+              v-model="userEditForm.userType"
+              id="user-type-input"
+              placeholder="User type">
+              <el-option label="Admin" value="Admin"></el-option>
+              <el-option label="Coordinator" value="Coordinator"></el-option>
+              <el-option label="Manager" value="Manager"></el-option>
+              <el-option label="Referee" value="Referee"></el-option>
+              <el-option label="None" :value="null"></el-option>
             </el-select>
           </el-form-item>
+
           <div id="errMsg" v-if="errMsg">
             Error: {{ errMsg }}
           </div>
+
           <el-form-item id="league-edit-button-container">
             <el-button
               type="primary"
               :loading="loading"
-              @click="leagueEditButtonClicked">
-              {{ leagueEditButtonText }}
+              @click="userEditButtonClicked">
+              {{ userEditButtonText }}
             </el-button>
           </el-form-item>
         </el-form>
@@ -65,21 +85,53 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 
-export default{
-  name: 'ModalEditLeague',
+export default {
+  name: 'ModalEditUser',
   data() {
     return {
       labelPosition: 'left',
-      leagueEditForm: {
-        leagueName: '',
-        season: '',
-        pointScheme: '',
+      userEditForm: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        userType: '',
       },
-      leagueEditFormRules: {
-        leagueName: [
+      userEditFormRules: {
+        firstName: [
           {
             required: true,
-            message: 'Please input league name',
+            message: 'Please input first name.',
+            trigger: 'blur',
+          },
+          {
+            min: 1,
+            max: 32,
+            message: 'Input too long',
+            trigger: 'blur',
+          },
+        ],
+        lastName: [
+          {
+            required: true,
+            message: 'Please input last name.',
+            trigger: 'blur',
+          },
+          {
+            min: 1,
+            max: 32,
+            message: 'Input too long',
+            trigger: 'blur',
+          },
+        ],
+        email: [
+          {
+            required: true,
+            message: 'Please input email',
+            trigger: 'blur',
+          },
+          {
+            type: 'email',
+            message: 'Please input correct email address',
             trigger: 'blur',
           },
           {
@@ -89,20 +141,7 @@ export default{
             trigger: 'blur',
           },
         ],
-        season: [
-          {
-            required: true,
-            message: 'Please input season',
-            trigger: 'blur',
-          },
-        ],
-        pointScheme: [
-          {
-            required: true,
-            message: 'Please select Point Scheme',
-            trigger: 'change',
-          },
-        ],
+        // TODO user type rules
       },
       loading: false,
       errMsg: null,
@@ -110,18 +149,18 @@ export default{
   },
   computed: {
     ...mapGetters([
-      'editLeagueModalVisible',
-      'editedLeague',
-      'editedLeagueId',
+      'editUserModalVisible',
+      'editedUser',
+      'editedUserId',
     ]),
-    leagueEditButtonText() {
-      return this.loading ? 'Loading' : 'Edit League';
+    userEditButtonText() {
+      return this.loading ? 'Loading' : 'Edit User';
     },
   },
   methods: {
     ...mapActions([
       'closeModal',
-      'editLeague',
+      'editUser',
     ]),
     handleKeyUp(e) {
       // Escape ley
@@ -130,15 +169,15 @@ export default{
       }
       // Enter key
       if (e.keyCode === 13) {
-        this.leagueEditButtonClicked();
+        this.userEditButtonClicked();
       }
     },
-    leagueEditButtonClicked() {
+    userEditButtonClicked() {
       this.displayErrMsg = false;
-      this.$refs['league-edit-form'].validate((valid) => {
+      this.$refs['user-edit-form'].validate((valid) => {
         if (valid) {
           this.loading = true;
-          this.editLeague(this.leagueEditForm).then((response) => {
+          this.editUser(this.userEditForm).then((response) => {
             this.loading = false;
             if (response.retVal) {
               this.errMsg = null;
@@ -152,21 +191,20 @@ export default{
     },
   },
   mounted() {
-    this.leagueEditForm = this.editedLeague;
+    this.userEditForm = { ...this.editedUser };
     window.addEventListener('keyup', this.handleKeyUp);
   },
   beforeDestroy() {
     window.removeEventListener('keyup', this.handleKeyUp);
   },
 };
-
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 @import '@/style/global.scss';
 
-#modal-edit-league{
-  #edit-league-modal-container{
+#modal-edit-user{
+  #edit-user-modal-container{
     padding: 0px 40px;
     display: flex;
     flex-direction: column;
@@ -183,11 +221,9 @@ export default{
       border-color: $ELEMENT_UI_DEFAULT_BORDER;
     }
 
-    #league-name-input{
-      margin: 8px 0px;
-    }
-
-    #season-input{
+    #first-name-input,
+    #last-name-input,
+    #email-input{
       margin: 8px 0px;
     }
 
@@ -199,7 +235,7 @@ export default{
       color: red;
     }
 
-    #league-edit-button-container{
+    #user-edit-button-container{
       width: 100%;
       margin: 8px 0px;
 
