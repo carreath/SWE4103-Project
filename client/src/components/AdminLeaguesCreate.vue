@@ -125,6 +125,12 @@ export default {
     ...mapActions([
       'createLeague',
     ]),
+    handleKeyUp(e) {
+      // Enter key
+      if (e.keyCode === 13) {
+        this.leagueCreateButtonClicked();
+      }
+    },
     leagueCreateButtonClicked() {
       this.displayErrMsg = false;
       this.$refs['league-create-form'].validate((valid) => {
@@ -142,6 +148,12 @@ export default {
         }
       });
     },
+  },
+  mounted() {
+    window.addEventListener('keyup', this.handleKeyUp);
+  },
+  beforeDestroy() {
+    window.removeEventListener('keyup', this.handleKeyUp);
   },
 };
 

@@ -102,6 +102,12 @@ export default {
     ...mapActions([
       'createTeam',
     ]),
+    handleKeyUp(e) {
+      // Enter key
+      if (e.keyCode === 13) {
+        this.teamCreateButtonClicked();
+      }
+    },
     teamCreateButtonClicked() {
       this.displayErrMsg = false;
       this.$refs['team-create-form'].validate((valid) => {
@@ -119,6 +125,12 @@ export default {
         }
       });
     },
+  },
+  mounted() {
+    window.addEventListener('keyup', this.handleKeyUp);
+  },
+  beforeDestroy() {
+    window.removeEventListener('keyup', this.handleKeyUp);
   },
 };
 

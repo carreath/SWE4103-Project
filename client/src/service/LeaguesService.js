@@ -19,4 +19,22 @@ export default {
         return err.response;
       });
   },
+  deleteLeague(paramsIn) {
+    return ServiceLayer().delete('/league', { params: paramsIn })
+      .then((response) => {
+        return response;
+      })
+      .catch((err) => {
+        return err.response;
+      });
+  },
+  editLeague(params) {
+    return ServiceLayer().put('/league', params)
+      .then((response) => {
+        return response;
+      })
+      .catch((err) => {
+        return err.response;
+      });
+  },
 };
