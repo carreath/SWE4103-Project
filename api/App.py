@@ -5,6 +5,7 @@ from flask_cors import CORS
 from resources import *
 import config
 
+import sys
 import os
 
 from OpenSSL import SSL
@@ -53,7 +54,7 @@ def shutdown():
 
 if __name__ == "__main__":
     # Check that the SSL certificate exists if not run http://
-    if os.path.isfile(cer) and os.path.isfile(key):
+    if os.path.isfile(cer) and os.path.isfile(key) and sys.argv[1] == 'true':
         context = (cer, key)
         app.run(host=config.app_settings['host'],
                 port=config.app_settings['port'],
