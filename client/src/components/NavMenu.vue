@@ -178,8 +178,6 @@ export default {
     return {
       userDropdownButtonHover: false,
       userDropdownContentHover: false,
-      adminDropdownButtonHover: false,
-      adminDropdownContentHover: false,
       navMenuDropdownButtonHover: false,
       navMenuDropdownContentHover: false,
       leagueDropdownButtonHover: false,
@@ -207,9 +205,6 @@ export default {
     },
     userDropdownVisible() {
       return this.userDropdownButtonHover || this.userDropdownContentHover;
-    },
-    adminDropdownVisible() {
-      return this.adminDropdownButtonHover || this.adminDropdownContentHover;
     },
     navMenuDropdownVisible() {
       return this.navMenuDropdownButtonHover || this.navMenuDropdownContentHover;
