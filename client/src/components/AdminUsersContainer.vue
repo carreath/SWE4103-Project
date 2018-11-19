@@ -14,29 +14,27 @@
         stripe
         style="">
         <el-table-column
-          width="100px"
+          width="70px"
           prop="userID"
-          label="User ID"
+          label="ID"
           sortable>
         </el-table-column>
         <el-table-column
-          prop="firstName"
-          label="First Name"
-          sortable>
-        </el-table-column>
-        <el-table-column
-          prop="lastName"
-          label="Last Name"
+          prop="fullName"
+          label="Name"
+          :show-overflow-tooltip="true"
           sortable>
         </el-table-column>
         <el-table-column
           prop="email"
           label="Email"
+          :show-overflow-tooltip="true"
           sortable>
         </el-table-column>
         <el-table-column
-          prop="userType"
+          prop="userTypeWithName"
           label="User Type"
+          :show-overflow-tooltip="true"
           sortable>
         </el-table-column>
         <el-table-column
@@ -74,6 +72,8 @@ export default {
     ...mapGetters([
       'users',
       'user',
+      'leagues',
+      'teams',
     ]),
     formatUsers() {
       return (this.users || []).filter(userObj => {
@@ -82,6 +82,28 @@ export default {
         }
         const fullName = `${userObj.firstName.toLowerCase()} ${userObj.lastName.toLowerCase()}`;
         return fullName.includes(this.searchName.toLowerCase());
+      }).map((userObj) => {
+        const newObj = { ...userObj };
+        newObj.fullName = `${userObj.firstName} ${userObj.lastName}`;
+        switch (newObj.userType) {
+          case 'Coordinator': {
+            const league = this.leagues.find(league => league.managerID === newObj.userID);
+            newObj.userTypeWithName = league ?
+              `${newObj.userType} - ${league.leagueName}` :
+              `${newObj.userType} - None`;
+            break;
+          }
+          case 'Manager': {
+            const team = this.teams.find(team => team.managerID === newObj.userID);
+            newObj.userTypeWithName = team ?
+              `${newObj.userType} - ${team.teamName}` :
+              `${newObj.userType} - None`;
+            break;
+          }
+          default:
+            newObj.userTypeWithName = newObj.userType;
+        }
+        return newObj;
       });
     },
   },

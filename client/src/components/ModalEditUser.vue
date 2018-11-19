@@ -2,7 +2,7 @@
   <div id="modal-edit-user">
     <div id="edit-user-modal-container">
       <div id="title">
-        Edit user
+        Edit User
       </div>
       <div id="form-container">
         <el-form
@@ -55,6 +55,7 @@
             <el-select
               v-model="userEditForm.userType"
               id="user-type-input"
+              :style="{'float': 'left'}"
               placeholder="User type">
               <el-option label="Admin" value="Admin"></el-option>
               <el-option label="Coordinator" value="Coordinator"></el-option>
@@ -67,16 +68,21 @@
           <div id="errMsg" v-if="errMsg">
             Error: {{ errMsg }}
           </div>
-
-          <el-form-item id="league-edit-button-container">
-            <el-button
-              type="primary"
-              :loading="loading"
-              @click="userEditButtonClicked">
-              {{ userEditButtonText }}
-            </el-button>
-          </el-form-item>
         </el-form>
+      </div>
+      <div class="footer">
+        <el-button
+          :loading="loading"
+          @click="userEditButtonClicked">
+          Cancel
+        </el-button>
+        <div></div>
+        <el-button
+          type="primary"
+          :loading="loading"
+          @click="closeModal">
+          {{ userEditButtonText }}
+        </el-button>
       </div>
     </div>
   </div>
@@ -141,7 +147,13 @@ export default {
             trigger: 'blur',
           },
         ],
-        // TODO user type rules
+        userType: [
+          {
+            required: true,
+            message: 'Please input user type',
+            trigger: 'blur',
+          },
+        ],
       },
       loading: false,
       errMsg: null,
@@ -212,6 +224,7 @@ export default {
     #title{
       font-size: 2rem;
       font-weight: bold;
+      margin-bottom: 8px;
     }
 
     .el-form-item.is-success /deep/ .el-input__inner,
@@ -227,8 +240,13 @@ export default {
       margin: 8px 0px;
     }
 
-    #point-scheme-input{
+    #user-type-input{
       margin: 8px 0px;
+      display: block;
+
+      .el-select{
+        display: block;
+      }
     }
 
     #errMsg{
@@ -242,6 +260,12 @@ export default {
       button{
         width: 50%;
       }
+    }
+
+    .footer{
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
     }
   }
 }
