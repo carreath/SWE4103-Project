@@ -1,9 +1,6 @@
 <template>
   <div id="admin-players-container">
     <div id="title-container">
-      <div id="title">
-        Players
-      </div>
     </div>
     <div id="create-player-button-container">
       <el-button
@@ -20,6 +17,11 @@
           prop="playerID"
           sortable
           label="Player ID">
+        </el-table-column>
+        <el-table-column
+          prop="number"
+          sortable
+          label="Jersey Number">
         </el-table-column>
         <el-table-column
           prop="firstName"
@@ -40,13 +42,15 @@
           label="Action">
           <template slot-scope="scope">
             <el-button
+            icon="el-icon-edit"
+            size="mini"
             @click='playerEditClicked(scope.row.playerID)'>
-              Edit
             </el-button>
             <el-button
+            icon="el-icon-delete"
+            size="mini"
             @click="playerDeleteClicked(scope.row.playerID,
             scope.row.firstName, scope.row.lastName)">
-              Delete
             </el-button>
           </template>
         </el-table-column>
@@ -72,12 +76,14 @@ export default {
       'playerById',
     ]),
     formatPlayers() {
+      console.log(this.players);
       const formatedPlayers = this.players.map((player) => {
         return {
           playerID: player.playerID,
           lastName: player.lastName,
           firstName: player.firstName,
           teamName: this.teamById(player.teamID).teamName,
+          number: player.number,
         };
       });
       return formatedPlayers;
@@ -111,6 +117,11 @@ export default {
         });
       }).catch(() => {
       });
+    },
+  },
+  watch: {
+    player() {
+      this.formatedPlayers();
     },
   },
 };

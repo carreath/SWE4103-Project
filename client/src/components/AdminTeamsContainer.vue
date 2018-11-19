@@ -37,12 +37,14 @@
           label="Action">
           <template slot-scope="scope">
             <el-button
+            icon="el-icon-edit"
+            size="mini"
             @click='teamEditClicked(scope.row.teamID)'>
-              Edit
             </el-button>
             <el-button
+            icon="el-icon-delete"
+            size="mini"
             @click="teamDeleteClicked(scope.row.teamID, scope.row.teamName)">
-              Delete
             </el-button>
           </template>
         </el-table-column>
@@ -66,7 +68,7 @@ export default {
       'teams',
       'leagueById',
       'leagues',
-      'teamById'
+      'teamById',
     ]),
     formatTeams() {
       const formatedTeams = this.teams.map((team) => {
@@ -108,6 +110,11 @@ export default {
         });
       }).catch(() => {
       });
+    },
+  },
+  watch: {
+    team() {
+      this.formatedTeams();
     },
   },
 };

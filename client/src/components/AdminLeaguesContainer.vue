@@ -32,12 +32,14 @@
           label="Action">
           <template slot-scope="scope">
             <el-button
+            icon="el-icon-edit"
+            size="mini"
             @click='leagueEditClicked(scope.row.id)'>
-              Edit
             </el-button>
             <el-button
+            icon="el-icon-delete"
+            size="mini"
             @click="leagueDeleteClicked(scope.row.id, scope.row.name)">
-              Delete
             </el-button>
           </template>
         </el-table-column>
@@ -104,6 +106,11 @@ export default {
         });
       }).catch(() => {
       });
+    },
+  },
+  watch: {
+    league() {
+      this.formatedLeagues();
     },
   },
 };

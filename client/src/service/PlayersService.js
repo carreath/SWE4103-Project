@@ -19,8 +19,8 @@ export default {
         return err.response;
       });
   },
-  deletePlayer(params) {
-    return ServiceLayer().delete('/player', params)
+  deletePlayer(paramsIn) {
+    return ServiceLayer().delete('/player', { params: paramsIn })
       .then((response) => {
         return response;
       })
