@@ -1,5 +1,10 @@
 <template>
   <div id="schedule">
+    <div id="new-game-button">
+      <el-button
+        type="primary"
+        @click="handleCreateScheduleButtonClick">Create New Game</el-button>
+    </div>
     <div
       id="schedule-body">
       <div
@@ -101,11 +106,6 @@
           </table>
         </div>
       </div>
-    </div>
-    <div id="new-game-button">
-      <el-button
-        type="primary"
-        @click="handleCreateScheduleButtonClick">Create New Game</el-button>
     </div>
   </div>
 </template>
@@ -340,9 +340,10 @@ export default {
 }
 #new-game-button {
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  margin-top: 25px;
-  margin-left: 25px;
+  align-items: right;
+  justify-content: flex-end;
+  margin-top: 15px;
+  margin-right: 15px;
+  margin-bottom: 15px;
 }
 </style>
