@@ -48,15 +48,21 @@
           <div id="errMsg" v-if="errMsg">
             Error: {{ errMsg }}
           </div>
-          <el-form-item id="league-edit-button-container">
-            <el-button
-              type="primary"
-              :loading="loading"
-              @click="leagueEditButtonClicked">
-              {{ leagueEditButtonText }}
-            </el-button>
-          </el-form-item>
         </el-form>
+      </div>
+      <div class="footer">
+        <el-button
+          :loading="loading"
+          @click="closeModal">
+          Cancel
+        </el-button>
+        <div></div>
+        <el-button
+          type="primary"
+          :loading="loading"
+          @click="leagueEditButtonClicked">
+          {{ leagueEditButtonText }}
+        </el-button>
       </div>
     </div>
   </div>
@@ -174,6 +180,7 @@ export default{
     #title{
       font-size: 2rem;
       font-weight: bold;
+      margin-bottom: 8px;
     }
 
     .el-form-item.is-success /deep/ .el-input__inner,
@@ -206,6 +213,12 @@ export default{
       button{
         width: 50%;
       }
+    }
+
+    .footer{
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
     }
   }
 }
