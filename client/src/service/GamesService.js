@@ -11,7 +11,7 @@ export default {
       });
   },
   createGame(params) {
-    return ServiceLayer().post('/game-schedule', params)
+    return ServiceLayer().post('/game', params)
       .then((response) => {
         return response;
       })
