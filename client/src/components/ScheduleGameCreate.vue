@@ -149,6 +149,36 @@ export default{
           },
         ],
       },
+      options: [
+        {
+          value: 'Sunday',
+          label: 'Sunday',
+        },
+        {
+          value: 'Monday',
+          label: 'Monday',
+        },
+        {
+          value: 'Tuesdau',
+          label: 'Tuesday',
+        },
+        {
+          value: 'Wednesday',
+          label: 'Wednesday',
+        },
+        {
+          value: 'Thursday',
+          label: 'Thursday',
+        },
+        {
+          value: 'Friday',
+          label: 'Friday',
+        },
+        {
+          value: 'Saturday',
+          label: 'Saturday',
+        },
+      ],
       value: '',
       loading: false,
       errMsg: null,
@@ -225,6 +255,8 @@ export default{
   #teams-container {
     display: flex;
     flex-direction: row;
+    white-space: nowrap;
+    justify-content: space-between;
   }
 
   #submit-button-container{
