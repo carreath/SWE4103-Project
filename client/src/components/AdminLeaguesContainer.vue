@@ -32,12 +32,14 @@
           label="Action">
           <template slot-scope="scope">
             <el-button
+            icon="el-icon-edit"
+            size="mini"
             @click='leagueEditClicked(scope.row.id)'>
-              Edit
             </el-button>
             <el-button
+            icon="el-icon-delete"
+            size="mini"
             @click="leagueDeleteClicked(scope.row.id, scope.row.name)">
-              Delete
             </el-button>
           </template>
         </el-table-column>
@@ -60,6 +62,7 @@ export default {
   computed: {
     ...mapGetters([
       'leagues',
+      'leagueById',
     ]),
     formatLeagues() {
       const formatedLeagues = this.leagues.map((league) => {
@@ -78,7 +81,6 @@ export default {
   methods: {
     ...mapActions([
       'deleteLeague',
-      'leagueById',
       'setEditedLeague',
       'setEditLeagueModalVisible',
     ]),
@@ -95,15 +97,24 @@ export default {
         cancelButtonText: 'Cancel',
         type: 'warning',
       }).then(() => {
-        this.deleteLeague(this.leagueById(id)).then(() => {
-          this.$message({
-            message: `Deleted ${name}`,
-            center: true,
-          });
+        this.deleteLeague(this.leagueById(id)).then((response) => {
+          if (response.retVal) {
+            this.$message({
+              message: `Deleted ${name}`,
+              center: true,
+            });
+          } else {
+            this.$message.error('Error deleting');
+          }
           this.$router.push('/admin/leagues');
         });
       }).catch(() => {
       });
+    },
+  },
+  watch: {
+    league() {
+      this.formatedLeagues();
     },
   },
 };

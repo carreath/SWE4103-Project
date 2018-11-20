@@ -69,13 +69,16 @@ const actions = {
     });
   },
   deleteLeague({ dispatch }, leagueObj) {
-    return LeaguesService.deleteLeague(leagueObj).then((response) => {
+    const params = {
+      leagueID: leagueObj.leagueID,
+    };
+    return LeaguesService.deleteLeague(params).then((response) => {
       if (!response || !response.status) {
         return { retVal: false, retMsg: 'Server Error' };
       }
 
       switch (response.status) {
-        case 200 || 201: {
+        case 200: {
           dispatch('getLeagues');
           return { retVal: true, retMsg: 'League Deleted' };
         }
@@ -92,7 +95,7 @@ const actions = {
       }
 
       switch (response.status) {
-        case 200 || 201: {
+        case 200: {
           dispatch('getLeagues');
           return { retVal: true, retMsg: 'League Edited' };
         }

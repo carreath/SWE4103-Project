@@ -5,6 +5,7 @@ const state = {
   createAccoundModalVisible: false,
   editLeagueModalVisible: false,
   editTeamModalVisible: false,
+  editPlayerModalVisible: false,
   editUserModalVisible: false,
   scheduleSelectedView: 'Table',
 };
@@ -17,6 +18,7 @@ const getters = {
   editModalVisible(state) {
     return state.editLeagueModalVisible
       || state.editTeamModalVisible
+      || state.editPlayerModalVisible
       || state.editUserModalVisible;
   },
   loginModalVisible(state) {
@@ -31,6 +33,9 @@ const getters = {
   editTeamModalVisible(state) {
     return state.editTeamModalVisible;
   },
+  editPlayerModalVisible(state) {
+    return state.editPlayerModalVisible;
+  },
   editUserModalVisible(state) {
     return state.editUserModalVisible;
   },
@@ -44,6 +49,7 @@ const actions = {
   getAllData({ dispatch }) {
     dispatch('getLeagues');
     dispatch('getTeams');
+    dispatch('getPlayers');
   },
   setLoginModalVisible({ commit }, isVisible) {
     commit('mutateCreateAccountModalVisible', false);
@@ -56,16 +62,25 @@ const actions = {
   setEditLeagueModalVisible({ commit }, isVisible) {
     commit('mutateEditLeagueModalVisible', isVisible);
     commit('mutateEditTeamModalVisible', false);
+    commit('mutateEditPlayerModalVisible', false);
     commit('mutateEditUserModalVisible', false);
   },
   setEditTeamModalVisible({ commit }, isVisible) {
     commit('mutateEditTeamModalVisible', isVisible);
     commit('mutateEditLeagueModalVisible', false);
+    commit('mutateEditPlayerModalVisible', false);
+    commit('mutateEditUserModalVisible', false);
+  },
+  setEditPlayerModalVisible({ commit }, isVisible) {
+    commit('mutateEditPlayerModalVisible', isVisible);
+    commit('mutateEditLeagueModalVisible', false);
+    commit('mutateEditTeamModalVisible', false);
     commit('mutateEditUserModalVisible', false);
   },
   setEditUserModalVisible({ commit }, isVisible) {
     commit('mutateEditTeamModalVisible', false);
     commit('mutateEditLeagueModalVisible', false);
+    commit('mutateEditPlayerModalVisible', false);
     commit('mutateEditUserModalVisible', isVisible);
   },
   closeModal({ dispatch }) {
@@ -73,6 +88,7 @@ const actions = {
     dispatch('setCreateAccountModalVisible', false);
     dispatch('setEditLeagueModalVisible', false);
     dispatch('setEditTeamModalVisible', false);
+    dispatch('setEditPlayerModalVisible', false);
     dispatch('setEditUserModalVisible', false);
   },
   setScheduleSelectedView({ commit }, newView) {
@@ -93,6 +109,9 @@ const mutations = {
   },
   mutateEditTeamModalVisible(state, isVisible) {
     state.editTeamModalVisible = isVisible;
+  },
+  mutateEditPlayerModalVisible(state, isVisible) {
+    state.editPlayerModalVisible = isVisible;
   },
   mutateEditUserModalVisible(state, isVisible) {
     state.editUserModalVisible = isVisible;

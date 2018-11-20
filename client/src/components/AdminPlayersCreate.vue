@@ -37,8 +37,8 @@
           <el-form-item
             label="Team Name"
             id="team-name-label"
-            prop="team">
-            <el-select v-model="adminPlayersCreate.team" placeholder="Select Team">
+            prop="teamID">
+            <el-select v-model="adminPlayersCreate.teamID" placeholder="Select Team">
               <el-option
                 v-for="item in formatTeams"
                 :key="item.teamID"
@@ -122,7 +122,7 @@ export default{
             trigger: 'blur',
           },
         ],
-        team: [
+        teamID: [
           {
             required: true,
             message: 'Please select Team',
@@ -186,6 +186,7 @@ export default{
             this.loading = false;
             if (response.retVal) {
               this.errMsg = null;
+              this.$router.push('/admin/players');
             } else {
               this.errMsg = response.retMsg;
             }

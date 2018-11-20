@@ -1,59 +1,61 @@
 <template>
-  <div id="modal-edit-league">
-    <div id="edit-league-modal-container">
+  <div id="modal-edit-player">
+    <div id="edit-player-modal-container">
       <div id="title">
-        Edit League
+        Edit Players
       </div>
       <div id="form-container">
         <el-form
           :label-position="labelPosition"
-          :model="leagueEditForm"
-          :rules="leagueEditFormRules"
+          :model="playerEditForm"
+          :rules="playerEditFormRules"
           label-width="120px"
-          ref="league-edit-form">
+          ref="player-edit-form">
           <el-form-item
-            label="League Name"
-            class = "label"
-            prop="leagueName">
+            label="First Name"
+            id="first-name-label"
+            prop="firstName">
             <el-input
-              id="league-name-input"
-              type="leagueName"
-              placeholder="League Name"
-              v-model="leagueEditForm.leagueName"
+              id="first-name-input"
+              type="firstName"
+              placeholder="First Name"
+              v-model="playerEditForm.firstName"
               :disabled="loading">
             </el-input>
           </el-form-item>
           <el-form-item
-            label="Season"
-            class = "label"
-            prop="season">
+            label="Last Name"
+            id="last-name-label"
+            prop="lastName">
             <el-input
-              id="season-input"
-              type="season"
-              placeholder="Season"
-              v-model="leagueEditForm.season"
+              id="last-name-input"
+              type="lastName"
+              placeholder="Last Name"
+              v-model="playerEditForm.lastName"
               :disabled="loading">
             </el-input>
           </el-form-item>
           <el-form-item
-            label="Point Scheme"
-            class = "label"
-            prop="pointScheme">
-            <el-select v-model="leagueEditForm.pointScheme" id="point-scheme-input"
-            placeholder="Point Scheme">
-              <el-option label="Standard" value="standard"></el-option>
-              <el-option label="Capital Scoring" value="capitalScoring"></el-option>
-            </el-select>
+            label="Jersey Number"
+            id="number-label"
+            prop="number">
+            <el-input
+              id="number-input"
+              type="number"
+              placeholder="Jersey Number"
+              v-model="playerEditForm.number"
+              :disabled="loading">
+            </el-input>
           </el-form-item>
           <div id="errMsg" v-if="errMsg">
             Error: {{ errMsg }}
           </div>
-          <el-form-item id="league-edit-button-container">
+          <el-form-item id="player-edit-button-container">
             <el-button
               type="primary"
               :loading="loading"
-              @click="leagueEditButtonClicked">
-              {{ leagueEditButtonText }}
+              @click="playerEditButtonClicked">
+              {{ playerEditButtonText }}
             </el-button>
           </el-form-item>
         </el-form>
@@ -66,41 +68,35 @@
 import { mapGetters, mapActions } from 'vuex';
 
 export default{
-  name: 'ModalEditLeague',
+  name: 'ModalEditPlayer',
   data() {
     return {
       labelPosition: 'left',
-      leagueEditForm: {
-        leagueName: '',
-        season: '',
-        pointScheme: '',
+      playerEditForm: {
+        firstName: '',
+        lastName: '',
+        number: '',
       },
-      leagueEditFormRules: {
-        leagueName: [
+      playerEditFormRules: {
+        firstName: [
           {
             required: true,
-            message: 'Please input league name',
-            trigger: 'blur',
-          },
-          {
-            min: 1,
-            max: 64,
-            message: 'Input too long',
+            message: 'Please input first name',
             trigger: 'blur',
           },
         ],
-        season: [
+        lastName: [
           {
             required: true,
-            message: 'Please input season',
+            message: 'Please input last name',
             trigger: 'blur',
           },
         ],
-        pointScheme: [
+        number: [
           {
             required: true,
-            message: 'Please select Point Scheme',
-            trigger: 'change',
+            message: 'Please input jersey number',
+            trigger: 'blur',
           },
         ],
       },
@@ -110,18 +106,18 @@ export default{
   },
   computed: {
     ...mapGetters([
-      'editLeagueModalVisible',
-      'editedLeague',
-      'editedLeagueId',
+      'editPlayerModalVisible',
+      'editedPlayer',
+      'editedPlayerId',
     ]),
-    leagueEditButtonText() {
-      return this.loading ? 'Loading' : 'Edit League';
+    playerEditButtonText() {
+      return this.loading ? 'Loading' : 'Edit Player';
     },
   },
   methods: {
     ...mapActions([
       'closeModal',
-      'editLeague',
+      'editPlayer',
     ]),
     handleKeyUp(e) {
       // Escape ley
@@ -130,15 +126,15 @@ export default{
       }
       // Enter key
       if (e.keyCode === 13) {
-        this.leagueEditButtonClicked();
+        this.playerEditButtonClicked();
       }
     },
-    leagueEditButtonClicked() {
+    playerEditButtonClicked() {
       this.displayErrMsg = false;
-      this.$refs['league-edit-form'].validate((valid) => {
+      this.$refs['player-edit-form'].validate((valid) => {
         if (valid) {
           this.loading = true;
-          this.editLeague(this.leagueEditForm).then((response) => {
+          this.editPlayer(this.playerEditForm).then((response) => {
             this.loading = false;
             if (response.retVal) {
               this.errMsg = null;
@@ -152,7 +148,7 @@ export default{
     },
   },
   mounted() {
-    this.leagueEditForm = { ...this.editedLeague };
+    this.playerEditForm = { ...this.editedPlayer };
     window.addEventListener('keyup', this.handleKeyUp);
   },
   beforeDestroy() {
@@ -164,9 +160,8 @@ export default{
 
 <style lang='scss' scoped>
 @import '@/style/global.scss';
-
-#modal-edit-league{
-  #edit-league-modal-container{
+#modal-edit-player{
+  #edit-player-modal-container{
     padding: 0px 40px;
     display: flex;
     flex-direction: column;
@@ -183,23 +178,11 @@ export default{
       border-color: $ELEMENT_UI_DEFAULT_BORDER;
     }
 
-    #league-name-input{
-      margin: 8px 0px;
-    }
-
-    #season-input{
-      margin: 8px 0px;
-    }
-
-    #point-scheme-input{
-      margin: 8px 0px;
-    }
-
     #errMsg{
       color: red;
     }
 
-    #league-edit-button-container{
+    #player-edit-button-container{
       width: 100%;
       margin: 8px 0px;
 

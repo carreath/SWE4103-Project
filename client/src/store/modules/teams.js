@@ -74,13 +74,16 @@ const actions = {
     });
   },
   deleteTeam({ dispatch }, teamObj) {
-    return TeamsService.deleteTeam(teamObj).then((response) => {
+    const params = {
+      teamID: teamObj.teamID,
+    };
+    return TeamsService.deleteTeam(params).then((response) => {
       if (!response || !response.status) {
         return { retVal: false, retMsg: 'Server Error' };
       }
 
       switch (response.status) {
-        case 200 || 201: {
+        case 200: {
           dispatch('getTeams');
           return { retVal: true, retMsg: 'Team Deleted' };
         }
@@ -97,7 +100,7 @@ const actions = {
       }
 
       switch (response.status) {
-        case 200 || 201: {
+        case 200: {
           dispatch('getTeams');
           return { retVal: true, retMsg: 'Team Edited' };
         }

@@ -37,12 +37,14 @@
           label="Action">
           <template slot-scope="scope">
             <el-button
+            icon="el-icon-edit"
+            size="mini"
             @click='teamEditClicked(scope.row.teamID)'>
-              Edit
             </el-button>
             <el-button
+            icon="el-icon-delete"
+            size="mini"
             @click="teamDeleteClicked(scope.row.teamID, scope.row.teamName)">
-              Delete
             </el-button>
           </template>
         </el-table-column>
@@ -66,6 +68,7 @@ export default {
       'teams',
       'leagueById',
       'leagues',
+      'teamById',
     ]),
     formatTeams() {
       const formatedTeams = this.teams.map((team) => {
@@ -82,7 +85,6 @@ export default {
   methods: {
     ...mapActions([
       'deleteLeague',
-      'teamById',
       'setEditedTeam',
       'setEditTeamModalVisible',
     ]),
@@ -99,15 +101,24 @@ export default {
         cancelButtonText: 'Cancel',
         type: 'warning',
       }).then(() => {
-        this.deleteTeam(this.teamById(id)).then(() => {
-          this.$message({
-            message: `Deleted ${name}`,
-            center: true,
-          });
+        this.deleteTeam(this.teamById(id)).then((response) => {
+          if (response.retVal) {
+            this.$message({
+              message: `Deleted ${name}`,
+              center: true,
+            });
+          } else {
+            this.$message.error('Error deleting');
+          }
           this.$router.push('/admin/teams');
         });
       }).catch(() => {
       });
+    },
+  },
+  watch: {
+    team() {
+      this.formatedTeams();
     },
   },
 };

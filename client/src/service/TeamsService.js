@@ -19,8 +19,8 @@ export default {
         return err.response;
       });
   },
-  deleteTeam(params) {
-    return ServiceLayer().delete('/team', params)
+  deleteTeam(paramsIn) {
+    return ServiceLayer().delete('/team', { params: paramsIn })
       .then((response) => {
         return response;
       })

@@ -19,8 +19,8 @@ export default {
         return err.response;
       });
   },
-  deleteLeague(params) {
-    return ServiceLayer().delete('/league', params)
+  deleteLeague(paramsIn) {
+    return ServiceLayer().delete('/league', { params: paramsIn })
       .then((response) => {
         return response;
       })

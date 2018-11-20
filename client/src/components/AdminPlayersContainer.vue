@@ -1,9 +1,6 @@
 <template>
   <div id="admin-players-container">
     <div id="title-container">
-      <div id="title">
-        Players
-      </div>
     </div>
     <div id="create-player-button-container">
       <el-button
@@ -21,15 +18,20 @@
           sortable
           label="Player ID">
         </el-table-column>
-         <el-table-column
-          prop="lastName"
+        <el-table-column
+          prop="number"
           sortable
-          label="Last Name">
+          label="Jersey Number">
         </el-table-column>
         <el-table-column
           prop="firstName"
           sortable
           label="First Name">
+        </el-table-column>
+        <el-table-column
+          prop="lastName"
+          sortable
+          label="Last Name">
         </el-table-column>
         <el-table-column
           prop="teamName"
@@ -38,6 +40,19 @@
         </el-table-column>
         <el-table-column
           label="Action">
+          <template slot-scope="scope">
+            <el-button
+            icon="el-icon-edit"
+            size="mini"
+            @click='playerEditClicked(scope.row.playerID)'>
+            </el-button>
+            <el-button
+            icon="el-icon-delete"
+            size="mini"
+            @click="playerDeleteClicked(scope.row.playerID,
+            scope.row.firstName, scope.row.lastName)">
+            </el-button>
+          </template>
         </el-table-column>
       </el-table>
     </div>
@@ -57,15 +72,17 @@ export default {
   computed: {
     ...mapGetters([
       'players',
-      'leagueById',
+      'teamById',
+      'playerById',
     ]),
     formatPlayers() {
       const formatedPlayers = this.players.map((player) => {
         return {
-          PlayerID: player.playerID,
+          playerID: player.playerID,
           lastName: player.lastName,
           firstName: player.firstName,
           teamName: this.teamById(player.teamID).teamName,
+          number: player.number,
         };
       });
       return formatedPlayers;
@@ -73,10 +90,41 @@ export default {
   },
   methods: {
     ...mapActions([
-
+      'deletePlayer',
+      'setEditedPlayer',
+      'setEditPlayerModalVisible',
     ]),
     handleCreatePlayerButtonClick() {
       this.$router.push('/admin/players/create');
+    },
+    playerEditClicked(index) {
+      this.setEditedPlayer(index);
+      this.setEditPlayerModalVisible(true);
+    },
+    playerDeleteClicked(id, firstName, lastName) {
+      this.$confirm(`Are you sure you want to delete ${firstName} ${lastName}?`, 'Confirm Player Deletion', {
+        confirmButtonText: 'Delete Player',
+        cancelButtonText: 'Cancel',
+        type: 'warning',
+      }).then(() => {
+        this.deletePlayer(this.playerById(id)).then((response) => {
+          if (response.val) {
+            this.$message({
+              message: `Deleted ${firstName} ${lastName}`,
+              center: true,
+            });
+          } else {
+            this.$message.error('Error deleting');
+          }
+          this.$router.push('/admin/players');
+        });
+      }).catch(() => {
+      });
+    },
+  },
+  watch: {
+    player() {
+      this.formatedPlayers();
     },
   },
 };
