@@ -30,7 +30,8 @@
                 v-model="scheduleGameCreate.gameTime"
                 type="datetime"
                 placeholder="Select date and time"
-                id="game-time-input">
+                id="game-time-input"
+                value-format="yyyy-MM-dd HH:mm:ss">
               </el-date-picker>
           </el-form-item>
           <div id="teams-container">
