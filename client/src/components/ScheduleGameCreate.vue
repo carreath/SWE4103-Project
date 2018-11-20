@@ -23,23 +23,15 @@
             </el-input>
           </el-form-item>
           <el-form-item
-            label="Day"
-            id="day-label"
-            prop="day">
-            <el-select v-model="scheduleGameCreate.day" placeholder="Select Day">
-              <el-option
-                v-for="item in options"
-                :key="item.value.key"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item
-              label="Time"
-              id="time-label"
-              prop="time">
-              <el-input v-model="scheduleGameCreate.time" type="time" id="time-input"></el-input>
+              label="Game Time"
+              id="game-time-label"
+              prop="gameTime">
+              <el-date-picker
+                v-model="scheduleGameCreate.gameTime"
+                type="datetime"
+                placeholder="Select date and time"
+                id="game-time-input">
+              </el-date-picker>
           </el-form-item>
           <div id="teams-container">
             <el-form-item
@@ -101,8 +93,7 @@ export default{
     return {
       scheduleGameCreate: {
         fieldName: '',
-        day: '',
-        time: '',
+        gameTime: '',
         homeTeamID: '',
         awayTeamID: '',
       },
@@ -120,65 +111,28 @@ export default{
             trigger: 'blur',
           },
         ],
-        day: [
+        gameTime: [
           {
             required: true,
-            message: 'Please input day',
-            trigger: 'blur',
-          },
-        ],
-        time: [
-          {
-            required: true,
-            message: 'Please input time',
+            message: 'Please input date and time',
             trigger: 'blur',
           },
         ],
         homeTeamID: [
           {
             required: true,
-            message: 'Please select Team',
+            message: 'Please select Home Team',
             trigger: 'blur',
           },
         ],
         awayTeamID: [
           {
             required: true,
-            message: 'Please select Team',
+            message: 'Please select Away Team',
             trigger: 'blur',
           },
         ],
       },
-      options: [
-        {
-          value: 'Sunday',
-          label: 'Sunday',
-        },
-        {
-          value: 'Monday',
-          label: 'Monday',
-        },
-        {
-          value: 'Tuesdau',
-          label: 'Tuesday',
-        },
-        {
-          value: 'Wednesday',
-          label: 'Wednesday',
-        },
-        {
-          value: 'Thursday',
-          label: 'Thursday',
-        },
-        {
-          value: 'Friday',
-          label: 'Friday',
-        },
-        {
-          value: 'Saturday',
-          label: 'Saturday',
-        },
-      ],
       value: '',
       loading: false,
       errMsg: null,
@@ -276,6 +230,7 @@ export default{
   }
 
   .el-option {
+    margin-left: 50px;
     float: left;
   }
 
