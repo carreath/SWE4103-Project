@@ -75,10 +75,12 @@ export default {
     ]),
     formatTeams() {
       const formatedTeams = this.teams.map((team) => {
+        const manager = this.userById(team.managerID);
+        const managerNameIn = manager ? `${manager.firstName} ${manager.lastName}` : 'None';
         return {
           ...team,
           leagueName: this.leagueById(team.leagueID).leagueName,
-          managerName: this.userById(team.managerID) || 'None',
+          managerName: managerNameIn,
         };
       });
       return formatedTeams;

@@ -29,6 +29,25 @@
             prop="colour">
             <el-color-picker v-model="teamEditForm.colour"></el-color-picker>
           </el-form-item>
+          <el-form-item
+            label="Manager"
+            id="team-manager-label"
+            prop="managerID">
+            <el-select
+              v-model="teamEditForm.managerID"
+              id="user-type-input"
+              :style="{'float': 'left'}"
+              placeholder="Manager">
+              <el-option label="None" :value="null"></el-option>
+              <el-option
+                v-for="manager in managerUsers"
+                :key="manager.userID"
+                :value="manager.userID"
+                :label="`${manager.firstName} ${manager.lastName}`"
+                :disabled="managerAlreadyManages(manager.userID)">
+              </el-option>
+            </el-select>
+          </el-form-item>
           <div id="errMsg" v-if="errMsg">
             Error: {{ errMsg }}
           </div>
@@ -63,6 +82,7 @@ export default{
       teamEditForm: {
         teamName: '',
         colour: null,
+        managerID: null,
       },
       teamEditFormRules: {
         teamName: [
@@ -85,6 +105,13 @@ export default{
             trigger: 'blur',
           },
         ],
+        managerID: [
+          {
+            required: true,
+            message: 'Please input team manager',
+            trigger: 'blur',
+          },
+        ],
       },
       loading: false,
       errMsg: null,
@@ -95,6 +122,8 @@ export default{
       'editTeamModalVisible',
       'editedTeam',
       'editedTeamId',
+      'managerUsers',
+      'teams',
     ]),
     teamEditButtonText() {
       return this.loading ? 'Loading' : 'Edit Team';
@@ -105,6 +134,9 @@ export default{
       'closeModal',
       'editTeam',
     ]),
+    managerAlreadyManages(userID) {
+      return this.teams.filter(team => team.managerID === userID).length > 0;
+    },
     handleKeyUp(e) {
       // Escape ley
       if (e.keyCode === 27) {
@@ -136,6 +168,7 @@ export default{
   mounted() {
     this.teamEditForm = { ...this.editedTeam };
     window.addEventListener('keyup', this.handleKeyUp);
+    console.log('teamEditForm: ', this.teamEditForm);
   },
   beforeDestroy() {
     window.removeEventListener('keyup', this.handleKeyUp);

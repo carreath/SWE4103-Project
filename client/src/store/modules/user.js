@@ -29,6 +29,12 @@ const getters = {
   editedUser(state) {
     return state.users.find(user => user.userID === state.editedUserId);
   },
+  coordinatorUsers(state) {
+    return state.users.filter(user => user.userType === 'Coordinator');
+  },
+  managerUsers(state) {
+    return state.users.filter(user => user.userType === 'Manager');
+  },
 };
 
 const actions = {
