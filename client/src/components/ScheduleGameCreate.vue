@@ -6,9 +6,10 @@
       </div>
       <div id="form-container">
         <el-form
+          :label-position="labelPosition"
+          label-width="140px"
           :model="scheduleGameCreate"
           :rules="scheduleGameCreateRules"
-          label-width="120px"
           ref="game-form">
           <el-form-item
             label="Field"
@@ -34,52 +35,56 @@
                 value-format="yyyy-MM-dd HH:mm:ss">
               </el-date-picker>
           </el-form-item>
-          <div id="teams-container">
-            <el-form-item
-              label="Home Team Name"
-              id="home-team-name-label"
-              prop="homeTeamID">
-              <el-select v-model="scheduleGameCreate.homeTeamID" placeholder="Home Team">
-                <el-option
-                  v-for="item in formatTeams"
-                  :key="item.teamID"
-                  :label="item.teamName"
-                  :value="item.teamID">
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item
-              label="Away Team Name"
-              id="away-team-name-label"
-              prop="awayTeamID">
-              <el-select v-model="scheduleGameCreate.awayTeamID" placeholder="Away Team">
-                <el-option
-                  v-for="item in formatTeams"
-                  :key="item.teamID"
-                  :label="item.teamName"
-                  :value="item.teamID">
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </div>
+          <el-form-item
+            label="Home Team Name"
+            id="home-team-name-label"
+            prop="homeTeamID">
+            <el-select
+              v-model="scheduleGameCreate.homeTeamID"
+              placeholder="Home Team"
+              :style="{'float': 'left'}">
+              <el-option
+                v-for="item in formatTeams"
+                :key="item.teamID"
+                :label="item.teamName"
+                :value="item.teamID">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item
+            label="Away Team Name"
+            id="away-team-name-label"
+            prop="awayTeamID">
+            <el-select
+              v-model="scheduleGameCreate.awayTeamID"
+              placeholder="Away Team"
+              :style="{'float': 'left'}">
+              <el-option
+                v-for="item in formatTeams"
+                :key="item.teamID"
+                :label="item.teamName"
+                :value="item.teamID">
+              </el-option>
+            </el-select>
+          </el-form-item>
           <div id="errMsg" v-if="errMsg">
             Error: {{ errMsg }}
           </div>
-          <el-form-item id="submit-button-container">
-            <el-button
-              icon="el-icon-arrow-left"
-              @click="$router.push('/schedule')">
-              Cancel
-            </el-button>
-            <div></div>
-            <el-button
-              type="primary"
-              :loading="loading"
-              @click="submitButtonClicked">
-              {{ submitButtonText }}
-            </el-button>
-          </el-form-item>
         </el-form>
+        <div id="submit-button-container">
+          <el-button
+            icon="el-icon-arrow-left"
+            @click="$router.push('/schedule')">
+            Cancel
+          </el-button>
+          <div></div>
+          <el-button
+            type="primary"
+            :loading="loading"
+            @click="submitButtonClicked">
+            {{ submitButtonText }}
+          </el-button>
+        </div>
       </div>
     </div>
   </div>
@@ -92,6 +97,7 @@ export default{
   name: 'ScheduleGameCreate',
   data() {
     return {
+      labelPosition: 'left',
       scheduleGameCreate: {
         fieldName: '',
         gameTime: '',
@@ -202,6 +208,13 @@ export default{
   flex-direction: column;
   align-items: flex-start;
   margin-top: 16px;
+  margin-left: 30vw;
+
+  #title{
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
 
   #field-name-label{
     margin-top: 16px;
@@ -225,13 +238,8 @@ export default{
   #submit-button-container{
     margin-top: 16px;
     width: 110%;
-    justify-content: center;
-    align-items: flex-start;
-    /deep/ .el-form-item__content{
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-    }
+    display: flex;
+    justify-content: space-between;
   }
 
   .el-input {
