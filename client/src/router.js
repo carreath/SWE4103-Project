@@ -144,6 +144,11 @@ const router = new Router({
       },
     },
     {
+      path: '/admin/players/create',
+      name: 'admin-players-create',
+      component: Admin,
+    },
+    {
       path: '/admin/leagues/create',
       name: 'admin-leagues-create',
       component: Admin,

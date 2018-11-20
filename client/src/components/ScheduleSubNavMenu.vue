@@ -244,6 +244,11 @@ export default {
       }
     }
 
+
+    #create-schedule-button-container{
+      margin-right: 20px;
+      font-size: .8rem;
+    }
     @include checkMaxScreenSize(700px) {
       #schedule-view-dropdown-container{
         #calendar-view-button{

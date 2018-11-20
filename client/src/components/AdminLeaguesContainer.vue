@@ -10,23 +10,40 @@
     <div id="leagues-table-container">
       <el-table
         :data="formatLeagues"
+        :default-sort = "{prop: 'id', order: 'ascending'}"
         stripe
         style="width: 100%">
         <el-table-column
           prop="id"
+          sortable
           label="League Id">
         </el-table-column>
         <el-table-column
           prop="name"
+          sortable
           label="League Name">
         </el-table-column>
         <el-table-column
           prop="season"
+          sortable
           label="League Season">
         </el-table-column>
         <el-table-column
           label="Action">
+          <template slot-scope="scope">
+            <el-button
+            icon="el-icon-edit"
+            size="mini"
+            @click='leagueEditClicked(scope.row.id)'>
+            </el-button>
+            <el-button
+            icon="el-icon-delete"
+            size="mini"
+            @click="leagueDeleteClicked(scope.row.id, scope.row.name)">
+            </el-button>
+          </template>
         </el-table-column>
+
       </el-table>
     </div>
   </div>
@@ -45,6 +62,7 @@ export default {
   computed: {
     ...mapGetters([
       'leagues',
+      'leagueById',
     ]),
     formatLeagues() {
       const formatedLeagues = this.leagues.map((league) => {
@@ -62,23 +80,42 @@ export default {
   },
   methods: {
     ...mapActions([
-
+      'deleteLeague',
+      'setEditedLeague',
+      'setEditLeagueModalVisible',
     ]),
-    handleKeyUp(e) {
-      // Enter key
-      if (e.keyCode === 13) {
-        this.leagueCreateClicked();
-      }
-    },
     leagueCreateClicked() {
       this.$router.push('/admin/leagues/create');
     },
+    leagueEditClicked(index) {
+      this.setEditedLeague(index);
+      this.setEditLeagueModalVisible(true);
+    },
+    leagueDeleteClicked(id, name) {
+      this.$confirm(`Are you sure you want to delete ${name}? (This will also delete all associated teams and players)`, 'Confirm League Deletion', {
+        confirmButtonText: 'Delete League',
+        cancelButtonText: 'Cancel',
+        type: 'warning',
+      }).then(() => {
+        this.deleteLeague(this.leagueById(id)).then((response) => {
+          if (response.retVal) {
+            this.$message({
+              message: `Deleted ${name}`,
+              center: true,
+            });
+          } else {
+            this.$message.error('Error deleting');
+          }
+          this.$router.push('/admin/leagues');
+        });
+      }).catch(() => {
+      });
+    },
   },
-  mounted() {
-    window.addEventListener('keyup', this.handleKeyUp);
-  },
-  beforeDestroy() {
-    window.removeEventListener('keyup', this.handleKeyUp);
+  watch: {
+    league() {
+      this.formatedLeagues();
+    },
   },
 };
 
@@ -95,6 +132,11 @@ export default {
     justify-content: flex-end;
     height: 61px;
     transition: 0.3s;
+  }
+  .asd {
+    background:rgba(0,0,0,0);
+    border: 1px solid rgba(0,0,0,0);
+    width: 20%;
   }
 }
 </style>

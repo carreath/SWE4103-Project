@@ -4,6 +4,7 @@ import LeaguesService from '@/service/LeaguesService';
 const state = {
   leagues: [],
   selectedLeagueId: 1, // NOTE Default to first league
+  editedLeagueId: 1,
 };
 
 // getters
@@ -19,6 +20,12 @@ const getters = {
   },
   leagueById: (state) => (id) => {
     return state.leagues.find(league => league.leagueID === id) || {};
+  },
+  editedLeagueId(state) {
+    return state.editedLeagueId;
+  },
+  editedLeague(state) {
+    return state.leagues.find(league => league.leagueID === state.editedLeagueId);
   },
 };
 
@@ -38,6 +45,10 @@ const actions = {
     dispatch('setSelectedTeamId', null);
     commit('mutateSelectedLeagueId', id);
   },
+  setEditedLeague({ commit }, id) {
+    commit('mutateEditedLeagueId', id);
+  },
+
   createLeague({ dispatch }, leagueObj) {
     return LeaguesService.createLeague(leagueObj).then((response) => {
       if (!response || !response.status) {
@@ -57,6 +68,43 @@ const actions = {
       }
     });
   },
+  deleteLeague({ dispatch }, leagueObj) {
+    const params = {
+      leagueID: leagueObj.leagueID,
+    };
+    return LeaguesService.deleteLeague(params).then((response) => {
+      if (!response || !response.status) {
+        return { retVal: false, retMsg: 'Server Error' };
+      }
+
+      switch (response.status) {
+        case 200: {
+          dispatch('getLeagues');
+          return { retVal: true, retMsg: 'League Deleted' };
+        }
+        default: {
+          return { retVal: false, retMsg: 'Server Error' };
+        }
+      }
+    });
+  },
+  editLeague({ dispatch }, leagueObj) {
+    return LeaguesService.editLeague(leagueObj).then((response) => {
+      if (!response || !response.status) {
+        return { retVal: false, retMsg: 'Server Error' };
+      }
+
+      switch (response.status) {
+        case 200: {
+          dispatch('getLeagues');
+          return { retVal: true, retMsg: 'League Edited' };
+        }
+        default: {
+          return { retVal: false, retMsg: 'Server Error' };
+        }
+      }
+    });
+  },
 };
 
 // mutations
@@ -66,6 +114,9 @@ const mutations = {
   },
   mutateSelectedLeagueId(state, id) {
     state.selectedLeagueId = id;
+  },
+  mutateEditedLeagueId(state, id) {
+    state.editedLeagueId = id;
   },
   addLeague(state, leagueObj) {
     state.leagues.push(leagueObj);
