@@ -8,6 +8,13 @@ from common import PrivilegeHandler
 
 class LeagueSchedule(Resource):
     def get(self):
+        token = request.headers.get('Authorization')
+        if not token:
+            abort(403, error="Unauthorized Access (no token)")
+        privilege_handler = PrivilegeHandler(token)
+        if not privilege_handler.schedule_privileges():
+            abort(403, error="Unauthorized Access (invalid permissions)")
+
         db_connector = DatabaseConnector()
 
         parser = reqparse.RequestParser()
@@ -85,7 +92,13 @@ class LeagueSchedule(Resource):
         return schedule, 200
 
     def put(self):
-        # TODO permissions
+        token = request.headers.get('Authorization')
+        if not token:
+            abort(403, error="Unauthorized Access (no token)")
+        privilege_handler = PrivilegeHandler(token)
+        if not privilege_handler.schedule_privileges():
+            abort(403, error="Unauthorized Access (invalid permissions)")
+
         parser = reqparse.RequestParser()
         parser.add_argument('gameID', type=int, required=True)
         parser.add_argument('leagueID', type=int, required=True)
@@ -104,6 +117,12 @@ class LeagueSchedule(Resource):
         return 200
 
     def delete(self):
+        token = request.headers.get('Authorization')
+        if not token:
+            abort(403, error="Unauthorized Access (no token)")
+        privilege_handler = PrivilegeHandler(token)
+        if not privilege_handler.schedule_privileges():
+            abort(403, error="Unauthorized Access (invalid permissions)")
         parser = reqparse.RequestParser()
         parser.add_argument('leagueID', type=int, required=True)
         args = parser.parse_args()
