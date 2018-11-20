@@ -10,7 +10,6 @@
     <div id="teams-table-container">
       <el-table
         :data="formatTeams"
-        :default-sort = "{prop: 'teamID', order: 'ascending'}"
         stripe
         style="">
         <el-table-column
@@ -22,16 +21,19 @@
         <el-table-column
           prop="teamName"
           sortable
-          label="Team Name">
+          :show-overflow-tooltip="true"
+          label="Name">
         </el-table-column>
         <el-table-column
-          prop="leagueID"
+          prop="leagueName"
           sortable
+          :show-overflow-tooltip="true"
           label="League Name">
         </el-table-column>
         <el-table-column
-          prop="managerID"
-          label="Manager ID">
+          prop="managerName"
+          :show-overflow-tooltip="true"
+          label="Manager">
         </el-table-column>
         <el-table-column
           label="Action">
@@ -69,14 +71,14 @@ export default {
       'leagueById',
       'leagues',
       'teamById',
+      'userById',
     ]),
     formatTeams() {
       const formatedTeams = this.teams.map((team) => {
         return {
-          teamID: team.teamID,
-          teamName: team.teamName,
-          leagueID: this.leagueById(team.leagueID).leagueName,
-          managerID: team.managerID,
+          ...team,
+          leagueName: this.leagueById(team.leagueID).leagueName,
+          managerName: this.userById(team.managerID) || 'None',
         };
       });
       return formatedTeams;

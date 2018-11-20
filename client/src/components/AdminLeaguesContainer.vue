@@ -14,19 +14,34 @@
         stripe
         style="width: 100%">
         <el-table-column
-          prop="id"
+          prop="leagueID"
           sortable
+          width="110px"
           label="League Id">
         </el-table-column>
         <el-table-column
-          prop="name"
+          prop="leagueName"
           sortable
-          label="League Name">
+          :show-overflow-tooltip="true"
+          label="Name">
         </el-table-column>
         <el-table-column
           prop="season"
           sortable
-          label="League Season">
+          :show-overflow-tooltip="true"
+          label="Season">
+        </el-table-column>
+        <el-table-column
+          prop="pointScheme"
+          sortable
+          :show-overflow-tooltip="true"
+          label="Point Scheme">
+        </el-table-column>
+        <el-table-column
+          prop="managerName"
+          sortable
+          :show-overflow-tooltip="true"
+          label="Coordinator">
         </el-table-column>
         <el-table-column
           label="Action">
@@ -63,16 +78,16 @@ export default {
     ...mapGetters([
       'leagues',
       'leagueById',
+      'userById',
     ]),
     formatLeagues() {
-      const formatedLeagues = this.leagues.map((league) => {
+      const formattedLeagues = this.leagues.map((league) => {
         return {
-          id: league.leagueID,
-          name: league.leagueName,
-          season: league.season,
+          ...league,
+          managerName: this.userById(league.managerID) || 'None',
         };
       });
-      return formatedLeagues;
+      return formattedLeagues;
     },
     curRoute() {
       return this.$route.name;

@@ -3,7 +3,7 @@ import UserService from '@/service/UserService';
 const state = {
   user: null,
   token: localStorage.getItem('token') || null,
-  users: null,
+  users: [],
   editedUserId: null,
 };
 
@@ -19,6 +19,9 @@ const getters = {
   },
   users(state) {
     return state.users;
+  },
+  userById: (state) => (id) => {
+    return (state.users || []).find(user => user.userID === id);
   },
   editedUserId(state) {
     return state.editedUserId;
