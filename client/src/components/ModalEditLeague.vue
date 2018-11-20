@@ -39,10 +39,32 @@
             label="Point Scheme"
             class = "label"
             prop="pointScheme">
-            <el-select v-model="leagueEditForm.pointScheme" id="point-scheme-input"
-            placeholder="Point Scheme">
+            <el-select
+              v-model="leagueEditForm.pointScheme"
+              id="point-scheme-input"
+              :style="{'float': 'left'}"
+              placeholder="Point Scheme">
               <el-option label="Standard" value="standard"></el-option>
               <el-option label="Capital Scoring" value="capitalScoring"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item
+            label="Coordinator"
+            id="league-coordinator-label"
+            prop="managerID">
+            <el-select
+              v-model="leagueEditForm.managerID"
+              id="league-coordinator-input"
+              :style="{'float': 'left'}"
+              placeholder="Coordinator">
+              <el-option label="None" :value="null"></el-option>
+              <el-option
+                v-for="coordinator in coordinatorUsers"
+                :key="coordinator.userID"
+                :value="coordinator.userID"
+                :label="`${coordinator.firstName} ${coordinator.lastName}`"
+                :disabled="coordinatorAlreadyCoordinates(coordinator.userID)">
+              </el-option>
             </el-select>
           </el-form-item>
           <div id="errMsg" v-if="errMsg">
@@ -80,6 +102,7 @@ export default{
         leagueName: '',
         season: '',
         pointScheme: '',
+        managerID: null,
       },
       leagueEditFormRules: {
         leagueName: [
@@ -119,6 +142,8 @@ export default{
       'editLeagueModalVisible',
       'editedLeague',
       'editedLeagueId',
+      'leagues',
+      'coordinatorUsers',
     ]),
     leagueEditButtonText() {
       return this.loading ? 'Loading' : 'Edit League';
@@ -129,6 +154,9 @@ export default{
       'closeModal',
       'editLeague',
     ]),
+    coordinatorAlreadyCoordinates(userID) {
+      return this.leagues.filter(league => league.managerID === userID).length > 0;
+    },
     handleKeyUp(e) {
       // Escape ley
       if (e.keyCode === 27) {
@@ -158,6 +186,7 @@ export default{
     },
   },
   mounted() {
+    console.log('editedLeague: ', this.editedLeague);
     this.leagueEditForm = { ...this.editedLeague };
     window.addEventListener('keyup', this.handleKeyUp);
   },

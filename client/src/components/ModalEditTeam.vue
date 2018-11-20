@@ -27,7 +27,10 @@
             label="Team Colour"
             id="team-colour-label"
             prop="colour">
-            <el-color-picker v-model="teamEditForm.colour"></el-color-picker>
+            <el-color-picker
+              v-model="teamEditForm.colour"
+              :style="{'float': 'left'}">
+            </el-color-picker>
           </el-form-item>
           <el-form-item
             label="Manager"
@@ -35,7 +38,7 @@
             prop="managerID">
             <el-select
               v-model="teamEditForm.managerID"
-              id="user-type-input"
+              id="team-manager-input"
               :style="{'float': 'left'}"
               placeholder="Manager">
               <el-option label="None" :value="null"></el-option>
@@ -105,13 +108,6 @@ export default{
             trigger: 'blur',
           },
         ],
-        managerID: [
-          {
-            required: true,
-            message: 'Please input team manager',
-            trigger: 'blur',
-          },
-        ],
       },
       loading: false,
       errMsg: null,
@@ -168,7 +164,6 @@ export default{
   mounted() {
     this.teamEditForm = { ...this.editedTeam };
     window.addEventListener('keyup', this.handleKeyUp);
-    console.log('teamEditForm: ', this.teamEditForm);
   },
   beforeDestroy() {
     window.removeEventListener('keyup', this.handleKeyUp);

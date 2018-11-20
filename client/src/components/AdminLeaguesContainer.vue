@@ -49,12 +49,12 @@
             <el-button
             icon="el-icon-edit"
             size="mini"
-            @click='leagueEditClicked(scope.row.id)'>
+            @click='leagueEditClicked(scope.row.leagueID)'>
             </el-button>
             <el-button
             icon="el-icon-delete"
             size="mini"
-            @click="leagueDeleteClicked(scope.row.id, scope.row.name)">
+            @click="leagueDeleteClicked(scope.row.leagueID, scope.row.leagueName)">
             </el-button>
           </template>
         </el-table-column>
