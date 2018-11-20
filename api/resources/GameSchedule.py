@@ -15,7 +15,7 @@ class LeagueSchedule(Resource):
         args = parser.parse_args()
 
         league_id = args['leagueID']
-        db_connector.cursor.execute('SELECT * FROM games WHERE leagueID = '+str(league_id))  # TODO filter out games from the past
+        db_connector.cursor.execute('SELECT * FROM games WHERE leagueID = '+str(league_id))
         games = db_connector.cursor.fetchall()
 
         schedule_data = []
