@@ -208,16 +208,24 @@ export default{
 
   #teams-container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    align-items: flex-start;
     white-space: nowrap;
     justify-content: space-between;
+    margin-left: 16px;
+    #home-team-name-label {
+      margin-right: 20px;
+    }
+    .el-select {
+      margin-left: 15px;
+    }
   }
 
   #submit-button-container{
     margin-top: 16px;
     width: 110%;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     /deep/ .el-form-item__content{
       display: flex;
       flex-direction: row;
@@ -226,12 +234,8 @@ export default{
   }
 
   .el-input {
-   width: 120%;
-  }
-
-  .el-option {
-    margin-left: 50px;
     float: left;
+    width: 100%;
   }
 
   .el-form-item.is-success /deep/ .el-input__inner,
