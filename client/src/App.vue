@@ -9,7 +9,7 @@
       :class="{'sticky': nailNavMenu}">
       <NavMenu/>
       <AdminSubNavMenu v-if="curRoute.includes('admin')"/>
-      <ScheduleSubNavMenu v-if="curRoute.includes('schedule')"/>
+      <ScheduleSubNavMenu v-if="curRoute === 'schedule'"/>
     </div>
     <div
       id="router-view-outer-wrapper"

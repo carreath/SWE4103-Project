@@ -118,3 +118,49 @@ class League(Resource):
             })
 
         return {'leagues': leagues_data}, 200
+
+    def delete(self):
+        token = request.headers.get('Authorization')
+        if not token:
+            abort(403, error="Unauthorized Access (no token)")
+        privilege_handler = PrivilegeHandler(token)
+        if not privilege_handler.assign_privileges(): # I'm using this as a placeholder for a general admin privilege
+            abort(403, error="Unauthorized Access (invalid permissions)")
+
+        parser = reqparse.RequestParser()
+        parser.add_argument('leagueID', type=int)
+        args = parser.parse_args()
+
+        target_league_id = args['leagueID']
+
+        db = DatabaseConnector()
+        db.cursor.execute("DELETE FROM gameMembers WHERE teamID in (SELECT teamID FROM teams WHERE leagueID = %d);" % target_league_id)
+        db.cursor.execute("DELETE FROM games WHERE leagueID = %d;" % target_league_id)
+        db.cursor.execute("DELETE FROM players WHERE teamID in (SELECT teamID FROM teams WHERE leagueID = %d);" % target_league_id)
+        db.cursor.execute("DELETE FROM teams WHERE leagueID = %d;" % target_league_id)
+        db.cursor.execute("DELETE FROM leagues WHERE leagueID = %d;" % target_league_id)
+        db.conn.commit()
+        return 200
+
+    def put(self):
+        token = request.headers.get('Authorization')
+        if not token:
+            abort(403, error="Unauthorized Access (no token)")
+        privilege_handler = PrivilegeHandler(token)
+        if not privilege_handler.league_privileges():  # I'm using this as a placeholder for a general admin privilege
+            abort(403, error="Unauthorized Access (invalid permissions)")
+
+        parser = reqparse.RequestParser()
+        parser.add_argument('leagueID', type=int, required=True)
+        parser.add_argument('managerID', type=int)
+        parser.add_argument('leagueName', type=str)
+        parser.add_argument('season', type=str)
+        parser.add_argument('pointScheme', type=str)
+
+        args = parser.parse_args()
+        query = "UPDATE leagues SET coordinatorID = %d, leagueName = '%s', season = '%s', pointScheme = %s WHERE leagueID = %d" \
+                % (args['managerID'], args['leagueName'], args['season'], args['pointScheme'], args['leagueID'])
+        db = DatabaseConnector()
+        db.cursor.execute(query)
+        db.conn.commit()
+        return 200

@@ -20,7 +20,7 @@
           </span>
         </li>
         <li
-          :class="{'is-active': curRoute === 'schedule'}"
+          :class="{'is-active': curRoute.includes('schedule')}"
           @click="handleNavMenuSelect('schedule')">
           <span>
             Schedule
