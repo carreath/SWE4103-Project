@@ -40,7 +40,9 @@
           label="Point Scheme"
           class = "label"
           prop="pointScheme">
-          <el-select v-model="leagueCreateForm.pointScheme" placeholder="Point Scheme">
+          <el-select
+            v-model="leagueCreateForm.pointScheme"
+            placeholder="Point Scheme">
             <el-option label="Standard" value="Standard"></el-option>
             <el-option label="Capital Scoring" value="Capital Scoring"></el-option>
           </el-select>

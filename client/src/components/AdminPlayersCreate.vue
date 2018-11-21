@@ -1,11 +1,12 @@
 <template>
   <div id="admin-players-create">
     <div id="admin-players-create-container-main">
-      <div id="title">
+      <h1 id="title">
         Create A New Player
-      </div>
+      </h1>
       <div id="form-container">
         <el-form
+          :label-position="labelPosition"
           :model="adminPlayersCreate"
           :rules="adminPlayersCreateRules"
           label-width="120px"
@@ -38,7 +39,10 @@
             label="Team Name"
             id="team-name-label"
             prop="teamID">
-            <el-select v-model="adminPlayersCreate.teamID" placeholder="Select Team">
+            <el-select
+              v-model="adminPlayersCreate.teamID"
+              :style="{'float': 'left'}"
+              placeholder="Select Team">
               <el-option
                 v-for="item in formatTeams"
                 :key="item.teamID"
@@ -89,6 +93,7 @@ export default{
   name: 'AdminPlayersCreate',
   data() {
     return {
+      labelPosition: 'left',
       adminPlayersCreate: {
         firstName: '',
         lastName: '',
@@ -212,6 +217,10 @@ export default{
   flex-direction: column;
   align-items: flex-start;
   margin-top: 16px;
+
+  #title{
+    display: flex;
+  }
 
   #first-name-label{
     margin-top: 16px;
