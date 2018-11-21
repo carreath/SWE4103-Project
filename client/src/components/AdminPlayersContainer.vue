@@ -3,6 +3,12 @@
     <div id="title-container">
     </div>
     <div id="create-player-button-container">
+      <span id="playerNameSearch">
+        <el-input
+          v-model="searchPlayerName"
+          size="small"
+          placeholder="Filter Name"/>
+      </span>
       <el-button
         type="primary"
         @click="handleCreatePlayerButtonClick">Create Player</el-button>
@@ -63,7 +69,7 @@ export default {
   name: 'AdminPlayersContainer',
   data() {
     return {
-
+      searchPlayerName: '',
     };
   },
   computed: {
@@ -78,6 +84,12 @@ export default {
     ]),
     formatPlayers() {
       const formatedPlayers = this.players.filter(player => {
+        if (!this.searchPlayerName) {
+          return true;
+        }
+        const fullName = `${player.firstName.toLowerCase()} ${player.lastName.toLowerCase()}`;
+        return fullName.includes(this.searchPlayerName.toLowerCase());
+      }).filter(player => {
         if (!this.user) {
           return false;
         }
@@ -162,6 +174,12 @@ export default {
     justify-content: flex-end;
     height: 61px;
     transition: 0.3s;
+
+    #playerNameSearch{
+      width: 25%;
+      min-width: 150px;
+      margin-right: 16px;
+    }
   }
 }
 </style>
