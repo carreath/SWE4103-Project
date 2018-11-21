@@ -17,7 +17,7 @@
           prop="leagueID"
           sortable
           width="110px"
-          label="League Id">
+          label="League ID">
         </el-table-column>
         <el-table-column
           prop="leagueName"
@@ -82,9 +82,11 @@ export default {
     ]),
     formatLeagues() {
       const formattedLeagues = this.leagues.map((league) => {
+        const manager = this.userById(league.managerID);
+        const managerNameIn = manager ? `${manager.firstName} ${manager.lastName}` : 'None';
         return {
           ...league,
-          managerName: this.userById(league.managerID) || 'None',
+          managerName: managerNameIn,
         };
       });
       return formattedLeagues;

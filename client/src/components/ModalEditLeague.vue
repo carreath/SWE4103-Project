@@ -44,8 +44,8 @@
               id="point-scheme-input"
               :style="{'float': 'left'}"
               placeholder="Point Scheme">
-              <el-option label="Standard" value="standard"></el-option>
-              <el-option label="Capital Scoring" value="capitalScoring"></el-option>
+              <el-option label="Standard" value="Standard"></el-option>
+              <el-option label="Capital Scoring" value="Capital Scoring"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item
@@ -155,7 +155,9 @@ export default{
       'editLeague',
     ]),
     coordinatorAlreadyCoordinates(userID) {
-      return this.leagues.filter(league => league.managerID === userID).length > 0;
+      return this.leagues.filter(league => {
+        return league.managerID === userID && league.leagueID !== this.leagueEditForm.leagueID;
+      }).length > 0;
     },
     handleKeyUp(e) {
       // Escape ley
@@ -186,7 +188,6 @@ export default{
     },
   },
   mounted() {
-    console.log('editedLeague: ', this.editedLeague);
     this.leagueEditForm = { ...this.editedLeague };
     window.addEventListener('keyup', this.handleKeyUp);
   },

@@ -131,7 +131,9 @@ export default{
       'editTeam',
     ]),
     managerAlreadyManages(userID) {
-      return this.teams.filter(team => team.managerID === userID).length > 0;
+      return this.teams.filter(team => {
+        return team.managerID === userID && team.teamID !== this.teamEditForm.teamID;
+      }).length > 0;
     },
     handleKeyUp(e) {
       // Escape ley

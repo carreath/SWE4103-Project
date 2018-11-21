@@ -196,7 +196,7 @@ export default {
       'selectedLeague',
     ]),
     curRoute() {
-      return this.$route.name;
+      return this.$route.name || '';
     },
     curRouteNameCap() {
       const name = this.curRoute;
