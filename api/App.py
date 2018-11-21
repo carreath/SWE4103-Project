@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-from flask import Flask
+from flask import Flask, render_template, make_response
 from flask_restful import Api
 from flask_cors import CORS
 from resources import *
 import config
 
+import sys
 import os
 
 from OpenSSL import SSL
@@ -36,6 +37,12 @@ api.add_resource(Register, "/api/register")
 api.add_resource(TokenValidation, "/api/token-check")
 api.add_resource(User, "/api/user")
 api.add_resource(Root, "/")
+
+
+@app.errorhandler(404)
+def catch_all(e):
+    headers = {'Content-Type': 'text/html'}
+    return make_response(render_template('index.html'), 200, headers)
 
 
 def shutdown_server():

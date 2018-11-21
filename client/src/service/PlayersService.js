@@ -1,8 +1,8 @@
 import ServiceLayer from '@/service/ServiceLayer';
 
 export default {
-  getLeagues() {
-    return ServiceLayer().get('/league')
+  getPlayers() {
+    return ServiceLayer().get('/player')
       .then((response) => {
         return response;
       })
@@ -10,8 +10,8 @@ export default {
         return err.response;
       });
   },
-  createLeague(params) {
-    return ServiceLayer().post('/league', params)
+  createPlayer(params) {
+    return ServiceLayer().post('/player', params)
       .then((response) => {
         return response;
       })
@@ -19,8 +19,8 @@ export default {
         return err.response;
       });
   },
-  deleteLeague(paramsIn) {
-    return ServiceLayer().delete('/league', { params: paramsIn })
+  deletePlayer(paramsIn) {
+    return ServiceLayer().delete('/player', { params: paramsIn })
       .then((response) => {
         return response;
       })
@@ -28,8 +28,8 @@ export default {
         return err.response;
       });
   },
-  editLeague(params) {
-    return ServiceLayer().put('/league', params)
+  editPlayer(params) {
+    return ServiceLayer().put('/player', params)
       .then((response) => {
         return response;
       })
