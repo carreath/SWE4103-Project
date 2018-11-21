@@ -20,7 +20,7 @@
         </li>
         <li
           v-if="showPlayersTab"
-          :class="{'is-active': curRoute === 'admin-players'}"
+          :class="{'is-active': curRoute.includes('admin-players')}"
           @click="handleAdminNavMenuSelect('players')">
           <span>
             Players
