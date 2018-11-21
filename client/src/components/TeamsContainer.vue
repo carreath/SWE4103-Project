@@ -41,9 +41,11 @@ export default {
     ...mapGetters([
       'teams',
       'leagueById',
+      'selectedLeagueId',
+      'teamsByLeagueId',
     ]),
     formatTeams() {
-      const formatedTeams = this.teams.map((team) => {
+      const formatedTeams = this.teamsByLeagueId(this.selectedLeagueId).map((team) => {
         return {
           teamID: team.teamID,
           teamName: team.teamName,

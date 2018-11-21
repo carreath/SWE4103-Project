@@ -1,6 +1,5 @@
 <template>
   <div id="teams">
-    TEAMS
     <TeamsContainer v-if="curRoute === 'teams'"/>
   </div>
 </template>

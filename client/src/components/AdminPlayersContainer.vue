@@ -19,11 +19,6 @@
           label="Player ID">
         </el-table-column>
         <el-table-column
-          prop="number"
-          sortable
-          label="Jersey Number">
-        </el-table-column>
-        <el-table-column
           prop="firstName"
           sortable
           label="First Name">
@@ -32,6 +27,11 @@
           prop="lastName"
           sortable
           label="Last Name">
+        </el-table-column>
+        <el-table-column
+          prop="number"
+          sortable
+          label="Jersey Number">
         </el-table-column>
         <el-table-column
           prop="teamName"
