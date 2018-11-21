@@ -27,20 +27,48 @@
             label="Team Colour"
             id="team-colour-label"
             prop="colour">
-            <el-color-picker v-model="teamEditForm.colour"></el-color-picker>
+            <el-color-picker
+              v-model="teamEditForm.colour"
+              :style="{'float': 'left'}">
+            </el-color-picker>
+          </el-form-item>
+          <el-form-item
+            label="Manager"
+            id="team-manager-label"
+            prop="managerID">
+            <el-select
+              v-model="teamEditForm.managerID"
+              id="team-manager-input"
+              :style="{'float': 'left'}"
+              placeholder="Manager">
+              <el-option label="None" :value="null"></el-option>
+              <el-option
+                v-for="manager in managerUsers"
+                :key="manager.userID"
+                :value="manager.userID"
+                :label="`${manager.firstName} ${manager.lastName}`"
+                :disabled="managerAlreadyManages(manager.userID)">
+              </el-option>
+            </el-select>
           </el-form-item>
           <div id="errMsg" v-if="errMsg">
             Error: {{ errMsg }}
           </div>
-          <el-form-item id="team-edit-button-container">
-            <el-button
-              type="primary"
-              :loading="loading"
-              @click="teamEditButtonClicked">
-              {{ teamEditButtonText }}
-            </el-button>
-          </el-form-item>
         </el-form>
+      </div>
+      <div class="footer">
+        <el-button
+          :loading="loading"
+          @click="closeModal">
+          Cancel
+        </el-button>
+        <div></div>
+        <el-button
+          type="primary"
+          :loading="loading"
+          @click="teamEditButtonClicked">
+          {{ teamEditButtonText }}
+        </el-button>
       </div>
     </div>
   </div>
@@ -57,6 +85,7 @@ export default{
       teamEditForm: {
         teamName: '',
         colour: null,
+        managerID: null,
       },
       teamEditFormRules: {
         teamName: [
@@ -89,6 +118,8 @@ export default{
       'editTeamModalVisible',
       'editedTeam',
       'editedTeamId',
+      'managerUsers',
+      'teams',
     ]),
     teamEditButtonText() {
       return this.loading ? 'Loading' : 'Edit Team';
@@ -99,6 +130,11 @@ export default{
       'closeModal',
       'editTeam',
     ]),
+    managerAlreadyManages(userID) {
+      return this.teams.filter(team => {
+        return team.managerID === userID && team.teamID !== this.teamEditForm.teamID;
+      }).length > 0;
+    },
     handleKeyUp(e) {
       // Escape ley
       if (e.keyCode === 27) {
@@ -149,6 +185,7 @@ export default{
     #title{
       font-size: 2rem;
       font-weight: bold;
+      margin-bottom: 8px;
     }
 
     .el-form-item.is-success /deep/ .el-input__inner,
@@ -173,6 +210,12 @@ export default{
       button{
         width: 50%;
       }
+    }
+
+    .footer{
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
     }
   }
 }

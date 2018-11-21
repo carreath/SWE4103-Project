@@ -232,6 +232,36 @@ const router = new Router({
         }
       },
     },
+    {
+      path: '/admin/users',
+      name: 'admin-users',
+      component: Admin,
+      beforeEnter: (to, from, next) => {
+        const user = store.getters.user;
+        if (user && (user.userType === 'Admin')) {
+          next();
+          return;
+        }
+        if (store.getters.token) {
+          store.dispatch('validateToken').then((user) => {
+            if (user && user.userType === 'Admin') {
+              next();
+            } else {
+              next('/');
+            }
+          });
+        } else {
+          next('/');
+        }
+      },
+    },
+    {
+      path: '*',
+      name: 'default',
+      beforeEnter: (to, from, next) => {
+        next('/');
+      },
+    },
   ],
 });
 

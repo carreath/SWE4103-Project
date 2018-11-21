@@ -41,8 +41,8 @@
           class = "label"
           prop="pointScheme">
           <el-select v-model="leagueCreateForm.pointScheme" placeholder="Point Scheme">
-            <el-option label="Standard" value="standard"></el-option>
-            <el-option label="Capital Scoring" value="capitalScoring"></el-option>
+            <el-option label="Standard" value="Standard"></el-option>
+            <el-option label="Capital Scoring" value="Capital Scoring"></el-option>
           </el-select>
         </el-form-item>
         <div id="errMsg" v-if="errMsg">
