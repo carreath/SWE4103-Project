@@ -99,6 +99,11 @@ export default {
           return league.managerID === this.user.userID;
         }) || {}).leagueName;
       }
+      if (this.user.userType === 'Manager') {
+        return (this.teams.find(team => {
+          return team.managerID === this.user.userID;
+        }) || {}).teamName;
+      }
       return '';
     },
     formatPlayers() {
