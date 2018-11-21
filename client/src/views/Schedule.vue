@@ -1,8 +1,12 @@
 <template>
   <div id="schedule">
-    <div id="schedule-header">
+    <div id="new-game-button">
+      <el-button
+        type="primary"
+        @click="handleCreateScheduleButtonClick">Create New Game</el-button>
     </div>
-    <div id="schedule-body">
+    <div
+      id="schedule-body">
       <div
         id="calendar-view"
         v-if="scheduleSelectedView === 'Calendar'">
@@ -102,7 +106,6 @@
           </table>
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -132,7 +135,11 @@ export default {
       'gamesByTeamIdSortedByDate',
       'selectedLeagueId',
       'selectedTeamId',
+      'games',
     ]),
+    curRoute() {
+      return this.$route.name;
+    },
   },
   methods: {
     formatDate(mDate) {
@@ -168,9 +175,18 @@ export default {
       });
       this.tableViewGamesList = gamesArr.sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
     },
+    handleCreateScheduleButtonClick() {
+      this.$router.push('/schedule/game/create');
+    },
   },
   watch: {
     selectedTeamId() {
+      this.formatGamesByLeagueIdSortedByDate();
+    },
+    games() {
+      this.formatGamesByLeagueIdSortedByDate();
+    },
+    selectedLeagueId() {
       this.formatGamesByLeagueIdSortedByDate();
     },
   },
@@ -187,6 +203,7 @@ export default {
   display: flex;
   flex-direction: column;
   margin-bottom: 8px;
+
   #schedule-header{
 
   }
@@ -265,25 +282,35 @@ export default {
       width: 80%;
       align-self: center;
 
+      @include checkMaxScreenSize(750px){
+        width: 90%;
+      }
+
+      @include checkMaxScreenSize(650px){
+        width: 98%;
+        font-size: 0.8rem;
+      }
+
       .date-games-container{
         margin: 16px 0px;
-        transition: 0.5s;
 
         .date-games-date{
           display: flex;
           font-size: 1.5rem;
           font-weight: bold;
+
+          @include checkMaxScreenSize(650px){
+            font-size: 1.3rem;
+          }
         }
 
         table{
           width: 100%;
           border: 1px solid #ddd;
           border-collapse:collapse;
-          transition: 0.5s;
 
           tr{
             border-bottom: 1px solid #ddd;
-            transition: 0.5s;
 
             th{
               background-color: $HOVER_LIGHT_GREY;
@@ -310,5 +337,13 @@ export default {
       transition: 0.2s;
     }
   }
+}
+#new-game-button {
+  display: flex;
+  align-items: right;
+  justify-content: flex-end;
+  margin-top: 15px;
+  margin-right: 15px;
+  margin-bottom: 15px;
 }
 </style>

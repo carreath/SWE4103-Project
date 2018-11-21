@@ -1,7 +1,10 @@
 <template>
   <div id="nav-menu">
     <div id="menu-container">
-      <ul id="menu">
+      <ul
+        id="menu"
+        v-if="showTabMenu"
+        ref="tab-menu">
         <li
           :class="{'is-active': curRoute === 'home'}"
           @click="handleNavMenuSelect('news')">
@@ -17,7 +20,7 @@
           </span>
         </li>
         <li
-          :class="{'is-active': curRoute === 'schedule'}"
+          :class="{'is-active': curRoute.includes('schedule')}"
           @click="handleNavMenuSelect('schedule')">
           <span>
             Schedule
@@ -32,7 +35,7 @@
         </li>
 
         <li
-          v-if="loggedIn"
+          v-if="loggedIn && user.userType"
           :class="{'is-active': curRoute.includes('admin')}"
           @click="handleNavMenuSelect('admin')">
           <span>
@@ -40,43 +43,129 @@
           </span>
         </li>
       </ul>
-    </div>
 
-    <div
-      id="user-dropdown-container"
-      v-if="loggedIn">
-      <div class="user-dropdown">
-        <div
-          class="user-dropdown-button"
-          @mouseover="userDropdownButtonHover=true"
-          @mouseleave="userDropdownButtonHover=false"
-          :class="{'lightGreyBackground': userDropdownContentHover}">
-          {{ user.first_name }} {{ user.last_name }}
-          <font-awesome-icon icon="caret-down" />
-        </div>
-        <div
-          class="user-dropdown-content"
-          :class="{'show-user-dropdown-content': userDropdownVisible}"
-          @mouseover="userDropdownContentHover=true"
-          @mouseleave="userDropdownContentHover=false">
-          <div>
-            Change Password
+      <div
+        v-else
+        id="nav-menu-dropdown-container">
+        <div class="nav-menu-dropdown">
+          <div
+            class="nav-menu-dropdown-button"
+            @mouseover="navMenuDropdownButtonHover=true"
+            @mouseleave="navMenuDropdownButtonHover=false"
+            :class="{'lightGreyBackground': navMenuDropdownContentHover}">
+            <span>{{ navMenuDropDownSelect }}</span>
+            <font-awesome-icon class="caret-down" icon="caret-down" />
           </div>
-          <div @click="logoutClicked">
-            Log Out <font-awesome-icon icon="sign-out-alt" />
+          <div
+            class="nav-menu-dropdown-content"
+            :class="{'nav-menu-view-dropdown-content': navMenuDropdownVisible}"
+            @mouseover="navMenuDropdownContentHover=true"
+            @mouseleave="navMenuDropdownContentHover=false">
+            <div
+              @click="handleNavMenuSelect('news')"
+              :class="{'boldText': curRoute === 'home'}">
+              News
+            </div>
+            <div
+              @click="handleNavMenuSelect('teams')"
+              :class="{'boldText': curRoute === 'teams'}">
+              Teams
+            </div>
+            <div
+              @click="handleNavMenuSelect('standings')"
+              :class="{'boldText': curRoute === 'standings'}">
+              Standings
+            </div>
+            <div
+              @click="handleNavMenuSelect('schedule')"
+              :class="{'boldText': curRoute === 'schedule'}">
+              Schedule
+            </div>
+            <div
+              v-if="loggedIn && user.userType"
+              @click="handleNavMenuSelect('admin')"
+              :class="{'boldText': curRoute.includes('admin')}">
+              Admin
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div
-      id="login-button-container"
-      @click='setLoginModalVisible(true)'
-      v-else>
-      <div id="login-button-text">
-        Log In
+
+    <div id="right-menu-container">
+
+      <div
+        id="league-dropdown-container"
+        v-if="showLeagueSelection">
+        <div class="league-dropdown">
+          <div
+            class="league-dropdown-button"
+            @mouseover="leagueDropdownButtonHover=true"
+            @mouseleave="leagueDropdownButtonHover=false"
+            :class="{'lightGreyBackground': leagueDropdownContentHover}">
+            <span v-if="!selectedLeagueId">Select a League</span>
+            <span v-else>{{ selectedLeague.leagueName }}</span>
+            <font-awesome-icon
+              id="caret-down"
+              icon="caret-down"/>
+          </div>
+          <div
+            class="league-dropdown-content"
+            :class="{'show-league-dropdown-content': leagueDropdownVisible}"
+            @mouseover="leagueDropdownContentHover=true"
+            @mouseleave="leagueDropdownContentHover=false">
+            <div
+              v-for="league in leagues"
+              :key="league.leagueID"
+              @click="handleLeagueClick(league.leagueID)"
+              :class="{'boldText': selectedLeagueId === league.leagueID}">
+                {{league.leagueName}}
+            </div>
+          </div>
+        </div>
       </div>
+
+      <div
+        id="user-dropdown-container"
+        v-if="loggedIn">
+        <div class="user-dropdown">
+          <div
+            class="user-dropdown-button"
+            @mouseover="userDropdownButtonHover=true"
+            @mouseleave="userDropdownButtonHover=false"
+            :class="{'lightGreyBackground': userDropdownContentHover}">
+            {{ user.firstName }} {{ user.lastName }}
+            <font-awesome-icon
+              id="caret-down"
+              icon="caret-down"/>
+          </div>
+          <div
+            class="user-dropdown-content"
+            :class="{'show-user-dropdown-content': userDropdownVisible}"
+            @mouseover="userDropdownContentHover=true"
+            @mouseleave="userDropdownContentHover=false">
+            <div>
+              Change Password
+            </div>
+            <div @click="logoutClicked">
+              Log Out <font-awesome-icon icon="sign-out-alt" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="login-button-container"
+        @click='setLoginModalVisible(true)'
+        v-else>
+        <div id="login-button-text">
+          Log In
+        </div>
+      </div>
+
     </div>
+
   </div>
 </template>
 
@@ -89,23 +178,42 @@ export default {
     return {
       userDropdownButtonHover: false,
       userDropdownContentHover: false,
-      adminDropdownButtonHover: false,
-      adminDropdownContentHover: false,
+      navMenuDropdownButtonHover: false,
+      navMenuDropdownContentHover: false,
+      leagueDropdownButtonHover: false,
+      leagueDropdownContentHover: false,
+      navMenuDropDownSelect: 'News',
+      showTabMenu: window.innerWidth > 650,
     };
   },
   computed: {
     ...mapGetters([
       'user',
       'loggedIn',
+      'selectedLeagueId',
+      'leagueById',
+      'leagues',
+      'selectedLeague',
     ]),
     curRoute() {
-      return this.$route.name;
+      return this.$route.name || '';
+    },
+    curRouteNameCap() {
+      const name = this.curRoute;
+      if (name === 'home') return 'News';
+      return name.charAt(0).toUpperCase() + name.slice(1);
     },
     userDropdownVisible() {
       return this.userDropdownButtonHover || this.userDropdownContentHover;
     },
-    adminDropdownVisible() {
-      return this.adminDropdownButtonHover || this.adminDropdownContentHover;
+    navMenuDropdownVisible() {
+      return this.navMenuDropdownButtonHover || this.navMenuDropdownContentHover;
+    },
+    leagueDropdownVisible() {
+      return this.leagueDropdownButtonHover || this.leagueDropdownContentHover;
+    },
+    showLeagueSelection() {
+      return this.leagues.length > 1;
     },
   },
   methods: {
@@ -113,27 +221,37 @@ export default {
       'setLoginModalVisible',
       'setCreateAccountModalVisible',
       'userLogOut',
+      'setSelectedLeague',
     ]),
+    handleResize() {
+      this.showTabMenu = window.innerWidth > 650;
+    },
     handleNavMenuSelect(key) {
+      this.navMenuDropdownContentHover = false;
       switch (key) {
         case ('news'): {
+          this.navMenuDropDownSelect = 'News';
           this.$router.push('/');
           break;
         }
         case ('teams'): {
+          this.navMenuDropDownSelect = 'Teams';
           this.$router.push('/teams');
           break;
         }
         case ('schedule'): {
+          this.navMenuDropDownSelect = 'Schedule';
           this.$router.push('/schedule');
           break;
         }
         case ('standings'): {
+          this.navMenuDropDownSelect = 'Standings';
           this.$router.push('/standings');
           break;
         }
         case ('admin'): {
-          this.$router.push('/admin/leagues');
+          this.navMenuDropDownSelect = 'Admin';
+          this.$router.push('/admin');
           break;
         }
         default: {
@@ -159,6 +277,16 @@ export default {
       }).catch(() => {
       });
     },
+    handleLeagueClick(leagueID) {
+      this.leagueDropdownContentHover = false;
+      this.setSelectedLeague(leagueID);
+    },
+  },
+  mounted() {
+    window.addEventListener('resize', this.handleResize);
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize);
   },
 };
 </script>
@@ -173,6 +301,7 @@ export default {
   width: 100%;
   border-bottom: 1px solid $HOVER_GREY;
   background-color: $SECONDARY_COLOR;
+  height: 44px;
 
   #menu{
     padding: 0px 20px;
@@ -198,57 +327,7 @@ export default {
         padding: 0px 20px;
         user-select: none;
       }
-
-      .admin-dropdown{
-        .admin-dropdown-button{
-          border: none;
-          outline: none;
-          color: $PRIMARY_TO_FADE;
-          padding: 20px 20px;
-          margin: 0;
-          transition: 0.3s;
-
-          &:hover{
-            background-color: $HOVER_GREY;
-            cursor: pointer;
-          }
-        }
-
-        .admin-dropdown-content{
-          /*display: none;*/
-          opacity: 0;
-          visibility: hidden;
-          position: absolute;
-          background-color: #f9f9f9;
-          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-          z-index: 10;
-          border-radius: 0px 0px 6px 6px;
-          transition: visibility 0s, opacity 0.2s linear;
-
-          div{
-            float: none;
-            color: $PRIMARY_TO_FADE;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            text-align: left;
-            white-space:nowrap;
-            font-weight: normal;
-            transition: 0.3s;
-
-            &:hover{
-              background-color: $HOVER_GREY;
-              cursor: pointer;
-            }
-          }
-        }
-
-        .show-admin-dropdown-content{
-          display: block;
-        }
-      }
     }
-
 
     .is-active{
       transition: 0.3s;
@@ -261,26 +340,35 @@ export default {
     }
   }
 
-  #user-dropdown-container{
+  #nav-menu-dropdown-container{
     display: flex;
     align-items: center;
-    margin-right: 20px;
+    margin-left: 20px;
     font-weight: bold;
     color: $PRIMARY_TO_FADE;
     transition: 0.3s;
     user-select: none;
+    height: 100%;
 
+    .nav-menu-dropdown{
+      min-width: 128px;
+      height: 100%;
 
-    .user-dropdown{
-      width: 160px;
-
-      .user-dropdown-button{
+      .nav-menu-dropdown-button{
         border: none;
         outline: none;
         color: $PRIMARY_TO_FADE;
-        padding: 20px 20px;
+        padding: 0px 20px;
         margin: 0;
         transition: 0.3s;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+
+        .caret-down{
+          margin-left: 4px;
+        }
 
         &:hover{
           background-color: $HOVER_GREY;
@@ -288,15 +376,14 @@ export default {
         }
       }
 
-      .user-dropdown-content{
+      .nav-menu-dropdown-content{
         /*display: none;*/
         position: absolute;
         background-color: #f9f9f9;
         box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
         z-index: 10;
-        right: 20px;
         border-radius: 0px 0px 6px 6px;
-        width: 160px;
+        width: 128px;
         opacity: 0;
         visibility: hidden;
         transition: visibility 0s, opacity 0.2s linear;
@@ -318,13 +405,12 @@ export default {
           }
         }
 
-        :last-child{
-          border-top: 1px solid $ELEMENT_UI_DEFAULT_BORDER;
-          padding-top: 4px;
+        .boldText{
+          font-weight: bold;
         }
       }
 
-      .show-user-dropdown-content{
+      .nav-menu-view-dropdown-content{
         /*display: block;*/
         opacity: 1;
         visibility: visible;
@@ -332,23 +418,191 @@ export default {
     }
   }
 
-  #login-button-container{
+  #right-menu-container{
     display: flex;
-    align-items: center;
-    margin-right: 20px;
-    font-weight: bold;
-    color: $PRIMARY_TO_FADE;
-    height: 61px;
-    transition: 0.3s;
-    user-select: none;
+    flex-direction: row;
 
-    &:hover{
-      background-color: $HOVER_GREY;
-      cursor: pointer;
+    #league-dropdown-container{
+      display: flex;
+      align-items: center;
+      margin-right: 0px;
+      font-weight: bold;
+      color: $PRIMARY_TO_FADE;
+      transition: 0.3s;
+      user-select: none;
+      height: 100%;
+
+      .league-dropdown{
+        min-width: 160px;
+        height: 100%;
+
+        .league-dropdown-button{
+          border: none;
+          outline: none;
+          color: $PRIMARY_TO_FADE;
+          padding: 0px 20px;
+          margin: 0;
+          transition: 0.3s;
+          height: 100%;
+          display: flex;
+          align-items: center;
+
+          #caret-down{
+            margin-left: 4px;
+          }
+
+          &:hover{
+            background-color: $HOVER_GREY;
+            cursor: pointer;
+          }
+
+          span{
+            white-space: nowrap;
+          }
+        }
+
+        .league-dropdown-content{
+          /*display: none;*/
+          position: relative;
+          background-color: #f9f9f9;
+          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+          z-index: 10;
+          border-radius: 0px 0px 6px 6px;
+          width: auto;
+          opacity: 0;
+          visibility: hidden;
+          transition: visibility 0s, opacity 0.2s linear;
+
+          div{
+            float: none;
+            color: $PRIMARY_TO_FADE;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            white-space:nowrap;
+            font-weight: normal;
+            transition: 0.3s;
+
+            &:hover{
+              background-color: $HOVER_GREY;
+              cursor: pointer;
+            }
+          }
+
+          .boldText{
+            font-weight: bold;
+          }
+        }
+
+        .show-league-dropdown-content{
+          /*display: block;*/
+          opacity: 1;
+          visibility: visible;
+        }
+      }
     }
 
-    #login-button-text{
-      padding: 0px 20px;
+    #user-dropdown-container{
+      display: flex;
+      align-items: center;
+      margin-right: 20px;
+      font-weight: bold;
+      color: $PRIMARY_TO_FADE;
+      transition: 0.3s;
+      user-select: none;
+      height: 100%;
+
+      .user-dropdown{
+        min-width: 160px;
+        height: 100%;
+
+        .user-dropdown-button{
+          border: none;
+          outline: none;
+          color: $PRIMARY_TO_FADE;
+          padding: 0px 20px;
+          margin: 0;
+          transition: 0.3s;
+          height: 100%;
+          display: flex;
+          align-items: center;
+
+          #caret-down{
+            margin-left: 4px;
+          }
+
+          &:hover{
+            background-color: $HOVER_GREY;
+            cursor: pointer;
+          }
+
+          span{
+            white-space: nowrap;
+          }
+        }
+
+        .user-dropdown-content{
+          position: relative;
+          background-color: #f9f9f9;
+          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+          z-index: 10;
+          /*right: 20px;*/
+          border-radius: 0px 0px 6px 6px;
+          opacity: 0;
+          visibility: hidden;
+          transition: visibility 0s, opacity 0.2s linear;
+
+          div{
+            float: none;
+            color: $PRIMARY_TO_FADE;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            white-space:nowrap;
+            font-weight: normal;
+            transition: 0.3s;
+
+            &:hover{
+              background-color: $HOVER_GREY;
+              cursor: pointer;
+            }
+          }
+
+          :last-child{
+            border-top: 1px solid $ELEMENT_UI_DEFAULT_BORDER;
+            padding-top: 4px;
+          }
+        }
+
+        .show-user-dropdown-content{
+          /*display: block;*/
+          opacity: 1;
+          visibility: visible;
+        }
+      }
+    }
+
+    #login-button-container{
+      display: flex;
+      align-items: center;
+      margin-right: 20px;
+      font-weight: bold;
+      color: $PRIMARY_TO_FADE;
+      transition: 0.3s;
+      user-select: none;
+      white-space: nowrap;
+
+      &:hover{
+        background-color: $HOVER_GREY;
+        cursor: pointer;
+      }
+
+      #login-button-text{
+        padding: 0px 20px;
+        white-space: nowrap;
+      }
     }
   }
 }

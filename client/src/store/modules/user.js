@@ -3,6 +3,8 @@ import UserService from '@/service/UserService';
 const state = {
   user: null,
   token: localStorage.getItem('token') || null,
+  users: [],
+  editedUserId: null,
 };
 
 const getters = {
@@ -14,6 +16,24 @@ const getters = {
   },
   loggedIn(state) {
     return state.token && state.user;
+  },
+  users(state) {
+    return state.users;
+  },
+  userById: (state) => (id) => {
+    return (state.users || []).find(user => user.userID === id);
+  },
+  editedUserId(state) {
+    return state.editedUserId;
+  },
+  editedUser(state) {
+    return state.users.find(user => user.userID === state.editedUserId);
+  },
+  coordinatorUsers(state) {
+    return state.users.filter(user => user.userType === 'Coordinator');
+  },
+  managerUsers(state) {
+    return state.users.filter(user => user.userType === 'Manager');
   },
 };
 
@@ -39,7 +59,7 @@ const actions = {
       }
     });
   },
-  userLogIn({ commit }, payload) {
+  userLogIn({ commit, dispatch }, payload) {
     return UserService.login(payload).then((response) => {
       if (!response || !response.status) {
         return { retVal: false, retMsg: 'Server Error' };
@@ -48,6 +68,9 @@ const actions = {
         case 201: {
           commit('mutateUser', response.data.user);
           commit('mutateToken', response.data.token);
+          if (response.data.user.userType === 'Admin') {
+            dispatch('getAllUsers');
+          }
           return { retVal: true, retMsg: 'Success' };
         }
         case 404: {
@@ -65,15 +88,22 @@ const actions = {
   userLogOut({ commit }) {
     commit('mutateUser', null);
     commit('mutateToken', null);
+    commit('mutateUsers', []);
   },
   setUser({ commit }, user) {
     commit('mutateUser', user);
+  },
+  setEditedUser({ commit }, id) {
+    commit('mutateEditedUserId', id);
   },
   retrieveUserFromToken({ commit, dispatch }) {
     UserService.getUserFromToken().then((response) => {
       if (response.status && response.status === 200) {
         dispatch('refreshToken');
         commit('mutateUser', response.data.user);
+        if (response.data.user.userType === 'Admin') {
+          commit('mutateUsers', response.data.users);
+        }
       } else {
         commit('mutateUser', null);
         commit('mutateToken', null);
@@ -89,6 +119,60 @@ const actions = {
       }
     });
   },
+  validateToken() {
+    return UserService.getUserFromToken().then((response) => {
+      if (response.status && response.status === 200) {
+        return response.data.user;
+      }
+      return null;
+    });
+  },
+  getAllUsers({ commit }) {
+    UserService.getUserFromToken().then((response) => {
+      if (response.status && response.status === 200 && response.data.user.userType === 'Admin') {
+        commit('mutateUsers', response.data.users);
+      } else {
+        commit('mutateUsers', null);
+      }
+    });
+  },
+  editUser({ getters, dispatch }, userObj) {
+    return UserService.editUser(userObj).then((response) => {
+      if (!response || !response.status) {
+        return { retVal: false, retMsg: 'Server Error' };
+      }
+
+      switch (response.status) {
+        case 200 || 201: {
+          getters.user.userID === userObj.userID ? dispatch('retrieveUserFromToken') : dispatch('getAllUsers');
+          return { retVal: true, retMsg: 'User Edited' };
+        }
+        default: {
+          return { retVal: false, retMsg: 'Server Error' };
+        }
+      }
+    });
+  },
+  deleteUser({ dispatch }, userObj) {
+    const params = {
+      userID: userObj.userID,
+    };
+    return UserService.deleteUser(params).then((response) => {
+      if (!response || !response.status) {
+        return { retVal: false, retMsg: 'Server Error' };
+      }
+
+      switch (response.status) {
+        case 200 || 201: {
+          dispatch('getAllUsers');
+          return { retVal: true, retMsg: 'User Deleted' };
+        }
+        default: {
+          return { retVal: false, retMsg: 'Server Error' };
+        }
+      }
+    });
+  },
 };
 
 const mutations = {
@@ -98,6 +182,12 @@ const mutations = {
   mutateToken(state, token) {
     token ? localStorage.setItem('token', token) : localStorage.removeItem('token');
     state.token = token;
+  },
+  mutateUsers(state, payload) {
+    state.users = payload;
+  },
+  mutateEditedUserId(state, id) {
+    state.editedUserId = id;
   },
 };
 

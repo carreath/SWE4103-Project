@@ -3,6 +3,7 @@
     <div id="admin-sub-menu-container">
       <ul id="admin-sub-menu">
         <li
+          v-if="showLeaguesTab"
           :class="{'is-active': curRoute.includes('admin-leagues')}"
           @click="handleAdminNavMenuSelect('leagues')">
           <span>
@@ -10,6 +11,7 @@
           </span>
         </li>
         <li
+          v-if="showTeamsTab"
           :class="{'is-active': curRoute.includes('admin-teams')}"
           @click="handleAdminNavMenuSelect('teams')">
           <span>
@@ -17,10 +19,19 @@
           </span>
         </li>
         <li
+          v-if="showPlayersTab"
           :class="{'is-active': curRoute === 'admin-players'}"
           @click="handleAdminNavMenuSelect('players')">
           <span>
             Players
+          </span>
+        </li>
+        <li
+          v-if="showUsersTab"
+          :class="{'is-active': curRoute === 'admin-users'}"
+          @click="handleAdminNavMenuSelect('users')">
+          <span>
+            Users
           </span>
         </li>
       </ul>
@@ -40,10 +51,37 @@ export default {
   },
   computed: {
     ...mapGetters([
-
+      'user',
     ]),
     curRoute() {
-      return this.$route.name;
+      return this.$route.name || '';
+    },
+    showLeaguesTab() {
+      if (!this.user) {
+        return false;
+      }
+      return this.user.userType === 'Admin';
+    },
+    showTeamsTab() {
+      if (!this.user) {
+        return false;
+      }
+      return this.user.userType === 'Admin'
+        || this.user.userType === 'Coordinator';
+    },
+    showPlayersTab() {
+      if (!this.user) {
+        return false;
+      }
+      return this.user.userType === 'Admin'
+        || this.user.userType === 'Coordinator'
+        || this.user.userType === 'Manager';
+    },
+    showUsersTab() {
+      if (!this.user) {
+        return false;
+      }
+      return this.user.userType === 'Admin';
     },
   },
   methods: {
@@ -62,6 +100,10 @@ export default {
         }
         case ('players'): {
           this.$router.push('/admin/players');
+          break;
+        }
+        case ('users'): {
+          this.$router.push('/admin/users');
           break;
         }
         default: {
@@ -86,6 +128,7 @@ export default {
   background-color: $VERY_LIGHT_GREY;
   transition: 0.3s;
   font-size: 0.9rem;
+  min-height: 36px;
 
   #admin-sub-menu{
     padding: 0px 20px;
@@ -108,7 +151,7 @@ export default {
       }
 
       span{
-        padding: 10px 20px;
+        padding: 0px 20px;
         user-select: none;
       }
 

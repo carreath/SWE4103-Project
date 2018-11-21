@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <ModalWrapper v-show='modalVisible'/>
-    <UpcomingGamesHeader ref='upcoming-games-header'/>
+    <ModalEditWrapper v-show='editModalVisible'/>
+    <UpcomingGamesHeader ref='upcoming-games-header' v-if="false"/>
     <MainHeader ref="main-header"/>
     <div
       id="nav-menu-wrapper"
@@ -28,6 +29,7 @@ import UpcomingGamesHeader from './components/UpcomingGamesHeader.vue';
 import NavMenu from './components/NavMenu.vue';
 import AdminSubNavMenu from './components/AdminSubNavMenu.vue';
 import ScheduleSubNavMenu from './components/ScheduleSubNavMenu.vue';
+import ModalEditWrapper from './components/ModalEditWrapper.vue';
 
 export default{
   name: 'App',
@@ -38,6 +40,7 @@ export default{
     NavMenu,
     AdminSubNavMenu,
     ScheduleSubNavMenu,
+    ModalEditWrapper,
   },
   data() {
     return {
@@ -47,10 +50,11 @@ export default{
   computed: {
     ...mapGetters([
       'modalVisible',
+      'editModalVisible',
       'token',
     ]),
     curRoute() {
-      return this.$route.name;
+      return this.$route.name || '';
     },
   },
   methods: {
@@ -67,8 +71,13 @@ export default{
         this.nailNavMenu = true;
         outerRouterWrapper.style.paddingTop = `${navbar.clientHeight}px`;
       }
-      const upcomingGamesHeaderHeight = this.$refs['upcoming-games-header'].$el.clientHeight;
-      const mainHeaderHeight = this.$refs['main-header'].$el.clientHeight;
+
+      const upcomingGamesHeaderHeight = this.$refs['upcoming-games-header'] ?
+        this.$refs['upcoming-games-header'].$el.clientHeight :
+        0;
+      const mainHeaderHeight = this.$refs['main-header'] ?
+        this.$refs['main-header'].$el.clientHeight :
+        0;
       const totalHeaderHeight = upcomingGamesHeaderHeight + mainHeaderHeight;
       if (this.nailNavMenu && (window.pageYOffset - totalHeaderHeight <= 0)) {
         this.nailNavMenu = false;
@@ -78,6 +87,13 @@ export default{
   },
   watch: {
     modalVisible(val) {
+      if (val) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = 'auto';
+      }
+    },
+    editModalVisible(val) {
       if (val) {
         document.body.style.overflow = 'hidden';
       } else {
@@ -119,7 +135,7 @@ export default{
   }
 
   .router-view-outer-wrapper{
-    padding: 0px 20px;
+    padding: 0px 0px;
     background-color: $SECONDARY_COLOR;
 
     #router-view-inner-wrapper{
