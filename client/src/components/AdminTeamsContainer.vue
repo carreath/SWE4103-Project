@@ -127,7 +127,7 @@ export default {
               center: true,
             });
           } else {
-            this.$message.error('Error deleting');
+            this.$message.error(response.retMsg);
           }
           this.$router.push('/admin/teams');
         });
