@@ -10,23 +10,19 @@
     <div id="players-table-container">
       <el-table
         :data="formatPlayers"
-        :default-sort = "{prop: 'playerID', order: 'ascending'}"
         stripe
         style="width: 100%">
         <el-table-column
           prop="playerID"
+          width="110px"
           sortable
           label="Player ID">
         </el-table-column>
         <el-table-column
-          prop="firstName"
-          sortable
-          label="First Name">
-        </el-table-column>
-        <el-table-column
-          prop="lastName"
-          sortable
-          label="Last Name">
+          prop="fullName"
+          label="Name"
+          :show-overflow-tooltip="true"
+          sortable>
         </el-table-column>
         <el-table-column
           prop="number"
@@ -36,6 +32,7 @@
         <el-table-column
           prop="teamName"
           sortable
+          :show-overflow-tooltip="true"
           label="Team Name">
         </el-table-column>
         <el-table-column
@@ -74,15 +71,39 @@ export default {
       'players',
       'teamById',
       'playerById',
+      'user',
+      'selectedLeagueId',
+      'teams',
+      'leagues',
     ]),
     formatPlayers() {
-      const formatedPlayers = this.players.map((player) => {
+      const formatedPlayers = this.players.filter(player => {
+        if (!this.user) {
+          return false;
+        }
+        if (this.user.userType === 'Admin') {
+          const team = this.teams.find(team => team.teamID === player.teamID);
+          return (team || {}).leagueID === this.selectedLeagueId;
+        }
+        if (this.user.userType === 'Coordinator') {
+          const leagueID = (this.leagues.find(league => {
+            return league.managerID === this.user.userID;
+          }) || {}).leagueID;
+          const team = this.teams.find(team => team.teamID === player.teamID);
+          return (team || {}).leagueID === leagueID;
+        }
+        if (this.user.userType === 'Manager') {
+          const teamID = (this.teams.find(team => {
+            return team.managerID === this.user.userID;
+          }) || {}).teamID;
+          return teamID === player.teamID;
+        }
+        return false;
+      }).map((player) => {
         return {
-          playerID: player.playerID,
-          lastName: player.lastName,
-          firstName: player.firstName,
+          ...player,
+          fullName: `${player.firstName} ${player.lastName}`,
           teamName: this.teamById(player.teamID).teamName,
-          number: player.number,
         };
       });
       return formatedPlayers;

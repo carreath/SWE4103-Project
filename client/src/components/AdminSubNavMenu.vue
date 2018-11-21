@@ -26,6 +26,14 @@
             Players
           </span>
         </li>
+        <li
+          v-if="showUsersTab"
+          :class="{'is-active': curRoute === 'admin-users'}"
+          @click="handleAdminNavMenuSelect('users')">
+          <span>
+            Users
+          </span>
+        </li>
       </ul>
     </div>
   </div>
@@ -69,6 +77,12 @@ export default {
         || this.user.userType === 'Coordinator'
         || this.user.userType === 'Manager';
     },
+    showUsersTab() {
+      if (!this.user) {
+        return false;
+      }
+      return this.user.userType === 'Admin';
+    },
   },
   methods: {
     ...mapActions([
@@ -86,6 +100,10 @@ export default {
         }
         case ('players'): {
           this.$router.push('/admin/players');
+          break;
+        }
+        case ('users'): {
+          this.$router.push('/admin/users');
           break;
         }
         default: {
