@@ -103,6 +103,9 @@ const actions = {
           dispatch('getTeams');
           return { retVal: true, retMsg: 'Team Deleted' };
         }
+        case 400: {
+          return { retVal: false, retMsg: 'Team Cannot Be Deleted If They Have Played A Game' };
+        }
         default: {
           return { retVal: false, retMsg: 'Server Error' };
         }
