@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <ModalWrapper v-show='modalVisible'/>
+    <ModalEditWrapper v-show='editModalVisible'/>
     <UpcomingGamesHeader ref='upcoming-games-header' v-if="false"/>
     <MainHeader ref="main-header"/>
     <div
@@ -8,7 +9,7 @@
       :class="{'sticky': nailNavMenu}">
       <NavMenu/>
       <AdminSubNavMenu v-if="curRoute.includes('admin')"/>
-      <ScheduleSubNavMenu v-if="curRoute.includes('schedule')"/>
+      <ScheduleSubNavMenu v-if="curRoute === 'schedule'"/>
     </div>
     <div
       id="router-view-outer-wrapper"
@@ -28,6 +29,7 @@ import UpcomingGamesHeader from './components/UpcomingGamesHeader.vue';
 import NavMenu from './components/NavMenu.vue';
 import AdminSubNavMenu from './components/AdminSubNavMenu.vue';
 import ScheduleSubNavMenu from './components/ScheduleSubNavMenu.vue';
+import ModalEditWrapper from './components/ModalEditWrapper.vue';
 
 export default{
   name: 'App',
@@ -38,6 +40,7 @@ export default{
     NavMenu,
     AdminSubNavMenu,
     ScheduleSubNavMenu,
+    ModalEditWrapper,
   },
   data() {
     return {
@@ -47,6 +50,7 @@ export default{
   computed: {
     ...mapGetters([
       'modalVisible',
+      'editModalVisible',
       'token',
     ]),
     curRoute() {
@@ -83,6 +87,13 @@ export default{
   },
   watch: {
     modalVisible(val) {
+      if (val) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = 'auto';
+      }
+    },
+    editModalVisible(val) {
       if (val) {
         document.body.style.overflow = 'hidden';
       } else {

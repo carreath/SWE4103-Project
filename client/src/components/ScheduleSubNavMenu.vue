@@ -74,11 +74,6 @@
         </li>
       </ul>
     </div>
-    <div id="create-schedule-button-container">
-      <el-button
-        type="primary"
-        @click="handleCreateScheduleButtonClick">Create Schedule</el-button>
-    </div>
   </div>
 </template>
 
@@ -129,9 +124,6 @@ export default {
     handleTeamClick(teamID) {
       this.scheduleTeamDropdownContentHover = false;
       this.setSelectedTeamId(teamID);
-    },
-    handleCreateScheduleButtonClick() {
-      this.$router.push('/schedule/create');
     },
     handleResize() {
       if (window.innerWidth < 700) {

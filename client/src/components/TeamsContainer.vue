@@ -6,13 +6,16 @@
       <el-table
         :data="formatTeams"
         stripe
+        :default-sort = "{prop: 'teamID', order: 'ascending'}"
         style="width: 100%">
         <el-table-column
           prop="teamID"
+          sortable
           label="Team ID">
         </el-table-column>
         <el-table-column
           prop="teamName"
+          sortable
           label="Team Name">
         </el-table-column>
         <el-table-column
@@ -38,9 +41,11 @@ export default {
     ...mapGetters([
       'teams',
       'leagueById',
+      'selectedLeagueId',
+      'teamsByLeagueId',
     ]),
     formatTeams() {
-      const formatedTeams = this.teams.map((team) => {
+      const formatedTeams = this.teamsByLeagueId(this.selectedLeagueId).map((team) => {
         return {
           teamID: team.teamID,
           teamName: team.teamName,

@@ -10,4 +10,13 @@ export default {
         return err.response;
       });
   },
+  createGame(params) {
+    return ServiceLayer().post('/game', params)
+      .then((response) => {
+        return response;
+      })
+      .catch((err) => {
+        return err.response;
+      });
+  },
 };

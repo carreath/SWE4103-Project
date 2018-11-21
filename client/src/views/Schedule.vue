@@ -1,13 +1,17 @@
 <template>
   <div id="schedule">
-    <div
-      id="create-schedule-container"
-      v-if="curRoute === 'schedule-create'">
-      <CreateScheduleForm/>
+    <div id="new-game-button">
+      <el-button
+        type="primary"
+        @click="handleCreateScheduleButtonClick">Create New Schedule</el-button>
+    </div>
+    <div id="new-game-button">
+      <el-button
+        type="primary"
+        @click="handleCreateGameButtonClick">Create New Game</el-button>
     </div>
     <div
-      id="schedule-body"
-      v-else>
+      id="schedule-body">
       <div
         id="calendar-view"
         v-if="scheduleSelectedView === 'Calendar'">
@@ -107,21 +111,18 @@
           </table>
         </div>
       </div>
-
     </div>
   </div>
 </template>
 
 <script>
 import Calendar from '@/components/Calendar.vue';
-import CreateScheduleForm from '@/components/CreateScheduleForm.vue';
 import { mapGetters } from 'vuex';
 
 export default {
   name: 'Schedule',
   components: {
     Calendar,
-    CreateScheduleForm,
   },
   data() {
     return {
@@ -178,6 +179,12 @@ export default {
         gamesArr.push(gamesObj);
       });
       this.tableViewGamesList = gamesArr.sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
+    },
+    handleCreateGameButtonClick() {
+      this.$router.push('/schedule/game/create');
+    },
+    handleCreateScheduleButtonClick() {
+      this.$router.push('/schedule/create');
     },
   },
   watch: {
@@ -338,5 +345,13 @@ export default {
       transition: 0.2s;
     }
   }
+}
+#new-game-button {
+  display: flex;
+  align-items: right;
+  justify-content: flex-end;
+  margin-top: 15px;
+  margin-right: 15px;
+  margin-bottom: 15px;
 }
 </style>

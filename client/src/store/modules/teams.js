@@ -4,6 +4,7 @@ import TeamsService from '@/service/TeamsService';
 const state = {
   teams: [],
   selectedTeamId: null, // NOTE this should default to first team in selecetd league
+  editedTeamId: 1,
 };
 
 // getters
@@ -22,6 +23,12 @@ const getters = {
   },
   teamsByLeagueId: (state) => (leagueId) => {
     return state.teams.filter(team => team.leagueID === leagueId);
+  },
+  editedTeamId(state) {
+    return state.editedTeamId;
+  },
+  editedTeam(state) {
+    return state.teams.find(team => team.teamID === state.editedTeamId);
   },
 };
 
@@ -43,6 +50,9 @@ const actions = {
       dispatch('setSelectedGameId', null);
     }
   },
+  setEditedTeam({ commit }, id) {
+    commit('mutateEditedTeamId', id);
+  },
   createTeam({ getters, dispatch }, teamObj) {
     teamObj.leagueID = getters.selectedLeagueId;
     return TeamsService.createTeam(teamObj).then((response) => {
@@ -63,6 +73,46 @@ const actions = {
       }
     });
   },
+  deleteTeam({ dispatch }, teamObj) {
+    const params = {
+      teamID: teamObj.teamID,
+    };
+    return TeamsService.deleteTeam(params).then((response) => {
+      if (!response || !response.status) {
+        return { retVal: false, retMsg: 'Server Error' };
+      }
+
+      switch (response.status) {
+        case 200: {
+          dispatch('getTeams');
+          return { retVal: true, retMsg: 'Team Deleted' };
+        }
+        case 400: {
+          return { retVal: false, retMsg: 'Team Cannot Be Deleted If They Have Played A Game' };
+        }
+        default: {
+          return { retVal: false, retMsg: 'Server Error' };
+        }
+      }
+    });
+  },
+  editTeam({ dispatch }, teamObj) {
+    return TeamsService.editTeam(teamObj).then((response) => {
+      if (!response || !response.status) {
+        return { retVal: false, retMsg: 'Server Error' };
+      }
+
+      switch (response.status) {
+        case 200: {
+          dispatch('getTeams');
+          return { retVal: true, retMsg: 'Team Edited' };
+        }
+        default: {
+          return { retVal: false, retMsg: 'Server Error' };
+        }
+      }
+    });
+  },
 };
 
 // mutations
@@ -72,6 +122,9 @@ const mutations = {
   },
   mutateSelectedTeamId(state, id) {
     state.selectedTeamId = id;
+  },
+  mutateEditedTeamId(state, id) {
+    state.editedTeamId = id;
   },
   addTeam(state, teamObj) {
     state.teams.push(teamObj);

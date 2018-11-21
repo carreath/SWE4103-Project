@@ -4,6 +4,9 @@
       <div id="title">
         Create Schedule
       </div>
+      <div id="info">
+        Please input the field availability for the first week of the schedule.
+      </div>
       <el-form
         :model="createScheduleForm"
         ref="schedule-form">
@@ -20,32 +23,17 @@
             <el-input v-model="line.field"></el-input>
           </el-form-item>
           <el-form-item
-            label="Day"
-            id="day-label"
-            :prop="line.day"
-            :rules="{
-              required: true, message: 'Please input day available', trigger: 'blur'
-            }">
-            <el-select v-model="line.day" placeholder="Select Day">
-              <el-option
-                v-for="item in options"
-                :key="item.value.key"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
+              label="Game Time"
+              id="game-time-label"
+              prop="gameTime">
+              <el-date-picker
+                v-model="createScheduleForm.gameTime"
+                type="datetime"
+                placeholder="Select date and time"
+                id="game-time-input"
+                value-format="yyyy-MM-dd HH:mm:ss">
+              </el-date-picker>
           </el-form-item>
-          <div id="time-container">
-            <el-form-item
-              label="Time"
-              id="time-label"
-              :prop="line.time"
-              :rules="{
-                required: true, message: 'Please input time available', trigger: 'blur'
-              }">
-              <el-input v-model="line.time" type="time" id="time-input"></el-input>
-            </el-form-item>
-          </div>
           <el-button @click="removeLine(line.key)">Delete Entry</el-button>
         </div>
         <el-form-item>
@@ -162,17 +150,19 @@ export default {
   align-items: flex-start;
   padding-top: 16px;
 
+  #title {
+    font-size: 25px;
+    margin-bottom: 16px;
+  }
+
+  #info {
+    margin-bottom: 16px;
+  }
+
   #line-of-input {
-    padding-top: 16px;
     padding-left: 16px;
     display: flex;
     flex-direction: row;
-    #time-container {
-      display: inline-block;
-      width: 215px;
-      text-align: right;
-      padding-right: 50px;
-    }
     .el-input {
       width: 60%;
     }

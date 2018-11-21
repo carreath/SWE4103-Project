@@ -6,7 +6,6 @@
       </div>
       <div id="form-container">
         <el-form
-          :label-position="labelPosition"
           :model="adminPlayersCreate"
           :rules="adminPlayersCreateRules"
           label-width="120px"
@@ -38,8 +37,8 @@
           <el-form-item
             label="Team Name"
             id="team-name-label"
-            prop="team">
-            <el-select v-model="adminPlayersCreate.team" placeholder="Select Team">
+            prop="teamID">
+            <el-select v-model="adminPlayersCreate.teamID" placeholder="Select Team">
               <el-option
                 v-for="item in formatTeams"
                 :key="item.teamID"
@@ -47,6 +46,18 @@
                 :value="item.teamID">
               </el-option>
             </el-select>
+          </el-form-item>
+          <el-form-item
+            label="Player Number"
+            id="player-number-label"
+            prop="number">
+            <el-input
+              id="player-number-input"
+              type="number"
+              placeholder="Player Number"
+              v-model="adminPlayersCreate.number"
+              :disabled="loading">
+            </el-input>
           </el-form-item>
           <div id="errMsg" v-if="errMsg">
             Error: {{ errMsg }}
@@ -81,7 +92,8 @@ export default{
       adminPlayersCreate: {
         firstName: '',
         lastName: '',
-        team: '',
+        teamID: '',
+        number: '',
       },
       adminPlayersCreateRules: {
         firstName: [
@@ -110,10 +122,23 @@ export default{
             trigger: 'blur',
           },
         ],
-        team: [
+        teamID: [
           {
             required: true,
             message: 'Please select Team',
+            trigger: 'blur',
+          },
+        ],
+        number: [
+          {
+            required: true,
+            message: 'Please input Player Number',
+            trigger: 'blur',
+          },
+          {
+            min: 1,
+            max: 4,
+            message: 'Input too long',
             trigger: 'blur',
           },
         ],
@@ -161,6 +186,7 @@ export default{
             this.loading = false;
             if (response.retVal) {
               this.errMsg = null;
+              this.$router.push('/admin/players');
             } else {
               this.errMsg = response.retMsg;
             }
