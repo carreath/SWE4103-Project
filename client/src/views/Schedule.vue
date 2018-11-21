@@ -1,14 +1,16 @@
 <template>
   <div id="schedule">
-    <div id="new-game-button">
-      <el-button
-        type="primary"
-        @click="handleCreateScheduleButtonClick">Create New Schedule</el-button>
-    </div>
-    <div id="new-game-button">
-      <el-button
-        type="primary"
-        @click="handleCreateGameButtonClick">Create New Game</el-button>
+    <div id="button-container">
+      <div id="new-schedule-button">
+        <el-button
+          type="primary"
+          @click="handleCreateScheduleButtonClick">Create New Schedule</el-button>
+      </div>
+      <div id="new-game-button">
+        <el-button
+          type="primary"
+          @click="handleCreateGameButtonClick">Create New Game</el-button>
+      </div>
     </div>
     <div
       id="schedule-body">
@@ -212,8 +214,13 @@ export default {
   flex-direction: column;
   margin-bottom: 8px;
 
-  #schedule-header{
+  #button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
 
+  #schedule-header{
   }
 
   #schedule-body{
@@ -345,6 +352,14 @@ export default {
       transition: 0.2s;
     }
   }
+}
+#new-schedule-button {
+  display: flex;
+  align-items: right;
+  justify-content: flex-end;
+  margin-top: 15px;
+  margin-right: 15px;
+  margin-bottom: 15px;
 }
 #new-game-button {
   display: flex;
