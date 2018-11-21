@@ -1,17 +1,21 @@
 <template>
   <div id="admin-players-container">
     <div id="title-container">
-    </div>
-    <div id="create-player-button-container">
-      <span id="playerNameSearch">
-        <el-input
-          v-model="searchPlayerName"
-          size="small"
-          placeholder="Filter Name"/>
-      </span>
-      <el-button
-        type="primary"
-        @click="handleCreatePlayerButtonClick">Create Player</el-button>
+      <h1>
+        {{ leagueTitleName }}
+      </h1>
+      <div></div>
+      <div id="create-player-button-container">
+        <span id="playerNameSearch">
+          <el-input
+            v-model="searchPlayerName"
+            size="small"
+            placeholder="Filter Name"/>
+        </span>
+        <el-button
+          type="primary"
+          @click="handleCreatePlayerButtonClick">Create Player</el-button>
+      </div>
     </div>
     <div id="players-table-container">
       <el-table
@@ -81,7 +85,22 @@ export default {
       'selectedLeagueId',
       'teams',
       'leagues',
+      'selectedLeague',
     ]),
+    leagueTitleName() {
+      if (!this.user) {
+        return '';
+      }
+      if (this.user.userType === 'Admin') {
+        return this.selectedLeague.leagueName;
+      }
+      if (this.user.userType === 'Coordinator') {
+        return (this.leagues.find(league => {
+          return league.managerID === this.user.userID;
+        }) || {}).leagueName;
+      }
+      return '';
+    },
     formatPlayers() {
       const formatedPlayers = this.players.filter(player => {
         if (!this.searchPlayerName) {
@@ -166,19 +185,27 @@ export default {
 
 <style lang="scss" scoped>
 #admin-players-container{
-
-  #create-player-button-container{
+  #title-container{
     display: flex;
-    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
-    justify-content: flex-end;
-    height: 61px;
-    transition: 0.3s;
+    width: 100%;
 
-    #playerNameSearch{
-      width: 25%;
-      min-width: 150px;
-      margin-right: 16px;
+    h1{
+      margin-bottom: 0;
+    }
+    #create-player-button-container{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+      height: 61px;
+      transition: 0.3s;
+
+      #playerNameSearch{
+        width: 200px;
+        margin-right: 16px;
+      }
     }
   }
 }

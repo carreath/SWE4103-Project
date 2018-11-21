@@ -1,11 +1,15 @@
 <template>
   <div id="admin-teams-container">
     <div id="title-container">
-    </div>
-    <div id="create-team-button-container">
-      <el-button
-      @click="teamCreateClicked"
-      type="primary">Create New Team</el-button>
+      <h1>
+        {{ leagueTitleName }}
+      </h1>
+      <div></div>
+      <div id="create-team-button-container">
+        <el-button
+        @click="teamCreateClicked"
+        type="primary">Create New Team</el-button>
+      </div>
     </div>
     <div id="teams-table-container">
       <el-table
@@ -74,7 +78,22 @@ export default {
       'userById',
       'user',
       'selectedLeagueId',
+      'selectedLeague',
     ]),
+    leagueTitleName() {
+      if (!this.user) {
+        return '';
+      }
+      if (this.user.userType === 'Admin') {
+        return this.selectedLeague.leagueName;
+      }
+      if (this.user.userType === 'Coordinator') {
+        return (this.leagues.find(league => {
+          return league.managerID === this.user.userID;
+        }) || {}).leagueName;
+      }
+      return '';
+    },
     formatTeams() {
       const formatedTeams = this.teams.filter(team => {
         if (!this.user) {
@@ -147,13 +166,24 @@ export default {
 <style lang="scss" scoped>
 @import '@/style/global.scss';
 #admin-teams-container{
-  #create-team-button-container{
+  #title-container{
     display: flex;
-    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
-    justify-content: flex-end;
-    height: 61px;
-    transition: 0.3s;
+    width: 100%;
+
+    h1{
+      margin-bottom: 0;
+    }
+
+    #create-team-button-container{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+      height: 61px;
+      transition: 0.3s;
+    }
   }
 }
 </style>
