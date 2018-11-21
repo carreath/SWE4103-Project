@@ -157,14 +157,29 @@ export default{
     ...mapGetters([
       'teams',
       'leagueById',
+      'user',
+      'selectedLeagueId',
+      'leagues',
     ]),
     formatTeams() {
-      const formatedTeams = this.teams.map((team) => {
-        return {
-          teamID: team.teamID,
-          teamName: team.teamName,
-          managerID: team.managerID,
-        };
+      const formatedTeams = this.teams.filter(team => {
+        if (!this.user) {
+          return false;
+        }
+        if (this.user.userType === 'Admin') {
+          return team.leagueID === this.selectedLeagueId;
+        }
+        if (this.user.userType === 'Coordinator') {
+          return team.leagueID === (this.leagues.find(league => {
+            return league.managerID === this.user.userID;
+          }) || {}).leagueID;
+        }
+        if (this.user.userType === 'Manager') {
+          return team.teamID === (this.teams.find(team => {
+            return team.managerID === this.user.userID;
+          }) || {}).teamID;
+        }
+        return false;
       });
       return formatedTeams;
     },
