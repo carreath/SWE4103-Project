@@ -9,6 +9,7 @@
       </div>
       <el-form
         :model="createScheduleForm"
+        :rules="createScheduleRules"
         ref="schedule-form">
         <div id="line-of-input"
           v-for="(line) in createScheduleForm.lines"
@@ -16,18 +17,21 @@
           <el-form-item
             label="Field"
             id="field-name-label"
-            :prop="line.field"
-            :rules="{
-              required: true, message: 'Please input field name', trigger: 'blur'
-            }">
-            <el-input v-model="line.field"></el-input>
+            prop="fieldName">
+            <el-input
+              id="field-name-input"
+              type="fieldName"
+              placeholder="Field Name"
+              v-model="line.fieldName"
+              :disabled="loading">
+            </el-input>
           </el-form-item>
           <el-form-item
               label="Game Time"
               id="game-time-label"
               prop="gameTime">
               <el-date-picker
-                v-model="createScheduleForm.gameTime"
+                v-model="line.gameTime"
                 type="datetime"
                 placeholder="Select date and time"
                 id="game-time-input"
@@ -60,41 +64,38 @@ export default {
           {
             key: 0,
             field: '',
-            day: '',
-            time: '',
+            gameTime: '',
           },
         ],
       },
-      options: [
-        {
-          value: 'Sunday',
-          label: 'Sunday',
-        },
-        {
-          value: 'Monday',
-          label: 'Monday',
-        },
-        {
-          value: 'Tuesdau',
-          label: 'Tuesday',
-        },
-        {
-          value: 'Wednesday',
-          label: 'Wednesday',
-        },
-        {
-          value: 'Thursday',
-          label: 'Thursday',
-        },
-        {
-          value: 'Friday',
-          label: 'Friday',
-        },
-        {
-          value: 'Saturday',
-          label: 'Saturday',
-        },
-      ],
+      createScheduleRules: {
+        fieldName: [
+          {
+            required: true,
+            message: 'Please input Field Name',
+            trigger: 'blur',
+          },
+          {
+            min: 1,
+            max: 64,
+            message: 'Input too long',
+            trigger: 'blur',
+          },
+        ],
+        gameTime: [
+          {
+            required: true,
+            message: 'Please input date and time',
+            trigger: 'blur',
+          },
+          {
+            min: 1,
+            max: 64,
+            message: 'Input too long',
+            trigger: 'blur',
+          },
+        ],
+      },
     };
   },
   methods: {
@@ -166,15 +167,9 @@ export default {
     .el-input {
       width: 60%;
     }
-    .el-select {
-      width: 60%;
-    }
     .el-button {
       height: 100%;
     }
   }
-}
-.el-form-item__content {
-  display: inline-block;
 }
 </style>
