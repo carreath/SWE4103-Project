@@ -88,7 +88,7 @@ const actions = {
   userLogOut({ commit }) {
     commit('mutateUser', null);
     commit('mutateToken', null);
-    commit('mutateUsers', null);
+    commit('mutateUsers', []);
   },
   setUser({ commit }, user) {
     commit('mutateUser', user);

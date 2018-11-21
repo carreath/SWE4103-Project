@@ -71,9 +71,35 @@ export default {
       'players',
       'teamById',
       'playerById',
+      'user',
+      'selectedLeagueId',
+      'teams',
+      'leagues',
     ]),
     formatPlayers() {
-      const formatedPlayers = this.players.map((player) => {
+      const formatedPlayers = this.players.filter(player => {
+        if (!this.user) {
+          return false;
+        }
+        if (this.user.userType === 'Admin') {
+          const team = this.teams.find(team => team.teamID === player.teamID);
+          return (team || {}).leagueID === this.selectedLeagueId;
+        }
+        if (this.user.userType === 'Coordinator') {
+          const leagueID = (this.leagues.find(league => {
+            return league.managerID === this.user.userID;
+          }) || {}).leagueID;
+          const team = this.teams.find(team => team.teamID === player.teamID);
+          return (team || {}).leagueID === leagueID;
+        }
+        if (this.user.userType === 'Manager') {
+          const teamID = (this.teams.find(team => {
+            return team.managerID === this.user.userID;
+          }) || {}).teamID;
+          return teamID === player.teamID;
+        }
+        return false;
+      }).map((player) => {
         return {
           ...player,
           fullName: `${player.firstName} ${player.lastName}`,
