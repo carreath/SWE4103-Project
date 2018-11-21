@@ -35,7 +35,8 @@
                 type="datetime"
                 placeholder="Select date and time"
                 id="game-time-input"
-                value-format="yyyy-MM-dd HH:mm:ss">
+                value-format="yyyy-MM-dd HH:mm:ss"
+                :disabled="loading">
               </el-date-picker>
           </el-form-item>
           <el-button @click="removeLine(line.key)">Delete Entry</el-button>
@@ -149,7 +150,9 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: space-between;
   padding-top: 16px;
+  width: 150%;
 
   #title {
     font-size: 25px;
@@ -162,10 +165,16 @@ export default {
 
   #line-of-input {
     padding-left: 16px;
+    margin-top: 16px;
     display: flex;
     flex-direction: row;
-    .el-input {
-      width: 60%;
+    #game-time-label {
+      display: flex;
+      margin-right: 25px;
+    }
+    #field-name-label {
+      display: flex;
+      margin-right: 16px;
     }
     .el-button {
       height: 100%;
