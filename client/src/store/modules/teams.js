@@ -54,7 +54,23 @@ const actions = {
     commit('mutateEditedTeamId', id);
   },
   createTeam({ getters, dispatch }, teamObj) {
-    teamObj.leagueID = getters.selectedLeagueId;
+    const userType = (getters.user || {}).userType;
+    switch (userType) {
+      case 'Admin': {
+        teamObj.leagueID = getters.selectedLeagueId;
+        break;
+      }
+      case 'Coordinator': {
+        const coordinatorLeagueId = (this.leagues.find(league => {
+          return league.managerID === this.user.userID;
+        }) || {}).leagueID;
+        teamObj.leagueID = coordinatorLeagueId;
+        break;
+      }
+      default: {
+        teamObj.leagueID = getters.selectedLeagueId;
+      }
+    }
     return TeamsService.createTeam(teamObj).then((response) => {
       if (!response || !response.status) {
         return { retVal: false, retMsg: 'Server Error' };
