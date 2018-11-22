@@ -40,11 +40,15 @@
               </el-date-picker>
           </el-form-item>
           <el-button @click="removeLine(line.key)">Delete Entry</el-button>
+          <div id="errMsg" v-if="errMsg">
+            Error: {{ errMsg }}
+          </div>
         </div>
         <el-form-item id="bottom-button-container">
           <el-button @click="addLine">New Entry</el-button>
           <el-button
           type="primary"
+          :loading="loading"
           @click="submitButtonClicked()"> Create Schedule
           </el-button>
         </el-form-item>
@@ -64,7 +68,7 @@ export default {
         lines: [
           {
             key: 0,
-            field: '',
+            fieldName: '',
             gameTime: '',
           },
         ],
@@ -89,14 +93,10 @@ export default {
             message: 'Please input date and time',
             trigger: 'blur',
           },
-          {
-            min: 1,
-            max: 64,
-            message: 'Input too long',
-            trigger: 'blur',
-          },
         ],
       },
+      loading: false,
+      errMsg: null,
     };
   },
   methods: {
