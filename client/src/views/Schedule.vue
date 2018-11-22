@@ -1,5 +1,10 @@
 <template>
   <div id="schedule">
+    <div id="new-game-button">
+      <el-button
+        type="primary"
+        @click="handleCreateScheduleButtonClick">Create New Game</el-button>
+    </div>
     <div
       id="schedule-body">
       <div
@@ -101,7 +106,6 @@
           </table>
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -170,6 +174,9 @@ export default {
         gamesArr.push(gamesObj);
       });
       this.tableViewGamesList = gamesArr.sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
+    },
+    handleCreateScheduleButtonClick() {
+      this.$router.push('/schedule/game/create');
     },
   },
   watch: {
@@ -330,5 +337,13 @@ export default {
       transition: 0.2s;
     }
   }
+}
+#new-game-button {
+  display: flex;
+  align-items: right;
+  justify-content: flex-end;
+  margin-top: 15px;
+  margin-right: 15px;
+  margin-bottom: 15px;
 }
 </style>

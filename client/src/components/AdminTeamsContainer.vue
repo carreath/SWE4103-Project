@@ -1,16 +1,19 @@
 <template>
   <div id="admin-teams-container">
     <div id="title-container">
-    </div>
-    <div id="create-team-button-container">
-      <el-button
-      @click="teamCreateClicked"
-      type="primary">Create New Team</el-button>
+      <h1>
+        {{ leagueTitleName }}
+      </h1>
+      <div></div>
+      <div id="create-team-button-container">
+        <el-button
+        @click="teamCreateClicked"
+        type="primary">Create New Team</el-button>
+      </div>
     </div>
     <div id="teams-table-container">
       <el-table
         :data="formatTeams"
-        :default-sort = "{prop: 'teamID', order: 'ascending'}"
         stripe
         style="">
         <el-table-column
@@ -22,16 +25,19 @@
         <el-table-column
           prop="teamName"
           sortable
-          label="Team Name">
+          :show-overflow-tooltip="true"
+          label="Name">
         </el-table-column>
         <el-table-column
-          prop="leagueID"
+          prop="leagueName"
           sortable
+          :show-overflow-tooltip="true"
           label="League Name">
         </el-table-column>
         <el-table-column
-          prop="managerID"
-          label="Manager ID">
+          prop="managerName"
+          :show-overflow-tooltip="true"
+          label="Manager">
         </el-table-column>
         <el-table-column
           label="Action">
@@ -69,14 +75,46 @@ export default {
       'leagueById',
       'leagues',
       'teamById',
+      'userById',
+      'user',
+      'selectedLeagueId',
+      'selectedLeague',
     ]),
+    leagueTitleName() {
+      if (!this.user) {
+        return '';
+      }
+      if (this.user.userType === 'Admin') {
+        return this.selectedLeague.leagueName;
+      }
+      if (this.user.userType === 'Coordinator') {
+        return (this.leagues.find(league => {
+          return league.managerID === this.user.userID;
+        }) || {}).leagueName;
+      }
+      return '';
+    },
     formatTeams() {
-      const formatedTeams = this.teams.map((team) => {
+      const formatedTeams = this.teams.filter(team => {
+        if (!this.user) {
+          return false;
+        }
+        if (this.user.userType === 'Admin') {
+          return team.leagueID === this.selectedLeagueId;
+        }
+        if (this.user.userType === 'Coordinator') {
+          return team.leagueID === (this.leagues.find(league => {
+            return league.managerID === this.user.userID;
+          }) || {}).leagueID;
+        }
+        return false;
+      }).map((team) => {
+        const manager = this.userById(team.managerID);
+        const managerNameIn = manager ? `${manager.firstName} ${manager.lastName}` : 'None';
         return {
-          teamID: team.teamID,
-          teamName: team.teamName,
-          leagueID: this.leagueById(team.leagueID).leagueName,
-          managerID: team.managerID,
+          ...team,
+          leagueName: this.leagueById(team.leagueID).leagueName,
+          managerName: managerNameIn,
         };
       });
       return formatedTeams;
@@ -108,7 +146,7 @@ export default {
               center: true,
             });
           } else {
-            this.$message.error('Error deleting');
+            this.$message.error(response.retMsg);
           }
           this.$router.push('/admin/teams');
         });
@@ -128,13 +166,24 @@ export default {
 <style lang="scss" scoped>
 @import '@/style/global.scss';
 #admin-teams-container{
-  #create-team-button-container{
+  #title-container{
     display: flex;
-    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
-    justify-content: flex-end;
-    height: 61px;
-    transition: 0.3s;
+    width: 100%;
+
+    h1{
+      margin-bottom: 0;
+    }
+
+    #create-team-button-container{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+      height: 61px;
+      transition: 0.3s;
+    }
   }
 }
 </style>

@@ -83,6 +83,26 @@ const actions = {
   setSelectedGameId({ commit }, newId) {
     commit('mutateSelectedGameId', newId);
   },
+  createGame({ getters, dispatch }, gameObj) {
+    gameObj.leagueID = getters.selectedLeagueId;
+    return GamesService.createGame(gameObj).then((response) => {
+      if (!response || !response.status) {
+        return { retVal: false, retMsg: 'Server Error' };
+      }
+
+      switch (response.status) {
+        case 201: {
+          // TODO this probs wont be right
+          // commit('addGame', response.data.game);
+          dispatch('getGames');
+          return { retVal: true, retMsg: 'Game Created' };
+        }
+        default: {
+          return { retVal: false, retMsg: 'Server Error' };
+        }
+      }
+    });
+  },
 };
 
 // mutations

@@ -20,7 +20,7 @@
           </span>
         </li>
         <li
-          :class="{'is-active': curRoute === 'schedule'}"
+          :class="{'is-active': curRoute.includes('schedule')}"
           @click="handleNavMenuSelect('schedule')">
           <span>
             Schedule
@@ -178,8 +178,6 @@ export default {
     return {
       userDropdownButtonHover: false,
       userDropdownContentHover: false,
-      adminDropdownButtonHover: false,
-      adminDropdownContentHover: false,
       navMenuDropdownButtonHover: false,
       navMenuDropdownContentHover: false,
       leagueDropdownButtonHover: false,
@@ -198,7 +196,7 @@ export default {
       'selectedLeague',
     ]),
     curRoute() {
-      return this.$route.name;
+      return this.$route.name || '';
     },
     curRouteNameCap() {
       const name = this.curRoute;
@@ -207,9 +205,6 @@ export default {
     },
     userDropdownVisible() {
       return this.userDropdownButtonHover || this.userDropdownContentHover;
-    },
-    adminDropdownVisible() {
-      return this.adminDropdownButtonHover || this.adminDropdownContentHover;
     },
     navMenuDropdownVisible() {
       return this.navMenuDropdownButtonHover || this.navMenuDropdownContentHover;
@@ -321,7 +316,7 @@ export default {
       align-items: center;
       font-weight: bold;
       color: $PRIMARY_TO_FADE;
-      transition: 0.3s;
+      transition: 0.2s;
 
       &:hover{
         background-color: $HOVER_GREY;
@@ -335,12 +330,12 @@ export default {
     }
 
     .is-active{
-      transition: 0.3s;
+      transition: 0.2s;
       border-bottom: 2px solid $PRIMARY_TO_FADE;
 
       span{
         margin-bottom: -2px;
-        transition: 0.3s;
+        transition: 0.2s;
       }
     }
   }
@@ -351,7 +346,7 @@ export default {
     margin-left: 20px;
     font-weight: bold;
     color: $PRIMARY_TO_FADE;
-    transition: 0.3s;
+    transition: 0.2s;
     user-select: none;
     height: 100%;
 
@@ -365,7 +360,7 @@ export default {
         color: $PRIMARY_TO_FADE;
         padding: 0px 20px;
         margin: 0;
-        transition: 0.3s;
+        transition: 0.2s;
         height: 100%;
         display: flex;
         align-items: center;
@@ -402,7 +397,7 @@ export default {
           text-align: left;
           white-space:nowrap;
           font-weight: normal;
-          transition: 0.3s;
+          transition: 0.2s;
 
           &:hover{
             background-color: $HOVER_GREY;
@@ -433,7 +428,7 @@ export default {
       margin-right: 0px;
       font-weight: bold;
       color: $PRIMARY_TO_FADE;
-      transition: 0.3s;
+      transition: 0.2s;
       user-select: none;
       height: 100%;
 
@@ -447,7 +442,7 @@ export default {
           color: $PRIMARY_TO_FADE;
           padding: 0px 20px;
           margin: 0;
-          transition: 0.3s;
+          transition: 0.2s;
           height: 100%;
           display: flex;
           align-items: center;
@@ -459,6 +454,10 @@ export default {
           &:hover{
             background-color: $HOVER_GREY;
             cursor: pointer;
+          }
+
+          span{
+            white-space: nowrap;
           }
         }
 
@@ -483,7 +482,7 @@ export default {
             text-align: left;
             white-space:nowrap;
             font-weight: normal;
-            transition: 0.3s;
+            transition: 0.2s;
 
             &:hover{
               background-color: $HOVER_GREY;
@@ -510,7 +509,7 @@ export default {
       margin-right: 20px;
       font-weight: bold;
       color: $PRIMARY_TO_FADE;
-      transition: 0.3s;
+      transition: 0.2s;
       user-select: none;
       height: 100%;
 
@@ -524,7 +523,7 @@ export default {
           color: $PRIMARY_TO_FADE;
           padding: 0px 20px;
           margin: 0;
-          transition: 0.3s;
+          transition: 0.2s;
           height: 100%;
           display: flex;
           align-items: center;
@@ -537,17 +536,19 @@ export default {
             background-color: $HOVER_GREY;
             cursor: pointer;
           }
+
+          span{
+            white-space: nowrap;
+          }
         }
 
         .user-dropdown-content{
-          /*display: none;*/
-          position: absolute;
+          position: relative;
           background-color: #f9f9f9;
           box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
           z-index: 10;
-          right: 20px;
+          /*right: 20px;*/
           border-radius: 0px 0px 6px 6px;
-          width: 160px;
           opacity: 0;
           visibility: hidden;
           transition: visibility 0s, opacity 0.2s linear;
@@ -561,7 +562,7 @@ export default {
             text-align: left;
             white-space:nowrap;
             font-weight: normal;
-            transition: 0.3s;
+            transition: 0.2s;
 
             &:hover{
               background-color: $HOVER_GREY;
@@ -589,7 +590,7 @@ export default {
       margin-right: 20px;
       font-weight: bold;
       color: $PRIMARY_TO_FADE;
-      transition: 0.3s;
+      transition: 0.2s;
       user-select: none;
       white-space: nowrap;
 
