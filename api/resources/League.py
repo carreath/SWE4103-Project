@@ -156,10 +156,15 @@ class League(Resource):
         parser.add_argument('leagueName', type=str)
         parser.add_argument('season', type=str)
         parser.add_argument('pointScheme', type=str)
-
         args = parser.parse_args()
-        query = "UPDATE leagues SET coordinatorID = %d, leagueName = '%s', season = '%s', pointScheme = '%s' WHERE leagueID = %d" \
-                % (args['managerID'], args['leagueName'].strip("'"), args['season'].strip("'"), args['pointScheme'].strip("'"), args['leagueID'])
+        manager = args['managerID']
+        if manager == -1:
+            manager = 'NULL'
+        else:
+            manager = str(manager)
+
+        query = "UPDATE leagues SET coordinatorID = %s, leagueName = '%s', season = '%s', pointScheme = '%s' WHERE leagueID = %d" \
+                % (manager, args['leagueName'].strip("'"), args['season'].strip("'"), args['pointScheme'].strip("'"), args['leagueID'])
         db = DatabaseConnector()
         db.cursor.execute(query)
         db.conn.commit()
