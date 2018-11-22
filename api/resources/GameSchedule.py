@@ -110,7 +110,7 @@ class LeagueSchedule(Resource):
 
         args = parser.parse_args()
         query = "UPDATE games SET homeTeamID = %d, awayTeamID = %d, refereeID = %d, gameTime = '%s', fieldName = '%s' WHERE gameID = %d AND leagueID = %d" \
-                % (args['homeTeamID'], args['awayTeamID'], args['refereeID'], args['gameTime'], args['fieldName'], args['gameID'], args['leagueID'])
+                % (args['homeTeamID'], args['awayTeamID'], args['refereeID'], args['gameTime'].strip("'"), args['fieldName'].strip("'"), args['gameID'], args['leagueID'])
         db = DatabaseConnector()
         db.cursor.execute(query)
         db.conn.commit()
@@ -127,14 +127,14 @@ class LeagueSchedule(Resource):
         parser.add_argument('leagueID', type=int, required=True)
         args = parser.parse_args()
 
-        query = "SELECT gameID from gameMembers WHERE gameID in (SELECT gameID from games where leagueID = %s)" % args['leagueID']
+        query = "SELECT gameID from gameMembers WHERE gameID in (SELECT gameID from games where leagueID = %d)" % args['leagueID']
         db = DatabaseConnector()
         db.cursor.execute(query)
         res = db.cursor.fetchall()
         if res:
             return 400, "Cannot delete schedule were games have been recorded"
         else:
-            query = "DELETE FROM games WHERE leagueID = %s" % args['leagueID']
+            query = "DELETE FROM games WHERE leagueID = %d" % args['leagueID']
             db.cursor.execute(query)
             db.conn.commit()
             return 200
