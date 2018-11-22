@@ -29,3 +29,5 @@ yarn-error.log*
 *.sln
 *.sw*
 venv
+
+/db/migration
