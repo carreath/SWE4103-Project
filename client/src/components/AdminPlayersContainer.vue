@@ -1,11 +1,21 @@
 <template>
   <div id="admin-players-container">
     <div id="title-container">
-    </div>
-    <div id="create-player-button-container">
-      <el-button
-        type="primary"
-        @click="handleCreatePlayerButtonClick">Create Player</el-button>
+      <h1>
+        {{ leagueTitleName }}
+      </h1>
+      <div></div>
+      <div id="create-player-button-container">
+        <span id="playerNameSearch">
+          <el-input
+            v-model="searchPlayerName"
+            size="small"
+            placeholder="Filter Name"/>
+        </span>
+        <el-button
+          type="primary"
+          @click="handleCreatePlayerButtonClick">Create Player</el-button>
+      </div>
     </div>
     <div id="players-table-container">
       <el-table
@@ -63,7 +73,7 @@ export default {
   name: 'AdminPlayersContainer',
   data() {
     return {
-
+      searchPlayerName: '',
     };
   },
   computed: {
@@ -75,9 +85,35 @@ export default {
       'selectedLeagueId',
       'teams',
       'leagues',
+      'selectedLeague',
     ]),
+    leagueTitleName() {
+      if (!this.user) {
+        return '';
+      }
+      if (this.user.userType === 'Admin') {
+        return this.selectedLeague.leagueName;
+      }
+      if (this.user.userType === 'Coordinator') {
+        return (this.leagues.find(league => {
+          return league.managerID === this.user.userID;
+        }) || {}).leagueName;
+      }
+      if (this.user.userType === 'Manager') {
+        return (this.teams.find(team => {
+          return team.managerID === this.user.userID;
+        }) || {}).teamName;
+      }
+      return '';
+    },
     formatPlayers() {
       const formatedPlayers = this.players.filter(player => {
+        if (!this.searchPlayerName) {
+          return true;
+        }
+        const fullName = `${player.firstName.toLowerCase()} ${player.lastName.toLowerCase()}`;
+        return fullName.includes(this.searchPlayerName.toLowerCase());
+      }).filter(player => {
         if (!this.user) {
           return false;
         }
@@ -154,14 +190,28 @@ export default {
 
 <style lang="scss" scoped>
 #admin-players-container{
-
-  #create-player-button-container{
+  #title-container{
     display: flex;
-    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
-    justify-content: flex-end;
-    height: 61px;
-    transition: 0.3s;
+    width: 100%;
+
+    h1{
+      margin-bottom: 0;
+    }
+    #create-player-button-container{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+      height: 61px;
+      transition: 0.3s;
+
+      #playerNameSearch{
+        width: 200px;
+        margin-right: 16px;
+      }
+    }
   }
 }
 </style>
