@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from flask import Flask, render_template, make_response
+from common import DatabaseMigrator
 from flask_restful import Api
 from flask_cors import CORS
 from resources import *
@@ -10,10 +11,6 @@ import os
 
 from OpenSSL import SSL
 from flask import request
-
-import filecmp
-from shutil import copyfile
-from common import DatabaseMigrator
 
 context = SSL.Context(SSL.SSLv23_METHOD)
 cer = os.path.join(config.ssl_config['cer'])
@@ -64,8 +61,7 @@ def shutdown():
 
 if __name__ == "__main__":
     db = DatabaseMigrator()
-    if (db.migrate(False)):
-        db.migrate(True)
+    db.migrate(False)
 
     # Check that the SSL certificate exists if not run http://
     if os.path.isfile(cer) and os.path.isfile(key):
