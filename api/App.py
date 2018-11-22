@@ -11,6 +11,10 @@ import os
 from OpenSSL import SSL
 from flask import request
 
+import filecmp
+from shutil import copyfile
+from common import DatabaseMigrator
+
 context = SSL.Context(SSL.SSLv23_METHOD)
 cer = os.path.join(config.ssl_config['cer'])
 key = os.path.join(config.ssl_config['key'])
@@ -59,6 +63,10 @@ def shutdown():
 
 
 if __name__ == "__main__":
+    db = DatabaseMigrator()
+    if (db.migrate(False)):
+        db.migrate(True)
+
     # Check that the SSL certificate exists if not run http://
     if os.path.isfile(cer) and os.path.isfile(key):
         context = (cer, key)
