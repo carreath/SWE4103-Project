@@ -41,7 +41,7 @@
           </el-form-item>
           <el-button @click="removeLine(line.key)">Delete Entry</el-button>
         </div>
-        <el-form-item>
+        <el-form-item id="bottom-button-container">
           <el-button @click="addLine">New Entry</el-button>
           <el-button
           type="primary"
@@ -180,5 +180,8 @@ export default {
       height: 100%;
     }
   }
+}
+#bottom-button-container {
+  margin-top: 16px;
 }
 </style>
