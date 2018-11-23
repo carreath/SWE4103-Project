@@ -9,6 +9,7 @@ import Admin from './views/Admin.vue';
 
 import store from './store/index';
 import ScheduleGameCreate from './components/ScheduleGameCreate.vue';
+import CreateScheduleForm from './components/CreateScheduleForm.vue';
 
 Vue.use(Router);
 
@@ -40,6 +41,11 @@ const router = new Router({
       path: '/teams',
       name: 'teams',
       component: Teams,
+    },
+    {
+      path: '/schedule/create',
+      name: 'create-schedule-form',
+      component: CreateScheduleForm,
     },
     {
       path: '/schedule/game/create',
