@@ -446,6 +446,7 @@ export default {
           height: 100%;
           display: flex;
           align-items: center;
+          justify-content: flex-end;
 
           #caret-down{
             margin-left: 4px;

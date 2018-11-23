@@ -1,12 +1,16 @@
 <template>
   <div id="schedule">
     <div id="button-container">
-      <div id="new-schedule-button">
+      <div
+        id="new-schedule-button"
+        v-if="userCanCreateSchedules">
         <el-button
           type="primary"
           @click="handleCreateScheduleButtonClick">Create New Schedule</el-button>
       </div>
-      <div id="new-game-button">
+      <div
+        id="new-game-button"
+        v-if="userCanCreateSchedules">
         <el-button
           type="primary"
           @click="handleCreateGameButtonClick">Create New Game</el-button>
@@ -143,9 +147,25 @@ export default {
       'selectedLeagueId',
       'selectedTeamId',
       'games',
+      'user',
+      'selectedLeague',
     ]),
     curRoute() {
       return this.$route.name;
+    },
+    userCanCreateSchedules() {
+      if (!this.user) {
+        return false;
+      }
+      const userType = this.user.userType;
+      switch (userType) {
+        case ('Admin'):
+          return true;
+        case ('Coordinator'):
+          return this.selectedLeague.managerID === this.user.userID;
+        default:
+          return false;
+      }
     },
   },
   methods: {

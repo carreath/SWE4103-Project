@@ -47,22 +47,34 @@
           </el-form-item>
           <el-button
             v-if="index !== 0"
-            @click="removeLine(line.key)">
-            Delete Entry
+            @click="removeLine(line.key)"
+            icon="el-icon-remove">
           </el-button>
           <div id="errMsg" v-if="errMsg">
             Error: {{ errMsg }}
           </div>
         </div>
-        <el-form-item id="bottom-button-container">
-          <el-button @click="addLine">New Entry</el-button>
+      </el-form>
+      <div id="bottom-button-container">
+        <el-button
+          icon="el-icon-arrow-left"
+          @click="$router.push('/schedule')">
+          Cancel
+        </el-button>
+        <div></div>
+        <div>
+          <el-button
+            @click="addLine">
+            New Entry
+          </el-button>
           <el-button
           type="primary"
           :loading="loading"
-          @click="submitButtonClicked()"> Create Schedule
+          @click="submitButtonClicked()">
+          Create Schedule
           </el-button>
-        </el-form-item>
-      </el-form>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -138,17 +150,21 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: space-between;
   padding-top: 16px;
-  width: 150%;
+  margin-left: 24px;
 
   #title {
-    font-size: 25px;
+    font-size: 1.5rem;
+    font-weight: bold;
     margin-bottom: 16px;
+    margin-left: 16px;
   }
 
   #info {
+    display: flex;
+    font-size: 1.2rem;
     margin-bottom: 16px;
+    margin-left: 16px;
   }
 
   #line-of-input {
@@ -178,5 +194,8 @@ export default {
 }
 #bottom-button-container {
   margin-top: 16px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 </style>

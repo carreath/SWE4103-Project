@@ -208,7 +208,7 @@ export default{
   flex-direction: column;
   align-items: flex-start;
   margin-top: 16px;
-  margin-left: 30vw;
+  margin-left: 24px;
 
   #title{
     font-size: 1.5rem;
@@ -237,7 +237,7 @@ export default{
 
   #submit-button-container{
     margin-top: 16px;
-    width: 110%;
+    width: 100%;
     display: flex;
     justify-content: space-between;
   }
