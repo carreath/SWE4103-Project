@@ -35,7 +35,7 @@
         </li>
 
         <li
-          v-if="loggedIn && user.userType"
+          v-if="showAdminTab"
           :class="{'is-active': curRoute.includes('admin')}"
           @click="handleNavMenuSelect('admin')">
           <span>
@@ -82,7 +82,7 @@
               Schedule
             </div>
             <div
-              v-if="loggedIn && user.userType"
+              v-if="showAdminTab"
               @click="handleNavMenuSelect('admin')"
               :class="{'boldText': curRoute.includes('admin')}">
               Admin
@@ -214,6 +214,9 @@ export default {
     },
     showLeagueSelection() {
       return this.leagues.length > 1;
+    },
+    showAdminTab() {
+      return this.loggedIn && this.user.userType !== 'Referee';
     },
   },
   methods: {
