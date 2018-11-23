@@ -216,7 +216,9 @@ export default {
       return this.leagues.length > 1;
     },
     showAdminTab() {
-      return this.loggedIn && this.user.userType !== 'Referee';
+      return this.loggedIn
+        && this.user.userType
+        && this.user.userType !== 'Referee';
     },
   },
   methods: {
