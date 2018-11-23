@@ -9,15 +9,18 @@
       </div>
       <el-form
         :model="createScheduleForm"
-        :rules="createScheduleRules"
         ref="schedule-form">
         <div id="line-of-input"
-          v-for="(line) in createScheduleForm.lines"
+          v-for="(line, index) in createScheduleForm.lines"
           :key="line.key">
           <el-form-item
             label="Field"
             id="field-name-label"
-            prop="fieldName">
+            :prop="'lines.' + index + '.fieldName'"
+            :rules="[
+              { required: true, message: 'Please input Field Name', trigger: 'blur', },
+              { min: 1, max: 64, message: 'Input too long', trigger: 'blur', },
+            ]">
             <el-input
               id="field-name-input"
               type="fieldName"
@@ -29,7 +32,10 @@
           <el-form-item
               label="Game Time"
               id="game-time-label"
-              prop="gameTime">
+              :prop="'lines.' + index + '.gameTime'"
+              :rules="[
+                { required: true, message: 'Please input date and time', trigger: 'blur', },
+              ]">
               <el-date-picker
                 v-model="line.gameTime"
                 type="datetime"
@@ -39,7 +45,11 @@
                 :disabled="loading">
               </el-date-picker>
           </el-form-item>
-          <el-button @click="removeLine(line.key)">Delete Entry</el-button>
+          <el-button
+            v-if="index !== 0"
+            @click="removeLine(line.key)">
+            Delete Entry
+          </el-button>
           <div id="errMsg" v-if="errMsg">
             Error: {{ errMsg }}
           </div>
@@ -70,28 +80,6 @@ export default {
             key: 0,
             fieldName: '',
             gameTime: '',
-          },
-        ],
-      },
-      createScheduleRules: {
-        fieldName: [
-          {
-            required: true,
-            message: 'Please input Field Name',
-            trigger: 'blur',
-          },
-          {
-            min: 1,
-            max: 64,
-            message: 'Input too long',
-            trigger: 'blur',
-          },
-        ],
-        gameTime: [
-          {
-            required: true,
-            message: 'Please input date and time',
-            trigger: 'blur',
           },
         ],
       },
@@ -179,6 +167,13 @@ export default {
     .el-button {
       height: 100%;
     }
+  }
+
+  .el-form-item.is-success /deep/ .el-input__inner,
+  .el-form-item.is-success /deep/ .el-input__inner:focus,
+  .el-form-item.is-success /deep/ .el-textarea__inner,
+  .el-form-item.is-success /deep/ .el-textarea__inner:focus {
+    border-color: $ELEMENT_UI_DEFAULT_BORDER;
   }
 }
 #bottom-button-container {
