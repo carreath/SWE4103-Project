@@ -6,7 +6,9 @@
         <div
           id="main-header-title"
           @click="mainHeaderClicked">
-          Fredericton<br>Football Club
+          {{ formatedLeagueNameLineOne }}
+          <br>
+          {{ formatedLeagueNameLineTwo }}
         </div>
       </div>
       <div id="main-header-major-right">
@@ -29,7 +31,22 @@ export default{
     ...mapGetters([
       'user',
       'loggedIn',
+      'selectedLeague',
     ]),
+    formatedLeagueNameLineOne() {
+      if (!this.selectedLeague) {
+        return null;
+      }
+      const leagueName = this.selectedLeague.leagueName;
+      return leagueName.substr(0, leagueName.indexOf(' '));
+    },
+    formatedLeagueNameLineTwo() {
+      if (!this.selectedLeague) {
+        return null;
+      }
+      const leagueName = this.selectedLeague.leagueName;
+      return leagueName.substr(leagueName.indexOf(' ') + 1);
+    },
   },
   methods: {
     ...mapActions([
