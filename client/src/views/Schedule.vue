@@ -41,7 +41,7 @@
               </tr>
               <tr>
                 <th>Field</th>
-                <td>{{ selectedGame.field }}</td>
+                <td>{{ selectedGame.fieldName }}</td>
               </tr>
               <tr>
                 <th>Date</th>
@@ -99,7 +99,7 @@
                 {{gameObj.awayGoals}} - {{gameObj.homeGoals}}
               </td>
               <td v-else>-</td>
-              <td>{{ gameObj.field }}</td>
+              <td>{{ gameObj.fieldName }}</td>
               <td>{{ formatTime(gameObj.gameTime.split(' ')[1]) }}</td>
               <td>{{ gameObj.status }}</td>
             </tr>
