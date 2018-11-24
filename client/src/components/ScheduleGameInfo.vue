@@ -12,20 +12,27 @@
       <div id="main-game-info">
         <div id="team-names">
           <ColorCircleTeamName
-            :team="teamById(selectedGame.awayTeamID)"
+            :team="teamById(localSelectedGame.awayTeamID)"
             justifyContent="center"/>
           <span id="vs-span">vs.</span>
           <ColorCircleTeamName
-            :team="teamById(selectedGame.homeTeamID)"
+            :team="teamById(localSelectedGame.homeTeamID)"
             justifyContent="center"/>
         </div>
         <div id="location-info">
-          at {{ selectedGame.fieldName }}
+          at {{ localSelectedGame.fieldName }}
         </div>
-        <div id="date-time-info">
-          {{ formatDate(selectedGame.gameTime.split(' ')[0]) }}
+        <div
+          id="date-time-info"
+          v-if="selectedGame">
+          {{ formatDate(localSelectedGame.gameTime.split(' ')[0]) }}
           at
-          {{ formatTime(selectedGame.gameTime.split(' ')[1]) }}
+          {{ formatTime(localSelectedGame.gameTime.split(' ')[1]) }}
+        </div>
+        <div
+          id="cancelled-header"
+          v-if="localSelectedGame.status === 'Cancelled'">
+          CANCELLED
         </div>
       </div>
       <div id="game-actions-container">
@@ -44,15 +51,15 @@
     <!-- TODO This will have to be finished when game objects can be set to 'Final' -->
     <div
       id="game-info-final-score"
-      v-if="selectedGame.status === 'Final'">
+      v-if="localSelectedGame.status === 'Final'">
       <div id="final-score-away-team">
         <div class="team-name">
           <ColorCircleTeamName
-            :team="teamById(selectedGame.awayTeamID)"
+            :team="teamById(localSelectedGame.awayTeamID)"
             justifyContent="center"/>
         </div>
         <div class="team-score">
-          {{selectedGame.awayGoals}}
+          {{localSelectedGame.awayGoals}}
         </div>
         <div>
           FINAL
@@ -60,11 +67,11 @@
         <div id="final-score-home-team">
           <div class="team-name">
             <ColorCircleTeamName
-              :team="teamById(selectedGame.awayTeamID)"
+              :team="teamById(localSelectedGame.awayTeamID)"
               justifyContent="center"/>
           </div>
           <div class="team-score">
-            {{selectedGame.awayGoals}}
+            {{localSelectedGame.awayGoals}}
           </div>
         </div>
       </div>
@@ -98,15 +105,21 @@ export default {
       if (!this.user) {
         return false;
       }
+      if (this.selectedGame.status === 'Cancelled') {
+        return false;
+      }
       const userType = this.user.userType;
       switch (userType) {
         case ('Admin'):
           return true;
         case ('Coordinator'):
-          return this.selectedLeague.managerID === this.user.userID;
+          return (this.selectedLeague || {}).managerID === this.user.userID;
         default:
           return false;
       }
+    },
+    localSelectedGame() {
+      return this.selectedGame || {};
     },
   },
   methods: {
@@ -163,6 +176,7 @@ export default {
 </script>
 
 <style lang="scss">
+@import '@/style/global.scss';
 
 #schedule-game-info{
   display: flex;
@@ -193,6 +207,11 @@ export default {
         #vs-span{
           margin: 0px 8px;
         }
+      }
+
+      #cancelled-header{
+        font-weight: bold;
+        color: $CANCELLED_RED;
       }
     }
   }

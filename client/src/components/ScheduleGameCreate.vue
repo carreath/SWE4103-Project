@@ -203,6 +203,7 @@ export default{
 
 <style lang="scss" scoped>
 @import '@/style/global.scss';
+
 #schedule-game-create{
   display: flex;
   flex-direction: column;

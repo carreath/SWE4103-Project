@@ -157,7 +157,7 @@ export default {
         case ('Admin'):
           return true;
         case ('Coordinator'):
-          return this.selectedLeague.managerID === this.user.userID;
+          return (this.selectedLeague || {}).managerID === this.user.userID;
         default:
           return false;
       }
