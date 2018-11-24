@@ -47,7 +47,11 @@
                 @mouseleave="scheduleTeamDropdownButtonHover=false"
                 :class="{'lightGreyBackground': scheduleTeamDropdownContentHover}">
                 <span v-if="!selectedTeamId">All Teams</span>
-                <span v-else>{{ selectedTeam.teamName }}</span>
+                <span v-else>
+                  <ColorCircleTeamName
+                    :team="selectedTeam"
+                    justifyContent="center"/>
+                </span>
                 <font-awesome-icon class="caret-down" icon="caret-down" />
               </div>
               <div
@@ -57,7 +61,12 @@
                 @mouseleave="scheduleTeamDropdownContentHover=false">
                 <div
                   @click="handleTeamClick(null)"
-                  :class="{'boldText': !selectedTeamId}">
+                  :class="{'boldText': !selectedTeamId}"
+                  :style="{
+                    'padding-left': '16px',
+                    'padding-top': '12px',
+                    'padding-bottom': '12px',
+                  }">
                   All Teams
                 </div>
                 <div
@@ -65,7 +74,9 @@
                   :key="team.teamID"
                   @click="handleTeamClick(team.teamID)"
                   :class="{'boldText': selectedTeamId === team.teamID}">
-                  {{ team.teamName }}
+                  <ColorCircleTeamName
+                    :team="team"
+                    justifyContent="flex-start"/>
                 </div>
               </div>
             </div>
@@ -79,6 +90,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import ColorCircleTeamName from '@/components/ColorCircleTeamName.vue';
 
 export default {
   name: 'ScheduleSubNavMenu',
@@ -89,6 +101,9 @@ export default {
       scheduleTeamDropdownButtonHover: false,
       scheduleTeamDropdownContentHover: false,
     };
+  },
+  components: {
+    ColorCircleTeamName,
   },
   computed: {
     ...mapGetters([
@@ -240,6 +255,19 @@ export default {
           /* display: block;*/
           opacity: 1;
           visibility: visible;
+        }
+      }
+    }
+
+    #schedule-team-dropdown-container{
+      .schedule-view-dropdown{
+        .schedule-view-dropdown-content{
+          div{
+            padding-left: 8px;
+            padding-right: 4px;
+            padding-top: 8px;
+            padding-bottom: 8px;
+          }
         }
       }
     }

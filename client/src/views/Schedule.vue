@@ -35,7 +35,9 @@
               <tr>
                 <th>Away</th>
                 <td>
-                  {{ teamById(selectedGame.awayTeamID).teamName }}
+                  <ColorCircleTeamName
+                    :team="teamById(selectedGame.awayTeamID)"
+                    justifyContent="center"/>
                   <span v-if="selectedGame.status === 'Final'">
                     - {{ selectedGame.awayGoals }}
                   </span>
@@ -44,7 +46,9 @@
               <tr>
                 <th>Home</th>
                 <td>
-                  {{ teamById(selectedGame.homeTeamID).teamName }}
+                  <ColorCircleTeamName
+                    :team="teamById(selectedGame.homeTeamID)"
+                    justifyContent="center"/>
                   <span v-if="selectedGame.status === 'Final'">
                     - {{ selectedGame.homeGoals }}
                   </span>
@@ -104,8 +108,16 @@
                 'cancelled-event': gameObj.status === 'Cancelled',
                 'open-event': gameObj.status === 'Open',
               }">
-              <td>{{ teamById(gameObj.awayTeamID).teamName }}</td>
-              <td>{{ teamById(gameObj.homeTeamID).teamName }}</td>
+              <td>
+                <ColorCircleTeamName
+                  :team="teamById(gameObj.awayTeamID)"
+                  justifyContent="center"/>
+              </td>
+              <td>
+                <ColorCircleTeamName
+                  :team="teamById(gameObj.homeTeamID)"
+                  justifyContent="center"/>
+              </td>
               <td v-if="gameObj.status === 'Final'">
                 {{gameObj.awayGoals}} - {{gameObj.homeGoals}}
               </td>
@@ -123,12 +135,14 @@
 
 <script>
 import Calendar from '@/components/Calendar.vue';
+import ColorCircleTeamName from '@/components/ColorCircleTeamName.vue';
 import { mapGetters } from 'vuex';
 
 export default {
   name: 'Schedule',
   components: {
     Calendar,
+    ColorCircleTeamName,
   },
   data() {
     return {
@@ -356,6 +370,12 @@ export default {
             td{
               width: 18%;
               padding: 8px 0px;
+
+              .teamAndColorContainer{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
             }
           }
         }
