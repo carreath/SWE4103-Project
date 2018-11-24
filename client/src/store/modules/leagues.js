@@ -43,6 +43,7 @@ const actions = {
   },
   setSelectedLeague({ commit, dispatch }, id) {
     dispatch('setSelectedTeamId', null);
+    dispatch('setSelectedGameId', null);
     commit('mutateSelectedLeagueId', id);
   },
   setEditedLeague({ commit }, id) {

@@ -100,6 +100,7 @@ export default {
       'selectedGame',
       'teamById',
       'user',
+      'selectedLeagueId',
     ]),
     showCancelButton() {
       if (!this.user) {
@@ -165,6 +166,11 @@ export default {
         });
       }).catch(() => {
       });
+    },
+  },
+  watch: {
+    selectedLeagueId() {
+      this.$router.push('/schedule');
     },
   },
   mounted() {
