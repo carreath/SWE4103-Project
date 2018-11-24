@@ -50,11 +50,13 @@
             <el-button
             icon="el-icon-edit"
             size="mini"
+            :disabled="actionEditDisabled(scope.row)"
             @click='teamEditClicked(scope.row.teamID)'>
             </el-button>
             <el-button
             icon="el-icon-delete"
             size="mini"
+            :disabled="actionDeleteDisabled(scope.row)"
             @click="teamDeleteClicked(scope.row.teamID, scope.row.teamName)">
             </el-button>
           </template>
@@ -100,6 +102,12 @@ export default {
           return league.managerID === this.user.userID;
         }) || {}).leagueName;
       }
+      if (this.user.userType === 'Manager') {
+        const leagueId = this.teams.find(team => {
+          return team.managerID === this.user.userID;
+        }).leagueID;
+        return this.leagueById(leagueId).leagueName;
+      }
       return '';
     },
     formatTeams() {
@@ -114,6 +122,11 @@ export default {
           return team.leagueID === (this.leagues.find(league => {
             return league.managerID === this.user.userID;
           }) || {}).leagueID;
+        }
+        if (this.user.userType === 'Manager') {
+          return team.leagueID === this.teams.find(team => {
+            return team.managerID === this.user.userID;
+          }).leagueID;
         }
         return false;
       }).map((team) => {
@@ -134,6 +147,42 @@ export default {
       'setEditedTeam',
       'setEditTeamModalVisible',
     ]),
+    actionEditDisabled(teamObj) {
+      if (!this.user) {
+        return true;
+      }
+      switch (this.user.userType) {
+        case ('Admin'): {
+          return false;
+        }
+        case ('Coordinator'): {
+          return false;
+        }
+        case ('Manager'): {
+          return teamObj.managerID !== this.user.userID;
+        }
+        default:
+          return true;
+      }
+    },
+    actionDeleteDisabled() {
+      if (!this.user) {
+        return true;
+      }
+      switch (this.user.userType) {
+        case ('Admin'): {
+          return false;
+        }
+        case ('Coordinator'): {
+          return false;
+        }
+        case ('Manager'): {
+          return true;
+        }
+        default:
+          return true;
+      }
+    },
     teamCreateClicked() {
       this.$router.push('/admin/teams/create');
     },
