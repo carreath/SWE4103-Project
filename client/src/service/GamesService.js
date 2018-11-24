@@ -19,4 +19,13 @@ export default {
         return err.response;
       });
   },
+  editGame(params) {
+    return ServiceLayer().put('/game-schedule', params)
+      .then((response) => {
+        return response;
+      })
+      .catch((err) => {
+        return err.response;
+      });
+  },
 };

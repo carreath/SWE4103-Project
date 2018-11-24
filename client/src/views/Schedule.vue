@@ -202,7 +202,7 @@ export default {
   methods: {
     formatDate(mDate) {
       const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-      const tempDate = mDate.split('-');
+      const tempDate = (mDate || '').split('-');
       return `${months[Number(tempDate[1]) - 1]} ${tempDate[2]}, ${tempDate[0]}`;
     },
     formatTime(mTime) {
