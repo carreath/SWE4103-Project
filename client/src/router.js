@@ -38,9 +38,9 @@ const router = new Router({
       component: Schedule,
     },
     {
-      path: '/teams',
-      name: 'teams',
-      component: Teams,
+      path: '/schedule/game',
+      name: 'schedule-game',
+      component: Schedule,
     },
     {
       path: '/schedule/create',
@@ -51,6 +51,11 @@ const router = new Router({
       path: '/schedule/game/create',
       name: 'schedule-game-create',
       component: ScheduleGameCreate,
+    },
+    {
+      path: '/teams',
+      name: 'teams',
+      component: Teams,
     },
     /*
     {

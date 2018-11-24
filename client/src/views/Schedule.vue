@@ -1,5 +1,6 @@
 <template>
   <div id="schedule">
+    <!--
     <div id="button-container">
       <div
         id="new-schedule-button"
@@ -16,8 +17,15 @@
           @click="handleCreateGameButtonClick">Create New Game</el-button>
       </div>
     </div>
+    -->
+
+    <div v-if="curRoute === 'schedule-game'">
+      <ScheduleGameInfo/>
+    </div>
+
     <div
-      id="schedule-body">
+      id="schedule-body"
+      v-else>
       <div
         id="calendar-view"
         v-if="scheduleSelectedView === 'Calendar'">
@@ -56,7 +64,7 @@
               </tr>
               <tr>
                 <th>Field</th>
-                <td>{{ selectedGame.field }}</td>
+                <td>{{ selectedGame.fieldName }}</td>
               </tr>
               <tr>
                 <th>Date</th>
@@ -74,6 +82,12 @@
                 </td>
               </tr>
             </table>
+            <el-button
+              size="mini"
+              @click='gameInfoClicked()'>
+              Game Sheet
+              <i class="el-icon-d-arrow-right"></i>
+            </el-button>
           </div>
         </div>
         <div
@@ -100,6 +114,7 @@
               <th>Field</th>
               <th>Time</th>
               <th>Status</th>
+              <th></th>
             </tr>
             <tr
               v-for="gameObj in dateGames.games"
@@ -107,7 +122,8 @@
               :class="{
                 'cancelled-event': gameObj.status === 'Cancelled',
                 'open-event': gameObj.status === 'Open',
-              }">
+              }"
+              @click="gameTableRowClicked(gameObj.gameID)">
               <td>
                 <ColorCircleTeamName
                   :team="teamById(gameObj.awayTeamID)"
@@ -122,7 +138,7 @@
                 {{gameObj.awayGoals}} - {{gameObj.homeGoals}}
               </td>
               <td v-else>-</td>
-              <td>{{ gameObj.field }}</td>
+              <td>{{ gameObj.fieldName }}</td>
               <td>{{ formatTime(gameObj.gameTime.split(' ')[1]) }}</td>
               <td>{{ gameObj.status }}</td>
             </tr>
@@ -130,19 +146,22 @@
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
 <script>
 import Calendar from '@/components/Calendar.vue';
 import ColorCircleTeamName from '@/components/ColorCircleTeamName.vue';
-import { mapGetters } from 'vuex';
+import ScheduleGameInfo from '@/components/ScheduleGameInfo.vue';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'Schedule',
   components: {
     Calendar,
     ColorCircleTeamName,
+    ScheduleGameInfo,
   },
   data() {
     return {
@@ -165,7 +184,7 @@ export default {
       'selectedLeague',
     ]),
     curRoute() {
-      return this.$route.name;
+      return this.$route.name || '';
     },
     userCanCreateSchedules() {
       if (!this.user) {
@@ -183,9 +202,12 @@ export default {
     },
   },
   methods: {
+    ...mapActions([
+      'setSelectedGameId',
+    ]),
     formatDate(mDate) {
       const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-      const tempDate = mDate.split('-');
+      const tempDate = (mDate || '').split('-');
       return `${months[Number(tempDate[1]) - 1]} ${tempDate[2]}, ${tempDate[0]}`;
     },
     formatTime(mTime) {
@@ -221,6 +243,13 @@ export default {
     },
     handleCreateScheduleButtonClick() {
       this.$router.push('/schedule/create');
+    },
+    gameInfoClicked() {
+      this.$router.push('/schedule/game');
+    },
+    gameTableRowClicked(gameID) {
+      this.setSelectedGameId(gameID);
+      this.$router.push('/schedule/game');
     },
   },
   watch: {
@@ -300,12 +329,13 @@ export default {
         #game-info{
           display: flex;
           flex-direction: column;
-          align-items: flex-start;
+          align-items: center;
           justify-content: flex-start;
 
           table{
             width: 100%;
             transition: 0.2s;
+            margin-bottom: 8px;
 
             tr{
               border-bottom: 1px solid #ddd;
@@ -375,6 +405,12 @@ export default {
                 display: flex;
                 justify-content: center;
                 align-items: center;
+              }
+            }
+
+            &:hover{
+              :not(th){
+                cursor: pointer;
               }
             }
           }

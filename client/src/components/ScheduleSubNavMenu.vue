@@ -85,6 +85,28 @@
         </li>
       </ul>
     </div>
+
+    <div id="schedule-create-button-container">
+      <div
+        id="new-game-button"
+        v-if="userCanCreateSchedules">
+        <el-button
+          type="primary"
+          size="mini"
+          icon="el-icon-plus"
+          @click="handleCreateGameButtonClick">New Game</el-button>
+      </div>
+      <div
+        id="new-schedule-button"
+        v-if="userCanCreateSchedules">
+        <el-button
+          type="primary"
+          size="mini"
+          icon="el-icon-plus"
+          @click="handleCreateScheduleButtonClick">New Schedule</el-button>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -112,6 +134,7 @@ export default {
       'selectedLeagueId',
       'selectedTeam',
       'selectedTeamId',
+      'user',
     ]),
     curRoute() {
       return this.$route.name;
@@ -124,6 +147,20 @@ export default {
     },
     smallScreenSize() {
       return window.innerWidth < 700;
+    },
+    userCanCreateSchedules() {
+      if (!this.user) {
+        return false;
+      }
+      const userType = this.user.userType;
+      switch (userType) {
+        case ('Admin'):
+          return true;
+        case ('Coordinator'):
+          return (this.selectedLeague || {}).managerID === this.user.userID;
+        default:
+          return false;
+      }
     },
   },
   methods: {
@@ -145,6 +182,12 @@ export default {
         // TODO Test this on an actual tablet
         this.setScheduleSelectedView('Table');
       }
+    },
+    handleCreateGameButtonClick() {
+      this.$router.push('/schedule/game/create');
+    },
+    handleCreateScheduleButtonClick() {
+      this.$router.push('/schedule/create');
     },
   },
   mounted() {
@@ -288,7 +331,16 @@ export default {
         }
       }
     }
+  }
 
+  #schedule-create-button-container{
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+
+    #new-game-button{
+      margin-right: 8px;
+    }
   }
 }
 </style>
