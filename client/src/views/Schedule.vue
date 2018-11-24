@@ -1,9 +1,20 @@
 <template>
   <div id="schedule">
-    <div id="new-game-button">
-      <el-button
-        type="primary"
-        @click="handleCreateScheduleButtonClick">Create New Game</el-button>
+    <div id="button-container">
+      <div
+        id="new-schedule-button"
+        v-if="userCanCreateSchedules">
+        <el-button
+          type="primary"
+          @click="handleCreateScheduleButtonClick">Create New Schedule</el-button>
+      </div>
+      <div
+        id="new-game-button"
+        v-if="userCanCreateSchedules">
+        <el-button
+          type="primary"
+          @click="handleCreateGameButtonClick">Create New Game</el-button>
+      </div>
     </div>
     <div
       id="schedule-body">
@@ -24,7 +35,9 @@
               <tr>
                 <th>Away</th>
                 <td>
-                  {{ teamById(selectedGame.awayTeamID).teamName }}
+                  <ColorCircleTeamName
+                    :team="teamById(selectedGame.awayTeamID)"
+                    justifyContent="center"/>
                   <span v-if="selectedGame.status === 'Final'">
                     - {{ selectedGame.awayGoals }}
                   </span>
@@ -33,7 +46,9 @@
               <tr>
                 <th>Home</th>
                 <td>
-                  {{ teamById(selectedGame.homeTeamID).teamName }}
+                  <ColorCircleTeamName
+                    :team="teamById(selectedGame.homeTeamID)"
+                    justifyContent="center"/>
                   <span v-if="selectedGame.status === 'Final'">
                     - {{ selectedGame.homeGoals }}
                   </span>
@@ -93,8 +108,16 @@
                 'cancelled-event': gameObj.status === 'Cancelled',
                 'open-event': gameObj.status === 'Open',
               }">
-              <td>{{ teamById(gameObj.awayTeamID).teamName }}</td>
-              <td>{{ teamById(gameObj.homeTeamID).teamName }}</td>
+              <td>
+                <ColorCircleTeamName
+                  :team="teamById(gameObj.awayTeamID)"
+                  justifyContent="center"/>
+              </td>
+              <td>
+                <ColorCircleTeamName
+                  :team="teamById(gameObj.homeTeamID)"
+                  justifyContent="center"/>
+              </td>
               <td v-if="gameObj.status === 'Final'">
                 {{gameObj.awayGoals}} - {{gameObj.homeGoals}}
               </td>
@@ -112,12 +135,14 @@
 
 <script>
 import Calendar from '@/components/Calendar.vue';
+import ColorCircleTeamName from '@/components/ColorCircleTeamName.vue';
 import { mapGetters } from 'vuex';
 
 export default {
   name: 'Schedule',
   components: {
     Calendar,
+    ColorCircleTeamName,
   },
   data() {
     return {
@@ -136,9 +161,25 @@ export default {
       'selectedLeagueId',
       'selectedTeamId',
       'games',
+      'user',
+      'selectedLeague',
     ]),
     curRoute() {
       return this.$route.name;
+    },
+    userCanCreateSchedules() {
+      if (!this.user) {
+        return false;
+      }
+      const userType = this.user.userType;
+      switch (userType) {
+        case ('Admin'):
+          return true;
+        case ('Coordinator'):
+          return this.selectedLeague.managerID === this.user.userID;
+        default:
+          return false;
+      }
     },
   },
   methods: {
@@ -175,8 +216,11 @@ export default {
       });
       this.tableViewGamesList = gamesArr.sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
     },
-    handleCreateScheduleButtonClick() {
+    handleCreateGameButtonClick() {
       this.$router.push('/schedule/game/create');
+    },
+    handleCreateScheduleButtonClick() {
+      this.$router.push('/schedule/create');
     },
   },
   watch: {
@@ -204,8 +248,13 @@ export default {
   flex-direction: column;
   margin-bottom: 8px;
 
-  #schedule-header{
+  #button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
 
+  #schedule-header{
   }
 
   #schedule-body{
@@ -321,6 +370,12 @@ export default {
             td{
               width: 18%;
               padding: 8px 0px;
+
+              .teamAndColorContainer{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
             }
           }
         }
@@ -337,6 +392,14 @@ export default {
       transition: 0.2s;
     }
   }
+}
+#new-schedule-button {
+  display: flex;
+  align-items: right;
+  justify-content: flex-end;
+  margin-top: 15px;
+  margin-right: 15px;
+  margin-bottom: 15px;
 }
 #new-game-button {
   display: flex;
