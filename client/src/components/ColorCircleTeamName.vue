@@ -1,5 +1,7 @@
 <template>
-  <div id="color-circl-team-name">
+  <div
+    id="color-circl-team-name"
+    :style="{ 'justify-content': justifyContent, }">
     <ColorCircle :teamColorHex="team.colour"/>
     <span>
       {{ team.teamName }}
@@ -14,6 +16,7 @@ export default {
   name: 'ColorCircleTeamName',
   props: {
     team: Object,
+    justifyContent: String,
   },
   components: {
     ColorCircle,
@@ -24,7 +27,6 @@ export default {
 <style scoped lang="scss">
 #color-circl-team-name{
   display: flex;
-  justify-content: center;
   align-items: center;
 }
 </style>

@@ -35,7 +35,9 @@
               <tr>
                 <th>Away</th>
                 <td>
-                  <ColorCircleTeamName :team="teamById(selectedGame.awayTeamID)"/>
+                  <ColorCircleTeamName
+                    :team="teamById(selectedGame.awayTeamID)"
+                    justifyContent="center"/>
                   <span v-if="selectedGame.status === 'Final'">
                     - {{ selectedGame.awayGoals }}
                   </span>
@@ -44,7 +46,9 @@
               <tr>
                 <th>Home</th>
                 <td>
-                  <ColorCircleTeamName :team="teamById(selectedGame.homeTeamID)"/>
+                  <ColorCircleTeamName
+                    :team="teamById(selectedGame.homeTeamID)"
+                    justifyContent="center"/>
                   <span v-if="selectedGame.status === 'Final'">
                     - {{ selectedGame.homeGoals }}
                   </span>
@@ -105,10 +109,14 @@
                 'open-event': gameObj.status === 'Open',
               }">
               <td>
-                <ColorCircleTeamName :team="teamById(gameObj.awayTeamID)"/>
+                <ColorCircleTeamName
+                  :team="teamById(gameObj.awayTeamID)"
+                  justifyContent="center"/>
               </td>
               <td>
-                <ColorCircleTeamName :team="teamById(gameObj.homeTeamID)"/>
+                <ColorCircleTeamName
+                  :team="teamById(gameObj.homeTeamID)"
+                  justifyContent="center"/>
               </td>
               <td v-if="gameObj.status === 'Final'">
                 {{gameObj.awayGoals}} - {{gameObj.homeGoals}}

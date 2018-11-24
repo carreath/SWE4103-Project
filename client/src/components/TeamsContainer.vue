@@ -6,7 +6,6 @@
       <el-table
         :data="formatTeams"
         stripe
-        :default-sort = "{prop: 'teamID', order: 'ascending'}"
         style="width: 100%">
         <el-table-column
           prop="teamID"
@@ -17,6 +16,11 @@
           prop="teamName"
           sortable
           label="Team Name">
+          <template slot-scope="scope">
+            <ColorCircleTeamName
+              :team="teamById(scope.row.teamID)"
+              justifyContent="flex-start"/>
+          </template>
         </el-table-column>
         <el-table-column
           prop="managerID"
@@ -28,6 +32,7 @@
 </template>
 
 <script>
+import ColorCircleTeamName from '@/components/ColorCircleTeamName.vue';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
@@ -37,12 +42,16 @@ export default {
 
     };
   },
+  components: {
+    ColorCircleTeamName,
+  },
   computed: {
     ...mapGetters([
       'teams',
       'leagueById',
       'selectedLeagueId',
       'teamsByLeagueId',
+      'teamById',
     ]),
     formatTeams() {
       const formatedTeams = this.teamsByLeagueId(this.selectedLeagueId).map((team) => {
