@@ -1,5 +1,6 @@
 <template>
   <div id="schedule">
+    <!--
     <div id="button-container">
       <div
         id="new-schedule-button"
@@ -16,8 +17,15 @@
           @click="handleCreateGameButtonClick">Create New Game</el-button>
       </div>
     </div>
+    -->
+
+    <div v-if="curRoute === 'schedule-game'">
+      <ScheduleGameInfo/>
+    </div>
+
     <div
-      id="schedule-body">
+      id="schedule-body"
+      v-else>
       <div
         id="calendar-view"
         v-if="scheduleSelectedView === 'Calendar'">
@@ -74,6 +82,12 @@
                 </td>
               </tr>
             </table>
+            <el-button
+              size="mini"
+              @click='gameInfoClicked()'>
+              Game Sheet
+              <i class="el-icon-d-arrow-right"></i>
+            </el-button>
           </div>
         </div>
         <div
@@ -130,12 +144,14 @@
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
 <script>
 import Calendar from '@/components/Calendar.vue';
 import ColorCircleTeamName from '@/components/ColorCircleTeamName.vue';
+import ScheduleGameInfo from '@/components/ScheduleGameInfo.vue';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -143,6 +159,7 @@ export default {
   components: {
     Calendar,
     ColorCircleTeamName,
+    ScheduleGameInfo,
   },
   data() {
     return {
@@ -165,7 +182,7 @@ export default {
       'selectedLeague',
     ]),
     curRoute() {
-      return this.$route.name;
+      return this.$route.name || '';
     },
     userCanCreateSchedules() {
       if (!this.user) {
@@ -221,6 +238,9 @@ export default {
     },
     handleCreateScheduleButtonClick() {
       this.$router.push('/schedule/create');
+    },
+    gameInfoClicked() {
+      this.$router.push('/schedule/game');
     },
   },
   watch: {
@@ -300,12 +320,13 @@ export default {
         #game-info{
           display: flex;
           flex-direction: column;
-          align-items: flex-start;
+          align-items: center;
           justify-content: flex-start;
 
           table{
             width: 100%;
             transition: 0.2s;
+            margin-bottom: 8px;
 
             tr{
               border-bottom: 1px solid #ddd;
