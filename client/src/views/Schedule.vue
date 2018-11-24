@@ -35,7 +35,7 @@
               <tr>
                 <th>Away</th>
                 <td>
-                  {{ teamById(selectedGame.awayTeamID).teamName }}
+                  <ColorCircleTeamName :team="teamById(selectedGame.awayTeamID)"/>
                   <span v-if="selectedGame.status === 'Final'">
                     - {{ selectedGame.awayGoals }}
                   </span>
@@ -44,7 +44,7 @@
               <tr>
                 <th>Home</th>
                 <td>
-                  {{ teamById(selectedGame.homeTeamID).teamName }}
+                  <ColorCircleTeamName :team="teamById(selectedGame.homeTeamID)"/>
                   <span v-if="selectedGame.status === 'Final'">
                     - {{ selectedGame.homeGoals }}
                   </span>
