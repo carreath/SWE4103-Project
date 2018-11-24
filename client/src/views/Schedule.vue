@@ -104,8 +104,12 @@
                 'cancelled-event': gameObj.status === 'Cancelled',
                 'open-event': gameObj.status === 'Open',
               }">
-              <td>{{ teamById(gameObj.awayTeamID).teamName }}</td>
-              <td>{{ teamById(gameObj.homeTeamID).teamName }}</td>
+              <td>
+                <ColorCircleTeamName :team="teamById(gameObj.awayTeamID)"/>
+              </td>
+              <td>
+                <ColorCircleTeamName :team="teamById(gameObj.homeTeamID)"/>
+              </td>
               <td v-if="gameObj.status === 'Final'">
                 {{gameObj.awayGoals}} - {{gameObj.homeGoals}}
               </td>
@@ -123,12 +127,14 @@
 
 <script>
 import Calendar from '@/components/Calendar.vue';
+import ColorCircleTeamName from '@/components/ColorCircleTeamName.vue';
 import { mapGetters } from 'vuex';
 
 export default {
   name: 'Schedule',
   components: {
     Calendar,
+    ColorCircleTeamName,
   },
   data() {
     return {
@@ -356,6 +362,12 @@ export default {
             td{
               width: 18%;
               padding: 8px 0px;
+
+              .teamAndColorContainer{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
             }
           }
         }
