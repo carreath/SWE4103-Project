@@ -114,6 +114,7 @@
               <th>Field</th>
               <th>Time</th>
               <th>Status</th>
+              <th></th>
             </tr>
             <tr
               v-for="gameObj in dateGames.games"
@@ -121,7 +122,8 @@
               :class="{
                 'cancelled-event': gameObj.status === 'Cancelled',
                 'open-event': gameObj.status === 'Open',
-              }">
+              }"
+              @click="gameTableRowClicked(gameObj.gameID)">
               <td>
                 <ColorCircleTeamName
                   :team="teamById(gameObj.awayTeamID)"
@@ -152,7 +154,7 @@
 import Calendar from '@/components/Calendar.vue';
 import ColorCircleTeamName from '@/components/ColorCircleTeamName.vue';
 import ScheduleGameInfo from '@/components/ScheduleGameInfo.vue';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'Schedule',
@@ -200,6 +202,9 @@ export default {
     },
   },
   methods: {
+    ...mapActions([
+      'setSelectedGameId',
+    ]),
     formatDate(mDate) {
       const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
       const tempDate = (mDate || '').split('-');
@@ -240,6 +245,10 @@ export default {
       this.$router.push('/schedule/create');
     },
     gameInfoClicked() {
+      this.$router.push('/schedule/game');
+    },
+    gameTableRowClicked(gameID) {
+      this.setSelectedGameId(gameID);
       this.$router.push('/schedule/game');
     },
   },
@@ -396,6 +405,12 @@ export default {
                 display: flex;
                 justify-content: center;
                 align-items: center;
+              }
+            }
+
+            &:hover{
+              :not(th){
+                cursor: pointer;
               }
             }
           }
