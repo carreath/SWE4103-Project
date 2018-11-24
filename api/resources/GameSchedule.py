@@ -102,10 +102,7 @@ class LeagueSchedule(Resource):
         parser.add_argument('fieldName', type=str)
         parser.add_argument('status', type=str)
         args = parser.parse_args()
-        '''
-        query = "UPDATE games SET homeTeamID = %d, awayTeamID = %d, refereeID = %d, gameTime = '%s', fieldName = '%s' WHERE gameID = %d AND leagueID = %d" \
-                % (args['homeTeamID'], args['awayTeamID'], args['refereeID'], args['gameTime'], args['fieldName'], args['gameID'], args['leagueID'])
-        '''
+
         game_id = args['gameID']
         league_id = args['leagueID']
         home_team_id = args['homeTeamID']
@@ -125,7 +122,6 @@ class LeagueSchedule(Resource):
                              field_name,
                              status])
 
-        '''db.cursor.execute(query)'''
         db.conn.commit()
         return 200
 
