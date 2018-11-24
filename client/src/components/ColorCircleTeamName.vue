@@ -1,7 +1,7 @@
 <template>
   <div
     id="color-circl-team-name"
-    :style="{ 'justify-content': justifyContent, }">
+    :style="{ 'justify-content': justifyContent, 'display': 'flex'}">
     <ColorCircle :teamColorHex="team.colour"/>
     <span>
       {{ team.teamName }}
