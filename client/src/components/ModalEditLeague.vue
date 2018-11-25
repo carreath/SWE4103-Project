@@ -56,7 +56,8 @@
               v-model="leagueEditForm.managerID"
               id="league-coordinator-input"
               :style="{'float': 'left'}"
-              placeholder="Coordinator">
+              placeholder="Coordinator"
+              :disabled="disableLeagueCoordinatorSelector">
               <el-option label="None" :value="null"></el-option>
               <el-option
                 v-for="coordinator in coordinatorUsers"
@@ -144,9 +145,19 @@ export default{
       'editedLeagueId',
       'leagues',
       'coordinatorUsers',
+      'user',
     ]),
     leagueEditButtonText() {
       return this.loading ? 'Loading' : 'Edit League';
+    },
+    disableLeagueCoordinatorSelector() {
+      if (!this.user) {
+        return true;
+      }
+      if (this.user.userType === 'Admin') {
+        return false;
+      }
+      return true;
     },
   },
   methods: {

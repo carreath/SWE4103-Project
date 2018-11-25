@@ -4,7 +4,7 @@
     </div>
     <div id="create-league-button-container">
       <el-button
-      @click="leagueCreateClicked"
+      @click="leagueCreateClicked()"
       type="primary">Create New League</el-button>
     </div>
     <div id="leagues-table-container">
@@ -49,11 +49,13 @@
             <el-button
             icon="el-icon-edit"
             size="mini"
+            :disabled="actionEditDisabled(scope.row)"
             @click='leagueEditClicked(scope.row.leagueID)'>
             </el-button>
             <el-button
             icon="el-icon-delete"
             size="mini"
+            :disabled="actionDeleteDisabled(scope.row)"
             @click="leagueDeleteClicked(scope.row.leagueID, scope.row.leagueName)">
             </el-button>
           </template>
@@ -79,6 +81,7 @@ export default {
       'leagues',
       'leagueById',
       'userById',
+      'user',
     ]),
     formatLeagues() {
       const formattedLeagues = this.leagues.map((league) => {
@@ -101,6 +104,36 @@ export default {
       'setEditedLeague',
       'setEditLeagueModalVisible',
     ]),
+    actionEditDisabled(leagueObj) {
+      if (!this.user) {
+        return true;
+      }
+      switch (this.user.userType) {
+        case ('Admin'): {
+          return false;
+        }
+        case ('Coordinator'): {
+          return leagueObj.managerID !== this.user.userID;
+        }
+        default:
+          return true;
+      }
+    },
+    actionDeleteDisabled() {
+      if (!this.user) {
+        return true;
+      }
+      switch (this.user.userType) {
+        case ('Admin'): {
+          return false;
+        }
+        case ('Coordinator'): {
+          return true;
+        }
+        default:
+          return true;
+      }
+    },
     leagueCreateClicked() {
       this.$router.push('/admin/leagues/create');
     },
@@ -127,11 +160,6 @@ export default {
         });
       }).catch(() => {
       });
-    },
-  },
-  watch: {
-    league() {
-      this.formatedLeagues();
     },
   },
 };
