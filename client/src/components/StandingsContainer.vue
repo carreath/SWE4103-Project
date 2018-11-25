@@ -27,8 +27,7 @@
         <el-table-column
           prop="pointsPerGame"
           sortable
-          label="PTS/GP"
-          tooltip-effect>
+          label="PPG">
           <template slot-scope="scope">
             <el-tooltip content="Points per Game" :enterable="false" placement="top">
               <span>{{ scope.row.pointsPerGame }}</span>
