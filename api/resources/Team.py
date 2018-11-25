@@ -169,12 +169,11 @@ class Team(Resource):
             db_connector.cursor.execute(query)
             point_scheme = db_connector.cursor.fetchone()[0]
             if point_scheme == 'Capital Scoring':
-                team['pointScheme'] = 1 * team['wins'] + 0 * team['draw'] - 1 * team['losses']
+                team['leaguePoints'] = 1 * team['wins'] + 0 * team['draws'] - 1 * team['losses']
             elif point_scheme == 'Standard':
-                team['pointScheme'] = 3 * team['wins'] + 1 * team['draw'] + 0 * team['losses']
+                team['leaguePoints'] = 3 * team['wins'] + 1 * team['draws'] + 0 * team['losses']
 
         db_connector.conn.close()
-        print(teams_data[0])
         return {'teams': teams_data}, 200
 
     def put(self):
