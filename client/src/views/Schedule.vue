@@ -1,7 +1,31 @@
 <template>
   <div id="schedule">
+    <!--
+    <div id="button-container">
+      <div
+        id="new-schedule-button"
+        v-if="userCanCreateSchedules">
+        <el-button
+          type="primary"
+          @click="handleCreateScheduleButtonClick">Create New Schedule</el-button>
+      </div>
+      <div
+        id="new-game-button"
+        v-if="userCanCreateSchedules">
+        <el-button
+          type="primary"
+          @click="handleCreateGameButtonClick">Create New Game</el-button>
+      </div>
+    </div>
+    -->
+
+    <div v-if="curRoute === 'schedule-game'">
+      <ScheduleGameInfo/>
+    </div>
+
     <div
-      id="schedule-body">
+      id="schedule-body"
+      v-else>
       <div
         id="calendar-view"
         v-if="scheduleSelectedView === 'Calendar'">
@@ -19,7 +43,9 @@
               <tr>
                 <th>Away</th>
                 <td>
-                  {{ teamById(selectedGame.awayTeamID).teamName }}
+                  <ColorCircleTeamName
+                    :team="teamById(selectedGame.awayTeamID)"
+                    justifyContent="center"/>
                   <span v-if="selectedGame.status === 'Final'">
                     - {{ selectedGame.awayGoals }}
                   </span>
@@ -28,7 +54,9 @@
               <tr>
                 <th>Home</th>
                 <td>
-                  {{ teamById(selectedGame.homeTeamID).teamName }}
+                  <ColorCircleTeamName
+                    :team="teamById(selectedGame.homeTeamID)"
+                    justifyContent="center"/>
                   <span v-if="selectedGame.status === 'Final'">
                     - {{ selectedGame.homeGoals }}
                   </span>
@@ -36,7 +64,7 @@
               </tr>
               <tr>
                 <th>Field</th>
-                <td>{{ selectedGame.field }}</td>
+                <td>{{ selectedGame.fieldName }}</td>
               </tr>
               <tr>
                 <th>Date</th>
@@ -54,6 +82,12 @@
                 </td>
               </tr>
             </table>
+            <el-button
+              size="mini"
+              @click='gameInfoClicked()'>
+              Game Sheet
+              <i class="el-icon-d-arrow-right"></i>
+            </el-button>
           </div>
         </div>
         <div
@@ -80,6 +114,7 @@
               <th>Field</th>
               <th>Time</th>
               <th>Status</th>
+              <th></th>
             </tr>
             <tr
               v-for="gameObj in dateGames.games"
@@ -87,33 +122,46 @@
               :class="{
                 'cancelled-event': gameObj.status === 'Cancelled',
                 'open-event': gameObj.status === 'Open',
-              }">
-              <td>{{ teamById(gameObj.awayTeamID).teamName }}</td>
-              <td>{{ teamById(gameObj.homeTeamID).teamName }}</td>
+              }"
+              @click="gameTableRowClicked(gameObj.gameID)">
+              <td>
+                <ColorCircleTeamName
+                  :team="teamById(gameObj.awayTeamID)"
+                  justifyContent="center"/>
+              </td>
+              <td>
+                <ColorCircleTeamName
+                  :team="teamById(gameObj.homeTeamID)"
+                  justifyContent="center"/>
+              </td>
               <td v-if="gameObj.status === 'Final'">
                 {{gameObj.awayGoals}} - {{gameObj.homeGoals}}
               </td>
               <td v-else>-</td>
-              <td>{{ gameObj.field }}</td>
+              <td>{{ gameObj.fieldName }}</td>
               <td>{{ formatTime(gameObj.gameTime.split(' ')[1]) }}</td>
               <td>{{ gameObj.status }}</td>
             </tr>
           </table>
         </div>
       </div>
-
     </div>
+
   </div>
 </template>
 
 <script>
 import Calendar from '@/components/Calendar.vue';
-import { mapGetters } from 'vuex';
+import ColorCircleTeamName from '@/components/ColorCircleTeamName.vue';
+import ScheduleGameInfo from '@/components/ScheduleGameInfo.vue';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'Schedule',
   components: {
     Calendar,
+    ColorCircleTeamName,
+    ScheduleGameInfo,
   },
   data() {
     return {
@@ -132,15 +180,34 @@ export default {
       'selectedLeagueId',
       'selectedTeamId',
       'games',
+      'user',
+      'selectedLeague',
     ]),
     curRoute() {
-      return this.$route.name;
+      return this.$route.name || '';
+    },
+    userCanCreateSchedules() {
+      if (!this.user) {
+        return false;
+      }
+      const userType = this.user.userType;
+      switch (userType) {
+        case ('Admin'):
+          return true;
+        case ('Coordinator'):
+          return this.selectedLeague.managerID === this.user.userID;
+        default:
+          return false;
+      }
     },
   },
   methods: {
+    ...mapActions([
+      'setSelectedGameId',
+    ]),
     formatDate(mDate) {
       const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-      const tempDate = mDate.split('-');
+      const tempDate = (mDate || '').split('-');
       return `${months[Number(tempDate[1]) - 1]} ${tempDate[2]}, ${tempDate[0]}`;
     },
     formatTime(mTime) {
@@ -171,6 +238,19 @@ export default {
       });
       this.tableViewGamesList = gamesArr.sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
     },
+    handleCreateGameButtonClick() {
+      this.$router.push('/schedule/game/create');
+    },
+    handleCreateScheduleButtonClick() {
+      this.$router.push('/schedule/create');
+    },
+    gameInfoClicked() {
+      this.$router.push('/schedule/game');
+    },
+    gameTableRowClicked(gameID) {
+      this.setSelectedGameId(gameID);
+      this.$router.push('/schedule/game');
+    },
   },
   watch: {
     selectedTeamId() {
@@ -197,8 +277,13 @@ export default {
   flex-direction: column;
   margin-bottom: 8px;
 
-  #schedule-header{
+  #button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
 
+  #schedule-header{
   }
 
   #schedule-body{
@@ -244,12 +329,13 @@ export default {
         #game-info{
           display: flex;
           flex-direction: column;
-          align-items: flex-start;
+          align-items: center;
           justify-content: flex-start;
 
           table{
             width: 100%;
             transition: 0.2s;
+            margin-bottom: 8px;
 
             tr{
               border-bottom: 1px solid #ddd;
@@ -314,6 +400,18 @@ export default {
             td{
               width: 18%;
               padding: 8px 0px;
+
+              .teamAndColorContainer{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
+            }
+
+            &:hover{
+              :not(th){
+                cursor: pointer;
+              }
             }
           }
         }
@@ -330,5 +428,21 @@ export default {
       transition: 0.2s;
     }
   }
+}
+#new-schedule-button {
+  display: flex;
+  align-items: right;
+  justify-content: flex-end;
+  margin-top: 15px;
+  margin-right: 15px;
+  margin-bottom: 15px;
+}
+#new-game-button {
+  display: flex;
+  align-items: right;
+  justify-content: flex-end;
+  margin-top: 15px;
+  margin-right: 15px;
+  margin-bottom: 15px;
 }
 </style>

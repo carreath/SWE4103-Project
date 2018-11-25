@@ -1,11 +1,12 @@
 <template>
   <div id="admin-players-create">
     <div id="admin-players-create-container-main">
-      <div id="title">
+      <h1 id="title">
         Create A New Player
-      </div>
+      </h1>
       <div id="form-container">
         <el-form
+          :label-position="labelPosition"
           :model="adminPlayersCreate"
           :rules="adminPlayersCreateRules"
           label-width="120px"
@@ -38,7 +39,10 @@
             label="Team Name"
             id="team-name-label"
             prop="teamID">
-            <el-select v-model="adminPlayersCreate.teamID" placeholder="Select Team">
+            <el-select
+              v-model="adminPlayersCreate.teamID"
+              :style="{'float': 'left'}"
+              placeholder="Select Team">
               <el-option
                 v-for="item in formatTeams"
                 :key="item.teamID"
@@ -89,6 +93,7 @@ export default{
   name: 'AdminPlayersCreate',
   data() {
     return {
+      labelPosition: 'left',
       adminPlayersCreate: {
         firstName: '',
         lastName: '',
@@ -152,14 +157,29 @@ export default{
     ...mapGetters([
       'teams',
       'leagueById',
+      'user',
+      'selectedLeagueId',
+      'leagues',
     ]),
     formatTeams() {
-      const formatedTeams = this.teams.map((team) => {
-        return {
-          teamID: team.teamID,
-          teamName: team.teamName,
-          managerID: team.managerID,
-        };
+      const formatedTeams = this.teams.filter(team => {
+        if (!this.user) {
+          return false;
+        }
+        if (this.user.userType === 'Admin') {
+          return team.leagueID === this.selectedLeagueId;
+        }
+        if (this.user.userType === 'Coordinator') {
+          return team.leagueID === (this.leagues.find(league => {
+            return league.managerID === this.user.userID;
+          }) || {}).leagueID;
+        }
+        if (this.user.userType === 'Manager') {
+          return team.teamID === (this.teams.find(team => {
+            return team.managerID === this.user.userID;
+          }) || {}).teamID;
+        }
+        return false;
       });
       return formatedTeams;
     },
@@ -212,6 +232,10 @@ export default{
   flex-direction: column;
   align-items: flex-start;
   margin-top: 16px;
+
+  #title{
+    display: flex;
+  }
 
   #first-name-label{
     margin-top: 16px;

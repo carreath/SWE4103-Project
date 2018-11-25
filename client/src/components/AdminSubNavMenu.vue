@@ -20,10 +20,18 @@
         </li>
         <li
           v-if="showPlayersTab"
-          :class="{'is-active': curRoute === 'admin-players'}"
+          :class="{'is-active': curRoute.includes('admin-players')}"
           @click="handleAdminNavMenuSelect('players')">
           <span>
             Players
+          </span>
+        </li>
+        <li
+          v-if="showUsersTab"
+          :class="{'is-active': curRoute === 'admin-users'}"
+          @click="handleAdminNavMenuSelect('users')">
+          <span>
+            Users
           </span>
         </li>
       </ul>
@@ -52,14 +60,16 @@ export default {
       if (!this.user) {
         return false;
       }
-      return this.user.userType === 'Admin';
+      return this.user.userType === 'Admin'
+        || this.user.userType === 'Coordinator';
     },
     showTeamsTab() {
       if (!this.user) {
         return false;
       }
       return this.user.userType === 'Admin'
-        || this.user.userType === 'Coordinator';
+        || this.user.userType === 'Coordinator'
+        || this.user.userType === 'Manager';
     },
     showPlayersTab() {
       if (!this.user) {
@@ -68,6 +78,12 @@ export default {
       return this.user.userType === 'Admin'
         || this.user.userType === 'Coordinator'
         || this.user.userType === 'Manager';
+    },
+    showUsersTab() {
+      if (!this.user) {
+        return false;
+      }
+      return this.user.userType === 'Admin';
     },
   },
   methods: {
@@ -86,6 +102,10 @@ export default {
         }
         case ('players'): {
           this.$router.push('/admin/players');
+          break;
+        }
+        case ('users'): {
+          this.$router.push('/admin/users');
           break;
         }
         default: {

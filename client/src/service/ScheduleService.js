@@ -1,7 +1,7 @@
 import ServiceLayer from '@/service/ServiceLayer';
 
 export default {
-  getGames(paramsIn) {
+  getSchedule(paramsIn) {
     return ServiceLayer().get('/game-schedule', { params: paramsIn })
       .then((response) => {
         return response;
@@ -10,17 +10,8 @@ export default {
         return err.response;
       });
   },
-  createGame(params) {
-    return ServiceLayer().post('/game', params)
-      .then((response) => {
-        return response;
-      })
-      .catch((err) => {
-        return err.response;
-      });
-  },
-  editGame(params) {
-    return ServiceLayer().put('/game-schedule', params)
+  createSchedule(params) {
+    return ServiceLayer().post('/game-schedule', params)
       .then((response) => {
         return response;
       })

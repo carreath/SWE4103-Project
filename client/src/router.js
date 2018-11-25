@@ -8,6 +8,8 @@ import Teams from './views/Teams.vue';
 import Admin from './views/Admin.vue';
 
 import store from './store/index';
+import ScheduleGameCreate from './components/ScheduleGameCreate.vue';
+import CreateScheduleForm from './components/CreateScheduleForm.vue';
 
 Vue.use(Router);
 
@@ -36,10 +38,58 @@ const router = new Router({
       component: Schedule,
     },
     {
+      path: '/schedule/game',
+      name: 'schedule-game',
+      component: Schedule,
+    },
+    {
+      path: '/schedule/create',
+      name: 'create-schedule-form',
+      component: CreateScheduleForm,
+    },
+    {
+      path: '/schedule/game/create',
+      name: 'schedule-game-create',
+      component: ScheduleGameCreate,
+    },
+    {
       path: '/teams',
       name: 'teams',
       component: Teams,
     },
+    /*
+    {
+      path: '/schedule/game/create',
+      name: 'schedule-game-create',
+      component: ScheduleGameCreate,
+      beforeEnter: (to, from, next) => {
+        const user = store.getters.user;
+        if (user) {
+          switch (user.userType) {
+            case ('Admin'):
+              next('/schedule/game/create');
+              break;
+            case ('Coordinator'):
+              next('/schedule/game/create');
+              break;
+            default:
+              next('/');
+          }
+          return;
+        }
+        if (store.getters.token) {
+          store.dispatch('validateToken').then((user) => {
+            if (user) {
+              next('/schedule/game/create');
+            } else {
+              next('/');
+            }
+          });
+        }
+        next('/');
+      },
+    },
+    */
     {
       path: '/admin',
       name: 'admin',
@@ -52,10 +102,10 @@ const router = new Router({
               next('/admin/leagues');
               break;
             case ('Coordinator'):
-              next('/admin/teams');
+              next('/admin/leagues');
               break;
             case ('Manager'):
-              next('/admin/players');
+              next('/admin/teams');
               break;
             default:
               next('/');
@@ -65,7 +115,19 @@ const router = new Router({
         if (store.getters.token) {
           store.dispatch('validateToken').then((user) => {
             if (user) {
-              next('/admin/leagues');
+              switch (user.userType) {
+                case ('Admin'):
+                  next('/admin/leagues');
+                  break;
+                case ('Coordinator'):
+                  next('/admin/leagues');
+                  break;
+                case ('Manager'):
+                  next('/admin/teams');
+                  break;
+                default:
+                  next('/');
+              }
             } else {
               next('/');
             }
@@ -80,13 +142,13 @@ const router = new Router({
       component: Admin,
       beforeEnter: (to, from, next) => {
         const user = store.getters.user;
-        if (user && (user.userType === 'Admin')) {
+        if (user && (user.userType === 'Admin' || user.userType === 'Coordinator')) {
           next();
           return;
         }
         if (store.getters.token) {
           store.dispatch('validateToken').then((user) => {
-            if (user && user.userType === 'Admin') {
+            if (user && (user.userType === 'Admin' || user.userType === 'Coordinator')) {
               next();
             } else {
               next('/');
@@ -103,13 +165,13 @@ const router = new Router({
       component: Admin,
       beforeEnter: (to, from, next) => {
         const user = store.getters.user;
-        if (user && (user.userType === 'Admin' || user.userType === 'Coordinator')) {
+        if (user && (user.userType === 'Admin' || user.userType === 'Coordinator' || user.userType === 'Manager')) {
           next();
           return;
         }
         if (store.getters.token) {
           store.dispatch('validateToken').then((user) => {
-            if (user && (user.userType === 'Admin' || user.userType === 'Coordinator')) {
+            if (user && (user.userType === 'Admin' || user.userType === 'Coordinator' || user.userType === 'Manager')) {
               next();
             } else {
               next('/');
@@ -191,6 +253,36 @@ const router = new Router({
         } else {
           next('/');
         }
+      },
+    },
+    {
+      path: '/admin/users',
+      name: 'admin-users',
+      component: Admin,
+      beforeEnter: (to, from, next) => {
+        const user = store.getters.user;
+        if (user && (user.userType === 'Admin')) {
+          next();
+          return;
+        }
+        if (store.getters.token) {
+          store.dispatch('validateToken').then((user) => {
+            if (user && user.userType === 'Admin') {
+              next();
+            } else {
+              next('/');
+            }
+          });
+        } else {
+          next('/');
+        }
+      },
+    },
+    {
+      path: '*',
+      name: 'default',
+      beforeEnter: (to, from, next) => {
+        next('/');
       },
     },
   ],

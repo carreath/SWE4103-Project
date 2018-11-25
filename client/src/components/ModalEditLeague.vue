@@ -39,24 +39,53 @@
             label="Point Scheme"
             class = "label"
             prop="pointScheme">
-            <el-select v-model="leagueEditForm.pointScheme" id="point-scheme-input"
-            placeholder="Point Scheme">
-              <el-option label="Standard" value="standard"></el-option>
-              <el-option label="Capital Scoring" value="capitalScoring"></el-option>
+            <el-select
+              v-model="leagueEditForm.pointScheme"
+              id="point-scheme-input"
+              :style="{'float': 'left'}"
+              placeholder="Point Scheme">
+              <el-option label="Standard" value="Standard"></el-option>
+              <el-option label="Capital Scoring" value="Capital Scoring"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item
+            label="Coordinator"
+            id="league-coordinator-label"
+            prop="managerID">
+            <el-select
+              v-model="leagueEditForm.managerID"
+              id="league-coordinator-input"
+              :style="{'float': 'left'}"
+              placeholder="Coordinator"
+              :disabled="disableLeagueCoordinatorSelector">
+              <el-option label="None" :value="null"></el-option>
+              <el-option
+                v-for="coordinator in coordinatorUsers"
+                :key="coordinator.userID"
+                :value="coordinator.userID"
+                :label="`${coordinator.firstName} ${coordinator.lastName}`"
+                :disabled="coordinatorAlreadyCoordinates(coordinator.userID)">
+              </el-option>
             </el-select>
           </el-form-item>
           <div id="errMsg" v-if="errMsg">
             Error: {{ errMsg }}
           </div>
-          <el-form-item id="league-edit-button-container">
-            <el-button
-              type="primary"
-              :loading="loading"
-              @click="leagueEditButtonClicked">
-              {{ leagueEditButtonText }}
-            </el-button>
-          </el-form-item>
         </el-form>
+      </div>
+      <div class="footer">
+        <el-button
+          :loading="loading"
+          @click="closeModal">
+          Cancel
+        </el-button>
+        <div></div>
+        <el-button
+          type="primary"
+          :loading="loading"
+          @click="leagueEditButtonClicked">
+          {{ leagueEditButtonText }}
+        </el-button>
       </div>
     </div>
   </div>
@@ -74,6 +103,7 @@ export default{
         leagueName: '',
         season: '',
         pointScheme: '',
+        managerID: null,
       },
       leagueEditFormRules: {
         leagueName: [
@@ -113,9 +143,21 @@ export default{
       'editLeagueModalVisible',
       'editedLeague',
       'editedLeagueId',
+      'leagues',
+      'coordinatorUsers',
+      'user',
     ]),
     leagueEditButtonText() {
       return this.loading ? 'Loading' : 'Edit League';
+    },
+    disableLeagueCoordinatorSelector() {
+      if (!this.user) {
+        return true;
+      }
+      if (this.user.userType === 'Admin') {
+        return false;
+      }
+      return true;
     },
   },
   methods: {
@@ -123,6 +165,11 @@ export default{
       'closeModal',
       'editLeague',
     ]),
+    coordinatorAlreadyCoordinates(userID) {
+      return this.leagues.filter(league => {
+        return league.managerID === userID && league.leagueID !== this.leagueEditForm.leagueID;
+      }).length > 0;
+    },
     handleKeyUp(e) {
       // Escape ley
       if (e.keyCode === 27) {
@@ -164,6 +211,7 @@ export default{
 
 <style lang='scss' scoped>
 @import '@/style/global.scss';
+
 #modal-edit-league{
   #edit-league-modal-container{
     padding: 0px 40px;
@@ -173,6 +221,7 @@ export default{
     #title{
       font-size: 2rem;
       font-weight: bold;
+      margin-bottom: 8px;
     }
 
     .el-form-item.is-success /deep/ .el-input__inner,
@@ -205,6 +254,12 @@ export default{
       button{
         width: 50%;
       }
+    }
+
+    .footer{
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
     }
   }
 }

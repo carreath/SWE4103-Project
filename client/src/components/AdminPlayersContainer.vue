@@ -1,22 +1,38 @@
 <template>
   <div id="admin-players-container">
     <div id="title-container">
-    </div>
-    <div id="create-player-button-container">
-      <el-button
-        type="primary"
-        @click="handleCreatePlayerButtonClick">Create Player</el-button>
+      <h1>
+        {{ leagueTitleName }}
+      </h1>
+      <div></div>
+      <div id="create-player-button-container">
+        <span id="playerNameSearch">
+          <el-input
+            v-model="searchPlayerName"
+            size="small"
+            placeholder="Filter Name"/>
+        </span>
+        <el-button
+          type="primary"
+          @click="handleCreatePlayerButtonClick">Create Player</el-button>
+      </div>
     </div>
     <div id="players-table-container">
       <el-table
         :data="formatPlayers"
-        :default-sort = "{prop: 'playerID', order: 'ascending'}"
         stripe
         style="width: 100%">
         <el-table-column
           prop="playerID"
+          width="110px"
           sortable
           label="Player ID">
+        </el-table-column>
+        <el-table-column
+          prop="fullName"
+          label="Name"
+          :show-overflow-tooltip="true"
+          sortable>
         </el-table-column>
         <el-table-column
           prop="number"
@@ -24,19 +40,15 @@
           label="Jersey Number">
         </el-table-column>
         <el-table-column
-          prop="firstName"
-          sortable
-          label="First Name">
-        </el-table-column>
-        <el-table-column
-          prop="lastName"
-          sortable
-          label="Last Name">
-        </el-table-column>
-        <el-table-column
           prop="teamName"
           sortable
+          :show-overflow-tooltip="true"
           label="Team Name">
+          <template slot-scope="scope">
+            <ColorCircleTeamName
+              :team="teamById(scope.row.teamID)"
+              justifyContent="flex-start"/>
+          </template>
         </el-table-column>
         <el-table-column
           label="Action">
@@ -61,28 +73,82 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import ColorCircleTeamName from '@/components/ColorCircleTeamName.vue';
 
 export default {
   name: 'AdminPlayersContainer',
   data() {
     return {
-
+      searchPlayerName: '',
     };
+  },
+  components: {
+    ColorCircleTeamName,
   },
   computed: {
     ...mapGetters([
       'players',
       'teamById',
       'playerById',
+      'user',
+      'selectedLeagueId',
+      'teams',
+      'leagues',
+      'selectedLeague',
     ]),
+    leagueTitleName() {
+      if (!this.user) {
+        return '';
+      }
+      if (this.user.userType === 'Admin') {
+        return this.selectedLeague.leagueName;
+      }
+      if (this.user.userType === 'Coordinator') {
+        return (this.leagues.find(league => {
+          return league.managerID === this.user.userID;
+        }) || {}).leagueName;
+      }
+      if (this.user.userType === 'Manager') {
+        return (this.teams.find(team => {
+          return team.managerID === this.user.userID;
+        }) || {}).teamName;
+      }
+      return '';
+    },
     formatPlayers() {
-      const formatedPlayers = this.players.map((player) => {
+      const formatedPlayers = this.players.filter(player => {
+        if (!this.searchPlayerName) {
+          return true;
+        }
+        const fullName = `${player.firstName.toLowerCase()} ${player.lastName.toLowerCase()}`;
+        return fullName.includes(this.searchPlayerName.toLowerCase());
+      }).filter(player => {
+        if (!this.user) {
+          return false;
+        }
+        if (this.user.userType === 'Admin') {
+          const team = this.teams.find(team => team.teamID === player.teamID);
+          return (team || {}).leagueID === this.selectedLeagueId;
+        }
+        if (this.user.userType === 'Coordinator') {
+          const leagueID = (this.leagues.find(league => {
+            return league.managerID === this.user.userID;
+          }) || {}).leagueID;
+          const team = this.teams.find(team => team.teamID === player.teamID);
+          return (team || {}).leagueID === leagueID;
+        }
+        if (this.user.userType === 'Manager') {
+          const teamID = (this.teams.find(team => {
+            return team.managerID === this.user.userID;
+          }) || {}).teamID;
+          return teamID === player.teamID;
+        }
+        return false;
+      }).map((player) => {
         return {
-          playerID: player.playerID,
-          lastName: player.lastName,
-          firstName: player.firstName,
+          ...player,
+          fullName: `${player.firstName} ${player.lastName}`,
           teamName: this.teamById(player.teamID).teamName,
-          number: player.number,
         };
       });
       return formatedPlayers;
@@ -114,7 +180,7 @@ export default {
               center: true,
             });
           } else {
-            this.$message.error('Error deleting');
+            this.$message.error(response.retMsg);
           }
           this.$router.push('/admin/players');
         });
@@ -133,14 +199,28 @@ export default {
 
 <style lang="scss" scoped>
 #admin-players-container{
-
-  #create-player-button-container{
+  #title-container{
     display: flex;
-    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
-    justify-content: flex-end;
-    height: 61px;
-    transition: 0.3s;
+    width: 100%;
+
+    h1{
+      margin-bottom: 0;
+    }
+    #create-player-button-container{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+      height: 61px;
+      transition: 0.3s;
+
+      #playerNameSearch{
+        width: 200px;
+        margin-right: 16px;
+      }
+    }
   }
 }
 </style>

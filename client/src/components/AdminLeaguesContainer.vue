@@ -4,7 +4,7 @@
     </div>
     <div id="create-league-button-container">
       <el-button
-      @click="leagueCreateClicked"
+      @click="leagueCreateClicked()"
       type="primary">Create New League</el-button>
     </div>
     <div id="leagues-table-container">
@@ -14,19 +14,34 @@
         stripe
         style="width: 100%">
         <el-table-column
-          prop="id"
+          prop="leagueID"
           sortable
-          label="League Id">
+          width="110px"
+          label="League ID">
         </el-table-column>
         <el-table-column
-          prop="name"
+          prop="leagueName"
           sortable
-          label="League Name">
+          :show-overflow-tooltip="true"
+          label="Name">
         </el-table-column>
         <el-table-column
           prop="season"
           sortable
-          label="League Season">
+          :show-overflow-tooltip="true"
+          label="Season">
+        </el-table-column>
+        <el-table-column
+          prop="pointScheme"
+          sortable
+          :show-overflow-tooltip="true"
+          label="Point Scheme">
+        </el-table-column>
+        <el-table-column
+          prop="managerName"
+          sortable
+          :show-overflow-tooltip="true"
+          label="Coordinator">
         </el-table-column>
         <el-table-column
           label="Action">
@@ -34,12 +49,14 @@
             <el-button
             icon="el-icon-edit"
             size="mini"
-            @click='leagueEditClicked(scope.row.id)'>
+            :disabled="actionEditDisabled(scope.row)"
+            @click='leagueEditClicked(scope.row.leagueID)'>
             </el-button>
             <el-button
             icon="el-icon-delete"
             size="mini"
-            @click="leagueDeleteClicked(scope.row.id, scope.row.name)">
+            :disabled="actionDeleteDisabled(scope.row)"
+            @click="leagueDeleteClicked(scope.row.leagueID, scope.row.leagueName)">
             </el-button>
           </template>
         </el-table-column>
@@ -63,16 +80,19 @@ export default {
     ...mapGetters([
       'leagues',
       'leagueById',
+      'userById',
+      'user',
     ]),
     formatLeagues() {
-      const formatedLeagues = this.leagues.map((league) => {
+      const formattedLeagues = this.leagues.map((league) => {
+        const manager = this.userById(league.managerID);
+        const managerNameIn = manager ? `${manager.firstName} ${manager.lastName}` : 'None';
         return {
-          id: league.leagueID,
-          name: league.leagueName,
-          season: league.season,
+          ...league,
+          managerName: managerNameIn,
         };
       });
-      return formatedLeagues;
+      return formattedLeagues;
     },
     curRoute() {
       return this.$route.name;
@@ -84,6 +104,36 @@ export default {
       'setEditedLeague',
       'setEditLeagueModalVisible',
     ]),
+    actionEditDisabled(leagueObj) {
+      if (!this.user) {
+        return true;
+      }
+      switch (this.user.userType) {
+        case ('Admin'): {
+          return false;
+        }
+        case ('Coordinator'): {
+          return leagueObj.managerID !== this.user.userID;
+        }
+        default:
+          return true;
+      }
+    },
+    actionDeleteDisabled() {
+      if (!this.user) {
+        return true;
+      }
+      switch (this.user.userType) {
+        case ('Admin'): {
+          return false;
+        }
+        case ('Coordinator'): {
+          return true;
+        }
+        default:
+          return true;
+      }
+    },
     leagueCreateClicked() {
       this.$router.push('/admin/leagues/create');
     },
@@ -110,11 +160,6 @@ export default {
         });
       }).catch(() => {
       });
-    },
-  },
-  watch: {
-    league() {
-      this.formatedLeagues();
     },
   },
 };
