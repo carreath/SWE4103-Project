@@ -98,8 +98,10 @@ class Team(Resource):
                     'wins': Integer,
                     'losses': Integer,
                     'draws': Integer,
+                    'gamesPlayed': Integer,
                     'goalsFor': Integer,
                     'goalsAgainst': Integer,
+                    'goalsDifference': Integer,
                     'cleanSheets': Integer,
                     'yellowCards': Integer,
                     'redCards': Integer
@@ -158,6 +160,8 @@ class Team(Resource):
 
         for team in teams_data:
             team['goalsAgainst'] = goals_against[team['teamID']]
+            team['goalDifference'] = team['goalsFor'] - team['goalsAgainst']
+            team['gamesPlayed'] = team['wins'] + team['losses'] + team['draws']
 
         # calculating league points
         for team in teams_data:
@@ -170,7 +174,7 @@ class Team(Resource):
                 team['pointScheme'] = 3 * team['wins'] + 1 * team['draw'] + 0 * team['losses']
 
         db_connector.conn.close()
-        print(teams_data)
+        print(teams_data[0])
         return {'teams': teams_data}, 200
 
     def put(self):
