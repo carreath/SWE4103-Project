@@ -19,7 +19,8 @@
           <template slot-scope="scope">
             <ColorCircleTeamName
               :team="teamById(scope.row.teamID)"
-              justifyContent="flex-start"/>
+              justifyContent="flex-start"
+              @click="teamClicked(scope.row.teamID)"/>
           </template>
         </el-table-column>
         <el-table-column
@@ -66,8 +67,12 @@ export default {
   },
   methods: {
     ...mapActions([
-
+      'setSelectedTeamId',
     ]),
+    teamClicked(index) {
+      this.setSelectedTeamId(index);
+      this.$router.push('/teams/page');
+    },
   },
 };
 

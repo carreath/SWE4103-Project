@@ -3,9 +3,10 @@
     <div id="title-container">
       <template slot-scope="scope">
         <ColorCircleTeamName
-          :team="selectedTeam"
+          :team="teamById(selectedTeamId)"
           justifyContent="flex-start"/>
       </template>
+      <h1>HISLDFKJSELF</h1>
     </div>
     <div id="players-table-container">
       <el-table
@@ -19,9 +20,34 @@
           label="Player ID">
         </el-table-column>
         <el-table-column
-          prop="fullName"
+          prop="lastName"
           sortable
-          label="Full Name">
+          label="Last Name">
+        </el-table-column>
+        <el-table-column
+          prop="number"
+          sortable
+          label="Number">
+        </el-table-column>
+        <el-table-column
+          prop="goals"
+          sortable
+          label="Goals">
+        </el-table-column>
+        <el-table-column
+          prop="cleanSheets"
+          sortable
+          label="Clean Sheets">
+        </el-table-column>
+        <el-table-column
+          prop="yellowCards"
+          sortable
+          label="Yellow Cards">
+        </el-table-column>
+        <el-table-column
+          prop="redCards"
+          sortable
+          label="Red Cards">
         </el-table-column>
       </el-table>
     </div>
@@ -44,7 +70,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'teams',
+      'players',
       'leagueById',
       'selectedTeamId',
       'selectedTeam',
@@ -52,10 +78,10 @@ export default {
       'teamById',
     ]),
     formatPlayers() {
-      const formatedPlayers = this.teamsByLeagueId(this.selectedTeamId).map((player) => {
+      const formatedPlayers = this.playersByTeamId(this.selectedTeamId).map((player) => {
         return {
           playerID: player.playerID,
-          fullName: `${player.firstName} ${player.lastName}`,
+          lastName: player.lastName,
           number: player.number,
           goals: player.goals,
           cleanSheets: player.cleanSheets,

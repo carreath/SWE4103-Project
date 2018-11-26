@@ -1,12 +1,14 @@
 <template>
   <div id="teams">
     <TeamsContainer v-if="curRoute === 'teams'"/>
+    <TeamsPage v-if="curRoute === 'teams-page'"/>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import TeamsContainer from '@/components/TeamsContainer.vue';
+import TeamsPage from '@/components/TeamsPage.vue';
 
 export default {
   name: 'Teams',
@@ -17,6 +19,7 @@ export default {
   },
   components: {
     TeamsContainer,
+    TeamsPage,
   },
   computed: {
     ...mapGetters([
