@@ -1,12 +1,9 @@
 <template>
   <div id="teams-page">
     <div id="title-container">
-      <template slot-scope="scope">
-        <ColorCircleTeamName
-          :team="teamById(selectedTeamId)"
-          justifyContent="flex-start"/>
-      </template>
-      <h1>HISLDFKJSELF</h1>
+      <ColorCircleTeamName
+        :team="selectedTeam"
+        justifyContent="flex-start"/>
     </div>
     <div id="players-table-container">
       <el-table
@@ -14,11 +11,6 @@
         :default-sort = "{prop: 'fullName', order: 'descending'}"
         stripe
         style="width: 100%">
-        <el-table-column
-          prop="playerID"
-          sortable
-          label="Player ID">
-        </el-table-column>
         <el-table-column
           prop="lastName"
           sortable
@@ -78,17 +70,7 @@ export default {
       'teamById',
     ]),
     formatPlayers() {
-      const formatedPlayers = this.playersByTeamId(this.selectedTeamId).map((player) => {
-        return {
-          playerID: player.playerID,
-          lastName: player.lastName,
-          number: player.number,
-          goals: player.goals,
-          cleanSheets: player.cleanSheets,
-          yellowCards: player.yellowCards,
-          redCards: player.redCards,
-        };
-      });
+      const formatedPlayers = this.playersByTeamId(this.selectedTeamId);
       return formatedPlayers;
     },
   },

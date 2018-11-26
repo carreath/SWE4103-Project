@@ -6,7 +6,11 @@
       <el-table
         :data="formatTeams"
         stripe
-        style="width: 100%">
+        :style="{
+          'width': '100%',
+          'cursor': 'pointer'
+        }"
+        @row-click="teamClicked">
         <el-table-column
           prop="teamID"
           sortable
@@ -69,8 +73,8 @@ export default {
     ...mapActions([
       'setSelectedTeamId',
     ]),
-    teamClicked(index) {
-      this.setSelectedTeamId(index);
+    teamClicked(row) {
+      this.setSelectedTeamId(row.teamID);
       this.$router.push('/teams/page');
     },
   },
