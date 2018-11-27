@@ -42,7 +42,9 @@
             <table>
               <tr>
                 <th>Away</th>
-                <td>
+                <td
+                @click="teamClicked(selectedGame.awayTeamID)"
+                :style="{'cursor': 'pointer'}">
                   <ColorCircleTeamName
                     :team="teamById(selectedGame.awayTeamID)"
                     justifyContent="center"/>
@@ -53,7 +55,9 @@
               </tr>
               <tr>
                 <th>Home</th>
-                <td>
+                <td
+                @click="teamClicked(selectedGame.homeTeamID)"
+                :style="{'cursor': 'pointer'}">
                   <ColorCircleTeamName
                     :team="teamById(selectedGame.homeTeamID)"
                     justifyContent="center"/>
@@ -204,6 +208,7 @@ export default {
   methods: {
     ...mapActions([
       'setSelectedGameId',
+      'setSelectedTeamId',
     ]),
     formatDate(mDate) {
       const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -250,6 +255,10 @@ export default {
     gameTableRowClicked(gameID) {
       this.setSelectedGameId(gameID);
       this.$router.push('/schedule/game');
+    },
+    teamClicked(id) {
+      this.setSelectedTeamId(id);
+      this.$router.push('/teams/page');
     },
   },
   watch: {
