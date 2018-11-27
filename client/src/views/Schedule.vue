@@ -124,7 +124,9 @@
               v-for="gameObj in dateGames.games"
               :key="gameObj.gameID"
               :class="{
+                'scheduled-event': gameObj.status === 'Scheduled',
                 'cancelled-event': gameObj.status === 'Cancelled',
+                'final-event': gameObj.status === 'Final',
                 'open-event': gameObj.status === 'Open',
               }"
               @click="gameTableRowClicked(gameObj.gameID)">
@@ -427,14 +429,40 @@ export default {
       }
     }
 
+    .scheduled-event{
+      background-color: $SECONDARY_COLOR;
+      transition: 0.2s;
+
+      &:hover{
+        background-color: darken($SECONDARY_COLOR, 3%);
+      }
+    }
+
     .cancelled-event{
       background-color: $LIGHT_CANCELLED_RED;
       transition: 0.2s;
+
+      &:hover{
+        background-color: darken($LIGHT_CANCELLED_RED, 3%);
+      }
+    }
+
+    .final-event{
+      background-color: $SECONDARY_COLOR;
+      transition: 0.2s;
+
+      &:hover{
+        background-color: darken($SECONDARY_COLOR, 3%);
+      }
     }
 
     .open-event{
       background-color: $VERY_LIGHT_GREY;
       transition: 0.2s;
+
+      &:hover{
+        background-color: darken($LIGHT_CANCELLED_RED, 3%);
+      }
     }
   }
 }
