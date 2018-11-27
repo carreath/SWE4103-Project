@@ -15,6 +15,12 @@
           justifyContent="center"/>
           &nbsp;- Player Stats
       </div>
+      <span id="playerNameSearch">
+          <el-input
+            v-model="searchPlayerName"
+            size="small"
+            placeholder="Filter Name"/>
+      </span>
     </div>
     <div id="players-table-container">
       <el-table
@@ -65,7 +71,7 @@ export default {
   name: 'TeamsPage',
   data() {
     return {
-
+      searchPlayerName: '',
     };
   },
   components: {
@@ -82,7 +88,13 @@ export default {
       'selectedLeagueId',
     ]),
     formatPlayers() {
-      const formatedPlayers = this.playersByTeamId(this.selectedTeamId);
+      const formatedPlayers = this.playersByTeamId(this.selectedTeamId).filter(player => {
+        if (!this.searchPlayerName) {
+          return true;
+        }
+        const lastName = player.lastName.toLowerCase();
+        return lastName.includes(this.searchPlayerName.toLowerCase());
+      });
       return formatedPlayers;
     },
   },
@@ -114,6 +126,7 @@ export default {
     align-items: center;
     flex-direction: row;
     margin-top: 16px;
+    justify-content: space-between;
     #team-name{
       display: flex;
       align-items: center;
