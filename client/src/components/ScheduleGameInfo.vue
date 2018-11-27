@@ -11,7 +11,7 @@
       </div>
       <div id="main-game-info">
         <div id="team-names">
-          <div id="awayTeam"
+          <div id="away-team"
             @click="teamClicked(localSelectedGame.awayTeamID)"
             :style="{'cursor': 'pointer'}">
             <ColorCircleTeamName
@@ -19,7 +19,7 @@
               justifyContent="center"/>
           </div>
           <span id="vs-span">vs.</span>
-          <div id="homeTeam"
+          <div id="home-team"
             @click="teamClicked(localSelectedGame.homeTeamID)"
             :style="{'cursor': 'pointer'}">
             <ColorCircleTeamName
@@ -225,6 +225,15 @@ export default {
 
         #vs-span{
           margin: 0px 8px;
+        }
+
+        #away-team,
+        #home-team{
+          transition: 0.2s;
+
+          &:hover{
+            color: lighten($DARK_TEXT, 30%);
+          }
         }
       }
 

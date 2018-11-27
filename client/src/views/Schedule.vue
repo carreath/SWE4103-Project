@@ -43,8 +43,9 @@
               <tr>
                 <th>Away</th>
                 <td
-                @click="teamClicked(selectedGame.awayTeamID)"
-                :style="{'cursor': 'pointer'}">
+                  id="away-team"
+                  @click="teamClicked(selectedGame.awayTeamID)"
+                  :style="{'cursor': 'pointer'}">
                   <ColorCircleTeamName
                     :team="teamById(selectedGame.awayTeamID)"
                     justifyContent="center"/>
@@ -56,8 +57,9 @@
               <tr>
                 <th>Home</th>
                 <td
-                @click="teamClicked(selectedGame.homeTeamID)"
-                :style="{'cursor': 'pointer'}">
+                  id="away-team"
+                  @click="teamClicked(selectedGame.homeTeamID)"
+                  :style="{'cursor': 'pointer'}">
                   <ColorCircleTeamName
                     :team="teamById(selectedGame.homeTeamID)"
                     justifyContent="center"/>
@@ -350,6 +352,15 @@ export default {
 
             tr{
               border-bottom: 1px solid #ddd;
+
+              #away-team,
+              #home-team{
+                transition: 0.2s;
+
+                &:hover{
+                  background-color: darken(white, 6%);
+                }
+              }
 
               th{
                 border-bottom: 1px solid #ddd;
