@@ -7,7 +7,8 @@
         :data="formatTeams"
         :default-sort = "{prop: 'rank', order: 'descending'}"
         stripe
-        style="width: 100%">
+        style="width: 100%"
+        @row-click="colourTeamClicked">
         <el-table-column
           prop="rank"
           sortable
@@ -21,7 +22,8 @@
           <template slot-scope="scope">
             <ColorCircleTeamName
               :team="teamById(scope.row.teamID)"
-              justifyContent="flex-start"/>
+              justifyContent="flex-start"
+              :style="{'cursor': 'pointer'}"/>
           </template>
         </el-table-column>
         <el-table-column
@@ -162,8 +164,14 @@ export default {
   },
   methods: {
     ...mapActions([
-
+      'setSelectedTeamId',
     ]),
+    colourTeamClicked(row, event, column) {
+      if (column.label === 'Team Name') {
+        this.setSelectedTeamId(row.teamID);
+        this.$router.push('/teams/page');
+      }
+    },
   },
 };
 

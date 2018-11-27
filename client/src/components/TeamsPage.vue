@@ -1,9 +1,20 @@
 <template>
   <div id="teams-page">
     <div id="title-container">
-      <ColorCircleTeamName
-        :team="selectedTeam"
-        justifyContent="flex-start"/>
+      <div id="team-button-container">
+        <el-button
+          size="medium"
+          @click="teamsClicked()">
+          <i class="el-icon-d-arrow-left"></i>
+          Teams
+        </el-button>
+      </div>
+      <div id="team-name">
+        <ColorCircleTeamName
+          :team="selectedTeam"
+          justifyContent="center"/>
+          &nbsp;- Player Stats
+      </div>
     </div>
     <div id="players-table-container">
       <el-table
@@ -68,6 +79,7 @@ export default {
       'selectedTeam',
       'playersByTeamId',
       'teamById',
+      'selectedLeagueId',
     ]),
     formatPlayers() {
       const formatedPlayers = this.playersByTeamId(this.selectedTeamId);
@@ -76,8 +88,17 @@ export default {
   },
   methods: {
     ...mapActions([
-
+      'setSelectedTeamId',
     ]),
+    teamsClicked() {
+      this.setSelectedTeamId(null);
+      this.$router.push('/teams');
+    },
+  },
+  watch: {
+    selectedLeagueId() {
+      this.$router.push('/teams');
+    },
   },
 };
 
@@ -86,5 +107,18 @@ export default {
 <style lang="scss" scoped>
 @import '@/style/global.scss';
 #teams-page{
+  #title-container{
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    #team-name{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 100px;
+    }
+  }
 }
 </style>
