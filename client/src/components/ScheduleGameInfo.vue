@@ -11,13 +11,21 @@
       </div>
       <div id="main-game-info">
         <div id="team-names">
-          <ColorCircleTeamName
-            :team="teamById(localSelectedGame.awayTeamID)"
-            justifyContent="center"/>
+          <div id="awayTeam"
+            @click="teamClicked(localSelectedGame.awayTeamID)"
+            :style="{'cursor': 'pointer'}">
+            <ColorCircleTeamName
+              :team="teamById(localSelectedGame.awayTeamID)"
+              justifyContent="center"/>
+          </div>
           <span id="vs-span">vs.</span>
-          <ColorCircleTeamName
-            :team="teamById(localSelectedGame.homeTeamID)"
-            justifyContent="center"/>
+          <div id="homeTeam"
+            @click="teamClicked(localSelectedGame.homeTeamID)"
+            :style="{'cursor': 'pointer'}">
+            <ColorCircleTeamName
+              :team="teamById(localSelectedGame.homeTeamID)"
+              justifyContent="center"/>
+          </div>
         </div>
         <div id="location-info">
           at {{ localSelectedGame.fieldName }}
@@ -126,6 +134,7 @@ export default {
   methods: {
     ...mapActions([
       'editGame',
+      'setSelectedTeamId',
     ]),
     backToScheduleClicked() {
       this.$router.push('/schedule');
@@ -166,6 +175,10 @@ export default {
         });
       }).catch(() => {
       });
+    },
+    teamClicked(id) {
+      this.setSelectedTeamId(id);
+      this.$router.push('/teams/page');
     },
   },
   watch: {

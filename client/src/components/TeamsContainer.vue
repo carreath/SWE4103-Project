@@ -23,8 +23,7 @@
           <template slot-scope="scope">
             <ColorCircleTeamName
               :team="teamById(scope.row.teamID)"
-              justifyContent="flex-start"
-              @click="teamClicked(scope.row.teamID)"/>
+              justifyContent="flex-start"/>
           </template>
         </el-table-column>
         <el-table-column

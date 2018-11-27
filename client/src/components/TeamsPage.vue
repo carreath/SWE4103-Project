@@ -19,7 +19,7 @@
     <div id="players-table-container">
       <el-table
         :data="formatPlayers"
-        :default-sort = "{prop: 'fullName', order: 'descending'}"
+        :default-sort = "{prop: 'lastName', order: 'ascending'}"
         stripe
         style="width: 100%">
         <el-table-column
@@ -113,11 +113,12 @@ export default {
     display: flex;
     align-items: center;
     flex-direction: row;
+    margin-top: 16px;
     #team-name{
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-left: 100px;
+      margin-left: 20px;
     }
   }
 }
