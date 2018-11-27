@@ -58,7 +58,7 @@ const router = new Router({
       component: Teams,
     },
     {
-      path: '/teams/page',
+      path: '/teams/:teamID',
       name: 'teams-page',
       component: Teams,
     },

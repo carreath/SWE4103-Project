@@ -74,7 +74,7 @@ export default {
     ]),
     teamClicked(row) {
       this.setSelectedTeamId(row.teamID);
-      this.$router.push('/teams/page');
+      this.$router.push(`/teams/${row.teamID}`);
     },
   },
 };

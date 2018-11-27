@@ -169,7 +169,7 @@ export default {
     colourTeamClicked(row, event, column) {
       if (column.label === 'Team Name') {
         this.setSelectedTeamId(row.teamID);
-        this.$router.push('/teams/page');
+        this.$router.push(`/teams/${row.teamID}`);
       }
     },
   },

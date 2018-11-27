@@ -258,7 +258,7 @@ export default {
     },
     teamClicked(id) {
       this.setSelectedTeamId(id);
-      this.$router.push('/teams/page');
+      this.$router.push(`/teams/${id}`);
     },
   },
   watch: {
