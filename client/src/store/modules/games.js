@@ -103,6 +103,23 @@ const actions = {
       }
     });
   },
+  editGame({ dispatch }, gameObj) {
+    return GamesService.editGame(gameObj).then((response) => {
+      if (!response || !response.status) {
+        return { retVal: false, retMsg: 'Server Error' };
+      }
+
+      switch (response.status) {
+        case 200: {
+          dispatch('getLeagueGames', gameObj.leagueID);
+          return { retVal: true, retMsg: 'Game Edited' };
+        }
+        default: {
+          return { retVal: false, retMsg: 'Server Error' };
+        }
+      }
+    });
+  },
 };
 
 // mutations

@@ -44,6 +44,11 @@
           sortable
           :show-overflow-tooltip="true"
           label="Team Name">
+          <template slot-scope="scope">
+            <ColorCircleTeamName
+              :team="teamById(scope.row.teamID)"
+              justifyContent="flex-start"/>
+          </template>
         </el-table-column>
         <el-table-column
           label="Action">
@@ -68,6 +73,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import ColorCircleTeamName from '@/components/ColorCircleTeamName.vue';
 
 export default {
   name: 'AdminPlayersContainer',
@@ -75,6 +81,9 @@ export default {
     return {
       searchPlayerName: '',
     };
+  },
+  components: {
+    ColorCircleTeamName,
   },
   computed: {
     ...mapGetters([
