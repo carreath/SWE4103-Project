@@ -12,7 +12,7 @@ const getters = {
     return state.players;
   },
   playersByTeamId: (state) => (id) => {
-    return state.players.filter(player => player.teamId === id);
+    return state.players.filter(player => player.teamID === id);
   },
   playerById: (state) => (playerId) => {
     return state.players.find(player => player.playerID === playerId);

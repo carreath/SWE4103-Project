@@ -42,7 +42,10 @@
             <table>
               <tr>
                 <th>Away</th>
-                <td>
+                <td
+                  id="away-team"
+                  @click="teamClicked(selectedGame.awayTeamID)"
+                  :style="{'cursor': 'pointer'}">
                   <ColorCircleTeamName
                     :team="teamById(selectedGame.awayTeamID)"
                     justifyContent="center"/>
@@ -53,7 +56,10 @@
               </tr>
               <tr>
                 <th>Home</th>
-                <td>
+                <td
+                  id="away-team"
+                  @click="teamClicked(selectedGame.homeTeamID)"
+                  :style="{'cursor': 'pointer'}">
                   <ColorCircleTeamName
                     :team="teamById(selectedGame.homeTeamID)"
                     justifyContent="center"/>
@@ -120,7 +126,9 @@
               v-for="gameObj in dateGames.games"
               :key="gameObj.gameID"
               :class="{
+                'scheduled-event': gameObj.status === 'Scheduled',
                 'cancelled-event': gameObj.status === 'Cancelled',
+                'final-event': gameObj.status === 'Final',
                 'open-event': gameObj.status === 'Open',
               }"
               @click="gameTableRowClicked(gameObj.gameID)">
@@ -204,6 +212,7 @@ export default {
   methods: {
     ...mapActions([
       'setSelectedGameId',
+      'setSelectedTeamId',
     ]),
     formatDate(mDate) {
       const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -250,6 +259,10 @@ export default {
     gameTableRowClicked(gameID) {
       this.setSelectedGameId(gameID);
       this.$router.push('/schedule/game');
+    },
+    teamClicked(id) {
+      this.setSelectedTeamId(id);
+      this.$router.push(`/teams/${id}`);
     },
   },
   watch: {
@@ -340,6 +353,15 @@ export default {
             tr{
               border-bottom: 1px solid #ddd;
 
+              #away-team,
+              #home-team{
+                transition: 0.2s;
+
+                &:hover{
+                  background-color: darken(white, 6%);
+                }
+              }
+
               th{
                 border-bottom: 1px solid #ddd;
                 border-right: 1px solid #ddd;
@@ -418,14 +440,40 @@ export default {
       }
     }
 
+    .scheduled-event{
+      background-color: $SECONDARY_COLOR;
+      transition: 0.2s;
+
+      &:hover{
+        background-color: darken($SECONDARY_COLOR, 3%);
+      }
+    }
+
     .cancelled-event{
       background-color: $LIGHT_CANCELLED_RED;
       transition: 0.2s;
+
+      &:hover{
+        background-color: darken($LIGHT_CANCELLED_RED, 3%);
+      }
+    }
+
+    .final-event{
+      background-color: $SECONDARY_COLOR;
+      transition: 0.2s;
+
+      &:hover{
+        background-color: darken($SECONDARY_COLOR, 3%);
+      }
     }
 
     .open-event{
       background-color: $VERY_LIGHT_GREY;
       transition: 0.2s;
+
+      &:hover{
+        background-color: darken($LIGHT_CANCELLED_RED, 3%);
+      }
     }
   }
 }
