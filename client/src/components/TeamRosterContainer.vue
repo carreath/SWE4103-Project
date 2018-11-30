@@ -1,0 +1,125 @@
+<template lang="html">
+  <div id="team-roster-container">
+    <div class="team-name">
+      {{ team.teamName }}
+    </div>
+    <!-- TODO if roster is submitted -->
+    <div
+      class="roster-table-container"
+      v-if="false">
+
+    </div>
+    <div
+      v-else
+      class="no-roster-submitted-container">
+      <span
+        class="text-message"
+        :style="{
+          'background-color': team.colour,
+          'color': getTextColor,
+        }">
+        No Roster Submitted
+      </span>
+      <span>
+        <el-button
+          class="submit-roster-button"
+          type="primary"
+          size="mini"
+          plain
+          v-if="userIsTeamManager">
+          Submit Roster
+        </el-button>
+      </span>
+    </div>
+  </div>
+</template>
+
+<script>
+import { mapGetters, mapActions } from 'vuex';
+
+export default {
+  name: 'TeamRosterContainer',
+  props: {
+    team: Object,
+  },
+  data() {
+    return {
+
+    };
+  },
+  computed: {
+    ...mapGetters([
+
+    ]),
+    userIsTeamManager() {
+      // TODO finish this
+      return false;
+    },
+    getTextColor() {
+      if (!this.team) return '';
+      const hexString = this.team.colour.substring(1);
+      let r = parseInt(hexString.substring(0, 2), 16);
+      let g = parseInt(hexString.substring(2, 4), 16);
+      let b = parseInt(hexString.substring(4), 16);
+      r = this.colourConversion(r);
+      g = this.colourConversion(g);
+      b = this.colourConversion(b);
+      const l = (0.2126 * r) + (0.7152 * g) + (0.0722 * b);
+      console.log('L:', l);
+      // $DARK_TEXT & $SECONDARY_COLOR
+      return l > 0.179 ? '#2c3e50' : '#fcfcfc'; // $DARK_TEXT
+    },
+  },
+  methods: {
+    ...mapActions([
+
+    ]),
+    colourConversion(c) {
+      c /= 255.0;
+      if (c <= 0.03928) {
+        c /= 12.92;
+      } else {
+        c = ((c + 0.055) / 1.055) ** 2.4;
+      }
+      return c;
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+@import '@/style/global.scss';
+
+#team-roster-container{
+  width: 100;
+
+  .team-name{
+    font-size: 1.4rem;
+    font-weight: bold;
+  }
+
+  .roster-table-container{
+
+  }
+
+  .no-roster-submitted-container{
+    display:flex;
+    flex-direction: column;
+    height: 100%;
+    border: 1px solid $HOVER_GREY;
+    border-radius: 8px;
+
+    .text-message{
+      border-radius: 8px 8px 0px 0px;
+      padding-top: 8px;
+      padding-bottom: 4px;
+      font-weight: bold;
+      background-color: green;
+    }
+
+    .submit-roster-button{
+      margin: 8px 0px;
+    }
+  }
+}
+</style>
