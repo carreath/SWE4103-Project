@@ -49,10 +49,12 @@ export default {
   },
   computed: {
     ...mapGetters([
-
+      'user',
     ]),
     userIsTeamManager() {
-      // TODO finish this
+      if (this.user && this.team.managerID === this.user.userID) {
+        return true;
+      }
       return false;
     },
     getTextColor() {
@@ -65,9 +67,8 @@ export default {
       g = this.colourConversion(g);
       b = this.colourConversion(b);
       const l = (0.2126 * r) + (0.7152 * g) + (0.0722 * b);
-      console.log('L:', l);
       // $DARK_TEXT & $SECONDARY_COLOR
-      return l > 0.179 ? '#2c3e50' : '#fcfcfc'; // $DARK_TEXT
+      return l > 0.185 ? '#2c3e50' : '#fcfcfc'; // $DARK_TEXT
     },
   },
   methods: {
