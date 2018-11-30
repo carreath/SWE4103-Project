@@ -110,7 +110,7 @@
           v-for="dateGames in tableViewGamesList"
           :key="dateGames.date">
           <div class="date-games-date">
-            {{ formatDate(dateGames.date) }}
+            {{ formatDateWithDayOfWeek(dateGames.date) }}
           </div>
           <table>
             <tr>
@@ -218,6 +218,13 @@ export default {
       const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
       const tempDate = (mDate || '').split('-');
       return `${months[Number(tempDate[1]) - 1]} ${tempDate[2]}, ${tempDate[0]}`;
+    },
+    formatDateWithDayOfWeek(mDate) {
+      const d = new Date(mDate);
+      const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const tempDate = (mDate || '').split('-');
+      return `${days[d.getUTCDay()]}, ${months[Number(tempDate[1]) - 1]} ${tempDate[2]}, ${tempDate[0]}`;
     },
     formatTime(mTime) {
       // Check correct time format and split into components
