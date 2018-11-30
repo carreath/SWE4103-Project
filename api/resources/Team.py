@@ -97,7 +97,14 @@ class Team(Resource):
                     'leaguePoints': Integer,
                     'wins': Integer,
                     'losses': Integer,
-                    'draws': Integer
+                    'draws': Integer,
+                    'gamesPlayed': Integer,
+                    'goalsFor': Integer,
+                    'goalsAgainst': Integer,
+                    'goalsDifference': Integer,
+                    'cleanSheets': Integer,
+                    'yellowCards': Integer,
+                    'redCards': Integer
                 }
 
 
@@ -106,7 +113,7 @@ class Team(Resource):
         """
 
         db_connector = DatabaseConnector()
-        db_connector.cursor.execute('SELECT * FROM teams')
+        db_connector.cursor.callproc('get_all_teams')
 
         teams = db_connector.cursor.fetchall()
         teams_data = []
@@ -121,7 +128,52 @@ class Team(Resource):
                 'wins': team[6],
                 'losses': team[7],
                 'draws': team[8],
+                'goalsFor': team[9],
+                'goalsAgainst': 0,
+                'cleanSheets': team[10],
+                'yellowCards': team[11],
+                'redCards': team[12]
             })
+
+        # getting team statistics
+        query = 'SELECT g.teamID, g.gameID, CAST(SUM(g.goals) AS INT) FROM gameMembers g GROUP BY g.gameID, g.teamID;'
+        db_connector.cursor.execute(query)
+        goals_data = db_connector.cursor.fetchall()
+        teams = []
+        games = []
+        goals = []
+        for row in goals_data:
+            teams.append(row[0])
+            goals.append(row[2])
+            games.append(row[1])
+        goals_against = {}
+
+        for team_id in set(teams):
+            goals_against[team_id] = 0
+            games_played = []
+            for i in range(len(games)):
+                if teams[i] == team_id:
+                    games_played.append(games[i])
+            for i in range(len(teams)):
+                if games[i] in games_played and teams[i] != team_id:
+                    goals_against[team_id] += goals[i]
+
+        for team in teams_data:
+            team['goalsAgainst'] = goals_against[team['teamID']]
+            team['goalDifference'] = team['goalsFor'] - team['goalsAgainst']
+            team['gamesPlayed'] = team['wins'] + team['losses'] + team['draws']
+
+        # calculating league points
+        for team in teams_data:
+            query = 'SELECT pointScheme FROM leagues WHERE leagueID = {}'.format(team['leagueID'])
+            db_connector.cursor.execute(query)
+            point_scheme = db_connector.cursor.fetchone()[0]
+            if point_scheme == 'Capital Scoring':
+                team['leaguePoints'] = 1 * team['wins'] + 0 * team['draws'] - 1 * team['losses']
+            elif point_scheme == 'Standard':
+                team['leaguePoints'] = 3 * team['wins'] + 1 * team['draws'] + 0 * team['losses']
+
+        db_connector.conn.close()
         return {'teams': teams_data}, 200
 
     def put(self):
