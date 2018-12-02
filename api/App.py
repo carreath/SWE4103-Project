@@ -58,11 +58,10 @@ def shutdown():
     shutdown_server()
     return 'Server shutting down...'
 
+db = DatabaseMigrator()
+db.migrate(False)
 
 if __name__ == "__main__":
-    db = DatabaseMigrator()
-    db.migrate(False)
-
     # Check that the SSL certificate exists if not run http://
     if os.path.isfile(cer) and os.path.isfile(key):
         context = (cer, key)

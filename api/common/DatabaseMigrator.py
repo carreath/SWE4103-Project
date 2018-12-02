@@ -71,9 +71,17 @@ class DatabaseMigrator:
 
     # Migrate DB
     def migrate(self, reset):
-        # Get DB directories
-        dbDir = os.path.join(Path(os.getcwd()).parent, "db")
-        migrationDir = os.path.join(dbDir, "migration")
+        dbDir = ""
+        migrationDir = ""
+
+        if (is_posix()):
+            # Get DB directories
+            dbDir = os.path.join(Path(os.getcwd()).parent.as_posix(), "db")
+            migrationDir = os.path.join(dbDir, "migration")
+        else:
+            # Get DB directories
+            dbDir = os.path.join(Path(os.getcwd()).parent, "db")
+            migrationDir = os.path.join(dbDir, "migration")
 
         # if reset is true, rebuild entire database
         if (reset):
@@ -117,3 +125,10 @@ class DatabaseMigrator:
                 else:
                     continue
             print ("Done Migration check\n")
+
+def is_posix():
+    try:
+        import posix
+        return True
+    except ImportError:
+        return False
