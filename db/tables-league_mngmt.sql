@@ -102,7 +102,8 @@ CREATE TABLE gameMembers (
     FOREIGN KEY (gameID) REFERENCES games (gameID),
     FOREIGN KEY (teamID) REFERENCES teams (teamID),
     FOREIGN KEY (playerID) REFERENCES players (playerID),
-    PRIMARY KEY (playerID, teamID, gameID)
+    PRIMARY KEY (playerID, teamID, gameID),
+    UNIQUE (gameID,playerID)
 );
 
 SELECT 'DATABASE STRUCTURE CREATED' as 'INFO';

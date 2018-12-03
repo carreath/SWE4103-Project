@@ -97,6 +97,7 @@ class DatabaseMigrator:
             # Make directory and build DB
             os.mkdir(migrationDir)
             self.migrate(True)
+            return
         else:
             # Loop through all files in /db
             for file in os.listdir(dbDir):
@@ -105,6 +106,10 @@ class DatabaseMigrator:
                 if filename.endswith(".sql"): 
                     # If file is not present in the migration then run it
                     if (os.path.isfile(os.path.join(migrationDir, filename)) == False):
+                        if (filename == 'tables-league_mngmt.sql'):
+                            # resetDB and rerun sql files
+                            self.migrate(True)
+                            return
                         # Apply file to DB if it hasnt yet been applied
                         self.applySQL(os.path.join(dbDir, filename), 0)
                         copyfile(os.path.join(dbDir, filename), os.path.join(migrationDir, filename))
@@ -116,8 +121,8 @@ class DatabaseMigrator:
                             if (reset == False and filename == 'tables-league_mngmt.sql'):
                                 # resetDB and rerun sql files
                                 self.migrate(True)
-                                break
-                            else:
+                                return
+                            elif filename != 'tables-league_mngmt.sql':
                                 # apply file to DB
                                 self.applySQL(os.path.join(dbDir, filename), 0)
                                 copyfile(os.path.join(dbDir, filename), os.path.join(migrationDir, filename))  
