@@ -37,6 +37,7 @@ api.add_resource(Login, "/api/login")
 api.add_resource(Register, "/api/register")
 api.add_resource(TokenValidation, "/api/token-check")
 api.add_resource(User, "/api/user")
+api.add_resource(GameRoster, "/api/game-roster/<game_id>")
 api.add_resource(Root, "/")
 
 
@@ -58,11 +59,10 @@ def shutdown():
     shutdown_server()
     return 'Server shutting down...'
 
+db = DatabaseMigrator()
+db.migrate(False)
 
 if __name__ == "__main__":
-    db = DatabaseMigrator()
-    db.migrate(False)
-
     # Check that the SSL certificate exists if not run http://
     if os.path.isfile(cer) and os.path.isfile(key):
         context = (cer, key)
