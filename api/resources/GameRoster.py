@@ -95,6 +95,13 @@ class GameRoster(Resource):
 
         """
 
+        token = request.headers.get('Authorization')
+        if not token:
+            abort(403, error="Unauthorized Access (no token)")
+        privilege_handler = PrivilegeHandler(token)
+        if not privilege_handler.league_privileges():
+            abort(403, error="Unauthorized Access (invalid permissions)")
+
         parser = reqparse.RequestParser()
 
         parser.add_argument('playerID', type=int)
@@ -168,6 +175,13 @@ class GameRoster(Resource):
 
         """
 
+        token = request.headers.get('Authorization')
+        if not token:
+            abort(403, error="Unauthorized Access (no token)")
+        privilege_handler = PrivilegeHandler(token)
+        if not privilege_handler.league_privileges():
+            abort(403, error="Unauthorized Access (invalid permissions)")
+
         parser = reqparse.RequestParser()
 
         parser.add_argument('playerID', type=int)
@@ -221,6 +235,13 @@ class GameRoster(Resource):
 
     # Delete method to delete a teams roster to a game
     def delete(self, game_id):
+        token = request.headers.get('Authorization')
+        if not token:
+            abort(403, error="Unauthorized Access (no token)")
+        privilege_handler = PrivilegeHandler(token)
+        if not privilege_handler.league_privileges():
+            abort(403, error="Unauthorized Access (invalid permissions)")
+
         player_id = request.args.get("player_id")
 
         # creating new league in the database
