@@ -37,6 +37,7 @@ api.add_resource(Login, "/api/login")
 api.add_resource(Register, "/api/register")
 api.add_resource(TokenValidation, "/api/token-check")
 api.add_resource(User, "/api/user")
+api.add_resource(GameRoster, "/api/game-roster/<game_id>")
 api.add_resource(Root, "/")
 
 
