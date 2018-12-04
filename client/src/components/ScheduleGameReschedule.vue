@@ -5,17 +5,13 @@
         Reschedule Game
       </div>
       <div id="team-names">
-        <div id="away-team"
-          @click="teamClicked(teamById(selectedGame.awayTeamID))"
-          :style="{'cursor': 'pointer'}">
+        <div id="away-team">
           <ColorCircleTeamName
             :team="teamById(selectedGame.awayTeamID)"
             justifyContent="center"/>
         </div>
         <span id="vs-span">vs.</span>
-        <div id="home-team"
-          @click="teamClicked(teamById(selectedGame.homeTeamID))"
-          :style="{'cursor': 'pointer'}">
+        <div id="home-team">
           <ColorCircleTeamName
             :team="teamById(selectedGame.homeTeamID)"
             justifyContent="center"/>
@@ -159,10 +155,6 @@ export default{
         this.submitButtonClicked();
       }
     },
-    teamClicked(id) {
-      this.setSelectedTeamId(id);
-      this.$router.push(`/teams/${id}`);
-    },
     submitButtonClicked() {
       this.displayErrMsg = false;
       this.$refs['reschedule-game-form'].validate((valid) => {
@@ -225,10 +217,6 @@ export default{
     #away-team,
     #home-team{
       transition: 0.2s;
-
-      &:hover{
-        color: lighten($DARK_TEXT, 30%);
-      }
     }
   }
 
@@ -236,6 +224,8 @@ export default{
     margin-top: 16px;
     width: 100%;
     display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .el-input {
