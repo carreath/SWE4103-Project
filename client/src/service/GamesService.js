@@ -28,4 +28,13 @@ export default {
         return err.response;
       });
   },
+  submitGameRoster(params) {
+    return ServiceLayer().post(`/game-roster/${params.gameID}`, params.data)
+      .then((response) => {
+        return response;
+      })
+      .catch((err) => {
+        return err.response;
+      });
+  },
 };

@@ -194,10 +194,6 @@ export default {
       this.setSelectedTeamId(id);
       this.$router.push(`/teams/${id}`);
     },
-    onSubmitRosterView(val, team) {
-      this.submitRosterTeam = val ? team : null;
-      this.submitGameRosterVisible = val;
-    },
   },
   watch: {
     selectedLeagueId() {

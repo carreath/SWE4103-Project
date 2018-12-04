@@ -59,7 +59,7 @@
           size="mini"
           plain
           v-if="userIsTeamManager"
-          @click="submitGameRoster"
+          @click="submitGameRosterClicked"
           :disabled="selectedTeamRoster.length < 1">
           Submit Roster
         </el-button>
@@ -86,6 +86,7 @@ export default {
     ...mapGetters([
       'user',
       'playersByTeamId',
+      'selectedGameId',
     ]),
     userIsTeamManager() {
       if (this.user && this.team.managerID === this.user.userID) {
@@ -109,7 +110,7 @@ export default {
   },
   methods: {
     ...mapActions([
-
+      'submitGameRoster',
     ]),
     colourConversion(c) {
       c /= 255.0;
@@ -136,8 +137,7 @@ export default {
     handleSelectionChange(val) {
       this.selectedTeamRoster = val;
     },
-    submitGameRoster() {
-      console.log('selected: ', this.selectedTeamRoster);
+    submitGameRosterClicked() {
       if (this.selectedTeamRoster.length === 0) {
         return;
       }
@@ -149,7 +149,18 @@ export default {
         });
         return;
       }
-      console.log('About to submit roster');
+      const submitParams = {
+        gameID: this.selectedGameId,
+        players: this.selectedTeamRoster,
+      };
+      this.submitGameRoster(submitParams).then(response => {
+        console.log('response: ', response);
+        if (response.retVal) {
+          this.errMsg = null;
+        } else {
+          this.errMsg = response.retMsg;
+        }
+      });
     },
   },
   mounted() {

@@ -120,6 +120,27 @@ const actions = {
       }
     });
   },
+  submitGameRoster({ getters, dispatch }, params) {
+    const submitParams = {
+      gameID: params.gameID,
+      data: params,
+    };
+    return GamesService.submitGameRoster(submitParams).then((response) => {
+      if (!response || !response.status) {
+        return { retVal: false, retMsg: 'Server Error' };
+      }
+
+      switch (response.status) {
+        case 200: {
+          dispatch('getLeagueGames', getters.selectedLeagueId);
+          return { retVal: true, retMsg: 'Game Edited' };
+        }
+        default: {
+          return { retVal: false, retMsg: 'Server Error' };
+        }
+      }
+    });
+  },
 };
 
 // mutations
