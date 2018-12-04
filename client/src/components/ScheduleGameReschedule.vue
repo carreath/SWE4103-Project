@@ -193,4 +193,61 @@ export default{
 <style lang="scss" scoped>
 @import '@/style/global.scss';
 
+#schedule-game-reschedule{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 16px;
+  margin-left: 24px;
+
+  #title{
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  #field-name-label{
+    margin-top: 16px;
+  }
+
+  #team-names{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    font-weight: bold;
+
+    #vs-span{
+      margin: 0px 8px;
+    }
+
+    #away-team,
+    #home-team{
+      transition: 0.2s;
+
+      &:hover{
+        color: lighten($DARK_TEXT, 30%);
+      }
+    }
+  }
+
+  #submit-button-container{
+    margin-top: 16px;
+    width: 100%;
+    display: flex;
+  }
+
+  .el-input {
+    float: left;
+    width: 100%;
+  }
+
+  .el-form-item.is-success /deep/ .el-input__inner,
+  .el-form-item.is-success /deep/ .el-input__inner:focus,
+  .el-form-item.is-success /deep/ .el-textarea__inner,
+  .el-form-item.is-success /deep/ .el-textarea__inner:focus {
+    border-color: $ELEMENT_UI_DEFAULT_BORDER;
+  }
+}
 </style>
