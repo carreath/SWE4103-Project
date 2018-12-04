@@ -93,17 +93,35 @@ const actions = {
       const payload = {
         gameID: game.gameID,
       };
-      console.log('payload: ', payload);
       GamesService.getGameRoster(payload).then((response) => {
         if (response && response.status === 200) {
           const commitPayload = {
             gameID: game.gameID,
-            ...response.data['game-roster'],
+            players: [
+              ...response.data['game-roster'].home,
+              ...response.data['game-roster'].away,
+            ],
           };
-          console.log('commitPay', commitPayload);
           commit('addGameRoster', commitPayload);
         }
       });
+    });
+  },
+  getSpecificGameRoster({ commit }, gameID) {
+    const payload = {
+      gameID,
+    };
+    GamesService.getGameRoster(payload).then((response) => {
+      if (response && response.status === 200) {
+        const commitPayload = {
+          gameID,
+          players: [
+            ...response.data['game-roster'].home,
+            ...response.data['game-roster'].away,
+          ],
+        };
+        commit('addGameRoster', commitPayload);
+      }
     });
   },
   setSelectedGameId({ commit }, newId) {
@@ -146,7 +164,7 @@ const actions = {
       }
     });
   },
-  submitGameRoster({ getters, dispatch }, params) {
+  submitGameRoster({ dispatch }, params) {
     const submitParams = {
       gameID: params.gameID,
       data: params,
@@ -158,8 +176,8 @@ const actions = {
 
       switch (response.status) {
         case 200: {
-          dispatch('getLeagueGames', getters.selectedLeagueId);
-          return { retVal: true, retMsg: 'Game Edited' };
+          dispatch('getSpecificGameRoster', params.gameID);
+          return { retVal: true, retMsg: 'Roster Submitted' };
         }
         default: {
           return { retVal: false, retMsg: 'Server Error' };

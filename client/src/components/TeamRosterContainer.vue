@@ -9,20 +9,40 @@
       v-if="false">
 
     </div>
+
     <div
       v-else
-      class="no-roster-submitted-container">
+      class="roster-table-container">
       <span
         class="text-message"
         :style="{
           'background-color': team.colour,
           'color': getTextColor,
         }">
-        {{ userIsTeamManager ? "Submit Roster" : "No Roster Submitted" }}
+        {{ rosterTableHeader }}
       </span>
       <span>
         <span
-          v-if="userIsTeamManager">
+          v-if="teamGameRosterSubmitted">
+          <el-table
+            ref="team-roster-table"
+            :data="teamGameRoster"
+            style="width: 100%"
+            max-height="800">
+            <el-table-column
+              label="#"
+              property="number"
+              width="100px">
+            </el-table-column>
+            <el-table-column
+              property="name"
+              label="Name">
+            </el-table-column>
+          </el-table>
+        </span>
+
+        <span
+          v-else-if="userIsTeamManager">
           <el-table
             ref="submit-roster-table"
             :data="teamPlayers"
@@ -52,17 +72,17 @@
               label="Name">
             </el-table-column>
           </el-table>
+          <el-button
+            class="submit-roster-button"
+            type="primary"
+            size="mini"
+            plain
+            v-if="userIsTeamManager"
+            @click="submitGameRosterClicked"
+            :disabled="selectedTeamRoster.length < 1">
+            Submit Roster
+          </el-button>
         </span>
-        <el-button
-          class="submit-roster-button"
-          type="primary"
-          size="mini"
-          plain
-          v-if="userIsTeamManager"
-          @click="submitGameRosterClicked"
-          :disabled="selectedTeamRoster.length < 1">
-          Submit Roster
-        </el-button>
       </span>
     </div>
   </div>
@@ -87,12 +107,38 @@ export default {
       'user',
       'playersByTeamId',
       'selectedGameId',
+      'gameRosters',
     ]),
     userIsTeamManager() {
       if (this.user && this.team.managerID === this.user.userID) {
         return true;
       }
       return false;
+    },
+    teamGameRoster() {
+      const gameRosterObj = this.gameRosters.find(gameRoster => {
+        return gameRoster.gameID === this.selectedGameId;
+      });
+      if (!gameRosterObj) {
+        return null;
+      }
+      const teamRoster = gameRosterObj.players.filter(player => player.teamID === this.team.teamID);
+      const teamRosterFormatted = teamRoster.map(player => {
+        return {
+          ...player,
+          name: `${player.firstName} ${player.lastName}`,
+        };
+      });
+      return teamRosterFormatted;
+    },
+    teamGameRosterSubmitted() {
+      return this.teamGameRoster.length > 0;
+    },
+    rosterTableHeader() {
+      if (this.teamGameRosterSubmitted) {
+        return 'Game Roster';
+      }
+      return this.userIsTeamManager ? 'Submit Roster' : 'No Roster Submitted';
     },
     getTextColor() {
       if (!this.team || !this.team.colour) return '';
@@ -154,11 +200,14 @@ export default {
         players: this.selectedTeamRoster,
       };
       this.submitGameRoster(submitParams).then(response => {
-        console.log('response: ', response);
         if (response.retVal) {
           this.errMsg = null;
         } else {
-          this.errMsg = response.retMsg;
+          this.$message({
+            showClose: true,
+            message: 'OOPS! Sometihng Went Wrong',
+            type: 'error',
+          });
         }
       });
     },
@@ -184,7 +233,7 @@ export default {
 
   }
 
-  .no-roster-submitted-container{
+  .roster-table-container{
     display:flex;
     flex-direction: column;
     height: 100%;
