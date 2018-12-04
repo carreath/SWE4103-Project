@@ -4,6 +4,23 @@
       <div id="title">
         Reschedule Game
       </div>
+      <div id="team-names">
+        <div id="away-team"
+          @click="teamClicked(teamById(selectedGame.awayTeamID))"
+          :style="{'cursor': 'pointer'}">
+          <ColorCircleTeamName
+            :team="teamById(selectedGame.awayTeamID)"
+            justifyContent="center"/>
+        </div>
+        <span id="vs-span">vs.</span>
+        <div id="home-team"
+          @click="teamClicked(teamById(selectedGame.homeTeamID))"
+          :style="{'cursor': 'pointer'}">
+          <ColorCircleTeamName
+            :team="teamById(selectedGame.homeTeamID)"
+            justifyContent="center"/>
+        </div>
+      </div>
       <div id="form-container">
         <el-form
           :label-position="labelPosition"
@@ -60,6 +77,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import ColorCircleTeamName from '@/components/ColorCircleTeamName.vue';
 
 export default{
   name: 'ScheduleGameReschedule',
@@ -99,10 +117,20 @@ export default{
       errMsg: null,
     };
   },
+  components: {
+    ColorCircleTeamName,
+  },
   computed: {
     ...mapGetters([
+      'players',
+      'teamById',
+      'playerById',
+      'user',
+      'selectedLeagueId',
       'teams',
-      'leagueById',
+      'leagues',
+      'selectedLeague',
+      'selectedGame',
     ]),
     formatTeams() {
       const formatedTeams = this.teams.map((team) => {
@@ -113,6 +141,9 @@ export default{
         };
       });
       return formatedTeams;
+    },
+    localSelectedGame() {
+      return this.selectedGame || {};
     },
     submitButtonText() {
       return this.loading ? 'Loading' : 'Reschedule Game';
@@ -128,12 +159,16 @@ export default{
         this.submitButtonClicked();
       }
     },
+    teamClicked(id) {
+      this.setSelectedTeamId(id);
+      this.$router.push(`/teams/${id}`);
+    },
     submitButtonClicked() {
       this.displayErrMsg = false;
       this.$refs['reschedule-game-form'].validate((valid) => {
         if (valid) {
           this.loading = true;
-          this.createGame(this.scheduleGameCreate).then((response) => {
+          this.createGame(this.scheduleGameReschedule).then((response) => {
             this.loading = false;
             if (response.retVal) {
               this.errMsg = null;
