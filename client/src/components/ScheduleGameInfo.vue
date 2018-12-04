@@ -85,7 +85,9 @@
       </div>
     </div>
 
-    <div class="roster-container">
+    <div
+      class="roster-container"
+      v-if="!submitGameRosterVisible">
       <div class="away-team-roster-container">
         <TeamRosterContainer :team="teamById(localSelectedGame.awayTeamID)"/>
       </div>
@@ -94,7 +96,6 @@
         <TeamRosterContainer :team="teamById(localSelectedGame.homeTeamID)"/>
       </div>
     </div>
-
 
   </div>
 </template>
@@ -108,7 +109,8 @@ export default {
   name: 'ScheduleGameInfo',
   data() {
     return {
-
+      submitGameRosterVisible: false,
+      submitRosterTeam: null,
     };
   },
   components: {
@@ -191,6 +193,10 @@ export default {
     teamClicked(id) {
       this.setSelectedTeamId(id);
       this.$router.push(`/teams/${id}`);
+    },
+    onSubmitRosterView(val, team) {
+      this.submitRosterTeam = val ? team : null;
+      this.submitGameRosterVisible = val;
     },
   },
   watch: {
@@ -283,8 +289,13 @@ export default {
 
     .away-team-roster-container,
     .home-team-roster-container{
-      width: calc(40%);
+      width: calc(45%);
     }
+  }
+
+  .submit-roster-container{
+    display: flex;
+    justify-content: center;
   }
 }
 </style>

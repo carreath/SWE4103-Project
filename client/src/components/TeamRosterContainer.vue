@@ -21,12 +21,45 @@
         No Roster Submitted
       </span>
       <span>
+        <span
+          v-if="userIsTeamManager">
+          <el-table
+            ref="submit-roster-table"
+            :data="teamPlayers"
+            style="width: 100%"
+            max-height="800"
+            @row-click="handleRowClick"
+            @selection-change="handleSelectionChange">
+            <el-table-column
+              type="selection">
+            </el-table-column>
+            <el-table-column
+              label="#"
+              property="number"
+              width="70px">
+              <template
+                slot-scope="scope">
+                <el-input
+                  size="medium"
+                  maxlength="2"
+                  :disabled="!selectedTeamRoster.find(x => x.playerID === scope.row.playerID)"
+                  v-model="scope.row.number">
+                </el-input>
+              </template>
+            </el-table-column>
+            <el-table-column
+              property="name"
+              label="Name">
+            </el-table-column>
+          </el-table>
+        </span>
         <el-button
           class="submit-roster-button"
           type="primary"
           size="mini"
           plain
-          v-if="userIsTeamManager">
+          v-if="userIsTeamManager"
+          @click="submitGameRoster">
           Submit Roster
         </el-button>
       </span>
@@ -44,12 +77,14 @@ export default {
   },
   data() {
     return {
-
+      teamPlayers: [],
+      selectedTeamRoster: [],
     };
   },
   computed: {
     ...mapGetters([
       'user',
+      'playersByTeamId',
     ]),
     userIsTeamManager() {
       if (this.user && this.team.managerID === this.user.userID) {
@@ -84,6 +119,28 @@ export default {
       }
       return c;
     },
+    createTeamRosterList() {
+      this.teamPlayers = this.playersByTeamId(this.team.teamID).map(player => {
+        return {
+          ...player,
+          name: `${player.firstName} ${player.lastName}`,
+        };
+      });
+    },
+    handleRowClick(row, event, column) {
+      if (column.label !== '#') {
+        this.$refs['submit-roster-table'].toggleRowSelection(row);
+      }
+    },
+    handleSelectionChange(val) {
+      this.selectedTeamRoster = val;
+    },
+    submitGameRoster() {
+      console.log('selected: ', this.selectedTeamRoster);
+    },
+  },
+  mounted() {
+    this.createTeamRosterList();
   },
 };
 </script>
