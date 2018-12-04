@@ -53,6 +53,12 @@
           <i class="el-icon-circle-close-outline"></i>
           Cancel Game
         </el-button>
+        <el-button
+          v-if="showRescheduleButton"
+          size="medium"
+          @click="resechduleGameButtonClicked()">
+          Reschedule Game
+        </el-button>
       </div>
     </div>
 
@@ -115,6 +121,23 @@ export default {
         return false;
       }
       if (this.selectedGame.status === 'Cancelled') {
+        return false;
+      }
+      const userType = this.user.userType;
+      switch (userType) {
+        case ('Admin'):
+          return true;
+        case ('Coordinator'):
+          return (this.selectedLeague || {}).managerID === this.user.userID;
+        default:
+          return false;
+      }
+    },
+    showRescheduleButton() {
+      if (!this.user) {
+        return false;
+      }
+      if (this.selectedGame.status !== 'Cancelled') {
         return false;
       }
       const userType = this.user.userType;
