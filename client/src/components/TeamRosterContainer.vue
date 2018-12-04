@@ -3,27 +3,40 @@
     <div class="team-name">
       {{ team.teamName }}
     </div>
-    <!-- TODO if roster is submitted -->
-    <div
-      class="roster-table-container"
-      v-if="false">
 
-    </div>
-
-    <div
-      v-else
-      class="roster-table-container">
+    <div class="roster-table-container">
       <span
         class="text-message"
         :style="{
           'background-color': team.colour,
           'color': getTextColor,
         }">
-        {{ rosterTableHeader }}
+        <span :style="{'width': getWidth}">
+        </span>
+        <span>
+          {{ rosterTableHeader }}
+        </span>
+        <span>
+          <el-button
+            plain
+            v-if="userIsTeamManager && !managerEditing"
+            size="mini"
+            icon="el-icon-edit"
+            @click="handleRosterEditClick(true)">
+          </el-button>
+          <el-button
+            plain
+            v-if="userIsTeamManager && managerEditing"
+            size="mini"
+            icon="el-icon-close"
+            @click="handleRosterEditClick(false)">
+          </el-button>
+        </span>
       </span>
+
       <span>
         <span
-          v-if="teamGameRosterSubmitted">
+          v-if="teamGameRosterSubmitted && !managerEditing">
           <el-table
             ref="team-roster-table"
             :data="teamGameRoster"
@@ -42,7 +55,7 @@
         </span>
 
         <span
-          v-else-if="userIsTeamManager">
+          v-show="userIsTeamManager && managerEditing">
           <el-table
             ref="submit-roster-table"
             :data="teamPlayers"
@@ -98,8 +111,8 @@ export default {
   },
   data() {
     return {
-      teamPlayers: [],
       selectedTeamRoster: [],
+      managerEditing: false,
     };
   },
   computed: {
@@ -109,11 +122,25 @@ export default {
       'selectedGameId',
       'gameRosters',
     ]),
+    getWidth() {
+      if (this.teamGameRosterSubmitted && this.userIsTeamManager) {
+        return this.managerEditing ? '44px' : '44px';
+      }
+      return '0px';
+    },
     userIsTeamManager() {
       if (this.user && this.team.managerID === this.user.userID) {
         return true;
       }
       return false;
+    },
+    teamPlayers() {
+      return this.playersByTeamId(this.team.teamID).map(player => {
+        return {
+          ...player,
+          name: `${player.firstName} ${player.lastName}`,
+        };
+      });
     },
     teamGameRoster() {
       const gameRosterObj = this.gameRosters.find(gameRoster => {
@@ -132,7 +159,7 @@ export default {
       return teamRosterFormatted;
     },
     teamGameRosterSubmitted() {
-      return this.teamGameRoster.length > 0;
+      return (this.teamGameRoster || []).length > 0;
     },
     rosterTableHeader() {
       if (this.teamGameRosterSubmitted) {
@@ -167,12 +194,17 @@ export default {
       }
       return c;
     },
-    createTeamRosterList() {
-      this.teamPlayers = this.playersByTeamId(this.team.teamID).map(player => {
-        return {
-          ...player,
-          name: `${player.firstName} ${player.lastName}`,
-        };
+    handleRosterEditClick(val) {
+      this.managerEditing = val;
+      this.$nextTick().then(() => {
+        this.teamGameRoster.forEach(rosterPlayer => {
+          this.teamPlayers.forEach((teamPlayer, index) => {
+            if (teamPlayer.playerID === rosterPlayer.playerID) {
+              teamPlayer.number = rosterPlayer.number;
+              this.$refs['submit-roster-table'].toggleRowSelection(this.teamPlayers[index], true);
+            }
+          });
+        });
       });
     },
     handleRowClick(row, event, column) {
@@ -213,7 +245,6 @@ export default {
     },
   },
   mounted() {
-    this.createTeamRosterList();
   },
 };
 </script>
@@ -244,8 +275,12 @@ export default {
       border-radius: 8px 8px 0px 0px;
       padding-top: 8px;
       padding-bottom: 4px;
+      padding-right: 8px;
+      padding-left: 8px;
       font-weight: bold;
       background-color: green;
+      display: flex;
+      justify-content: space-between;
     }
 
     .submit-roster-button{
