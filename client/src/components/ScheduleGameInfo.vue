@@ -199,6 +199,9 @@ export default {
       }).catch(() => {
       });
     },
+    resechduleGameButtonClicked() {
+      this.$router.push('/schedule/game/reschedule');
+    },
     teamClicked(id) {
       this.setSelectedTeamId(id);
       this.$router.push(`/teams/${id}`);
