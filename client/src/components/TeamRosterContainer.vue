@@ -18,7 +18,7 @@
           'background-color': team.colour,
           'color': getTextColor,
         }">
-        No Roster Submitted
+        {{ userIsTeamManager ? "Submit Roster" : "No Roster Submitted" }}
       </span>
       <span>
         <span
@@ -59,7 +59,8 @@
           size="mini"
           plain
           v-if="userIsTeamManager"
-          @click="submitGameRoster">
+          @click="submitGameRoster"
+          :disabled="selectedTeamRoster.length < 1">
           Submit Roster
         </el-button>
       </span>
@@ -93,7 +94,7 @@ export default {
       return false;
     },
     getTextColor() {
-      if (!this.team) return '';
+      if (!this.team || !this.team.colour) return '';
       const hexString = this.team.colour.substring(1);
       let r = parseInt(hexString.substring(0, 2), 16);
       let g = parseInt(hexString.substring(2, 4), 16);
@@ -137,6 +138,18 @@ export default {
     },
     submitGameRoster() {
       console.log('selected: ', this.selectedTeamRoster);
+      if (this.selectedTeamRoster.length === 0) {
+        return;
+      }
+      if (this.selectedTeamRoster.find(x => !x.number)) {
+        this.$message({
+          showClose: true,
+          message: 'Please Enter All Selected Player Numbers',
+          type: 'error',
+        });
+        return;
+      }
+      console.log('About to submit roster');
     },
   },
   mounted() {
