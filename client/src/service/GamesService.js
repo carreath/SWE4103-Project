@@ -37,4 +37,15 @@ export default {
         return err.response;
       });
   },
+  getGameRoster(paramsIn) {
+    // return ServiceLayer().get('/game-roster', { params: paramsIn })
+    return ServiceLayer().get(`/game-roster/${paramsIn.gameID}`)
+      .then((response) => {
+        console.log('response: ', response);
+        return response;
+      })
+      .catch((err) => {
+        return err.response;
+      });
+  },
 };

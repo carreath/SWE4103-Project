@@ -122,8 +122,6 @@ class GameRoster(Resource):
         yellow_cards = args['yellowCards']
         red_cards = args['redCards']
 
-        print(game_id)
-
         # creating new league in the database
         db_connector = DatabaseConnector()
         db_connector.cursor.callproc('get_game_team_lineup', [int(game_id)])

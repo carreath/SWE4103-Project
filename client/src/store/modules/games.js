@@ -4,6 +4,7 @@ import GamesService from '@/service/GamesService';
 const state = {
   games: [],
   selectedGameId: null,
+  gameRosters: [],
 };
 
 // getters
@@ -62,11 +63,17 @@ const getters = {
     });
     return retObj;
   },
+  gameRosters(state) {
+    return state.gameRosters;
+  },
+  gameRosterByGameID: (state) => (gameID) => {
+    return state.gameRosters.filter(gameRoster => gameRoster.gameID === gameID);
+  },
 };
 
 // actions
 const actions = {
-  getLeagueGames({ commit }, leagueId) {
+  getLeagueGames({ dispatch, commit }, leagueId) {
     const payload = {
       leagueID: leagueId,
     };
@@ -77,7 +84,26 @@ const actions = {
           games: response.data.games,
         };
         commit('addLeagueGames', commitPaylaod);
+        dispatch('getAllGameRosters');
       }
+    });
+  },
+  getAllGameRosters({ getters, commit }) {
+    getters.games.forEach(game => {
+      const payload = {
+        gameID: game.gameID,
+      };
+      console.log('payload: ', payload);
+      GamesService.getGameRoster(payload).then((response) => {
+        if (response && response.status === 200) {
+          const commitPayload = {
+            gameID: game.gameID,
+            ...response.data['game-roster'],
+          };
+          console.log('commitPay', commitPayload);
+          commit('addGameRoster', commitPayload);
+        }
+      });
     });
   },
   setSelectedGameId({ commit }, newId) {
@@ -154,6 +180,12 @@ const mutations = {
   addLeagueGames(state, payload) {
     state.games = state.games.filter(game => game.leagueID !== payload.leagueID);
     state.games.push(...payload.games);
+  },
+  addGameRoster(state, payload) {
+    state.gameRosters = state.gameRosters.filter(gameRoster => {
+      return gameRoster.gameID !== payload.gameID;
+    });
+    state.gameRosters.push(payload);
   },
 };
 
