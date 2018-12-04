@@ -85,6 +85,17 @@
       </div>
     </div>
 
+    <div
+      class="roster-container"
+      v-if="!submitGameRosterVisible">
+      <div class="away-team-roster-container">
+        <TeamRosterContainer :team="teamById(localSelectedGame.awayTeamID)"/>
+      </div>
+
+      <div class="home-team-roster-container">
+        <TeamRosterContainer :team="teamById(localSelectedGame.homeTeamID)"/>
+      </div>
+    </div>
 
   </div>
 </template>
@@ -92,16 +103,19 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import ColorCircleTeamName from '@/components/ColorCircleTeamName.vue';
+import TeamRosterContainer from '@/components/TeamRosterContainer.vue';
 
 export default {
   name: 'ScheduleGameInfo',
   data() {
     return {
-
+      submitGameRosterVisible: false,
+      submitRosterTeam: null,
     };
   },
   components: {
     ColorCircleTeamName,
+    TeamRosterContainer,
   },
   computed: {
     ...mapGetters([
@@ -180,6 +194,10 @@ export default {
       this.setSelectedTeamId(id);
       this.$router.push(`/teams/${id}`);
     },
+    onSubmitRosterView(val, team) {
+      this.submitRosterTeam = val ? team : null;
+      this.submitGameRosterVisible = val;
+    },
   },
   watch: {
     selectedLeagueId() {
@@ -242,6 +260,10 @@ export default {
         color: $CANCELLED_RED;
       }
     }
+
+    #game-actions-container{
+      min-width: 93px;
+    }
   }
 
   #game-info-final-score{
@@ -257,6 +279,23 @@ export default {
       align-items: center;
       justify-content: center;
     }
+  }
+
+  .roster-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+
+    .away-team-roster-container,
+    .home-team-roster-container{
+      width: calc(45%);
+    }
+  }
+
+  .submit-roster-container{
+    display: flex;
+    justify-content: center;
   }
 }
 </style>
