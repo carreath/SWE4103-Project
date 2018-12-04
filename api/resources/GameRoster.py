@@ -99,7 +99,7 @@ class GameRoster(Resource):
         if not token:
             abort(403, error="Unauthorized Access (no token)")
         privilege_handler = PrivilegeHandler(token)
-        if not privilege_handler.league_privileges():
+        if not privilege_handler.assign_player():
             abort(403, error="Unauthorized Access (invalid permissions)")
 
         parser = reqparse.RequestParser()

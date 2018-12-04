@@ -28,4 +28,22 @@ export default {
         return err.response;
       });
   },
+  submitGameRoster(params) {
+    return ServiceLayer().post(`/game-roster/${params.gameID}`, params.data)
+      .then((response) => {
+        return response;
+      })
+      .catch((err) => {
+        return err.response;
+      });
+  },
+  getGameRoster(paramsIn) {
+    return ServiceLayer().get(`/game-roster/${paramsIn.gameID}`)
+      .then((response) => {
+        return response;
+      })
+      .catch((err) => {
+        return err.response;
+      });
+  },
 };
