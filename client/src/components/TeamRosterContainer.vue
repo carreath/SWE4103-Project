@@ -17,20 +17,22 @@
           {{ rosterTableHeader }}
         </span>
         <span>
-          <el-button
-            plain
-            v-if="userIsTeamManager && !managerEditing"
-            size="mini"
-            icon="el-icon-edit"
-            @click="handleRosterEditClick(true)">
-          </el-button>
-          <el-button
-            plain
-            v-if="userIsTeamManager && managerEditing"
-            size="mini"
-            icon="el-icon-close"
-            @click="handleRosterEditClick(false)">
-          </el-button>
+          <span v-if="userIsTeamManager">
+            <el-button
+              plain
+              v-if="!managerEditing && selectedGame.status === 'Scheduled'"
+              size="mini"
+              icon="el-icon-edit"
+              @click="handleRosterEditClick(true)">
+            </el-button>
+            <el-button
+              plain
+              v-if="managerEditing"
+              size="mini"
+              icon="el-icon-close"
+              @click="handleRosterEditClick(false)">
+            </el-button>
+          </span>
         </span>
       </span>
 
@@ -121,6 +123,7 @@ export default {
       'playersByTeamId',
       'selectedGameId',
       'gameRosters',
+      'selectedGame',
     ]),
     getWidth() {
       if (this.teamGameRosterSubmitted && this.userIsTeamManager) {
@@ -184,6 +187,7 @@ export default {
   methods: {
     ...mapActions([
       'submitGameRoster',
+      'submitGameRosterEdited',
     ]),
     colourConversion(c) {
       c /= 255.0;
@@ -231,22 +235,44 @@ export default {
         gameID: this.selectedGameId,
         roster: this.selectedTeamRoster,
       };
-      this.submitGameRoster(submitParams).then(response => {
-        if (response.retVal) {
-          this.errMsg = null;
-          this.$message({
-            message: 'Roster Submitted',
-            type: 'success',
-          });
-          this.handleRosterEditClick(false);
-        } else {
-          this.$message({
-            showClose: true,
-            message: 'OOPS! Sometihng Went Wrong',
-            type: 'error',
+
+      if (this.teamGameRosterSubmitted) {
+        if (this.userIsTeamManager) {
+          this.submitGameRosterEdited(submitParams).then(response => {
+            if (response.retVal) {
+              this.errMsg = null;
+              this.$message({
+                message: 'Roster Submitted',
+                type: 'success',
+              });
+              this.handleRosterEditClick(false);
+            } else {
+              this.$message({
+                showClose: true,
+                message: 'OOPS! Sometihng Went Wrong',
+                type: 'error',
+              });
+            }
           });
         }
-      });
+      } else {
+        this.submitGameRoster(submitParams).then(response => {
+          if (response.retVal) {
+            this.errMsg = null;
+            this.$message({
+              message: 'Roster Submitted',
+              type: 'success',
+            });
+            this.handleRosterEditClick(false);
+          } else {
+            this.$message({
+              showClose: true,
+              message: 'OOPS! Sometihng Went Wrong',
+              type: 'error',
+            });
+          }
+        });
+      }
     },
   },
   mounted() {
