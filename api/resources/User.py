@@ -337,3 +337,26 @@ class User(Resource):
         db_connector.conn.close()
 
         return
+
+class Users(Resource):
+    def get(self):
+        db_connector = DatabaseConnector()
+        db_connector.cursor.callproc('get_all_users')
+
+        users = db_connector.cursor.fetchall()
+        users_data = []
+
+        for user in users:
+            users_data.append({
+                'userID': user[0],
+                'privilegeID': user[1],
+                'userType': user[2],
+                'firstName': user[3],
+                'lastName': user[4],
+                'email': user[5],
+                'lastLogin': user[7].strftime('%Y-%m-%d %H:%M:%S') if user[7] else None
+            })
+        db_connector.conn.close()
+
+        return {'users': users_data}, 200
+

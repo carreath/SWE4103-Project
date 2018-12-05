@@ -128,11 +128,9 @@ const actions = {
     });
   },
   getAllUsers({ commit }) {
-    UserService.getUserFromToken().then((response) => {
-      if (response.status && response.status === 200 && response.data.user.userType === 'Admin') {
+    UserService.getAllUsers().then((response) => {
+      if (response.status && response.status === 200) {
         commit('mutateUsers', response.data.users);
-      } else {
-        commit('mutateUsers', null);
       }
     });
   },
