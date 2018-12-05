@@ -83,8 +83,8 @@ export default{
       scheduleGameReschedule: {
         fieldName: '',
         gameTime: '',
-        homeTeamID: '',
-        awayTeamID: '',
+        homeTeamID: 'selectedGame.homeTeamID',
+        awayTeamID: 'selectedGame.awayTeamID',
       },
       scheduleGameRescheduleRules: {
         fieldName: [
