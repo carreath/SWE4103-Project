@@ -6,7 +6,7 @@
         <el-carousel
           trigger="click"
           type="card"
-          interval=4000
+          interval=3900
           indicator-position="outside">
           <el-carousel-item>
             <img src="@/assets/Soccerball.svg" alt="TEAM 2 WOO">
@@ -16,6 +16,9 @@
           </el-carousel-item>
           <el-carousel-item>
             <img src="@/assets/Josh.jpg" alt="TEAM 2 WOO">
+          </el-carousel-item>
+          <el-carousel-item>
+            <img src="@/assets/Cam.jpg" alt="TEAM 2 WOO">
           </el-carousel-item>
         </el-carousel>
       </div>
