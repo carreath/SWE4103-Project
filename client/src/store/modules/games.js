@@ -136,9 +136,7 @@ const actions = {
 
       switch (response.status) {
         case 201: {
-          // TODO this probs wont be right
-          // commit('addGame', response.data.game);
-          dispatch('getGames');
+          dispatch('getLeagueGames', getters.selectedLeagueId);
           return { retVal: true, retMsg: 'Game Created' };
         }
         default: {
