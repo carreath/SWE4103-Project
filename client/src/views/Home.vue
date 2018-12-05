@@ -6,7 +6,7 @@
         <el-carousel
           trigger="click"
           type="card"
-          interval=3900
+          :interval="3900"
           indicator-position="outside">
           <el-carousel-item>
             <img src="@/assets/Team.jpg" alt="TEAM 2 WOO">
@@ -22,6 +22,9 @@
           </el-carousel-item>
           <el-carousel-item>
             <img src="@/assets/Caleb.jpg" alt="TEAM 2 WOO">
+          </el-carousel-item>
+          <el-carousel-item>
+            <img src="@/assets/TaylerMauriceThomas.png" alt="TEAM 2 WOO">
           </el-carousel-item>
           <el-carousel-item>
             <img src="@/assets/Cam.jpg" alt="TEAM 2 WOO">
