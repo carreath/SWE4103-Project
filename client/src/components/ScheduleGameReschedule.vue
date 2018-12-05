@@ -7,13 +7,13 @@
       <div id="team-names">
         <div id="away-team">
           <ColorCircleTeamName
-            :team="teamById(selectedGame.awayTeamID)"
+            :team="teamById(localSelectedGame.awayTeamID)"
             justifyContent="center"/>
         </div>
         <span id="vs-span">vs.</span>
         <div id="home-team">
           <ColorCircleTeamName
-            :team="teamById(selectedGame.homeTeamID)"
+            :team="teamById(localSelectedGame.homeTeamID)"
             justifyContent="center"/>
         </div>
       </div>
@@ -83,8 +83,8 @@ export default{
       scheduleGameReschedule: {
         fieldName: '',
         gameTime: '',
-        homeTeamID: 'selectedGame.homeTeamID',
-        awayTeamID: 'selectedGame.awayTeamID',
+        homeTeamID: null,
+        awayTeamID: null,
       },
       scheduleGameRescheduleRules: {
         fieldName: [
@@ -127,6 +127,7 @@ export default{
       'leagues',
       'selectedLeague',
       'selectedGame',
+      'selectedGameId',
     ]),
     formatTeams() {
       const formatedTeams = this.teams.map((team) => {
@@ -173,6 +174,11 @@ export default{
     },
   },
   mounted() {
+    if (!this.selectedGame) {
+      this.$router.push('/schedule');
+    }
+    this.scheduleGameReschedule.homeTeamID = (this.selectedGame || {}).homeTeamID;
+    this.scheduleGameReschedule.awayTeamID = (this.selectedGame || {}).awayTeamID;
     window.addEventListener('keyup', this.handleKeyUp);
   },
   beforeDestroy() {
@@ -188,9 +194,9 @@ export default{
 #schedule-game-reschedule{
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   margin-top: 16px;
-  margin-left: 24px;
+  margin-left: 40px;
 
   #title{
     font-size: 1.5rem;
