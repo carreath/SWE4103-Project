@@ -229,11 +229,16 @@ export default {
       }
       const submitParams = {
         gameID: this.selectedGameId,
-        players: this.selectedTeamRoster,
+        roster: this.selectedTeamRoster,
       };
       this.submitGameRoster(submitParams).then(response => {
         if (response.retVal) {
           this.errMsg = null;
+          this.$message({
+            message: 'Roster Submitted',
+            type: 'success',
+          });
+          this.handleRosterEditClick(false);
         } else {
           this.$message({
             showClose: true,

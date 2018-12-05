@@ -173,7 +173,7 @@ const actions = {
       }
 
       switch (response.status) {
-        case 200: {
+        case 201: {
           dispatch('getSpecificGameRoster', params.gameID);
           return { retVal: true, retMsg: 'Roster Submitted' };
         }
