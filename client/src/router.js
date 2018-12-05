@@ -9,6 +9,7 @@ import Admin from './views/Admin.vue';
 
 import store from './store/index';
 import ScheduleGameCreate from './components/ScheduleGameCreate.vue';
+import ScheduleGameReschedule from './components/ScheduleGameReschedule.vue';
 import CreateScheduleForm from './components/CreateScheduleForm.vue';
 
 Vue.use(Router);
@@ -51,6 +52,11 @@ const router = new Router({
       path: '/schedule/game/create',
       name: 'schedule-game-create',
       component: ScheduleGameCreate,
+    },
+    {
+      path: '/schedule/game/reschedule',
+      name: 'schedule-game-reschedule',
+      component: ScheduleGameReschedule,
     },
     {
       path: '/teams',
