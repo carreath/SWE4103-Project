@@ -27,3 +27,10 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+#twitter-feed{
+  max-height: 60vh;
+  overflow-y: auto;
+}
+</style>

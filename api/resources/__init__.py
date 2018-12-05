@@ -1,12 +1,12 @@
 from resources.HelloWorld import HelloWorld
-from resources.GameSchedule import LeagueSchedule, PlayerSchedule
+from resources.GameSchedule import LeagueSchedule, PlayerSchedule, GameSchedule
 from resources.GameRoster import GameRoster
 from resources.GameStats import GameStats
 from resources.LeagueStanding import LeagueStanding
 from resources.Player import Player
 from resources.TeamRoster import TeamRoster
 from resources.TournamentSchedule import TournamentSchedule
-from resources.User import Login, Register, TokenValidation, User
+from resources.User import Login, Register, TokenValidation, User, Users
 from resources.Root import Root
 from resources.League import League
 from resources.Team import Team

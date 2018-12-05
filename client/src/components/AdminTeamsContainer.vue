@@ -7,6 +7,7 @@
       <div></div>
       <div id="create-team-button-container">
         <el-button
+        v-if="(user || {}).userType !== 'Manager'"
         @click="teamCreateClicked"
         type="primary">Create New Team</el-button>
       </div>
@@ -134,7 +135,7 @@ export default {
         const managerNameIn = manager ? `${manager.firstName} ${manager.lastName}` : 'None';
         return {
           ...team,
-          leagueName: this.leagueById(team.leagueID).leagueName,
+          leagueName: this.leagueById((team || {}).leagueID).leagueName,
           managerName: managerNameIn,
         };
       });
