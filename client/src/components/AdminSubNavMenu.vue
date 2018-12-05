@@ -20,7 +20,7 @@
         </li>
         <li
           v-if="showPlayersTab"
-          :class="{'is-active': curRoute === 'admin-players'}"
+          :class="{'is-active': curRoute.includes('admin-players')}"
           @click="handleAdminNavMenuSelect('players')">
           <span>
             Players
@@ -60,14 +60,16 @@ export default {
       if (!this.user) {
         return false;
       }
-      return this.user.userType === 'Admin';
+      return this.user.userType === 'Admin'
+        || this.user.userType === 'Coordinator';
     },
     showTeamsTab() {
       if (!this.user) {
         return false;
       }
       return this.user.userType === 'Admin'
-        || this.user.userType === 'Coordinator';
+        || this.user.userType === 'Coordinator'
+        || this.user.userType === 'Manager';
     },
     showPlayersTab() {
       if (!this.user) {

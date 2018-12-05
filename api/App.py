@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from flask import Flask, render_template, make_response
+from common import DatabaseMigrator
 from flask_restful import Api
 from flask_cors import CORS
 from resources import *
@@ -25,6 +26,7 @@ cors = CORS(app)
 # TODO ALL requests need to update the token if it exists. SOME requests need to validate the token permissions.
 api.add_resource(HelloWorld, '/HelloWorld')  # TODO remove eventually (keep for debugging)
 api.add_resource(LeagueSchedule, '/api/game-schedule')
+api.add_resource(GameSchedule, '/api/game')
 api.add_resource(PlayerSchedule, '/api/player-schedule')
 api.add_resource(TournamentSchedule, '/api/tournament-schedule')  # TODO placeholder endpoint name
 api.add_resource(GameStats, "/api/game-stats/<game_id>")
@@ -36,6 +38,8 @@ api.add_resource(Login, "/api/login")
 api.add_resource(Register, "/api/register")
 api.add_resource(TokenValidation, "/api/token-check")
 api.add_resource(User, "/api/user")
+api.add_resource(Users, "/api/users")
+api.add_resource(GameRoster, "/api/game-roster/<game_id>")
 api.add_resource(Root, "/")
 
 
@@ -57,6 +61,8 @@ def shutdown():
     shutdown_server()
     return 'Server shutting down...'
 
+db = DatabaseMigrator()
+db.migrate(False)
 
 if __name__ == "__main__":
     # Check that the SSL certificate exists if not run http://

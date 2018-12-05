@@ -6,8 +6,11 @@
       <el-table
         :data="formatTeams"
         stripe
-        :default-sort = "{prop: 'teamID', order: 'ascending'}"
-        style="width: 100%">
+        :style="{
+          'width': '100%',
+          'cursor': 'pointer'
+        }"
+        @row-click="teamClicked">
         <el-table-column
           prop="teamID"
           sortable
@@ -17,10 +20,15 @@
           prop="teamName"
           sortable
           label="Team Name">
+          <template slot-scope="scope">
+            <ColorCircleTeamName
+              :team="teamById(scope.row.teamID)"
+              justifyContent="flex-start"/>
+          </template>
         </el-table-column>
         <el-table-column
-          prop="managerID"
-          label="Manager ID">
+          prop="manager"
+          label="Manager">
         </el-table-column>
       </el-table>
     </div>
@@ -28,6 +36,7 @@
 </template>
 
 <script>
+import ColorCircleTeamName from '@/components/ColorCircleTeamName.vue';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
@@ -37,17 +46,27 @@ export default {
 
     };
   },
+  components: {
+    ColorCircleTeamName,
+  },
   computed: {
     ...mapGetters([
       'teams',
       'leagueById',
+      'selectedLeagueId',
+      'teamsByLeagueId',
+      'teamById',
+      'userById',
     ]),
     formatTeams() {
-      const formatedTeams = this.teams.map((team) => {
+      const formatedTeams = this.teamsByLeagueId(this.selectedLeagueId).map((team) => {
+        const manager = this.userById(team.managerID);
+        const managerName = manager ? `${manager.firstName} ${manager.lastName}` : 'None';
         return {
           teamID: team.teamID,
           teamName: team.teamName,
           managerID: team.managerID,
+          manager: managerName,
         };
       });
       return formatedTeams;
@@ -55,8 +74,12 @@ export default {
   },
   methods: {
     ...mapActions([
-
+      'setSelectedTeamId',
     ]),
+    teamClicked(row) {
+      this.setSelectedTeamId(row.teamID);
+      this.$router.push(`/teams/${row.teamID}`);
+    },
   },
 };
 

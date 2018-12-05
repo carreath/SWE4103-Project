@@ -1,3 +1,4 @@
 from common.DatabaseConnector import DatabaseConnector
+from common.DatabaseMigrator import DatabaseMigrator
 from common.TokenHandler import TokenHandler
 from common.PrivilegeHandler import PrivilegeHandler

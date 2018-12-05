@@ -103,6 +103,7 @@ export default{
         gameTime: '',
         homeTeamID: '',
         awayTeamID: '',
+        status: 'Scheduled',
       },
       scheduleGameCreateRules: {
         fieldName: [
@@ -183,6 +184,11 @@ export default{
             this.loading = false;
             if (response.retVal) {
               this.errMsg = null;
+              this.$message({
+                message: 'Game Created',
+                type: 'success',
+              });
+              this.$router.push('/schedule');
             } else {
               this.errMsg = response.retMsg;
             }
@@ -203,12 +209,13 @@ export default{
 
 <style lang="scss" scoped>
 @import '@/style/global.scss';
+
 #schedule-game-create{
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   margin-top: 16px;
-  margin-left: 30vw;
+  margin-left: 24px;
 
   #title{
     font-size: 1.5rem;
@@ -237,7 +244,7 @@ export default{
 
   #submit-button-container{
     margin-top: 16px;
-    width: 110%;
+    width: 100%;
     display: flex;
     justify-content: space-between;
   }

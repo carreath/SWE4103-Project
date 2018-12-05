@@ -13,7 +13,7 @@
           </span>
         </li>
         <li
-          :class="{'is-active': curRoute === 'teams'}"
+          :class="{'is-active': curRoute.includes('teams') && !curRoute.includes('admin')}"
           @click="handleNavMenuSelect('teams')">
           <span>
             Teams
@@ -35,7 +35,7 @@
         </li>
 
         <li
-          v-if="loggedIn && user.userType"
+          v-if="showAdminTab"
           :class="{'is-active': curRoute.includes('admin')}"
           @click="handleNavMenuSelect('admin')">
           <span>
@@ -82,7 +82,7 @@
               Schedule
             </div>
             <div
-              v-if="loggedIn && user.userType"
+              v-if="showAdminTab"
               @click="handleNavMenuSelect('admin')"
               :class="{'boldText': curRoute.includes('admin')}">
               Admin
@@ -145,9 +145,11 @@
             :class="{'show-user-dropdown-content': userDropdownVisible}"
             @mouseover="userDropdownContentHover=true"
             @mouseleave="userDropdownContentHover=false">
+            <!--
             <div>
               Change Password
             </div>
+            -->
             <div @click="logoutClicked">
               Log Out <font-awesome-icon icon="sign-out-alt" />
             </div>
@@ -214,6 +216,11 @@ export default {
     },
     showLeagueSelection() {
       return this.leagues.length > 1;
+    },
+    showAdminTab() {
+      return this.loggedIn
+        && this.user.userType
+        && this.user.userType !== 'Referee';
     },
   },
   methods: {
@@ -316,7 +323,7 @@ export default {
       align-items: center;
       font-weight: bold;
       color: $PRIMARY_TO_FADE;
-      transition: 0.3s;
+      transition: 0.2s;
 
       &:hover{
         background-color: $HOVER_GREY;
@@ -330,12 +337,12 @@ export default {
     }
 
     .is-active{
-      transition: 0.3s;
+      transition: 0.2s;
       border-bottom: 2px solid $PRIMARY_TO_FADE;
 
       span{
         margin-bottom: -2px;
-        transition: 0.3s;
+        transition: 0.2s;
       }
     }
   }
@@ -346,7 +353,7 @@ export default {
     margin-left: 20px;
     font-weight: bold;
     color: $PRIMARY_TO_FADE;
-    transition: 0.3s;
+    transition: 0.2s;
     user-select: none;
     height: 100%;
 
@@ -360,7 +367,7 @@ export default {
         color: $PRIMARY_TO_FADE;
         padding: 0px 20px;
         margin: 0;
-        transition: 0.3s;
+        transition: 0.2s;
         height: 100%;
         display: flex;
         align-items: center;
@@ -397,7 +404,7 @@ export default {
           text-align: left;
           white-space:nowrap;
           font-weight: normal;
-          transition: 0.3s;
+          transition: 0.2s;
 
           &:hover{
             background-color: $HOVER_GREY;
@@ -428,7 +435,7 @@ export default {
       margin-right: 0px;
       font-weight: bold;
       color: $PRIMARY_TO_FADE;
-      transition: 0.3s;
+      transition: 0.2s;
       user-select: none;
       height: 100%;
 
@@ -442,10 +449,11 @@ export default {
           color: $PRIMARY_TO_FADE;
           padding: 0px 20px;
           margin: 0;
-          transition: 0.3s;
+          transition: 0.2s;
           height: 100%;
           display: flex;
           align-items: center;
+          justify-content: flex-end;
 
           #caret-down{
             margin-left: 4px;
@@ -482,7 +490,7 @@ export default {
             text-align: left;
             white-space:nowrap;
             font-weight: normal;
-            transition: 0.3s;
+            transition: 0.2s;
 
             &:hover{
               background-color: $HOVER_GREY;
@@ -509,7 +517,7 @@ export default {
       margin-right: 20px;
       font-weight: bold;
       color: $PRIMARY_TO_FADE;
-      transition: 0.3s;
+      transition: 0.2s;
       user-select: none;
       height: 100%;
 
@@ -523,7 +531,7 @@ export default {
           color: $PRIMARY_TO_FADE;
           padding: 0px 20px;
           margin: 0;
-          transition: 0.3s;
+          transition: 0.2s;
           height: 100%;
           display: flex;
           align-items: center;
@@ -562,7 +570,7 @@ export default {
             text-align: left;
             white-space:nowrap;
             font-weight: normal;
-            transition: 0.3s;
+            transition: 0.2s;
 
             &:hover{
               background-color: $HOVER_GREY;
@@ -590,7 +598,7 @@ export default {
       margin-right: 20px;
       font-weight: bold;
       color: $PRIMARY_TO_FADE;
-      transition: 0.3s;
+      transition: 0.2s;
       user-select: none;
       white-space: nowrap;
 

@@ -12,7 +12,7 @@ const getters = {
     return state.players;
   },
   playersByTeamId: (state) => (id) => {
-    return state.players.filter(player => player.teamId === id);
+    return state.players.filter(player => player.teamID === id);
   },
   playerById: (state) => (playerId) => {
     return state.players.find(player => player.playerID === playerId);
@@ -67,6 +67,9 @@ const actions = {
         case 200: {
           dispatch('getPlayers');
           return { retVal: true, retMsg: 'Player Deleted' };
+        }
+        case 400: {
+          return { retVal: false, retMsg: 'Player Cannot Be Deleted If They Have Played A Game' };
         }
         default: {
           return { retVal: false, retMsg: 'Server Error' };

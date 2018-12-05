@@ -40,7 +40,8 @@
               v-model="teamEditForm.managerID"
               id="team-manager-input"
               :style="{'float': 'left'}"
-              placeholder="Manager">
+              placeholder="Manager"
+              :disabled="disableTeamManagerSelector">
               <el-option label="None" :value="null"></el-option>
               <el-option
                 v-for="manager in managerUsers"
@@ -120,9 +121,22 @@ export default{
       'editedTeamId',
       'managerUsers',
       'teams',
+      'user',
     ]),
     teamEditButtonText() {
       return this.loading ? 'Loading' : 'Edit Team';
+    },
+    disableTeamManagerSelector() {
+      if (!this.user) {
+        return true;
+      }
+      if (this.user.userType === 'Admin') {
+        return false;
+      }
+      if (this.user.userType === 'Coordinator') {
+        return false;
+      }
+      return true;
     },
   },
   methods: {

@@ -1,8 +1,8 @@
 SELECT 'INSERTING DUMMY DATA' as 'INFO';
 
-INSERT INTO leagues (leagueName, season, pointScheme) VALUES ('Fredericton Soccer League', 'Fall 2018', '3-1-0');
+INSERT INTO leagues (leagueName, season, pointScheme) VALUES ('Fredericton Soccer League', 'Fall 2018', 'Standard');
 
-INSERT INTO teams (leagueID, teamName, colour) VALUES (1, 'Blue Birds', '#4b89ed'), (1, 'Tigers', '#d68126'), (1, 'Eagles', '#c1bab2'), (1, 'Goon Squad', '#cad804');
+INSERT INTO teams (leagueID, teamName, colour, wins, losses, draws) VALUES (1, 'Blue Birds', '#4b89ed', 4, 3, 1), (1, 'Tigers', '#d68126', 4, 5, 3), (1, 'Eagles', '#c1bab2', 4, 3, 1), (1, 'Goon Squad', '#cad804', 3, 6, 3);
 
 INSERT INTO players (teamID,firstName,lastName) VALUES (4,"Chastity","Hyde"),(3,"Jacqueline","Duffy"),(3,"Leroy","Baldwin"),(2,"Hashim","Lynn"),(2,"Inga","Mcneil"),(4,"Hadassah","Taylor"),(1,"Amanda","Osborn"),(2,"Nevada","Madden"),(4,"Karina","Hicks"),(3,"Dolan","Neal");
 INSERT INTO players (teamID,firstName,lastName) VALUES (1,"Demetria","Houston"),(1,"Uriah","Thomas"),(2,"Driscoll","Atkinson"),(2,"Hedy","Bates"),(1,"Ila","Shields"),(2,"Yardley","Clay"),(3,"Chava","Barr"),(2,"Ivana","Warren"),(4,"Althea","Pennington"),(4,"Olivia","Barnett");
@@ -23,8 +23,8 @@ INSERT INTO gameMembers (gameID,teamID,playerID,number,goals) VALUES (2,4,1,10,0
 
 /* Privileges */
 INSERT INTO privileges (privilegesType, cancelGame, updateScore, createPlayer, createGame, createUser, createTeam, createLeague, assignPlayer, assignManager, assignCoordinator, assignprivileges) VALUES ('Admin',1,1,1,1,1,1,1,1,1,1,1);
-INSERT INTO privileges (privilegesType, cancelGame, updateScore, createPlayer, createGame, createUser, createTeam, createLeague, assignPlayer, assignManager, assignCoordinator, assignprivileges) VALUES ('Coordinator',1,1,1,1,0,1,0,1,1,0,0);
-INSERT INTO privileges (privilegesType, cancelGame, updateScore, createPlayer, createGame, createUser, createTeam, createLeague, assignPlayer, assignManager, assignCoordinator, assignprivileges) VALUES ('Manager',0,0,1,0,0,0,0,1,0,0,0);
+INSERT INTO privileges (privilegesType, cancelGame, updateScore, createPlayer, createGame, createUser, createTeam, createLeague, assignPlayer, assignManager, assignCoordinator, assignprivileges) VALUES ('Coordinator',1,1,1,1,0,1,1,1,1,0,0);
+INSERT INTO privileges (privilegesType, cancelGame, updateScore, createPlayer, createGame, createUser, createTeam, createLeague, assignPlayer, assignManager, assignCoordinator, assignprivileges) VALUES ('Manager',0,0,1,0,0,1,0,1,0,0,0);
 INSERT INTO privileges (privilegesType, cancelGame, updateScore, createPlayer, createGame, createUser, createTeam, createLeague, assignPlayer, assignManager, assignCoordinator, assignprivileges) VALUES ('Referee',0,1,0,0,0,0,0,0,0,0,0);
 
 /* Default Users */
