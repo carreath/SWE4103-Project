@@ -28,6 +28,15 @@ export default {
         return err.response;
       });
   },
+  getAllUsers() {
+    return ServiceLayer().get('/users')
+      .then((response) => {
+        return response;
+      })
+      .catch((err) => {
+        return err.response;
+      });
+  },
   refreshToken() {
     return ServiceLayer().get('/token-check')
       .then((response) => {

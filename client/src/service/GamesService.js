@@ -11,7 +11,7 @@ export default {
       });
   },
   createGame(params) {
-    return ServiceLayer().post('/game-schedule', params)
+    return ServiceLayer().post('/game', params)
       .then((response) => {
         return response;
       })
@@ -30,6 +30,15 @@ export default {
   },
   submitGameRoster(params) {
     return ServiceLayer().post(`/game-roster/${params.gameID}`, params.data)
+      .then((response) => {
+        return response;
+      })
+      .catch((err) => {
+        return err.response;
+      });
+  },
+  submitGameRosterEdited(params) {
+    return ServiceLayer().put(`/game-roster/${params.gameID}`, params.data)
       .then((response) => {
         return response;
       })

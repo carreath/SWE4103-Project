@@ -145,9 +145,11 @@
             :class="{'show-user-dropdown-content': userDropdownVisible}"
             @mouseover="userDropdownContentHover=true"
             @mouseleave="userDropdownContentHover=false">
+            <!--
             <div>
               Change Password
             </div>
+            -->
             <div @click="logoutClicked">
               Log Out <font-awesome-icon icon="sign-out-alt" />
             </div>

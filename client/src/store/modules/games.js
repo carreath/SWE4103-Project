@@ -136,9 +136,7 @@ const actions = {
 
       switch (response.status) {
         case 201: {
-          // TODO this probs wont be right
-          // commit('addGame', response.data.game);
-          dispatch('getGames');
+          dispatch('getLeagueGames', getters.selectedLeagueId);
           return { retVal: true, retMsg: 'Game Created' };
         }
         default: {
@@ -175,7 +173,28 @@ const actions = {
       }
 
       switch (response.status) {
-        case 200: {
+        case 201: {
+          dispatch('getSpecificGameRoster', params.gameID);
+          return { retVal: true, retMsg: 'Roster Submitted' };
+        }
+        default: {
+          return { retVal: false, retMsg: 'Server Error' };
+        }
+      }
+    });
+  },
+  submitGameRosterEdited({ dispatch }, params) {
+    const submitParams = {
+      gameID: params.gameID,
+      data: params,
+    };
+    return GamesService.submitGameRosterEdited(submitParams).then((response) => {
+      if (!response || !response.status) {
+        return { retVal: false, retMsg: 'Server Error' };
+      }
+
+      switch (response.status) {
+        case 201: {
           dispatch('getSpecificGameRoster', params.gameID);
           return { retVal: true, retMsg: 'Roster Submitted' };
         }

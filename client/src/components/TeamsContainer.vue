@@ -27,8 +27,8 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="managerID"
-          label="Manager ID">
+          prop="manager"
+          label="Manager">
         </el-table-column>
       </el-table>
     </div>
@@ -56,13 +56,17 @@ export default {
       'selectedLeagueId',
       'teamsByLeagueId',
       'teamById',
+      'userById',
     ]),
     formatTeams() {
       const formatedTeams = this.teamsByLeagueId(this.selectedLeagueId).map((team) => {
+        const manager = this.userById(team.managerID);
+        const managerName = manager ? `${manager.firstName} ${manager.lastName}` : 'None';
         return {
           teamID: team.teamID,
           teamName: team.teamName,
           managerID: team.managerID,
+          manager: managerName,
         };
       });
       return formatedTeams;

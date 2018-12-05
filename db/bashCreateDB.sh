@@ -27,6 +27,8 @@ mysql -u $uservar --password=$passvar leagues < sp-game-member-delete.sql
 mysql -u $uservar --password=$passvar leagues < sp-game-member-update.sql
 mysql -u $uservar --password=$passvar leagues < sp-games-get_team_lineup.sql
 mysql -u $uservar --password=$passvar leagues < sp-teams-get_roster.sql
+mysql -u $uservar --password=$passvar leagues < sp-games-create_game.sql
+mysql -u $uservar --password=$passvar leagues < sp-users-get_all_users.sql
 
 echo
 echo Inserting Dummy Data...

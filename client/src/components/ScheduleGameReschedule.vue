@@ -85,6 +85,7 @@ export default{
         gameTime: '',
         homeTeamID: null,
         awayTeamID: null,
+        status: 'Scheduled',
       },
       scheduleGameRescheduleRules: {
         fieldName: [
@@ -165,6 +166,11 @@ export default{
             this.loading = false;
             if (response.retVal) {
               this.errMsg = null;
+              this.$message({
+                message: 'Game Rescheduled',
+                type: 'success',
+              });
+              this.$router.push('/schedule');
             } else {
               this.errMsg = response.retMsg;
             }
