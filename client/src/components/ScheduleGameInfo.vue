@@ -53,6 +53,12 @@
           <i class="el-icon-circle-close-outline"></i>
           Cancel Game
         </el-button>
+        <el-button
+          v-if="showRescheduleButton"
+          size="medium"
+          @click="resechduleGameButtonClicked()">
+          Reschedule Game
+        </el-button>
       </div>
     </div>
 
@@ -85,6 +91,17 @@
       </div>
     </div>
 
+    <div
+      class="roster-container"
+      v-if="!submitGameRosterVisible">
+      <div class="away-team-roster-container">
+        <TeamRosterContainer :team="teamById(localSelectedGame.awayTeamID)"/>
+      </div>
+
+      <div class="home-team-roster-container">
+        <TeamRosterContainer :team="teamById(localSelectedGame.homeTeamID)"/>
+      </div>
+    </div>
 
   </div>
 </template>
@@ -92,16 +109,19 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import ColorCircleTeamName from '@/components/ColorCircleTeamName.vue';
+import TeamRosterContainer from '@/components/TeamRosterContainer.vue';
 
 export default {
   name: 'ScheduleGameInfo',
   data() {
     return {
-
+      submitGameRosterVisible: false,
+      submitRosterTeam: null,
     };
   },
   components: {
     ColorCircleTeamName,
+    TeamRosterContainer,
   },
   computed: {
     ...mapGetters([
@@ -115,6 +135,23 @@ export default {
         return false;
       }
       if (this.selectedGame.status === 'Cancelled') {
+        return false;
+      }
+      const userType = this.user.userType;
+      switch (userType) {
+        case ('Admin'):
+          return true;
+        case ('Coordinator'):
+          return (this.selectedLeague || {}).managerID === this.user.userID;
+        default:
+          return false;
+      }
+    },
+    showRescheduleButton() {
+      if (!this.user) {
+        return false;
+      }
+      if (this.selectedGame.status !== 'Cancelled') {
         return false;
       }
       const userType = this.user.userType;
@@ -175,6 +212,9 @@ export default {
         });
       }).catch(() => {
       });
+    },
+    resechduleGameButtonClicked() {
+      this.$router.push('/schedule/game/reschedule');
     },
     teamClicked(id) {
       this.setSelectedTeamId(id);
@@ -242,6 +282,10 @@ export default {
         color: $CANCELLED_RED;
       }
     }
+
+    #game-actions-container{
+      min-width: 93px;
+    }
   }
 
   #game-info-final-score{
@@ -257,6 +301,23 @@ export default {
       align-items: center;
       justify-content: center;
     }
+  }
+
+  .roster-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+
+    .away-team-roster-container,
+    .home-team-roster-container{
+      width: calc(45%);
+    }
+  }
+
+  .submit-roster-container{
+    display: flex;
+    justify-content: center;
   }
 }
 </style>

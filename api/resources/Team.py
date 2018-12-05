@@ -159,7 +159,7 @@ class Team(Resource):
                     goals_against[team_id] += goals[i]
 
         for team in teams_data:
-            team['goalsAgainst'] = goals_against[team['teamID']]
+            team['goalsAgainst'] = 0 if team['teamID'] not in goals_against.keys() else goals_against[team['teamID']]
             team['goalDifference'] = team['goalsFor'] - team['goalsAgainst']
             team['gamesPlayed'] = team['wins'] + team['losses'] + team['draws']
 

@@ -13,7 +13,7 @@
           </span>
         </li>
         <li
-          :class="{'is-active': curRoute.includes('teams')}"
+          :class="{'is-active': curRoute.includes('teams') && !curRoute.includes('admin')}"
           @click="handleNavMenuSelect('teams')">
           <span>
             Teams
