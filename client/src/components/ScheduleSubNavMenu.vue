@@ -47,7 +47,11 @@
                 @mouseleave="scheduleTeamDropdownButtonHover=false"
                 :class="{'lightGreyBackground': scheduleTeamDropdownContentHover}">
                 <span v-if="!selectedTeamId">All Teams</span>
-                <span v-else>{{ selectedTeam.teamName }}</span>
+                <span v-else>
+                  <ColorCircleTeamName
+                    :team="selectedTeam"
+                    justifyContent="center"/>
+                </span>
                 <font-awesome-icon class="caret-down" icon="caret-down" />
               </div>
               <div
@@ -57,7 +61,12 @@
                 @mouseleave="scheduleTeamDropdownContentHover=false">
                 <div
                   @click="handleTeamClick(null)"
-                  :class="{'boldText': !selectedTeamId}">
+                  :class="{'boldText': !selectedTeamId}"
+                  :style="{
+                    'padding-left': '16px',
+                    'padding-top': '12px',
+                    'padding-bottom': '12px',
+                  }">
                   All Teams
                 </div>
                 <div
@@ -65,7 +74,9 @@
                   :key="team.teamID"
                   @click="handleTeamClick(team.teamID)"
                   :class="{'boldText': selectedTeamId === team.teamID}">
-                  {{ team.teamName }}
+                  <ColorCircleTeamName
+                    :team="team"
+                    justifyContent="flex-start"/>
                 </div>
               </div>
             </div>
@@ -74,11 +85,34 @@
         </li>
       </ul>
     </div>
+
+    <div id="schedule-create-button-container">
+      <div
+        id="new-game-button"
+        v-if="userCanCreateSchedules">
+        <el-button
+          type="primary"
+          size="mini"
+          icon="el-icon-plus"
+          @click="handleCreateGameButtonClick">New Game</el-button>
+      </div>
+      <div
+        id="new-schedule-button"
+        v-if="userCanCreateSchedules">
+        <el-button
+          type="primary"
+          size="mini"
+          icon="el-icon-plus"
+          @click="handleCreateScheduleButtonClick">New Schedule</el-button>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import ColorCircleTeamName from '@/components/ColorCircleTeamName.vue';
 
 export default {
   name: 'ScheduleSubNavMenu',
@@ -90,6 +124,9 @@ export default {
       scheduleTeamDropdownContentHover: false,
     };
   },
+  components: {
+    ColorCircleTeamName,
+  },
   computed: {
     ...mapGetters([
       'scheduleSelectedView',
@@ -97,6 +134,7 @@ export default {
       'selectedLeagueId',
       'selectedTeam',
       'selectedTeamId',
+      'user',
     ]),
     curRoute() {
       return this.$route.name;
@@ -109,6 +147,20 @@ export default {
     },
     smallScreenSize() {
       return window.innerWidth < 700;
+    },
+    userCanCreateSchedules() {
+      if (!this.user) {
+        return false;
+      }
+      const userType = this.user.userType;
+      switch (userType) {
+        case ('Admin'):
+          return true;
+        case ('Coordinator'):
+          return (this.selectedLeague || {}).managerID === this.user.userID;
+        default:
+          return false;
+      }
     },
   },
   methods: {
@@ -130,6 +182,12 @@ export default {
         // TODO Test this on an actual tablet
         this.setScheduleSelectedView('Table');
       }
+    },
+    handleCreateGameButtonClick() {
+      this.$router.push('/schedule/game/create');
+    },
+    handleCreateScheduleButtonClick() {
+      this.$router.push('/schedule/create');
     },
   },
   mounted() {
@@ -244,6 +302,19 @@ export default {
       }
     }
 
+    #schedule-team-dropdown-container{
+      .schedule-view-dropdown{
+        .schedule-view-dropdown-content{
+          div{
+            padding-left: 8px;
+            padding-right: 4px;
+            padding-top: 8px;
+            padding-bottom: 8px;
+          }
+        }
+      }
+    }
+
 
     #create-schedule-button-container{
       margin-right: 20px;
@@ -260,7 +331,16 @@ export default {
         }
       }
     }
+  }
 
+  #schedule-create-button-container{
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+
+    #new-game-button{
+      margin-right: 8px;
+    }
   }
 }
 </style>

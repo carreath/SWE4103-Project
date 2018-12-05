@@ -4,6 +4,7 @@ import GamesService from '@/service/GamesService';
 const state = {
   games: [],
   selectedGameId: null,
+  gameRosters: [],
 };
 
 // getters
@@ -62,11 +63,17 @@ const getters = {
     });
     return retObj;
   },
+  gameRosters(state) {
+    return state.gameRosters;
+  },
+  gameRosterByGameID: (state) => (gameID) => {
+    return state.gameRosters.filter(gameRoster => gameRoster.gameID === gameID);
+  },
 };
 
 // actions
 const actions = {
-  getLeagueGames({ commit }, leagueId) {
+  getLeagueGames({ dispatch, commit }, leagueId) {
     const payload = {
       leagueID: leagueId,
     };
@@ -77,6 +84,43 @@ const actions = {
           games: response.data.games,
         };
         commit('addLeagueGames', commitPaylaod);
+        dispatch('getAllGameRosters');
+      }
+    });
+  },
+  getAllGameRosters({ getters, commit }) {
+    getters.games.forEach(game => {
+      const payload = {
+        gameID: game.gameID,
+      };
+      GamesService.getGameRoster(payload).then((response) => {
+        if (response && response.status === 200) {
+          const commitPayload = {
+            gameID: game.gameID,
+            players: [
+              ...response.data['game-roster'].home,
+              ...response.data['game-roster'].away,
+            ],
+          };
+          commit('addGameRoster', commitPayload);
+        }
+      });
+    });
+  },
+  getSpecificGameRoster({ commit }, gameID) {
+    const payload = {
+      gameID,
+    };
+    GamesService.getGameRoster(payload).then((response) => {
+      if (response && response.status === 200) {
+        const commitPayload = {
+          gameID,
+          players: [
+            ...response.data['game-roster'].home,
+            ...response.data['game-roster'].away,
+          ],
+        };
+        commit('addGameRoster', commitPayload);
       }
     });
   },
@@ -103,6 +147,44 @@ const actions = {
       }
     });
   },
+  editGame({ dispatch }, gameObj) {
+    return GamesService.editGame(gameObj).then((response) => {
+      if (!response || !response.status) {
+        return { retVal: false, retMsg: 'Server Error' };
+      }
+
+      switch (response.status) {
+        case 200: {
+          dispatch('getLeagueGames', gameObj.leagueID);
+          return { retVal: true, retMsg: 'Game Edited' };
+        }
+        default: {
+          return { retVal: false, retMsg: 'Server Error' };
+        }
+      }
+    });
+  },
+  submitGameRoster({ dispatch }, params) {
+    const submitParams = {
+      gameID: params.gameID,
+      data: params,
+    };
+    return GamesService.submitGameRoster(submitParams).then((response) => {
+      if (!response || !response.status) {
+        return { retVal: false, retMsg: 'Server Error' };
+      }
+
+      switch (response.status) {
+        case 200: {
+          dispatch('getSpecificGameRoster', params.gameID);
+          return { retVal: true, retMsg: 'Roster Submitted' };
+        }
+        default: {
+          return { retVal: false, retMsg: 'Server Error' };
+        }
+      }
+    });
+  },
 };
 
 // mutations
@@ -116,6 +198,12 @@ const mutations = {
   addLeagueGames(state, payload) {
     state.games = state.games.filter(game => game.leagueID !== payload.leagueID);
     state.games.push(...payload.games);
+  },
+  addGameRoster(state, payload) {
+    state.gameRosters = state.gameRosters.filter(gameRoster => {
+      return gameRoster.gameID !== payload.gameID;
+    });
+    state.gameRosters.push(payload);
   },
 };
 

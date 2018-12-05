@@ -1,0 +1,163 @@
+{
+  "id": "f3fb7ef9-e483-47bd-96d0-7ac13ccdad1c",
+  "version": "1.1",
+  "name": "SWE4103",
+  "url": "https://dev.frederictonfootball.me",
+  "tests": [{
+    "id": "bf90c45e-0381-4aae-9c54-a911226aef99",
+    "name": "Successful login",
+    "commands": [{
+      "id": "c1f43ec5-c539-4e5f-b014-219951c512b7",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "ffbd9f3a-a247-4d9f-a460-a99e996c2be5",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "995x680",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "33581284-e3d0-436b-b3b9-2de598f1bf02",
+      "comment": "",
+      "command": "click",
+      "target": "id=login-button-text",
+      "targets": [
+        ["id=login-button-text", "id"],
+        ["css=#login-button-text", "css"],
+        ["css=#login-button-text", "css:finder"],
+        ["xpath=//div[@id='login-button-text']", "xpath:attributes"],
+        ["xpath=//div[@id='login-button-container']/div", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3c0be986-dd0e-42ed-95c6-ce82262a325c",
+      "comment": "",
+      "command": "click",
+      "target": "id=email-input",
+      "targets": [
+        ["id=email-input", "id"],
+        ["css=#email-input", "css"],
+        ["css=#email-input", "css:finder"],
+        ["xpath=//input[@id='email-input']", "xpath:attributes"],
+        ["xpath=//div[@id='login-container-main']/form/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "74f302b8-bedc-4372-9e59-2f762a55fca9",
+      "comment": "",
+      "command": "type",
+      "target": "id=email-input",
+      "targets": [
+        ["id=email-input", "id"],
+        ["css=#email-input", "css"],
+        ["css=#email-input", "css:finder"],
+        ["xpath=//input[@id='email-input']", "xpath:attributes"],
+        ["xpath=//div[@id='login-container-main']/form/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "admin@site.ca"
+    }, {
+      "id": "635e0723-c2f5-4749-9d46-78bf6dcd953d",
+      "comment": "",
+      "command": "click",
+      "target": "id=password-input",
+      "targets": [
+        ["id=password-input", "id"],
+        ["css=#password-input", "css"],
+        ["css=#password-input", "css:finder"],
+        ["xpath=//input[@id='password-input']", "xpath:attributes"],
+        ["xpath=//div[@id='login-container-main']/form/div[2]/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6f0e9aae-c4e7-43a0-8a53-11585aadb2da",
+      "comment": "",
+      "command": "type",
+      "target": "id=password-input",
+      "targets": [
+        ["id=password-input", "id"],
+        ["css=#password-input", "css"],
+        ["css=#password-input", "css:finder"],
+        ["xpath=//input[@id='password-input']", "xpath:attributes"],
+        ["xpath=//div[@id='login-container-main']/form/div[2]/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/input", "xpath:position"]
+      ],
+      "value": "password"
+    }, {
+      "id": "ad378659-6459-4b89-8477-3f698ee6705b",
+      "comment": "",
+      "command": "click",
+      "target": "css=button.el-button.el-button--primary",
+      "targets": [
+        ["css=button.el-button.el-button--primary", "css"],
+        ["css=.el-button", "css:finder"],
+        ["xpath=//button[@type='button']", "xpath:attributes"],
+        ["xpath=//div[@id='login-button-container']/div/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "7fb9785e-e798-4b4a-9551-f72a7254a441",
+      "comment": "",
+      "command": "verifyElementPresent",
+      "target": "css=div.user-dropdown-button",
+      "targets": [
+        ["css=div.user-dropdown-button", "css"],
+        ["css=.user-dropdown-button", "css:finder"],
+        ["xpath=//div[@id='user-dropdown-container']/div/div", "xpath:idRelative"],
+        ["xpath=//div/div[2]/div/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "58fc816a-8fee-4ce1-b33a-eab7d292df62",
+      "comment": "",
+      "command": "click",
+      "target": "id=caret-down",
+      "targets": [
+        ["id=caret-down", "id"],
+        ["css=#caret-down", "css"],
+        ["css=#caret-down", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "b9413b83-5e82-43f0-80c4-b976cdfb5b3d",
+      "comment": "",
+      "command": "click",
+      "target": "css=.user-dropdown-content > div:nth-child(2)",
+      "targets": [
+        ["css=.user-dropdown-content > div:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='user-dropdown-container']/div/div[2]/div[2]", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "52f84a2d-4fca-4eb5-b7f6-1fac0b75685f",
+      "comment": "",
+      "command": "click",
+      "target": "css=.el-button--primary",
+      "targets": [
+        ["css=.el-button--primary", "css:finder"],
+        ["xpath=(//button[@type='button'])[3]", "xpath:attributes"],
+        ["xpath=//button[2]", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "f38441e7-3498-47ee-b4c1-930a496042c5",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["bf90c45e-0381-4aae-9c54-a911226aef99"]
+  }],
+  "urls": ["https://dev.frederictonfootball.me/"],
+  "plugins": []
+}

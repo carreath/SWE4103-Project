@@ -20,6 +20,13 @@ mysql -u $uservar --password=$passvar leagues < sp-leagues-create_league.sql
 mysql -u $uservar --password=$passvar leagues < sp-privileges-get_privileges.sql
 mysql -u $uservar --password=$passvar leagues < sp-teams-get_team.sql
 mysql -u $uservar --password=$passvar leagues < sp-teams-update_team.sql
+mysql -u $uservar --password=$passvar leagues < sp-teams-get_all_teams.sql
+mysql -u $uservar --password=$passvar leagues < sp-games-update_game.sql
+mysql -u $uservar --password=$passvar leagues < sp-game-member-create.sql
+mysql -u $uservar --password=$passvar leagues < sp-game-member-delete.sql
+mysql -u $uservar --password=$passvar leagues < sp-game-member-update.sql
+mysql -u $uservar --password=$passvar leagues < sp-games-get_team_lineup.sql
+mysql -u $uservar --password=$passvar leagues < sp-teams-get_roster.sql
 
 echo
 echo Inserting Dummy Data...
