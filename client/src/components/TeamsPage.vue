@@ -44,7 +44,7 @@
           label="Goals">
         </el-table-column>
         <el-table-column
-          prop="cleanSheets"
+          prop="cleanSheet"
           sortable
           label="Clean Sheets">
         </el-table-column>
