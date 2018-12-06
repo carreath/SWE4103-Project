@@ -209,7 +209,7 @@ const actions = {
       gameID: params.gameID,
       data: params,
     };
-    return GamesService.submitGameRosterEdited(submitParams).then((response) => {
+    return GamesService.submitGameRoster(submitParams).then((response) => {
       if (!response || !response.status) {
         return { retVal: false, retMsg: 'Server Error' };
       }
