@@ -143,6 +143,8 @@ export default {
           ...player,
           name: `${player.firstName} ${player.lastName}`,
         };
+      }).sort((a, b) => {
+        return a.number - b.number;
       });
     },
     teamGameRoster() {
@@ -158,6 +160,8 @@ export default {
           ...player,
           name: `${player.firstName} ${player.lastName}`,
         };
+      }).sort((a, b) => {
+        return a.number - b.number;
       });
       return teamRosterFormatted;
     },

@@ -19,7 +19,7 @@ const getters = {
     return state.games.find((game) => game.gameID === state.selectedGameId);
   },
   gameById: (state) => (gameId) => {
-    return state.games.filter(game => game.gameID === gameId);
+    return state.games.find(game => game.gameID === gameId);
   },
   gamesByLeagueId: (state) => (leagueId) => {
     return state.games.filter(game => game.leagueID === leagueId);
@@ -67,7 +67,28 @@ const getters = {
     return state.gameRosters;
   },
   gameRosterByGameID: (state) => (gameID) => {
-    return state.gameRosters.filter(gameRoster => gameRoster.gameID === gameID);
+    return (state.gameRosters.find(gameRoster => gameRoster.gameID === gameID) || {}).players
+      || [];
+  },
+  awayTeamGameRosterById: (state, getters) => (gameID) => {
+    return getters.gameRosterByGameID(gameID).filter(player => {
+      return player.teamID === getters.gameById(gameID).awayTeamID;
+    });
+  },
+  awayGoalsByGameId: (state, getters) => (gameID) => {
+    return getters.awayTeamGameRosterById(gameID).reduce((total, playerObj) => {
+      return total + (playerObj.goals !== '' ? parseInt(playerObj.goals, 10) : 0);
+    }, 0);
+  },
+  homeTeamGameRosterById: (state, getters) => (gameID) => {
+    return getters.gameRosterByGameID(gameID).filter(player => {
+      return player.teamID === getters.gameById(gameID).homeTeamID;
+    });
+  },
+  homeGoalsByGameId: (state, getters) => (gameID) => {
+    return getters.homeTeamGameRosterById(gameID).reduce((total, playerObj) => {
+      return total + (playerObj.goals !== '' ? parseInt(playerObj.goals, 10) : 0);
+    }, 0);
   },
 };
 

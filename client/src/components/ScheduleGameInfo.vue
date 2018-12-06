@@ -59,41 +59,25 @@
           @click="resechduleGameButtonClicked()">
           Reschedule Game
         </el-button>
+        <el-button
+          v-if="showSubmitGameSheetButton && !submitGameSheetVisible"
+          :disabled="!bothRostersSubmited"
+          size="medium"
+          @click="submitGameSheetButtonClicked(true)">
+          Submit Game Sheet
+        </el-button>
       </div>
     </div>
 
-    <!-- TODO This will have to be finished when game objects can be set to 'Final' -->
     <div
       id="game-info-final-score"
       v-if="localSelectedGame.status === 'Final'">
-      <div id="final-score-away-team">
-        <div class="team-name">
-          <ColorCircleTeamName
-            :team="teamById(localSelectedGame.awayTeamID)"
-            justifyContent="center"/>
-        </div>
-        <div class="team-score">
-          {{localSelectedGame.awayGoals}}
-        </div>
-        <div>
-          FINAL
-        </div>
-        <div id="final-score-home-team">
-          <div class="team-name">
-            <ColorCircleTeamName
-              :team="teamById(localSelectedGame.awayTeamID)"
-              justifyContent="center"/>
-          </div>
-          <div class="team-score">
-            {{localSelectedGame.awayGoals}}
-          </div>
-        </div>
-      </div>
+      FINAL
     </div>
 
     <div
       class="roster-container"
-      v-if="!submitGameRosterVisible">
+      v-if="!submitGameSheetVisible && selectedGame.status === 'Scheduled'">
       <div class="away-team-roster-container">
         <TeamRosterContainer :team="teamById(localSelectedGame.awayTeamID)"/>
       </div>
@@ -103,6 +87,18 @@
       </div>
     </div>
 
+    <div
+      class="submit-game-sheet-ctonainer"
+      v-else-if="submitGameSheetVisible && selectedGame.status === 'Scheduled'">
+      <ScheduleGameSubmitGameSheet :callBackFunc="backToScheduleClicked"/>
+    </div>
+
+    <div
+      class="final-game-sheet-ctonainer"
+      v-else-if="selectedGame.status === 'Final'">
+      <ScheduleGameFinalGameSheet/>
+    </div>
+
   </div>
 </template>
 
@@ -110,6 +106,8 @@
 import { mapGetters, mapActions } from 'vuex';
 import ColorCircleTeamName from '@/components/ColorCircleTeamName.vue';
 import TeamRosterContainer from '@/components/TeamRosterContainer.vue';
+import ScheduleGameSubmitGameSheet from '@/components/ScheduleGameSubmitGameSheet.vue';
+import ScheduleGameFinalGameSheet from '@/components/ScheduleGameFinalGameSheet.vue';
 
 export default {
   name: 'ScheduleGameInfo',
@@ -117,11 +115,14 @@ export default {
     return {
       submitGameRosterVisible: false,
       submitRosterTeam: null,
+      submitGameSheetVisible: false,
     };
   },
   components: {
     ColorCircleTeamName,
     TeamRosterContainer,
+    ScheduleGameSubmitGameSheet,
+    ScheduleGameFinalGameSheet,
   },
   computed: {
     ...mapGetters([
@@ -129,6 +130,8 @@ export default {
       'teamById',
       'user',
       'selectedLeagueId',
+      'gameRosters',
+      'selectedGameId',
     ]),
     showCancelButton() {
       if (!this.user) {
@@ -164,6 +167,39 @@ export default {
           return false;
       }
     },
+    showSubmitGameSheetButton() {
+      if (!this.user) {
+        return false;
+      }
+      if (this.selectedGame.status === 'Cancelled') {
+        return false;
+      }
+      if (this.selectedGame.status === 'Final') {
+        return false;
+      }
+      const userType = this.user.userType;
+      switch (userType) {
+        case ('Referee'):
+          return true;
+        default:
+          return false;
+      }
+    },
+    bothRostersSubmited() {
+      const homeTeamRoster = this.fullGameRoster.filter(player => {
+        return player.teamID === this.selectedGame.homeTeamID;
+      });
+      const awayTeamRoster = this.fullGameRoster.filter(player => {
+        return player.teamID === this.selectedGame.awayTeamID;
+      });
+      return homeTeamRoster.length > 0 && awayTeamRoster.length > 0;
+    },
+    fullGameRoster() {
+      const gameRosterObj = this.gameRosters.find(gameRoster => {
+        return gameRoster.gameID === this.selectedGameId;
+      });
+      return gameRosterObj ? gameRosterObj.players : [];
+    },
     localSelectedGame() {
       return this.selectedGame || {};
     },
@@ -174,7 +210,11 @@ export default {
       'setSelectedTeamId',
     ]),
     backToScheduleClicked() {
-      this.$router.push('/schedule');
+      if (this.submitGameSheetVisible) {
+        this.submitGameSheetVisible = false;
+      } else {
+        this.$router.push('/schedule');
+      }
     },
     formatDate(mDate) {
       const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -219,6 +259,9 @@ export default {
     teamClicked(id) {
       this.setSelectedTeamId(id);
       this.$router.push(`/teams/${id}`);
+    },
+    submitGameSheetButtonClicked(val) {
+      this.submitGameSheetVisible = val;
     },
   },
   watch: {
@@ -289,18 +332,9 @@ export default {
   }
 
   #game-info-final-score{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-
-    #final-score-away-team,
-    #final-score-home-team{
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-top: 8px;
   }
 
   .roster-container{
