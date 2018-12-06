@@ -134,6 +134,7 @@ export default {
       'selectedLeagueId',
       'selectedTeam',
       'selectedTeamId',
+      'selectedLeague',
       'user',
     ]),
     curRoute() {
