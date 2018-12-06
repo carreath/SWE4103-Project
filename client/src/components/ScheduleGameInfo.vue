@@ -69,10 +69,13 @@
       </div>
     </div>
 
-    <!-- TODO This will have to be finished when game objects can be set to 'Final' -->
+
     <div
       id="game-info-final-score"
       v-if="localSelectedGame.status === 'Final'">
+      FINAL
+    </div>
+      <!--
       <div id="final-score-away-team">
         <div class="team-name">
           <ColorCircleTeamName
@@ -80,23 +83,24 @@
             justifyContent="center"/>
         </div>
         <div class="team-score">
-          {{localSelectedGame.awayGoals}}
+          {{ awayFinalScore }}
         </div>
-        <div>
-          FINAL
+      </div>
+      <div>
+        FINAL
+      </div>
+      <div id="final-score-home-team">
+        <div class="team-name">
+          <ColorCircleTeamName
+            :team="teamById(localSelectedGame.homeTeamID)"
+            justifyContent="center"/>
         </div>
-        <div id="final-score-home-team">
-          <div class="team-name">
-            <ColorCircleTeamName
-              :team="teamById(localSelectedGame.awayTeamID)"
-              justifyContent="center"/>
-          </div>
-          <div class="team-score">
-            {{localSelectedGame.awayGoals}}
-          </div>
+        <div class="team-score">
+          {{ homeFinalScore }}
         </div>
       </div>
     </div>
+    -->
 
     <div
       class="roster-container"
@@ -113,13 +117,13 @@
     <div
       class="submit-game-sheet-ctonainer"
       v-else-if="submitGameSheetVisible && selectedGame.status === 'Scheduled'">
-      <ScheduleGameSubmitGameSheet/>
+      <ScheduleGameSubmitGameSheet :callBackFunc="backToScheduleClicked"/>
     </div>
 
     <div
       class="final-game-sheet-ctonainer"
       v-else-if="selectedGame.status === 'Final'">
-
+      <ScheduleGameFinalGameSheet/>
     </div>
 
   </div>
@@ -130,6 +134,7 @@ import { mapGetters, mapActions } from 'vuex';
 import ColorCircleTeamName from '@/components/ColorCircleTeamName.vue';
 import TeamRosterContainer from '@/components/TeamRosterContainer.vue';
 import ScheduleGameSubmitGameSheet from '@/components/ScheduleGameSubmitGameSheet.vue';
+import ScheduleGameFinalGameSheet from '@/components/ScheduleGameFinalGameSheet.vue';
 
 export default {
   name: 'ScheduleGameInfo',
@@ -144,6 +149,7 @@ export default {
     ColorCircleTeamName,
     TeamRosterContainer,
     ScheduleGameSubmitGameSheet,
+    ScheduleGameFinalGameSheet,
   },
   computed: {
     ...mapGetters([
@@ -353,18 +359,9 @@ export default {
   }
 
   #game-info-final-score{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-
-    #final-score-away-team,
-    #final-score-home-team{
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-top: 8px;
   }
 
   .roster-container{

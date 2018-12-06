@@ -1,10 +1,14 @@
 <template lang="html">
-  <div id="schedule-game-submit-game-sheet">
-
+  <div id="schedule-game-final-game-sheet">
     <div id="roster-container">
       <div id="away-team-roster-container">
         <div class="team-name">
-          {{ awayTeam.teamName }}
+          <div class="team-name-text">
+            {{ awayTeam.teamName }}
+          </div>
+          <div class="team-score">
+            {{ awayFinalScore }}
+          </div>
         </div>
         <div class="roster-table-container">
           <span
@@ -16,7 +20,7 @@
             <span>
             </span>
             <span>
-              Submit Game Sheet
+              Game Sheet
             </span>
             <span>
             </span>
@@ -40,50 +44,18 @@
               <el-table-column
                 label="G"
                 property="goals">
-                <template
-                  slot-scope="scope">
-                  <el-input
-                    size="mini"
-                    maxlength="2"
-                    v-model="scope.row.goals">
-                  </el-input>
-                </template>
               </el-table-column>
               <el-table-column
                 label="CS"
                 property="cleanSheet">
-                <template
-                  slot-scope="scope">
-                  <el-input
-                    size="mini"
-                    maxlength="1"
-                    v-model="scope.row.cleanSheet">
-                  </el-input>
-                </template>
               </el-table-column>
               <el-table-column
                 label="Y"
                 property="yellowCards">
-                <template
-                  slot-scope="scope">
-                  <el-input
-                    size="mini"
-                    maxlength="1"
-                    v-model="scope.row.yellowCards">
-                  </el-input>
-                </template>
               </el-table-column>
               <el-table-column
                 label="R"
                 property="redCards">
-                <template
-                  slot-scope="scope">
-                  <el-input
-                    size="mini"
-                    maxlength="1"
-                    v-model="scope.row.redCards">
-                  </el-input>
-                </template>
               </el-table-column>
             </el-table>
           </span>
@@ -93,7 +65,12 @@
 
       <div id="home-team-roster-container">
         <div class="team-name">
-          {{ homeTeam.teamName }}
+          <div class="team-name-text">
+            {{ homeTeam.teamName }}
+          </div>
+          <div class="team-score">
+            {{ homeFinalScore }}
+          </div>
         </div>
         <div class="roster-table-container">
           <span
@@ -105,7 +82,7 @@
             <span>
             </span>
             <span>
-              Submit Game Sheet
+              Game Sheet
             </span>
             <span>
             </span>
@@ -129,68 +106,22 @@
               <el-table-column
                 label="G"
                 property="goals">
-                <template
-                  slot-scope="scope">
-                  <el-input
-                    size="mini"
-                    maxlength="2"
-                    v-model="scope.row.goals">
-                  </el-input>
-                </template>
               </el-table-column>
               <el-table-column
                 label="CS"
                 property="cleanSheet">
-                <template
-                  slot-scope="scope">
-                  <el-input
-                    size="mini"
-                    maxlength="1"
-                    v-model="scope.row.cleanSheet">
-                  </el-input>
-                </template>
               </el-table-column>
               <el-table-column
                 label="Y"
                 property="yellowCards">
-                <template
-                  slot-scope="scope">
-                  <el-input
-                    size="mini"
-                    maxlength="1"
-                    v-model="scope.row.yellowCards">
-                  </el-input>
-                </template>
               </el-table-column>
               <el-table-column
                 label="R"
                 property="redCards">
-                <template
-                  slot-scope="scope">
-                  <el-input
-                    size="mini"
-                    maxlength="1"
-                    v-model="scope.row.redCards">
-                  </el-input>
-                </template>
               </el-table-column>
             </el-table>
           </span>
         </div>
-      </div>
-    </div>
-    <div id="footer">
-      <div id="score-container">
-        Final Score: {{ awayFinalScore }} - {{ homeFinalScore }}
-      </div>
-      <div id="submit-button-container">
-        <el-button
-          class="submit-games-heet-button"
-          type="primary"
-          plain
-          @click="submitGameSheetClicked">
-          Submit Game Sheet
-        </el-button>
       </div>
     </div>
   </div>
@@ -200,10 +131,7 @@
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
-  name: 'ScheduleGameSubmitGameSheet',
-  props: {
-    callBackFunc: Function,
-  },
+  name: 'ScheduleGameFinalGameSheet',
   data() {
     return {
       awayTeamGameRoster: [],
@@ -242,8 +170,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'submitGameRosterEdited',
-      'editGame',
+
     ]),
     setAwayTeamGameRoster() {
       this.awayTeamGameRoster = this.fullGameRoster.filter(player => {
@@ -287,47 +214,6 @@ export default {
       }
       return c;
     },
-    submitGameSheetClicked() {
-      const allPlayerRoster = [
-        ...this.homeTeamGameRoster,
-        ...this.awayTeamGameRoster,
-      ];
-      const submitParams = {
-        gameID: this.selectedGameId,
-        roster: allPlayerRoster,
-      };
-      this.submitGameRosterEdited(submitParams).then(response => {
-        if (response.retVal) {
-          this.errMsg = null;
-          this.$confirm('Are you sure you want to submit this game sheet?', 'Confirm Game Sheet Submission', {
-            confirmButtonText: 'Submit',
-            cancelButtonText: 'No',
-            type: 'warning',
-          }).then(() => {
-            const updateGameObj = { ...this.selectedGame };
-            updateGameObj.status = 'Final';
-            this.editGame(updateGameObj).then((response) => {
-              if (response.retVal) {
-                this.$message({
-                  message: 'Game Sheet Submitted',
-                  center: true,
-                });
-                this.callBackFunc();
-              } else {
-                this.$message.error(response.retMsg);
-              }
-            });
-          }).catch(() => {
-          });
-        } else {
-          this.$message({
-            showClose: true,
-            message: 'OOPS! Sometihng Went Wrong',
-            type: 'error',
-          });
-        }
-      });
-    },
   },
   watch: {
     fullGameRoster() {
@@ -345,7 +231,7 @@ export default {
 <style lang="scss">
 @import '@/style/global.scss';
 
-#schedule-game-submit-game-sheet{
+#schedule-game-final-game-sheet{
   display: flex;
   flex-direction: column;
 
@@ -408,6 +294,5 @@ export default {
       margin: 8px 0px;
     }
   }
-
 }
 </style>

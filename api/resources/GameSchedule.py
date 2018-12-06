@@ -89,7 +89,7 @@ class LeagueSchedule(Resource):
         if not token:
             abort(403, error="Unauthorized Access (no token)")
         privilege_handler = PrivilegeHandler(token)
-        if not privilege_handler.schedule_privileges():
+        if not privilege_handler.schedule_privileges() and not privilege_handler.update_score():
             abort(403, error="Unauthorized Access (invalid permissions)")
 
         parser = reqparse.RequestParser()
