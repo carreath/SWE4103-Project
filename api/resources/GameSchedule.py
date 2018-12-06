@@ -177,6 +177,7 @@ class PlayerSchedule(Resource):
 
         return schedule_data, 200
 
+
 class GameSchedule(Resource):
     def post(self):
         token = request.headers.get('Authorization')
