@@ -1,182 +1,198 @@
 <template lang="html">
   <div id="schedule-game-submit-game-sheet">
 
-
-    <div id="away-team-roster-container">
-      <div class="team-name">
-        {{ awayTeam.teamName }}
+    <div id="roster-container">
+      <div id="away-team-roster-container">
+        <div class="team-name">
+          {{ awayTeam.teamName }}
+        </div>
+        <div class="roster-table-container">
+          <span
+            class="text-message"
+            :style="{
+              'background-color': awayTeam.colour,
+              'color': getTextColor(awayTeam),
+            }">
+            <span>
+            </span>
+            <span>
+              Submit Game Sheet
+            </span>
+            <span>
+            </span>
+          </span>
+          <span>
+            <el-table
+              ref="team-roster-table"
+              :data="awayTeamGameRoster"
+              style="width: 100%"
+              max-height="800">
+              <el-table-column
+                label="#"
+                property="number"
+                width="37px">
+              </el-table-column>
+              <el-table-column
+                property="name"
+                label="Name"
+                min-width="120px">
+              </el-table-column>
+              <el-table-column
+                label="G"
+                property="goals">
+                <template
+                  slot-scope="scope">
+                  <el-input
+                    size="mini"
+                    maxlength="2"
+                    v-model="scope.row.goals">
+                  </el-input>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="CS"
+                property="cleanSheet">
+                <template
+                  slot-scope="scope">
+                  <el-input
+                    size="mini"
+                    maxlength="1"
+                    v-model="scope.row.cleanSheet">
+                  </el-input>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="Y"
+                property="yellowCards">
+                <template
+                  slot-scope="scope">
+                  <el-input
+                    size="mini"
+                    maxlength="1"
+                    v-model="scope.row.yellowCards">
+                  </el-input>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="R"
+                property="redCards">
+                <template
+                  slot-scope="scope">
+                  <el-input
+                    size="mini"
+                    maxlength="1"
+                    v-model="scope.row.redCards">
+                  </el-input>
+                </template>
+              </el-table-column>
+            </el-table>
+          </span>
+        </div>
       </div>
-      <div class="roster-table-container">
-        <span
-          class="text-message"
-          :style="{
-            'background-color': awayTeam.colour,
-            'color': getTextColor(awayTeam),
-          }">
-          <span>
+
+
+      <div id="home-team-roster-container">
+        <div class="team-name">
+          {{ homeTeam.teamName }}
+        </div>
+        <div class="roster-table-container">
+          <span
+            class="text-message"
+            :style="{
+              'background-color': homeTeam.colour,
+              'color': getTextColor(homeTeam),
+            }">
+            <span>
+            </span>
+            <span>
+              Submit Game Sheet
+            </span>
+            <span>
+            </span>
           </span>
           <span>
-            Submit Game Sheet
+            <el-table
+              ref="team-roster-table"
+              :data="homeTeamGameRoster"
+              style="width: 100%"
+              max-height="800">
+              <el-table-column
+                label="#"
+                property="number"
+                width="37px">
+              </el-table-column>
+              <el-table-column
+                property="name"
+                label="Name"
+                min-width="120px">
+              </el-table-column>
+              <el-table-column
+                label="G"
+                property="goals">
+                <template
+                  slot-scope="scope">
+                  <el-input
+                    size="mini"
+                    maxlength="2"
+                    v-model="scope.row.goals">
+                  </el-input>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="CS"
+                property="cleanSheet">
+                <template
+                  slot-scope="scope">
+                  <el-input
+                    size="mini"
+                    maxlength="1"
+                    v-model="scope.row.cleanSheet">
+                  </el-input>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="Y"
+                property="yellowCards">
+                <template
+                  slot-scope="scope">
+                  <el-input
+                    size="mini"
+                    maxlength="1"
+                    v-model="scope.row.yellowCards">
+                  </el-input>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="R"
+                property="redCards">
+                <template
+                  slot-scope="scope">
+                  <el-input
+                    size="mini"
+                    maxlength="1"
+                    v-model="scope.row.redCards">
+                  </el-input>
+                </template>
+              </el-table-column>
+            </el-table>
           </span>
-          <span>
-          </span>
-        </span>
-        <span>
-          <el-table
-            ref="team-roster-table"
-            :data="awayTeamGameRoster"
-            style="width: 100%"
-            max-height="800">
-            <el-table-column
-              label="#"
-              property="number"
-              width="37px">
-            </el-table-column>
-            <el-table-column
-              property="name"
-              label="Name">
-            </el-table-column>
-            <el-table-column
-              label="G"
-              property="goals">
-              <template
-                slot-scope="scope">
-                <el-input
-                  size="mini"
-                  maxlength="2"
-                  v-model="scope.row.goals">
-                </el-input>
-              </template>
-            </el-table-column>
-            <el-table-column
-              label="CS"
-              property="cleanSheet">
-              <template
-                slot-scope="scope">
-                <el-input
-                  size="mini"
-                  maxlength="1"
-                  v-model="scope.row.cleanSheet">
-                </el-input>
-              </template>
-            </el-table-column>
-            <el-table-column
-              label="Y"
-              property="yellowCards">
-              <template
-                slot-scope="scope">
-                <el-input
-                  size="mini"
-                  maxlength="1"
-                  v-model="scope.row.yellowCards">
-                </el-input>
-              </template>
-            </el-table-column>
-            <el-table-column
-              label="R"
-              property="redCards">
-              <template
-                slot-scope="scope">
-                <el-input
-                  size="mini"
-                  maxlength="1"
-                  v-model="scope.row.redCards">
-                </el-input>
-              </template>
-            </el-table-column>
-          </el-table>
-        </span>
+        </div>
       </div>
     </div>
-
-
-    <div id="home-team-roster-container">
-      <div class="team-name">
-        {{ homeTeam.teamName }}
+    <div id="footer">
+      <div id="score-container">
+        Final Score: {{ awayFinalScore }} - {{ homeFinalScore }}
       </div>
-      <div class="roster-table-container">
-        <span
-          class="text-message"
-          :style="{
-            'background-color': homeTeam.colour,
-            'color': getTextColor(homeTeam),
-          }">
-          <span>
-          </span>
-          <span>
-            Submit Game Sheet
-          </span>
-          <span>
-          </span>
-        </span>
-        <span>
-          <el-table
-            ref="team-roster-table"
-            :data="homeTeamGameRoster"
-            style="width: 100%"
-            max-height="800">
-            <el-table-column
-              label="#"
-              property="number"
-              width="37px">
-            </el-table-column>
-            <el-table-column
-              property="name"
-              label="Name">
-            </el-table-column>
-            <el-table-column
-              label="G"
-              property="goals">
-              <template
-                slot-scope="scope">
-                <el-input
-                  size="mini"
-                  maxlength="2"
-                  v-model="scope.row.goals">
-                </el-input>
-              </template>
-            </el-table-column>
-            <el-table-column
-              label="CS"
-              property="cleanSheet">
-              <template
-                slot-scope="scope">
-                <el-input
-                  size="mini"
-                  maxlength="1"
-                  v-model="scope.row.cleanSheet">
-                </el-input>
-              </template>
-            </el-table-column>
-            <el-table-column
-              label="Y"
-              property="yellowCards">
-              <template
-                slot-scope="scope">
-                <el-input
-                  size="mini"
-                  maxlength="1"
-                  v-model="scope.row.yellowCards">
-                </el-input>
-              </template>
-            </el-table-column>
-            <el-table-column
-              label="R"
-              property="redCards">
-              <template
-                slot-scope="scope">
-                <el-input
-                  size="mini"
-                  maxlength="1"
-                  v-model="scope.row.redCards">
-                </el-input>
-              </template>
-            </el-table-column>
-          </el-table>
-        </span>
+      <div id="submit-button-container">
+        <el-button
+          class="submit-games-heet-button"
+          type="primary"
+          plain
+          @click="submitGameSheetClicked">
+          Submit Game Sheet
+        </el-button>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -185,6 +201,12 @@ import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'ScheduleGameSubmitGameSheet',
+  data() {
+    return {
+      awayTeamGameRoster: [],
+      homeTeamGameRoster: [],
+    };
+  },
   computed: {
     ...mapGetters([
       'gameRosters',
@@ -204,8 +226,23 @@ export default {
       });
       return gameRosterObj ? gameRosterObj.players : [];
     },
-    awayTeamGameRoster() {
-      const awayTeamRoster = this.fullGameRoster.filter(player => {
+    awayFinalScore() {
+      return this.awayTeamGameRoster.reduce((total, playerObj) => {
+        return total + (playerObj.goals !== '' ? parseInt(playerObj.goals, 10) : 0);
+      }, 0);
+    },
+    homeFinalScore() {
+      return this.homeTeamGameRoster.reduce((total, playerObj) => {
+        return total + (playerObj.goals !== '' ? parseInt(playerObj.goals, 10) : 0);
+      }, 0);
+    },
+  },
+  methods: {
+    ...mapActions([
+      'submitGameRosterEdited',
+    ]),
+    setAwayTeamGameRoster() {
+      this.awayTeamGameRoster = this.fullGameRoster.filter(player => {
         return player.teamID === this.selectedGame.awayTeamID;
       }).map(player => {
         return {
@@ -213,10 +250,9 @@ export default {
           name: `${player.firstName} ${player.lastName}`,
         };
       });
-      return awayTeamRoster;
     },
-    homeTeamGameRoster() {
-      const awayTeamRoster = this.fullGameRoster.filter(player => {
+    setHomeTeamGameRoster() {
+      this.homeTeamGameRoster = this.fullGameRoster.filter(player => {
         return player.teamID === this.selectedGame.homeTeamID;
       }).map(player => {
         return {
@@ -224,13 +260,7 @@ export default {
           name: `${player.firstName} ${player.lastName}`,
         };
       });
-      return awayTeamRoster;
     },
-  },
-  methods: {
-    ...mapActions([
-
-    ]),
     getTextColor(team) {
       if (!team || !team.colour) return '';
       const hexString = team.colour.substring(1);
@@ -253,6 +283,43 @@ export default {
       }
       return c;
     },
+    submitGameSheetClicked() {
+      const allPlayerRoster = [
+        ...this.homeTeamGameRoster,
+        ...this.awayTeamGameRoster,
+      ];
+      const submitParams = {
+        gameID: this.selectedGameId,
+        roster: allPlayerRoster,
+      };
+      this.submitGameRosterEdited(submitParams).then(response => {
+        if (response.retVal) {
+          this.errMsg = null;
+          this.$message({
+            message: 'Game Sheet Submitted',
+            type: 'success',
+          });
+          // TODO set game status to final
+          // this.handleRosterEditClick(false);
+        } else {
+          this.$message({
+            showClose: true,
+            message: 'OOPS! Sometihng Went Wrong',
+            type: 'error',
+          });
+        }
+      });
+    },
+  },
+  watch: {
+    fullGameRoster() {
+      this.setAwayTeamGameRoster();
+      this.setHomeTeamGameRoster();
+    },
+  },
+  mounted() {
+    this.setAwayTeamGameRoster();
+    this.setHomeTeamGameRoster();
   },
 };
 </script>
@@ -262,11 +329,34 @@ export default {
 
 #schedule-game-submit-game-sheet{
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
 
-  #away-team-roster-container,
-  #home-team-roster-container{
-    width: 45%;
+  #roster-container{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    #away-team-roster-container,
+    #home-team-roster-container{
+      width: 47%;
+    }
+  }
+
+  #footer{
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    width: 30%;
+    margin-top: 12px;
+
+    #score-container{
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    #submit-button-container{
+
+    }
   }
 
   .team-name{
@@ -281,7 +371,6 @@ export default {
   .roster-table-container{
     display:flex;
     flex-direction: column;
-    height: 100%;
     border: 1px solid $HOVER_GREY;
     border-radius: 8px;
 

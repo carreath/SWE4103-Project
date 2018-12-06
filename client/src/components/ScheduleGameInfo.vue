@@ -66,13 +66,6 @@
           @click="submitGameSheetButtonClicked(true)">
           Submit Game Sheet
         </el-button>
-        <el-button
-          v-if="showSubmitGameSheetButton && submitGameSheetVisible"
-          :disabled="!bothRostersSubmited"
-          size="medium"
-          @click="submitGameSheetButtonClicked(false)">
-          Cancel
-        </el-button>
       </div>
     </div>
 
@@ -238,7 +231,11 @@ export default {
       'setSelectedTeamId',
     ]),
     backToScheduleClicked() {
-      this.$router.push('/schedule');
+      if (this.submitGameSheetVisible) {
+        this.submitGameSheetVisible = false;
+      } else {
+        this.$router.push('/schedule');
+      }
     },
     formatDate(mDate) {
       const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
