@@ -242,7 +242,7 @@ export default {
 
       if (this.teamGameRosterSubmitted) {
         if (this.userIsTeamManager) {
-          this.submitGameRosterEdited(submitParams).then(response => {
+          this.submitGameRoster(submitParams).then(response => {
             if (response.retVal) {
               this.errMsg = null;
               this.$message({
