@@ -69,38 +69,11 @@
       </div>
     </div>
 
-
     <div
       id="game-info-final-score"
       v-if="localSelectedGame.status === 'Final'">
       FINAL
     </div>
-      <!--
-      <div id="final-score-away-team">
-        <div class="team-name">
-          <ColorCircleTeamName
-            :team="teamById(localSelectedGame.awayTeamID)"
-            justifyContent="center"/>
-        </div>
-        <div class="team-score">
-          {{ awayFinalScore }}
-        </div>
-      </div>
-      <div>
-        FINAL
-      </div>
-      <div id="final-score-home-team">
-        <div class="team-name">
-          <ColorCircleTeamName
-            :team="teamById(localSelectedGame.homeTeamID)"
-            justifyContent="center"/>
-        </div>
-        <div class="team-score">
-          {{ homeFinalScore }}
-        </div>
-      </div>
-    </div>
-    -->
 
     <div
       class="roster-container"

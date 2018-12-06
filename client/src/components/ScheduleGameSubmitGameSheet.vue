@@ -253,6 +253,8 @@ export default {
           ...player,
           name: `${player.firstName} ${player.lastName}`,
         };
+      }).sort((a, b) => {
+        return a.number - b.number;
       });
     },
     setHomeTeamGameRoster() {
@@ -263,6 +265,8 @@ export default {
           ...player,
           name: `${player.firstName} ${player.lastName}`,
         };
+      }).sort((a, b) => {
+        return a.number - b.number;
       });
     },
     getTextColor(team) {
