@@ -160,7 +160,7 @@ class GameRoster(Resource):
         if not token:
             abort(403, error="Unauthorized Access (no token)")
         privilege_handler = PrivilegeHandler(token)
-        if not privilege_handler.assign_player():
+        if not privilege_handler.assign_player() and not privilege_handler.update_score():
             abort(403, error="Unauthorized Access (invalid permissions)")
 
         roster = request.get_json()['roster']
@@ -178,7 +178,7 @@ class GameRoster(Resource):
             team_id = player['teamID']
             number = player['number']
             goals = player['goals']
-            clean_sheet = player['cleanSheets']
+            clean_sheet = player['cleanSheet']
             yellow_cards = player['yellowCards']
             red_cards = player['redCards']
 

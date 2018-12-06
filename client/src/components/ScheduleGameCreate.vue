@@ -44,7 +44,7 @@
               placeholder="Home Team"
               :style="{'float': 'left'}">
               <el-option
-                v-for="item in formatTeams"
+                v-for="item in formatHomeTeams"
                 :key="item.teamID"
                 :label="item.teamName"
                 :value="item.teamID">
@@ -60,7 +60,7 @@
               placeholder="Away Team"
               :style="{'float': 'left'}">
               <el-option
-                v-for="item in formatTeams"
+                v-for="item in formatAwayTeams"
                 :key="item.teamID"
                 :label="item.teamName"
                 :value="item.teamID">
@@ -101,8 +101,8 @@ export default{
       scheduleGameCreate: {
         fieldName: '',
         gameTime: '',
-        homeTeamID: '',
-        awayTeamID: '',
+        homeTeamID: null,
+        awayTeamID: null,
         status: 'Scheduled',
       },
       scheduleGameCreateRules: {
@@ -151,8 +151,22 @@ export default{
       'teams',
       'leagueById',
     ]),
-    formatTeams() {
-      const formatedTeams = this.teams.map((team) => {
+    formatHomeTeams() {
+      const formatedTeams = this.teams.filter(team => {
+        return team.teamID !== this.scheduleGameCreate.awayTeamID;
+      }).map((team) => {
+        return {
+          teamID: team.teamID,
+          teamName: team.teamName,
+          managerID: team.managerID,
+        };
+      });
+      return formatedTeams;
+    },
+    formatAwayTeams() {
+      const formatedTeams = this.teams.filter(team => {
+        return team.teamID !== this.scheduleGameCreate.homeTeamID;
+      }).map((team) => {
         return {
           teamID: team.teamID,
           teamName: team.teamName,

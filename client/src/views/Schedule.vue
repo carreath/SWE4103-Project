@@ -50,7 +50,7 @@
                     :team="teamById(selectedGame.awayTeamID)"
                     justifyContent="center"/>
                   <span v-if="selectedGame.status === 'Final'">
-                    - {{ selectedGame.awayGoals }}
+                    &nbsp;- {{ awayGoalsByGameId(selectedGameId)  }}
                   </span>
                 </td>
               </tr>
@@ -64,7 +64,7 @@
                     :team="teamById(selectedGame.homeTeamID)"
                     justifyContent="center"/>
                   <span v-if="selectedGame.status === 'Final'">
-                    - {{ selectedGame.homeGoals }}
+                    &nbsp;- {{ homeGoalsByGameId(selectedGameId) }}
                   </span>
                 </td>
               </tr>
@@ -143,7 +143,7 @@
                   justifyContent="center"/>
               </td>
               <td v-if="gameObj.status === 'Final'">
-                {{gameObj.awayGoals}} - {{gameObj.homeGoals}}
+                {{ awayGoalsByGameId(gameObj.gameID) }} - {{ homeGoalsByGameId(gameObj.gameID) }}
               </td>
               <td v-else>-</td>
               <td>{{ gameObj.fieldName }}</td>
@@ -190,6 +190,8 @@ export default {
       'games',
       'user',
       'selectedLeague',
+      'awayGoalsByGameId',
+      'homeGoalsByGameId',
     ]),
     curRoute() {
       return this.$route.name || '';
@@ -363,6 +365,7 @@ export default {
               #away-team,
               #home-team{
                 transition: 0.2s;
+                display: flex;
 
                 &:hover{
                   background-color: darken(white, 6%);

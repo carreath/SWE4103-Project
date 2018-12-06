@@ -18,6 +18,7 @@ module.exports = {
     'arrow-parens': 'off',
     'prefer-const': 'off',
     'prefer-destructuring': 'off',
+    'no-restricted-globals': 'off',
   },
   parserOptions: {
     parser: 'babel-eslint',

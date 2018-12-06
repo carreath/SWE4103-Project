@@ -33,7 +33,7 @@ class Player(Resource):
                     'number': Integer,
                     'loanedGames': Integer,
                     'goals': Integer,
-                    'cleanSheets': Integer,
+                    'cleanSheet': Integer,
                     'yellowCards': Integer,
                     'redCards': Integer
                 }
@@ -57,7 +57,7 @@ class Player(Resource):
                 'number': player[5],
                 'loanedGames': player[6],
                 'goals': player[7],
-                'cleanSheets': player[8],
+                'cleanSheet': player[8],
                 'yellowCards': player[9],
                 'redCards': player[10]
             })
