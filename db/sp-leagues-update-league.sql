@@ -1,7 +1,7 @@
 DELIMITER //
 
 CREATE OR REPLACE PROCEDURE update_league (
-    IN      leagueID_in      INT
+    IN      leagueID_in      INT,
     IN      leagueName_in    VARCHAR(32),
     IN      season_in        VARCHAR(16),
     IN      pointScheme_in   VARCHAR(32),

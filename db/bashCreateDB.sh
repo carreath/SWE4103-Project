@@ -17,6 +17,7 @@ mysql -u $uservar --password=$passvar leagues < sp-players-create_player.sql
 mysql -u $uservar --password=$passvar leagues < sp-players-update_player.sql
 mysql -u $uservar --password=$passvar leagues < sp-teams-create_team.sql
 mysql -u $uservar --password=$passvar leagues < sp-leagues-create_league.sql
+mysql -u $uservar --password=$passvar leagues < sp-leagues-update-league.sql
 mysql -u $uservar --password=$passvar leagues < sp-privileges-get_privileges.sql
 mysql -u $uservar --password=$passvar leagues < sp-teams-get_team.sql
 mysql -u $uservar --password=$passvar leagues < sp-teams-update_team.sql
