@@ -59,6 +59,20 @@
           @click="resechduleGameButtonClicked()">
           Reschedule Game
         </el-button>
+        <el-button
+          v-if="showSubmitGameSheetButton && !submitGameSheetVisible"
+          :disabled="!bothRostersSubmited"
+          size="medium"
+          @click="submitGameSheetButtonClicked(true)">
+          Submit Game Sheet
+        </el-button>
+        <el-button
+          v-if="showSubmitGameSheetButton && submitGameSheetVisible"
+          :disabled="!bothRostersSubmited"
+          size="medium"
+          @click="submitGameSheetButtonClicked(false)">
+          Cancel
+        </el-button>
       </div>
     </div>
 
@@ -93,7 +107,7 @@
 
     <div
       class="roster-container"
-      v-if="!submitGameRosterVisible">
+      v-if="!submitGameSheetVisible && selectedGame.status === 'Scheduled'">
       <div class="away-team-roster-container">
         <TeamRosterContainer :team="teamById(localSelectedGame.awayTeamID)"/>
       </div>
@@ -103,6 +117,18 @@
       </div>
     </div>
 
+    <div
+      class="submit-game-sheet-ctonainer"
+      v-else-if="submitGameSheetVisible && selectedGame.status === 'Scheduled'">
+      <ScheduleGameSubmitGameSheet/>
+    </div>
+
+    <div
+      class="final-game-sheet-ctonainer"
+      v-else-if="selectedGame.status === 'Final'">
+
+    </div>
+
   </div>
 </template>
 
@@ -110,6 +136,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import ColorCircleTeamName from '@/components/ColorCircleTeamName.vue';
 import TeamRosterContainer from '@/components/TeamRosterContainer.vue';
+import ScheduleGameSubmitGameSheet from '@/components/ScheduleGameSubmitGameSheet.vue';
 
 export default {
   name: 'ScheduleGameInfo',
@@ -117,11 +144,13 @@ export default {
     return {
       submitGameRosterVisible: false,
       submitRosterTeam: null,
+      submitGameSheetVisible: false,
     };
   },
   components: {
     ColorCircleTeamName,
     TeamRosterContainer,
+    ScheduleGameSubmitGameSheet,
   },
   computed: {
     ...mapGetters([
@@ -129,6 +158,8 @@ export default {
       'teamById',
       'user',
       'selectedLeagueId',
+      'gameRosters',
+      'selectedGameId',
     ]),
     showCancelButton() {
       if (!this.user) {
@@ -163,6 +194,39 @@ export default {
         default:
           return false;
       }
+    },
+    showSubmitGameSheetButton() {
+      if (!this.user) {
+        return false;
+      }
+      if (this.selectedGame.status === 'Cancelled') {
+        return false;
+      }
+      if (this.selectedGame.status === 'Final') {
+        return false;
+      }
+      const userType = this.user.userType;
+      switch (userType) {
+        case ('Referee'):
+          return true;
+        default:
+          return false;
+      }
+    },
+    bothRostersSubmited() {
+      const homeTeamRoster = this.fullGameRoster.filter(player => {
+        return player.teamID === this.selectedGame.homeTeamID;
+      });
+      const awayTeamRoster = this.fullGameRoster.filter(player => {
+        return player.teamID === this.selectedGame.awayTeamID;
+      });
+      return homeTeamRoster.length > 0 && awayTeamRoster.length > 0;
+    },
+    fullGameRoster() {
+      const gameRosterObj = this.gameRosters.find(gameRoster => {
+        return gameRoster.gameID === this.selectedGameId;
+      });
+      return gameRosterObj ? gameRosterObj.players : [];
     },
     localSelectedGame() {
       return this.selectedGame || {};
@@ -219,6 +283,9 @@ export default {
     teamClicked(id) {
       this.setSelectedTeamId(id);
       this.$router.push(`/teams/${id}`);
+    },
+    submitGameSheetButtonClicked(val) {
+      this.submitGameSheetVisible = val;
     },
   },
   watch: {
