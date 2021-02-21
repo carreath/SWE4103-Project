@@ -252,23 +252,27 @@
 <dt id="resources.Team.Team">
 <em class="property">class </em><code class="descclassname">resources.Team.</code><code class="descname">Team</code><a class="headerlink" href="#resources.Team.Team" title="Permalink to this definition">¶</a></dt>
 <dd><p>This endpoint allows access to the teams table records.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This is a note (wow!)</p>
-</div>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">This is a warning (oh no!)</p>
-</div>
-<div class="admonition-todo admonition" id="index-1">
-<p class="first admonition-title">Todo</p>
-<p>Privileges associated with token</p>
-<div class="last highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">token</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Authorization&#39;</span><span class="p">)</span>
-<span class="k">if</span> <span class="ow">not</span> <span class="n">token</span><span class="p">:</span>
-    <span class="n">abort</span><span class="p">(</span><span class="mi">403</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="s2">&quot;Unauthorized Access (no token)&quot;</span><span class="p">)</span>
+<dl class="method">
+<dt id="resources.Team.Team.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#resources.Team.Team.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes a team from the database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Input:</th><td class="field-body"><p class="first">ID of the team to delete.</p>
+<div class="last highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;teamID&#39;</span><span class="o">:</span> <span class="nx">Integer</span>
+<span class="p">}</span>
 </pre></div>
 </div>
-</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Possible status codes: 403 = No permissions, 200 = Successfully deleted.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="resources.Team.Team.get">
 <code class="descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#resources.Team.Team.get" title="Permalink to this definition">¶</a></dt>
@@ -292,7 +296,14 @@
     <span class="s1">&#39;leaguePoints&#39;</span><span class="o">:</span> <span class="nx">Integer</span><span class="p">,</span>
     <span class="s1">&#39;wins&#39;</span><span class="o">:</span> <span class="nx">Integer</span><span class="p">,</span>
     <span class="s1">&#39;losses&#39;</span><span class="o">:</span> <span class="nx">Integer</span><span class="p">,</span>
-    <span class="s1">&#39;draws&#39;</span><span class="o">:</span> <span class="nx">Integer</span>
+    <span class="s1">&#39;draws&#39;</span><span class="o">:</span> <span class="nx">Integer</span><span class="p">,</span>
+    <span class="s1">&#39;gamesPlayed&#39;</span><span class="o">:</span> <span class="nx">Integer</span><span class="p">,</span>
+    <span class="s1">&#39;goalsFor&#39;</span><span class="o">:</span> <span class="nx">Integer</span><span class="p">,</span>
+    <span class="s1">&#39;goalsAgainst&#39;</span><span class="o">:</span> <span class="nx">Integer</span><span class="p">,</span>
+    <span class="s1">&#39;goalsDifference&#39;</span><span class="o">:</span> <span class="nx">Integer</span><span class="p">,</span>
+    <span class="s1">&#39;cleanSheets&#39;</span><span class="o">:</span> <span class="nx">Integer</span><span class="p">,</span>
+    <span class="s1">&#39;yellowCards&#39;</span><span class="o">:</span> <span class="nx">Integer</span><span class="p">,</span>
+    <span class="s1">&#39;redCards&#39;</span><span class="o">:</span> <span class="nx">Integer</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -300,7 +311,7 @@
 </tr>
 </tbody>
 </table>
-<p>Success gives status code 200</p>
+<p>Possible status codes: 200 = Success.</p>
 </dd></dl>
 
 <dl class="method">
@@ -334,7 +345,53 @@
 </tr>
 </tbody>
 </table>
-<p>Success gives status code 201</p>
+<p>Possible status codes: 403 = No permissions, 201 = Successfully added.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="resources.Team.Team.put">
+<code class="descname">put</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#resources.Team.Team.put" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates a team object in the database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Input:</th><td class="field-body"><p class="first">Team JSON object with new data.</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;teamID&#39;</span><span class="o">:</span> <span class="nx">Integer</span><span class="p">,</span>
+    <span class="s1">&#39;leagueID&#39;</span><span class="o">:</span> <span class="nx">Integer</span><span class="p">,</span>
+    <span class="s1">&#39;managerID&#39;</span><span class="o">:</span> <span class="nx">Integer</span><span class="p">,</span>
+    <span class="s1">&#39;teamName&#39;</span><span class="o">:</span> <span class="nb">String</span><span class="p">,</span>
+    <span class="s1">&#39;colour&#39;</span><span class="o">:</span> <span class="nb">String</span> <span class="p">(</span><span class="nx">Hex</span> <span class="nx">Colour</span> <span class="nx">Code</span><span class="p">),</span>
+    <span class="s1">&#39;leaguePoints&#39;</span><span class="o">:</span> <span class="nx">Integer</span><span class="p">,</span>
+    <span class="s1">&#39;wins&#39;</span><span class="o">:</span> <span class="nx">Integer</span><span class="p">,</span>
+    <span class="s1">&#39;losses&#39;</span><span class="o">:</span> <span class="nx">Integer</span><span class="p">,</span>
+    <span class="s1">&#39;draws&#39;</span><span class="o">:</span> <span class="nx">Integer</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><p>The updated team JSON object</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;teamID&#39;</span><span class="o">:</span> <span class="nx">Integer</span><span class="p">,</span>
+    <span class="s1">&#39;leagueID&#39;</span><span class="o">:</span> <span class="nx">Integer</span><span class="p">,</span>
+    <span class="s1">&#39;managerID&#39;</span><span class="o">:</span> <span class="nx">Integer</span><span class="p">,</span>
+    <span class="s1">&#39;teamName&#39;</span><span class="o">:</span> <span class="nb">String</span><span class="p">,</span>
+    <span class="s1">&#39;colour&#39;</span><span class="o">:</span> <span class="nb">String</span> <span class="p">(</span><span class="nx">Hex</span> <span class="nx">Colour</span> <span class="nx">Code</span><span class="p">),</span>
+    <span class="s1">&#39;leaguePoints&#39;</span><span class="o">:</span> <span class="nx">Integer</span><span class="p">,</span>
+    <span class="s1">&#39;wins&#39;</span><span class="o">:</span> <span class="nx">Integer</span><span class="p">,</span>
+    <span class="s1">&#39;losses&#39;</span><span class="o">:</span> <span class="nx">Integer</span><span class="p">,</span>
+    <span class="s1">&#39;draws&#39;</span><span class="o">:</span> <span class="nx">Integer</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Possible status codes: 403 = No permissions, 200 = Successfully updated.</p>
 </dd></dl>
 
 </dd></dl>
